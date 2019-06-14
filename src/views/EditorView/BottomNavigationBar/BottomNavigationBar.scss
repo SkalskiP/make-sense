@@ -1,0 +1,8 @@
+@import '../../../settings/Settings';
+
+.BottomNavigationBar {
+  align-self: stretch;
+  height: $bottomNavigationBarHeight;
+  border-top: solid 1px $darkThemeSecondColor;
+  background-color: $darkThemeFirstColor;
+}

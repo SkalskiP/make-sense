@@ -1,0 +1,36 @@
+@import '../../../settings/Settings';
+
+.SideNavigationBar {
+  align-self: stretch;
+  width: 330px;
+  background-color: $darkThemeFirstColor;
+
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  .CompanionBar {
+    align-self: stretch;
+    width: $sideNavigationBarCompanionWidth;
+  }
+
+  &.left {
+    flex-direction: row;
+    border-right: solid 1px $darkThemeSecondColor;
+
+    .CompanionBar {
+      border-right: solid 1px $darkThemeSecondColor;
+    }
+  }
+
+  &.right {
+    flex-direction: row-reverse;
+    border-left: solid 1px $darkThemeSecondColor;
+
+    .CompanionBar {
+      border-left: solid 1px $darkThemeSecondColor;
+    }
+  }
+}

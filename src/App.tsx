@@ -1,11 +1,11 @@
 import React from 'react';
 import './App.scss';
-import Editor from "./views/Editor/Editor";
+import EditorView from "./views/EditorView/EditorView";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Editor/>
+      <EditorView/>
     </div>
   );
 };
