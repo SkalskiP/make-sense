@@ -2,7 +2,6 @@
 
 .SideNavigationBar {
   align-self: stretch;
-  width: 330px;
   background-color: $darkThemeFirstColor;
 
   display: flex;
@@ -14,6 +13,18 @@
   .CompanionBar {
     align-self: stretch;
     width: $sideNavigationBarCompanionWidth;
+  }
+
+  .NavigationBarContentWrapper {
+    align-self: stretch;
+    width: $sideNavigationBarContentWidth;
+
+    flex-direction: column;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    align-content: flex-end;
   }
 
   &.left {

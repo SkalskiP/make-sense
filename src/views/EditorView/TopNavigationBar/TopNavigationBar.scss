@@ -5,4 +5,17 @@
   height: $topNavigationBarHeight;
   background-color: $darkThemeSecondColor;
   box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
+  padding: 0 $sideNavigationBarCompanionWidth;
+  color: white;
+
+  .Header {
+    font-weight: 900;
+    user-select: none;
+  }
+
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  align-content: space-between;
 }
