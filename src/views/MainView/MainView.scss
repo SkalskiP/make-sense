@@ -7,7 +7,7 @@
   padding: 0;
 
 
-  background-color: $darkThemeThirdColor;
+  background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
 
   display: flex;
   flex-direction: row;
@@ -16,44 +16,67 @@
   align-items: center;
   align-content: flex-start;
 
-  .LeftColumn {
-    background-color: #171717;
-    padding: 20px;
-
-    min-width: 500px;
-    align-self: stretch;
-    flex: 1;
-
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-
-    > img {
-      max-width: 400px;
-    }
-
-    .Description {
-      padding: 25px;
-      color: white;
-      font-size: 20px;
+  &.InProgress {
+    .LeftColumn {
+      width: 20%;
+      transition: width 2s ease-in-out;
     }
   }
+}
 
-  .RightColumn {
-    background-image: linear-gradient(to bottom right, $primaryColor, $secondaryColor);
-    padding: 20px;
+.LeftColumn {
+  position: relative;
+  //background-color: $darkThemeSecondColor;
+  background-color: black;
+  padding: 20px;
 
-    align-self: stretch;
-    flex: 2;
+  transition: width 2s ease-out;
+  min-width: 400px;
+  align-self: stretch;
+  //flex: 2;
+  width: 70%;
 
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+
+  img {
+    width: 200px;
   }
+
+  .Triangle {
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: -100px;
+    background-color: transparent;
+    overflow: hidden;
+  }
+  .TriangleContent{
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: skew(-6deg) translateX(-50%);
+    //background-color: $darkThemeSecondColor;
+    background-color: black;
+  }
+}
+
+.RightColumn {
+  padding: 20px;
+  align-self: stretch;
+  flex: 1;
+
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: flex-end;
+  align-content: flex-start;
 }

@@ -1,0 +1,35 @@
+@import '../../../settings/Settings';
+
+.TextButton {
+  cursor: pointer;
+  user-select: none;
+  width: fit-content;
+  height: fit-content;
+  line-height: 0;
+  word-wrap: break-word;
+  padding: 20px 30px;
+  text-decoration: none;
+  box-shadow: black 0 0 0 2px inset;
+  color: black;
+  margin: initial;
+  border-radius: 4px;
+  transition: 0.3s ease-in-out;
+  background: transparent;
+  font-weight: 700;
+
+  > a {
+    text-decoration: none;
+    color: black;
+  }
+
+  &:hover {
+    box-shadow: inherit;
+    color: white;
+    background-color: black;
+
+    > a {
+      text-decoration: none;
+      color: white;
+    }
+  }
+}

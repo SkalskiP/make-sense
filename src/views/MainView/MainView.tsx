@@ -1,19 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './MainView.scss';
+import {TextButton} from "../Common/TextButton/TextButton";
+import classNames from 'classnames';
 
 const MainView: React.FC = () => {
+    const [projectInProgress, setProjectInProgress] = useState(false);
+
+    const startProject = () => {
+        setProjectInProgress(true);
+    };
+
+    const getClassName = () => {
+        return classNames(
+            "MainView",
+            {
+                "InProgress": projectInProgress,
+            }
+        );
+    };
+
     return (
-        <div className="MainView">
+        <div className={getClassName()}>
             <div className="LeftColumn">
                 <img alt={"main-logo"} src={"img/main-image-color.png"}/>
-                <div className="Description">
-                    Make Sense is an open source photo labeling tool that allows you to easily and quickly prepare your
-                    photo collection for computer vision research. Make Sense works online, so there's no need to
-                    install any packages or environments locally - all you need is a web browser. The photos you upload
-                    are 100% secure and are never saved on our servers.
+                <div className="Triangle">
+                    <div className="TriangleContent"/>
                 </div>
             </div>
-            <div className="RightColumn"/>
+            <div className="RightColumn">
+                {!projectInProgress && <TextButton
+                    label={"Get Started"}
+                    onClick={startProject}
+                />}
+            </div>
         </div>
     );
 };
