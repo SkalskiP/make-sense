@@ -11,14 +11,22 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: flex-start;
 
   &.InProgress {
     .LeftColumn {
-      width: 20%;
+      width: 260px;
       transition: width 2s ease-in-out;
+    }
+
+    .RightColumn {
+      .DropZoneWrapper {
+        animation-duration: 3s;
+        animation-name: cssAnimation;
+        animation-fill-mode: forwards;
+        opacity: 0;
+        width: 0;
+        overflow: hidden;
+      }
     }
 
     .EditorFeaturesWrapper {
@@ -33,36 +41,36 @@
   background-color: black;
   padding: 20px;
 
+  box-sizing: border-box;
   transition: width 2s ease-out;
-  min-width: 300px;
+  min-width: 260px;
   align-self: stretch;
   width: 75%;
 
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
   align-items: center;
-  align-content: center;
 
   .LogoWrapper {
     align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     > img {
-      width: 250px;
-      margin-bottom: 20px;
+      width: 220px;
     }
   }
 
   .EditorFeaturesWrapper {
+    min-width: 400px;
     flex: 1;
     opacity: 1;
     transition: opacity 0.7s ease-in-out;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    align-items: center;
-    align-content: flex-start;
   }
 
   .Triangle {
@@ -70,7 +78,7 @@
     height: 100%;
     position: absolute;
     top: 0;
-    right: -100px;
+    right: -99px;
     background-color: transparent;
     overflow: hidden;
   }
@@ -92,11 +100,11 @@
   min-width: 200px;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: flex-end;
-  align-content: flex-start;
+  align-items: center;
+  align-content: center;
 }
 
 .EditorFeaturesTiles {
@@ -110,7 +118,6 @@
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  align-content: center;
 
   .EditorFeatureLabel {
     width: 180px;
@@ -120,8 +127,70 @@
 
   > img {
     filter: brightness(0) invert(1);
-    max-width: 70px;
-    max-height: 70px;
+    max-width: 60px;
+    max-height: 60px;
     margin-bottom: 20px;
+  }
+}
+
+.DropZoneWrapper {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+
+  .DropZone {
+    user-select: none;
+    width: 400px;
+    height: 200px;
+    box-shadow: black 0 0 0 2px inset;
+    border-radius: 4px;
+    margin-bottom: 6px;
+
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+
+    > img {
+      max-width: 60px;
+      max-height: 60px;
+    }
+  }
+
+  .DropZoneButtons {
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+
+    .TextButton {
+      width: 137px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+@keyframes cssAnimation {
+  0%   {
+    opacity: 0;
+    width: 0;
+  }
+  60%  {
+    opacity: 0;
+    width: 400px;
+  }
+  100% {
+    opacity: 1;
+    width: 400px;
   }
 }
