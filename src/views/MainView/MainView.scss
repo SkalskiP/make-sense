@@ -23,7 +23,7 @@
 
     .EditorFeaturesWrapper {
       opacity: 0;
-      transition: opacity 1s ease-in-out;
+      transition: opacity 0.7s ease-in-out;
     }
   }
 }
@@ -39,15 +39,14 @@
   width: 75%;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
 
   .LogoWrapper {
-    width: 100%;
-
+    align-self: stretch;
     > img {
       width: 250px;
       margin-bottom: 20px;
@@ -55,11 +54,9 @@
   }
 
   .EditorFeaturesWrapper {
-    width: 100%;
     flex: 1;
     opacity: 1;
-    transition: opacity 1s ease-in-out;
-    max-width: 800px;
+    transition: opacity 0.7s ease-in-out;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

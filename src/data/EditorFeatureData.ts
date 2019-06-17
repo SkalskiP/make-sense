@@ -6,12 +6,12 @@ export interface IEditorFeature {
 
 export const EditorFeatureData:IEditorFeature[] = [
     {
-        displayText: "MakeSense is open source and free to use under MIT license",
+        displayText: "Open source and free to use under MIT license",
         imageSrc: "img/open-source.png",
         imageAlt: "open-source",
     },
     {
-        displayText: "You can use it in your browser - no installation required",
+        displayText: "No advanced installation required, just open up your browser",
         imageSrc: "img/online.png",
         imageAlt: "online",
     },
@@ -21,17 +21,17 @@ export const EditorFeatureData:IEditorFeature[] = [
         imageAlt: "private",
     },
     {
-        displayText: "We support multiple label types",
+        displayText: "Support multiple label types - bounding box, polygon, point",
         imageSrc: "img/labels.png",
         imageAlt: "labels",
     },
     {
-        displayText: "We support multiple output file formats",
+        displayText: "Support multiple output file formats - YOLO, COCO",
         imageSrc: "img/file.png",
         imageAlt: "file",
     },
     {
-        displayText: "We support basic image operations like crop and resize",
+        displayText: "Support basic image operations like crop and resize",
         imageSrc: "img/resize.png",
         imageAlt: "resize",
     },
