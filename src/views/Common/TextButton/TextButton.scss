@@ -1,6 +1,7 @@
 @import '../../../settings/Settings';
 
 .TextButton {
+  display: block;
   cursor: pointer;
   user-select: none;
   width: fit-content;

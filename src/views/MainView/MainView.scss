@@ -6,13 +6,12 @@
   margin: 0;
   padding: 0;
 
-
   background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
 
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   align-content: flex-start;
 
@@ -21,30 +20,52 @@
       width: 20%;
       transition: width 2s ease-in-out;
     }
+
+    .EditorFeaturesWrapper {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
   }
 }
 
 .LeftColumn {
   position: relative;
-  //background-color: $darkThemeSecondColor;
   background-color: black;
   padding: 20px;
 
   transition: width 2s ease-out;
-  min-width: 400px;
+  min-width: 300px;
   align-self: stretch;
-  //flex: 2;
-  width: 70%;
+  width: 75%;
 
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 
-  img {
-    width: 200px;
+  .LogoWrapper {
+    width: 100%;
+
+    > img {
+      width: 250px;
+      margin-bottom: 20px;
+    }
+  }
+
+  .EditorFeaturesWrapper {
+    width: 100%;
+    flex: 1;
+    opacity: 1;
+    transition: opacity 1s ease-in-out;
+    max-width: 800px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: flex-start;
   }
 
   .Triangle {
@@ -63,7 +84,6 @@
     left: 0;
     top: 0;
     transform: skew(-6deg) translateX(-50%);
-    //background-color: $darkThemeSecondColor;
     background-color: black;
   }
 }
@@ -72,11 +92,39 @@
   padding: 20px;
   align-self: stretch;
   flex: 1;
+  min-width: 200px;
 
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: flex-end;
   align-content: flex-start;
+}
+
+.EditorFeaturesTiles {
+  flex: 1 0 26%;
+  min-width: 200px;
+  height:200px;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .EditorFeatureLabel {
+    width: 180px;
+    text-align: center;
+    user-select: none;
+  }
+
+  > img {
+    filter: brightness(0) invert(1);
+    max-width: 70px;
+    max-height: 70px;
+    margin-bottom: 20px;
+  }
 }
