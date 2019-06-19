@@ -14,8 +14,19 @@
 
   &.InProgress {
     .LeftColumn {
-      width: 260px;
+      width: 280px;
+      height: 100%;
       transition: width 2s ease-in-out;
+    }
+
+    .Slider {
+      width: 280px;
+      transition: width 2.2s ease-in-out;
+    }
+
+    .Slider1 {
+      width: 280px;
+      transition: width 2.1s ease-in-out;
     }
 
     .RightColumn {
@@ -33,6 +44,56 @@
       opacity: 0;
       transition: opacity 0.7s ease-in-out;
     }
+
+    .LeftColumn {
+      .TextButton {
+        box-shadow: white 0 0 0 2px inset;
+        color: white;
+
+        &:hover {
+          background-color: white;
+          color: black;
+        }
+      }
+    }
+  }
+
+  &.Canceled {
+    .EditorFeaturesWrapper {
+      animation-duration: 2s;
+      animation-name: cssAnimation2;
+      animation-fill-mode: forwards;
+    }
+  }
+}
+
+.Slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+  transition: width 1.8s ease-out;
+  width: 75%;
+  height: 100%;
+
+  .TriangleContent{
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
+.Slider1 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 0;
+  transition: width 1.9s ease-out;
+  width: 75%;
+  height: 100%;
+
+  .TriangleContent{
+    background-color: rgba(0, 0, 0, 0.3);
   }
 }
 
@@ -40,6 +101,7 @@
   position: relative;
   background-color: black;
   padding: 20px;
+  z-index: 100;
 
   box-sizing: border-box;
   transition: width 2s ease-out;
@@ -72,25 +134,6 @@
     flex-direction: row;
     flex-wrap: wrap;
   }
-
-  .Triangle {
-    width: 100px;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: -99px;
-    background-color: transparent;
-    overflow: hidden;
-  }
-  .TriangleContent{
-    width: 100px;
-    height: 100%;
-    position: absolute;
-    left: 0;
-    top: 0;
-    transform: skew(-6deg) translateX(-50%);
-    background-color: black;
-  }
 }
 
 .RightColumn {
@@ -98,6 +141,7 @@
   align-self: stretch;
   flex: 1;
   min-width: 200px;
+  z-index: 100;
 
   display: flex;
   flex-direction: row;
@@ -105,6 +149,25 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
+}
+
+.Triangle {
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: -100px;
+  background-color: transparent;
+  overflow: hidden;
+}
+.TriangleContent{
+  width: 100px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: skew(-6deg) translateX(-50%);
+  background-color: black;
 }
 
 .EditorFeaturesTiles {
@@ -146,6 +209,8 @@
     width: 400px;
     height: 200px;
     box-shadow: black 0 0 0 2px inset;
+    //box-shadow: white 0 0 0 2px inset;
+    //color: white;
     border-radius: 4px;
     margin-bottom: 6px;
 
@@ -158,6 +223,7 @@
     > img {
       max-width: 60px;
       max-height: 60px;
+      //filter: brightness(0) invert(1);
     }
   }
 
@@ -176,6 +242,8 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
+      //box-shadow: white 0 0 0 2px inset;
+      //color: white;
     }
   }
 }
@@ -192,5 +260,18 @@
   100% {
     opacity: 1;
     width: 400px;
+  }
+}
+
+@keyframes cssAnimation2 {
+  0%   {
+    opacity: 0;
+    width: 0;
+  }
+  60%  {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
   }
 }

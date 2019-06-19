@@ -10,6 +10,7 @@ import {useDropzone} from 'react-dropzone';
 
 const MainView: React.FC = () => {
     const [projectInProgress, setProjectInProgress] = useState(false);
+    const [projectCanceled, setProjectCanceled] = useState(false);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         onDrop: files => console.log(files),
         accept: 'image/jpeg, image/png'
@@ -19,10 +20,16 @@ const MainView: React.FC = () => {
         setProjectInProgress(true);
     };
 
+    const endProject = () => {
+        setProjectInProgress(false);
+        setProjectCanceled(true);
+    };
+
     const getClassName = () => {
         return classNames(
             "MainView", {
                 "InProgress": projectInProgress,
+                "Canceled": !projectInProgress && projectCanceled
             }
         );
     };
@@ -68,6 +75,18 @@ const MainView: React.FC = () => {
 
     return (
         <div className={getClassName()}>
+            <div className="Slider">
+                <div className="Triangle">
+                    <div className="TriangleContent"/>
+                </div>
+            </div>
+
+            <div className="Slider1">
+                <div className="Triangle">
+                    <div className="TriangleContent"/>
+                </div>
+            </div>
+
             <div className="LeftColumn">
                 <div className={"LogoWrapper"}>
                     <img alt={"main-logo"} src={"img/main-image-color.png"}/>
@@ -78,6 +97,15 @@ const MainView: React.FC = () => {
                 <div className="Triangle">
                     <div className="TriangleContent"/>
                 </div>
+                {projectInProgress && <TextButton
+                    label={"Get Started"}
+                    onClick={endProject}
+                    style={{
+                        position: "absolute",
+                        left: 20,
+                        bottom: 20
+                    }}
+                />}
             </div>
             <div className="RightColumn">
                 <div/>
