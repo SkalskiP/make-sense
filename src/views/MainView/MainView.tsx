@@ -7,6 +7,9 @@ import {ImageButton} from "../Common/ImageButton/ImageButton";
 import {ISocialMedia, SocialMediaData} from "../../data/SocialMediaData";
 import {EditorFeatureData, IEditorFeature} from "../../data/EditorFeatureData";
 import {useDropzone} from 'react-dropzone';
+import {Tooltip} from "@material-ui/core";
+import Fade from "@material-ui/core/Fade";
+import withStyles from "@material-ui/core/styles/withStyles";
 
 const MainView: React.FC = () => {
     const [projectInProgress, setProjectInProgress] = useState(false);
@@ -34,15 +37,29 @@ const MainView: React.FC = () => {
         );
     };
 
+    const LightTooltip = withStyles(theme => ({
+        tooltip: {
+            backgroundColor: "#171717",
+            color: "#ffffff",
+            boxShadow: theme.shadows[1],
+            fontSize: 11,
+            maxWidth: 120
+        },
+    }))(Tooltip);
+
     const getSocialMediaButtons = (size:ISize) => {
         return SocialMediaData.map((data:ISocialMedia) => {
-            return <ImageButton
-                key={data.displayName}
-                size={size}
-                image={data.imageSrc}
-                imageAlt={data.imageAlt}
-                href={data.href}
-            />
+            return <LightTooltip disableFocusListener title={data.tooltipMessage} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} placement="left">
+                <div>
+                    <ImageButton
+                        key={data.displayName}
+                        size={size}
+                        image={data.imageSrc}
+                        imageAlt={data.imageAlt}
+                        href={data.href}
+                    />
+                </div>
+            </LightTooltip>
         });
     };
 
@@ -75,13 +92,13 @@ const MainView: React.FC = () => {
 
     return (
         <div className={getClassName()}>
-            <div className="Slider">
+            <div className="Slider" id="lower">
                 <div className="Triangle">
                     <div className="TriangleContent"/>
                 </div>
             </div>
 
-            <div className="Slider1">
+            <div className="Slider" id="upper">
                 <div className="Triangle">
                     <div className="TriangleContent"/>
                 </div>
@@ -98,7 +115,7 @@ const MainView: React.FC = () => {
                     <div className="TriangleContent"/>
                 </div>
                 {projectInProgress && <TextButton
-                    label={"Get Started"}
+                    label={"Go Back"}
                     onClick={endProject}
                     style={{
                         position: "absolute",

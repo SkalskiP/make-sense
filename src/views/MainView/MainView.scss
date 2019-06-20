@@ -16,22 +16,24 @@
     .LeftColumn {
       width: 280px;
       height: 100%;
-      transition: width 2s ease-in-out;
+      transition: width 1.2s ease-out;
     }
 
     .Slider {
       width: 280px;
-      transition: width 2.2s ease-in-out;
     }
 
-    .Slider1 {
-      width: 280px;
-      transition: width 2.1s ease-in-out;
+    #lower {
+      transition: width 1.5s ease-out;
+    }
+
+    #upper {
+      transition: width 1.4s ease-out;
     }
 
     .RightColumn {
       .DropZoneWrapper {
-        animation-duration: 3s;
+        animation-duration: 1.5s;
         animation-name: cssAnimation;
         animation-fill-mode: forwards;
         opacity: 0;
@@ -42,7 +44,7 @@
 
     .EditorFeaturesWrapper {
       opacity: 0;
-      transition: opacity 0.7s ease-in-out;
+      transition: opacity 0.2s ease-in-out;
     }
 
     .LeftColumn {
@@ -60,7 +62,7 @@
 
   &.Canceled {
     .EditorFeaturesWrapper {
-      animation-duration: 2s;
+      animation-duration: 1.5s;
       animation-name: cssAnimation2;
       animation-fill-mode: forwards;
     }
@@ -73,7 +75,6 @@
   left: 0;
   background-color: rgba(0, 0, 0, 0.3);
   z-index: 0;
-  transition: width 1.8s ease-out;
   width: 75%;
   height: 100%;
 
@@ -82,19 +83,12 @@
   }
 }
 
-.Slider1 {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-  z-index: 0;
-  transition: width 1.9s ease-out;
-  width: 75%;
-  height: 100%;
+#lower {
+  transition: width 1.2s ease-out;
+}
 
-  .TriangleContent{
-    background-color: rgba(0, 0, 0, 0.3);
-  }
+#upper {
+  transition: width 1.4s ease-out;
 }
 
 .LeftColumn {
@@ -104,7 +98,7 @@
   z-index: 100;
 
   box-sizing: border-box;
-  transition: width 2s ease-out;
+  transition: width 1.5s ease-out;
   min-width: 260px;
   align-self: stretch;
   width: 75%;
@@ -129,7 +123,6 @@
     min-width: 400px;
     flex: 1;
     opacity: 1;
-    transition: opacity 0.7s ease-in-out;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -175,6 +168,7 @@
   min-width: 200px;
   height:200px;
   color: white;
+  transition: transform .2s;
 
   display: flex;
   flex-direction: column;
@@ -194,6 +188,10 @@
     max-height: 60px;
     margin-bottom: 20px;
   }
+
+  &:hover {
+    transform: scale(1.03);
+  }
 }
 
 .DropZoneWrapper {
@@ -209,8 +207,6 @@
     width: 400px;
     height: 200px;
     box-shadow: black 0 0 0 2px inset;
-    //box-shadow: white 0 0 0 2px inset;
-    //color: white;
     border-radius: 4px;
     margin-bottom: 6px;
 
@@ -220,10 +216,15 @@
     justify-content: center;
     align-items: center;
 
+    outline: none;
+
     > img {
       max-width: 60px;
       max-height: 60px;
-      //filter: brightness(0) invert(1);
+    }
+
+    > input {
+      outline: none;
     }
   }
 
@@ -242,8 +243,6 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
-      //box-shadow: white 0 0 0 2px inset;
-      //color: white;
     }
   }
 }
