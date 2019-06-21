@@ -8,14 +8,20 @@
   padding: 0 $sideNavigationBarCompanionWidth;
   color: white;
 
+  > img {
+    width: 25px;
+    height: 25px;
+  }
+
   .Header {
     font-weight: 900;
     user-select: none;
+    margin: 0 5px;
   }
 
   display: flex;
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-  align-content: space-between;
+  align-content: flex-start;
 }

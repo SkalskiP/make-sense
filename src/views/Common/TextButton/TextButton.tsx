@@ -14,7 +14,7 @@ interface IProps {
 
 export const TextButton = (props:IProps) => {
 
-    const { key, label, onClick, style, isActive } = props;
+    const { key, label, onClick, style, isActive, rout} = props;
 
     const getClassName = () => {
         return classNames(
@@ -32,9 +32,9 @@ export const TextButton = (props:IProps) => {
             key={key}
             style={style}
         >
-            {!props.rout && props.label}
-            {!!props.rout && <Link to={props.rout}>
-                {props.label}
+            {!rout && label}
+            {!!rout && <Link to={rout}>
+                {label}
             </Link>}
         </div>
     )
