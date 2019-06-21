@@ -63,7 +63,7 @@
   &.Canceled {
     .EditorFeaturesWrapper {
       animation-duration: 1.5s;
-      animation-name: cssAnimation2;
+      animation-name: cssAnimation;
       animation-fill-mode: forwards;
     }
   }
@@ -188,10 +188,6 @@
     max-height: 60px;
     margin-bottom: 20px;
   }
-
-  &:hover {
-    transform: scale(1.03);
-  }
 }
 
 .DropZoneWrapper {
@@ -259,18 +255,5 @@
   100% {
     opacity: 1;
     width: 400px;
-  }
-}
-
-@keyframes cssAnimation2 {
-  0%   {
-    opacity: 0;
-    width: 0;
-  }
-  60%  {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
   }
 }

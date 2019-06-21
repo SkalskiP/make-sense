@@ -65,7 +65,9 @@ const MainView: React.FC = () => {
 
     const getEditorFeatureTiles = () => {
         return EditorFeatureData.map((data:IEditorFeature) => {
-            return <div className="EditorFeaturesTiles">
+            return <div
+                className="EditorFeaturesTiles"
+            >
                 <img
                     alt={data.imageAlt}
                     src={data.imageSrc}
@@ -82,7 +84,7 @@ const MainView: React.FC = () => {
             return [
                 <input {...getInputProps()} />,
                 <img alt={"upload"} src={"img/upload.png"}/>,
-                <p>Drag 'n' drop some images here, or click to select images</p>
+                <p>Drop some images here or click to select images</p>
             ];
         else if (acceptedFiles.length === 1)
             return <p>1 image loaded</p>;
@@ -133,11 +135,11 @@ const MainView: React.FC = () => {
                     <div className="DropZoneButtons">
                         <TextButton
                             label={"Image recognition"}
-                            onClick={() => {}}
+                            rout={"/editor/"}
                         />
                         <TextButton
                             label={"Object Detection"}
-                            onClick={() => {}}
+                            rout={"/editor/"}
                         />
                     </div>
                 </div>}
