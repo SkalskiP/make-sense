@@ -239,6 +239,18 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
+
+      &.disabled {
+        box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 2px inset;
+        color: rgba(0, 0, 0, 0.2);
+        cursor: default;
+
+        &:hover {
+          box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 2px inset;
+          color: rgba(0, 0, 0, 0.2);
+          background-color: transparent;
+        }
+      }
     }
   }
 }

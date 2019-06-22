@@ -10,17 +10,19 @@ interface IProps {
     style?:React.CSSProperties;
     rout?:string,
     isActive?:boolean;
+    isDisabled?:boolean;
 }
 
 export const TextButton = (props:IProps) => {
 
-    const { key, label, onClick, style, isActive, rout} = props;
+    const { key, label, onClick, style, isActive, rout, isDisabled} = props;
 
     const getClassName = () => {
         return classNames(
             "TextButton",
             {
-                "active": isActive
+                "active": isActive,
+                "disabled": isDisabled
             }
         );
     };
@@ -28,7 +30,7 @@ export const TextButton = (props:IProps) => {
     return(
         <div
             className={getClassName()}
-            onClick={onClick}
+            onClick={!!onClick && onClick}
             key={key}
             style={style}
         >

@@ -10,12 +10,12 @@ import {useDropzone} from 'react-dropzone';
 import {Tooltip} from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import withStyles from "@material-ui/core/styles/withStyles";
+import {ProjectType} from "../../data/ProjectType";
 
 const MainView: React.FC = () => {
     const [projectInProgress, setProjectInProgress] = useState(false);
     const [projectCanceled, setProjectCanceled] = useState(false);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        onDrop: files => console.log(files),
         accept: 'image/jpeg, image/png'
     });
 
@@ -37,7 +37,7 @@ const MainView: React.FC = () => {
         );
     };
 
-    const LightTooltip = withStyles(theme => ({
+    const DarkTooltip = withStyles(theme => ({
         tooltip: {
             backgroundColor: "#171717",
             color: "#ffffff",
@@ -49,7 +49,7 @@ const MainView: React.FC = () => {
 
     const getSocialMediaButtons = (size:ISize) => {
         return SocialMediaData.map((data:ISocialMedia) => {
-            return <LightTooltip disableFocusListener title={data.tooltipMessage} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} placement="left">
+            return <DarkTooltip disableFocusListener title={data.tooltipMessage} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} placement="left">
                 <div>
                     <ImageButton
                         key={data.displayName}
@@ -59,7 +59,7 @@ const MainView: React.FC = () => {
                         href={data.href}
                     />
                 </div>
-            </LightTooltip>
+            </DarkTooltip>
         });
     };
 
@@ -135,11 +135,13 @@ const MainView: React.FC = () => {
                     <div className="DropZoneButtons">
                         <TextButton
                             label={"Image recognition"}
-                            rout={"/editor/"}
+                            rout={acceptedFiles.length ? "/editor/" : null}
+                            isDisabled={!acceptedFiles.length}
                         />
                         <TextButton
                             label={"Object Detection"}
-                            rout={"/editor/"}
+                            rout={acceptedFiles.length ? "/editor/" : null}
+                            isDisabled={!acceptedFiles.length}
                         />
                     </div>
                 </div>}
