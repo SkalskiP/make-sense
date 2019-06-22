@@ -32,25 +32,26 @@
     }
 
     .RightColumn {
-      .DropZoneWrapper {
+      .ImagesDropZone {
         animation-duration: 1.5s;
-        animation-name: cssAnimation;
+        animation-name: cssAnimationShow;
         animation-fill-mode: forwards;
-        opacity: 0;
-        width: 0;
-        overflow: hidden;
       }
     }
 
-    .EditorFeaturesWrapper {
-      opacity: 0;
-      transition: opacity 0.2s ease-in-out;
-    }
-
     .LeftColumn {
+      .EditorFeaturesWrapper {
+        animation-duration: 0.6s;
+        animation-name: cssAnimationHide;
+        animation-fill-mode: forwards;
+      }
+
       .TextButton {
         box-shadow: white 0 0 0 2px inset;
         color: white;
+        position: absolute;
+        left: 20px;
+        bottom: 20px;
 
         &:hover {
           background-color: white;
@@ -61,10 +62,20 @@
   }
 
   &.Canceled {
-    .EditorFeaturesWrapper {
-      animation-duration: 1.5s;
-      animation-name: cssAnimation;
-      animation-fill-mode: forwards;
+    .RightColumn {
+      .ImagesDropZone {
+        animation-duration: 0.6s;
+        animation-name: cssAnimationHide;
+        animation-fill-mode: forwards;
+      }
+    }
+
+    .LeftColumn {
+      .EditorFeaturesWrapper {
+        animation-duration: 1.5s;
+        animation-name: cssAnimationShow;
+        animation-fill-mode: forwards;
+      }
     }
   }
 }
@@ -120,7 +131,6 @@
   }
 
   .EditorFeaturesWrapper {
-    min-width: 400px;
     flex: 1;
     opacity: 1;
     display: flex;
@@ -142,6 +152,17 @@
   justify-content: space-between;
   align-items: center;
   align-content: center;
+
+  .ImagesDropZone {
+    overflow: hidden;
+    width: 0;
+  }
+
+  > .TextButton {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+  }
 }
 
 .Triangle {
@@ -166,7 +187,7 @@
 .EditorFeaturesTiles {
   flex: 1 0 26%;
   min-width: 200px;
-  height:200px;
+  height: 200px;
   color: white;
   transition: transform .2s;
 
@@ -190,72 +211,7 @@
   }
 }
 
-.DropZoneWrapper {
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-
-  .DropZone {
-    user-select: none;
-    width: 400px;
-    height: 200px;
-    box-shadow: black 0 0 0 2px inset;
-    border-radius: 4px;
-    margin-bottom: 6px;
-
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    justify-content: center;
-    align-items: center;
-
-    outline: none;
-
-    > img {
-      max-width: 60px;
-      max-height: 60px;
-    }
-
-    > input {
-      outline: none;
-    }
-  }
-
-  .DropZoneButtons {
-    align-self: stretch;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-
-    .TextButton {
-      width: 137px;
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-
-      &.disabled {
-        box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 2px inset;
-        color: rgba(0, 0, 0, 0.2);
-        cursor: default;
-
-        &:hover {
-          box-shadow: rgba(0, 0, 0, 0.2) 0 0 0 2px inset;
-          color: rgba(0, 0, 0, 0.2);
-          background-color: transparent;
-        }
-      }
-    }
-  }
-}
-
-@keyframes cssAnimation {
+@keyframes cssAnimationShow {
   0%   {
     opacity: 0;
     width: 0;
@@ -267,5 +223,20 @@
   100% {
     opacity: 1;
     width: 400px;
+  }
+}
+
+@keyframes cssAnimationHide {
+  0%   {
+    opacity: 1;
+    width: 400px;
+  }
+  40%  {
+    opacity: 0;
+    width: 400px;
+  }
+  100% {
+    opacity: 0;
+    width: 0;
   }
 }

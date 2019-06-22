@@ -14,20 +14,20 @@ export const SocialMediaData:ISocialMedia[] = [
         imageSrc: "/img/github-logo.png",
         imageAlt: "GitHub Logo",
         href: Settings.GITHUB_URL,
-        tooltipMessage: "Show us some love on GitHub",
+        tooltipMessage: "Show me some love on GitHub",
     },
     {
         displayName: "Medium",
         imageSrc: "/img/medium-logo.png",
         imageAlt: "Medium Logo",
         href: Settings.MEDIUM_URL,
-        tooltipMessage: "Read our AI content on Medium",
+        tooltipMessage: "Read my AI content on Medium",
     },
     {
         displayName: "Twitter",
         imageSrc: "/img/patreon-logo.png",
         imageAlt: "Patreon Logo",
         href: Settings.PATREON_URL,
-        tooltipMessage: "Support us on Patreon and help us grow"
+        tooltipMessage: "Support MakeSense on Patreon and help it grow"
     },
 ];

@@ -6,18 +6,14 @@ import {ISize} from "../../interfaces/ISize";
 import {ImageButton} from "../Common/ImageButton/ImageButton";
 import {ISocialMedia, SocialMediaData} from "../../data/SocialMediaData";
 import {EditorFeatureData, IEditorFeature} from "../../data/EditorFeatureData";
-import {useDropzone} from 'react-dropzone';
 import {Tooltip} from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import withStyles from "@material-ui/core/styles/withStyles";
-import {ProjectType} from "../../data/ProjectType";
+import ImagesDropZone from "./ImagesDropZone/ImagesDropZone";
 
 const MainView: React.FC = () => {
     const [projectInProgress, setProjectInProgress] = useState(false);
     const [projectCanceled, setProjectCanceled] = useState(false);
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: 'image/jpeg, image/png'
-    });
 
     const startProject = () => {
         setProjectInProgress(true);
@@ -79,19 +75,6 @@ const MainView: React.FC = () => {
         });
     };
 
-    const getDropZoneContent = () => {
-        if (acceptedFiles.length === 0)
-            return [
-                <input {...getInputProps()} />,
-                <img alt={"upload"} src={"img/upload.png"}/>,
-                <p>Drop some images here or click to select images</p>
-            ];
-        else if (acceptedFiles.length === 1)
-            return <p>1 image loaded</p>;
-        else
-            return <p>{acceptedFiles.length} images loaded</p>;
-    };
-
     return (
         <div className={getClassName()}>
             <div className="Slider" id="lower">
@@ -119,43 +102,17 @@ const MainView: React.FC = () => {
                 {projectInProgress && <TextButton
                     label={"Go Back"}
                     onClick={endProject}
-                    style={{
-                        position: "absolute",
-                        left: 20,
-                        bottom: 20
-                    }}
                 />}
             </div>
             <div className="RightColumn">
                 <div/>
-                {projectInProgress && <div className="DropZoneWrapper">
-                    <div {...getRootProps({className: 'DropZone'})}>
-                        {getDropZoneContent()}
-                    </div>
-                    <div className="DropZoneButtons">
-                        <TextButton
-                            label={"Image recognition"}
-                            rout={acceptedFiles.length ? "/editor/" : null}
-                            isDisabled={!acceptedFiles.length}
-                        />
-                        <TextButton
-                            label={"Object Detection"}
-                            rout={acceptedFiles.length ? "/editor/" : null}
-                            isDisabled={!acceptedFiles.length}
-                        />
-                    </div>
-                </div>}
+                <ImagesDropZone/>
                 <div className="SocialMediaWrapper">
                     {getSocialMediaButtons({width: 30, height: 30})}
                 </div>
                 {!projectInProgress && <TextButton
                     label={"Get Started"}
                     onClick={startProject}
-                    style={{
-                        position: "absolute",
-                        right: 20,
-                        bottom: 20
-                    }}
                 />}
             </div>
         </div>
