@@ -13,6 +13,13 @@
   .CompanionBar {
     align-self: stretch;
     width: $sideNavigationBarCompanionWidth;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
   }
 
   .NavigationBarContentWrapper {
@@ -43,5 +50,9 @@
     .CompanionBar {
       border-left: solid 1px $darkThemeSecondColor;
     }
+  }
+
+  &.closed {
+    border: none;
   }
 }

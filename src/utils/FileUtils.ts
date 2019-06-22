@@ -1,9 +1,10 @@
-import {ImageData, LabelRect} from "../store/editor/types";
+import {ImageData} from "../store/editor/types";
+import uuidv1 from 'uuid/v1';
 
 export class FileUtils {
     public static mapFileDataToImageData(fileData: File): ImageData {
         return {
-            id: null,
+            id: uuidv1(),
             fileData: fileData,
             width: null,
             height: null,

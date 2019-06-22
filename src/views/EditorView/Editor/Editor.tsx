@@ -3,7 +3,9 @@ import './Editor.scss';
 
 const Editor: React.FC = () => {
     return (
-        <div className="Editor"/>
+        <div className="Editor">
+            <canvas/>
+        </div>
     );
 };
 
