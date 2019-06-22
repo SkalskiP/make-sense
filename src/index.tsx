@@ -4,11 +4,17 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {BrowserRouter} from "react-router-dom";
+import configureStore from "./configureStore";
+import {Provider} from "react-redux";
+
+export const store = configureStore();
 
 const startingPoint = (
-    <BrowserRouter>
-        <App/>
-    </BrowserRouter>
+    <Provider store={store}>
+        <BrowserRouter>
+            <App/>
+        </BrowserRouter>
+    </Provider>
 );
 
 ReactDOM.render(

@@ -3,11 +3,13 @@ import {ProjectType} from "../../data/ProjectType";
 import {Action} from "../Actions";
 
 export type LabelRect = {
-    index: number;
+    id: string;
+    labelIndex: number;
     rect: IRect;
 }
 
 export type ImageData = {
+    id: string;
     fileData: File;
     width: number;
     height: number;
@@ -34,15 +36,23 @@ interface UpdateActiveImageIndex {
     }
 }
 
-interface UpdateImageDataByIndex {
-    type: typeof Action.UPDATE_IMAGE_DATA_BY_INDEX;
+interface UpdateImageDataById {
+    type: typeof Action.UPDATE_IMAGE_DATA_BY_ID;
     payload: {
-        imageIndex: number;
-        imageData: ImageData;
+        id: string;
+        newImageData: ImageData;
+    }
+}
+
+interface AddImageData {
+    type: typeof Action.ADD_IMAGES_DATA;
+    payload: {
+        imageData: ImageData[]
     }
 }
 
 export type EditorActionTypes = UpdateProjectType
     | UpdateActiveImageIndex
-    | UpdateImageDataByIndex
+    | UpdateImageDataById
+    | AddImageData
 

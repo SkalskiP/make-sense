@@ -17,7 +17,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "strictNullChecks": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false
   },
   "include": [
     "src"
