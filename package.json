@@ -14,7 +14,6 @@
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
     "react-redux": "^7.1.0",
-    "react-router-dom": "^5.0.1",
     "react-scripts": "3.0.1",
     "typescript": "3.5.2",
     "uuid": "^3.3.2"
@@ -44,7 +43,6 @@
     "@types/classnames": "^2.2.8",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "^7.1.0",
-    "@types/react-router-dom": "^4.3.4",
     "@types/uuid": "^3.4.4",
     "redux-devtools": "^3.5.0"
   }

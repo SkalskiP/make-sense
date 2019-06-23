@@ -9,12 +9,15 @@ import {ISize} from "../../../interfaces/ISize";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {Settings} from "../../../settings/Settings";
+import {ImageData} from "../../../store/editor/types";
 
 interface IProps {
     windowSize: ISize;
+    activeImageIndex: number;
+    imagesData: ImageData[];
 }
 
-const EditorContainer: React.FC<IProps> = ({windowSize}) => {
+const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, imagesData}) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
 
@@ -48,6 +51,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize}) => {
             <div className="EditorWrapper">
                 <Editor
                     size={calculateEditorSize()}
+                    imageData={imagesData[activeImageIndex]}
                 />
                 <BottomNavigationBar/>
             </div>
@@ -68,7 +72,9 @@ const EditorContainer: React.FC<IProps> = ({windowSize}) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    windowSize: state.general.windowSize
+    windowSize: state.general.windowSize,
+    activeImageIndex: state.editor.activeImageIndex,
+    imagesData: state.editor.imagesData
 });
 
 export default connect(

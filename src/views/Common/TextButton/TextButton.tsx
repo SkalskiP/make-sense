@@ -1,21 +1,19 @@
 import * as React from 'react';
 import './TextButton.scss';
 import classNames from "classnames";
-import {Link} from "react-router-dom";
 
 interface IProps {
     key?:string;
     label:string;
     onClick?:() => any;
     style?:React.CSSProperties;
-    rout?:string,
     isActive?:boolean;
     isDisabled?:boolean;
 }
 
 export const TextButton = (props:IProps) => {
 
-    const { key, label, onClick, style, isActive, rout, isDisabled} = props;
+    const { key, label, onClick, style, isActive, isDisabled} = props;
 
     const getClassName = () => {
         return classNames(
@@ -34,10 +32,7 @@ export const TextButton = (props:IProps) => {
             key={key}
             style={style}
         >
-            {!rout && label}
-            {!!rout && <Link to={rout}>
-                {label}
-            </Link>}
+            {label}
         </div>
     )
 };

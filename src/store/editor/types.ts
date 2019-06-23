@@ -11,8 +11,6 @@ export type LabelRect = {
 export type ImageData = {
     id: string;
     fileData: File;
-    width: number;
-    height: number;
     labels: LabelRect[];
 }
 

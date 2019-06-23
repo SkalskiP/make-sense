@@ -1,11 +1,11 @@
 .Editor {
   align-self: stretch;
   flex: 1;
+  position: relative;
 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  .ImageCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
 }

@@ -21,9 +21,11 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
     });
 
     const startEditor = (projectType: ProjectType) => {
-        updateProjectType(projectType);
-        updateActiveImageIndex(1);
-        addImageData(acceptedFiles.map((fileData:File) => FileUtils.mapFileDataToImageData(fileData)));
+        if (acceptedFiles.length > 0) {
+            updateProjectType(projectType);
+            updateActiveImageIndex(0);
+            addImageData(acceptedFiles.map((fileData:File) => FileUtils.mapFileDataToImageData(fileData)));
+        }
     };
 
     const getDropZoneContent = () => {
@@ -47,13 +49,11 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
             <div className="DropZoneButtons">
                 <TextButton
                     label={"Image recognition"}
-                    rout={acceptedFiles.length ? "/editor/" : null}
                     isDisabled={!acceptedFiles.length}
                     onClick={() => startEditor(ProjectType.IMAGE_RECOGNITION)}
                 />
                 <TextButton
                     label={"Object Detection"}
-                    rout={acceptedFiles.length ? "/editor/" : null}
                     isDisabled={!acceptedFiles.length}
                     onClick={() => startEditor(ProjectType.OBJECT_DETECTION)}
                 />

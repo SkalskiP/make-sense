@@ -2,17 +2,33 @@ import React from 'react';
 import './App.scss';
 import EditorView from "./views/EditorView/EditorView";
 import MainView from "./views/MainView/MainView";
-import {Route, Switch} from "react-router";
+import {ProjectType} from "./data/ProjectType";
+import {AppState} from "./store";
+import {connect} from "react-redux";
 
-const App: React.FC = () => {
-  return (
-    <div className="App">
-        <Switch>
-            <Route exact={true} path="/" component={MainView} />
-            <Route exact={true} path="/editor/" component={EditorView} />
-        </Switch>
-    </div>
-  );
+interface IProps {
+    projectType: ProjectType;
+}
+
+const App: React.FC<IProps> = ({projectType}) => {
+    const selectRoute = () => {
+        if (!projectType)
+            return <MainView/>;
+        else
+            return <EditorView/>;
+    };
+
+      return (
+        <div className="App">
+            {selectRoute()}
+        </div>
+      );
 };
 
-export default App;
+const mapStateToProps = (state: AppState) => ({
+    projectType: state.editor.projectType
+});
+
+export default connect(
+    mapStateToProps
+)(App);
