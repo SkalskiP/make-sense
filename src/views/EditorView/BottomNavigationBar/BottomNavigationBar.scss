@@ -21,6 +21,9 @@
 
     &:hover {
       background-color: transparent;
+    }
+
+    &:not(.disabled):hover {
       filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
     }
 
