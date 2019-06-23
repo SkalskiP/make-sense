@@ -5,23 +5,35 @@
   height: $topNavigationBarHeight;
   background-color: $darkThemeSecondColor;
   box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
-  padding: 0 $sideNavigationBarCompanionWidth;
-  color: white;
-
-  > img {
-    width: 25px;
-    height: 25px;
-  }
-
-  .Header {
-    font-weight: 900;
-    user-select: none;
-    margin: 0 5px;
-  }
 
   display: flex;
+  flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
+
+  .TopNavigationBarWrapper {
+    padding: 0 $sideNavigationBarCompanionWidth;
+    color: white;
+    align-self: stretch;
+    flex: 1;
+
+    > img {
+      width: 25px;
+      height: 25px;
+    }
+
+    .Header {
+      font-weight: 900;
+      user-select: none;
+      margin: 0 5px;
+    }
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+  }
 }
