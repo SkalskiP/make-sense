@@ -2,12 +2,34 @@ import React, {useState} from 'react';
 import './EditorContainer.scss';
 import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
 import {Direction} from "../../../data/Direction";
-import EditorWrapper from "../EditorWrapper/EditorWrapper";
 import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
+import Editor from "../Editor/Editor";
+import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
+import {ISize} from "../../../interfaces/ISize";
+import {AppState} from "../../../store";
+import {connect} from "react-redux";
+import {Settings} from "../../../settings/Settings";
 
-const EditorContainer: React.FC = () => {
+interface IProps {
+    windowSize: ISize;
+}
+
+const EditorContainer: React.FC<IProps> = ({windowSize}) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
+
+    const calculateEditorSize = (): ISize => {
+        if (windowSize) {
+            const leftTabWidth = leftTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED;
+            const rightTabWidth = rightTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED;
+            return {
+                width: windowSize.width - leftTabWidth - rightTabWidth,
+                height: windowSize.height - Settings.TOP_NAVIGATION_BAR_HEIGHT - Settings.BOTTOM_NAVIGATION_BAR_HEIGHT,
+            }
+        }
+        else
+            return null;
+    };
 
     return (
         <div className="EditorContainer">
@@ -23,7 +45,12 @@ const EditorContainer: React.FC = () => {
                     isActive={leftTabStatus}
                 />
             </SideNavigationBar>
-            <EditorWrapper/>
+            <div className="EditorWrapper">
+                <Editor
+                    size={calculateEditorSize()}
+                />
+                <BottomNavigationBar/>
+            </div>
             <SideNavigationBar
                 direction={Direction.RIGHT}
                 isOpen={rightTabStatus}
@@ -40,4 +67,10 @@ const EditorContainer: React.FC = () => {
     );
 };
 
-export default EditorContainer;
+const mapStateToProps = (state: AppState) => ({
+    windowSize: state.general.windowSize
+});
+
+export default connect(
+    mapStateToProps
+)(EditorContainer);

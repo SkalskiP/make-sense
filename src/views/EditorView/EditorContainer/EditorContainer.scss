@@ -8,4 +8,16 @@
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
+
+  .EditorWrapper {
+    align-self: stretch;
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
 }

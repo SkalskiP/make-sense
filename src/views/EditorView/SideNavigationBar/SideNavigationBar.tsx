@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import './SideNavigationBar.scss';
 import {Direction} from "../../../data/Direction";
-import BottomNavigationBar from "../EditorWrapper/EditorWrapper";
+import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 
 interface IProps {
     direction: Direction

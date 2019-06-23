@@ -12,8 +12,8 @@
 
   .CompanionBar {
     align-self: stretch;
+    min-width: $sideNavigationBarCompanionWidth;
     width: $sideNavigationBarCompanionWidth;
-
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -24,8 +24,8 @@
 
   .NavigationBarContentWrapper {
     align-self: stretch;
+    min-width: $sideNavigationBarContentWidth;
     width: $sideNavigationBarContentWidth;
-
     flex-direction: column;
     display: flex;
     flex-wrap: nowrap;
