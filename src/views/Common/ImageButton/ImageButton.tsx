@@ -1,34 +1,52 @@
 import * as React from 'react';
 import {ISize} from "../../../interfaces/ISize";
 import './ImageButton.scss';
+import classNames from "classnames";
 
 interface Props {
     size:ISize,
     image:string,
     imageAlt:string,
-    href:string
+    href?:string
+    onClick?:() => any;
     style?:React.CSSProperties
+    isActive?:boolean;
+    isDisabled?:boolean;
 }
 
 export const ImageButton = (props:Props) => {
-    let imagePadding:number = 10;
+    const {size, image, imageAlt, href, onClick, style, isActive, isDisabled} = props;
+    const imagePadding:number = 10;
 
-    let buttonStyle:React.CSSProperties = {
-        ...props.style,
-        width: props.size.width,
-        height: props.size.height
+    const onClickHandler = onClick ? onClick : () => {};
+
+    const buttonStyle:React.CSSProperties = {
+        ...style,
+        width: size.width,
+        height: size.height
     };
 
-    let imageStyle:React.CSSProperties = {
-        maxWidth: props.size.width - imagePadding,
-        maxHeight: props.size.height - imagePadding
+    const imageStyle:React.CSSProperties = {
+        maxWidth: size.width - imagePadding,
+        maxHeight: size.height - imagePadding
+    };
+
+    const getClassName = () => {
+        return classNames(
+            "ImageButton",
+            {
+                "active": isActive,
+                "disabled": isDisabled
+            }
+        );
     };
     
     return(
-        <div className="ImageButton" style={buttonStyle}>
-            <a href={props.href} style={imageStyle}>
-                <img alt={props.imageAlt} src={props.image} style={imageStyle}/>
-            </a>
+        <div className={getClassName()} style={buttonStyle} onClick={onClickHandler}>
+            {!!href && <a href={href} style={imageStyle}>
+                <img alt={imageAlt} src={image} style={imageStyle}/>
+            </a>}
+            {!href && <img alt={imageAlt} src={image} style={imageStyle}/>}
         </div>
     );
 };

@@ -37,6 +37,9 @@ class Editor extends React.Component<IProps, IState> {
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if (prevProps.imageData.id !== this.props.imageData.id) {
+            FileUtils.loadImage(this.props.imageData.fileData, this.saveLoadedImage, this.handleLoadImageError);
+        }
         this.resizeEditor(this.props.size);
         this.drawImage(this.props.size)
     }

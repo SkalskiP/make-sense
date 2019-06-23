@@ -5,4 +5,42 @@
   height: $bottomNavigationBarHeight;
   border-top: solid 1px $darkThemeSecondColor;
   background-color: $darkThemeFirstColor;
+  user-select: none;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .ImageButton {
+    img {
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      background-color: transparent;
+      filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+    }
+
+    &.disabled {
+      img {
+        filter: invert(1) opacity(25%);
+      }
+    }
+  }
+
+  .CurrentImageName {
+    min-width: 200px;
+    padding: 0 20px;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
 }

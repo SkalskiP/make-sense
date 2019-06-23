@@ -53,7 +53,10 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
                 />
-                <BottomNavigationBar/>
+                <BottomNavigationBar
+                    imageData={imagesData[activeImageIndex]}
+                    totalImageCount={imagesData.length}
+                />
             </div>
             <SideNavigationBar
                 direction={Direction.RIGHT}
