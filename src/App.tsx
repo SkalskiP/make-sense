@@ -5,6 +5,7 @@ import MainView from "./views/MainView/MainView";
 import {ProjectType} from "./data/ProjectType";
 import {AppState} from "./store";
 import {connect} from "react-redux";
+import PopupView from "./views/PopupView/PopupView";
 
 interface IProps {
     projectType: ProjectType;
@@ -21,6 +22,7 @@ const App: React.FC<IProps> = ({projectType}) => {
       return (
         <div className="App">
             {selectRoute()}
+            <PopupView/>
         </div>
       );
 };

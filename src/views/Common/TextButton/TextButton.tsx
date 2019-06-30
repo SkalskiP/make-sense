@@ -9,14 +9,16 @@ interface IProps {
     style?:React.CSSProperties;
     isActive?:boolean;
     isDisabled?:boolean;
+    externalClassName?:string;
 }
 
 export const TextButton = (props:IProps) => {
-    const { key, label, onClick, style, isActive, isDisabled} = props;
+    const { key, label, onClick, style, isActive, isDisabled, externalClassName} = props;
 
     const getClassName = () => {
         return classNames(
             "TextButton",
+            externalClassName,
             {
                 "active": isActive,
                 "disabled": isDisabled

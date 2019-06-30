@@ -20,6 +20,15 @@ export function updateActiveImageIndex(activeImageIndex: number): EditorActionTy
     };
 }
 
+export function updateActiveLabelIndex(activeLabelIndex: number): EditorActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_LABEL_INDEX,
+        payload: {
+            activeLabelIndex,
+        },
+    };
+}
+
 export function updateImageDataById(id: string, newImageData: ImageData): EditorActionTypes {
     return {
         type: Action.UPDATE_IMAGE_DATA_BY_ID,
@@ -37,4 +46,13 @@ export function addImageData(imageData: ImageData[]): EditorActionTypes {
             imageData,
         },
     };
+}
+
+export function updateLabelNamesList(labelNames: string[]) {
+    return {
+        type: Action.UPDATE_LABEL_NAMES_LIST,
+        payload: {
+            labelNames
+        }
+    }
 }

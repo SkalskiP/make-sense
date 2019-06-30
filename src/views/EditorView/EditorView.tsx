@@ -1,15 +1,39 @@
 import React from 'react';
-import './Editorview.scss';
-import {TopNavigationBar} from "./TopNavigationBar/TopNavigationBar";
+import './EditorView.scss';
 import EditorContainer from "./EditorContainer/EditorContainer";
+import {PopupWindowType} from "../../data/PopupWindowType";
+import {AppState} from "../../store";
+import {connect} from "react-redux";
+import classNames from "classnames";
+import TopNavigationBar from "./TopNavigationBar/TopNavigationBar";
 
-const EditorView: React.FC = () => {
+interface IProps {
+    activePopupType: PopupWindowType;
+}
+
+const EditorView: React.FC<IProps> = ({activePopupType}) => {
+
+    const getClassName = () => {
+        return classNames(
+            "EditorView",
+            {
+                "withPopup": !!activePopupType
+            }
+        );
+    };
+
     return (
-        <div className="EditorView">
+        <div className={getClassName()}>
             <TopNavigationBar/>
             <EditorContainer/>
         </div>
     );
 };
 
-export default EditorView;
+const mapStateToProps = (state: AppState) => ({
+    activePopupType: state.general.activePopupType
+});
+
+export default connect(
+    mapStateToProps
+)(EditorView);

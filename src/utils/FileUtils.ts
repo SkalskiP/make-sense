@@ -21,4 +21,14 @@ export class FileUtils {
             image.onerror = () => onFailure();
         }
     }
+
+    public static loadLabelsList(fileData: File, onSuccess: (labels:string[]) => any, onFailure: () => any) {
+        const reader = new FileReader();
+        reader.readAsText(fileData);
+        reader.onloadend = function (evt: any) {
+            const contents:string = evt.target.result;
+            onSuccess(contents.split(/[\r\n]/));
+        };
+        reader.onerror = () => onFailure();
+    }
 }

@@ -2,7 +2,8 @@ import {GeneralActionTypes, GeneralState} from "./types";
 import {Action} from "../Actions";
 
 const initialState: GeneralState = {
-    windowSize: null
+    windowSize: null,
+    activePopupType: null
 };
 
 export function generalReducer(
@@ -14,6 +15,12 @@ export function generalReducer(
             return {
                 ...state,
                 windowSize: action.payload.windowSize
+            }
+        }
+        case Action.UPDATE_ACTIVE_POPUP_TYPE: {
+            return {
+                ...state,
+                activePopupType: action.payload.activePopupType
             }
         }
         default:

@@ -2,8 +2,16 @@ import React from 'react';
 import './TopNavigationBar.scss';
 import StateBar from "../StateBar/StateBar";
 import {UnderlineTextButton} from "../../Common/UnderlineTextButton/UnderlineTextButton";
+import {PopupWindowType} from "../../../data/PopupWindowType";
+import {AppState} from "../../../store";
+import {connect} from "react-redux";
+import {updateActivePopupType} from "../../../store/general/actionCreators";
 
-export const TopNavigationBar: React.FC = () => {
+interface IProps {
+    updateActivePopupType: (activePopupType: PopupWindowType) => any;
+}
+
+const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
     return (
         <div className="TopNavigationBar">
             <StateBar/>
@@ -18,14 +26,26 @@ export const TopNavigationBar: React.FC = () => {
                     <UnderlineTextButton
                         label={"LOAD LABELS"}
                         under={true}
+                        onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}
                     />
                     <UnderlineTextButton
                         label={"LOAD IMAGES"}
                         under={true}
+                        onClick={() => updateActivePopupType(PopupWindowType.LOAD_IMAGES)}
                     />
                 </div>
-                {/*<div className="NavigationBarGroupWrapper" style={{width: 110}}/>*/}
             </div>
         </div>
     );
 };
+
+const mapDispatchToProps = {
+    updateActivePopupType
+};
+
+const mapStateToProps = (state: AppState) => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TopNavigationBar);

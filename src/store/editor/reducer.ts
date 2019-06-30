@@ -3,8 +3,10 @@ import {Action} from "../Actions";
 
 const initialState: EditorState = {
     activeImageIndex: null,
+    activeLabelIndex: null,
     projectType: null,
-    imagesData: []
+    imagesData: [],
+    labelNames: [],
 };
 
 export function editorReducer(
@@ -24,6 +26,12 @@ export function editorReducer(
                 activeImageIndex: action.payload.activeImageIndex
             }
         }
+        case Action.UPDATE_ACTIVE_LABEL_INDEX: {
+            return {
+                ...state,
+                activeLabelIndex: action.payload.activeLabelIndex
+            }
+        }
         case Action.UPDATE_IMAGE_DATA_BY_ID: {
             return {
                 ...state,
@@ -36,6 +44,12 @@ export function editorReducer(
             return {
                 ...state,
                 imagesData: state.imagesData.concat(action.payload.imageData)
+            }
+        }
+        case Action.UPDATE_LABEL_NAMES_LIST: {
+            return {
+                ...state,
+                labelNames: action.payload.labelNames
             }
         }
         default:

@@ -69,6 +69,10 @@ class Editor extends React.Component<IProps, IState> {
     private mouseMoveHandler = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const image = this.state.image;
         const imageCanvasRect = this.imageCanvas.getBoundingClientRect();
+
+        if (!image || !this.imageRect)
+            return;
+
         const scale = image.width / this.imageRect.width;
         const x: number = Math.round((event.clientX - imageCanvasRect.left - this.imageRect.x) * scale);
         const y: number = Math.round((event.clientY - imageCanvasRect.top - this.imageRect.y) * scale);

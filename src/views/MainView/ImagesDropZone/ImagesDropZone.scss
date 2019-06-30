@@ -9,7 +9,7 @@
   .DropZone {
     user-select: none;
     width: 400px;
-    height: 200px;
+    height: 250px;
     box-shadow: black 0 0 0 2px inset;
     border-radius: 4px;
     margin-bottom: 6px;
@@ -25,10 +25,21 @@
     > img {
       max-width: 60px;
       max-height: 60px;
+      margin-bottom: 10px;
     }
 
     > input {
       outline: none;
+    }
+
+    > p {
+      margin-top: 2px;
+      margin-bottom: 0;
+
+      &.extraBold {
+        font-size: 18px;
+        font-weight: 600;
+      }
     }
   }
 
