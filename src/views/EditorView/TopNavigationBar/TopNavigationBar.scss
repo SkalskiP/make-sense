@@ -19,21 +19,39 @@
     align-self: stretch;
     flex: 1;
 
-    > img {
-      width: 25px;
-      height: 25px;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: space-between;
+
+    .NavigationBarGroupWrapper {
+      align-self: stretch;
+
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
     }
 
     .Header {
+      align-self: stretch;
+
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+
+      > img {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+      }
+
       font-weight: 900;
       user-select: none;
-      margin: 0 5px;
     }
-
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: flex-start;
   }
 }

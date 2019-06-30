@@ -35,6 +35,7 @@ const BottomNavigationBar: React.FC<IProps> = ({imageData, totalImageCount, acti
                 size={{width: 35, height: 35}}
                 onClick={viewPreviousImage}
                 isDisabled={activeImageIndex === 0}
+                externalClassName={"left"}
             />
             <div className="CurrentImageName">
                 {imageData.fileData.name}
@@ -45,6 +46,7 @@ const BottomNavigationBar: React.FC<IProps> = ({imageData, totalImageCount, acti
                 size={{width: 35, height: 35}}
                 onClick={viewNextImage}
                 isDisabled={activeImageIndex === totalImageCount - 1}
+                externalClassName={"right"}
             />
         </div>
     );

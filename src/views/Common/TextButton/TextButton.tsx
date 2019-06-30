@@ -12,7 +12,6 @@ interface IProps {
 }
 
 export const TextButton = (props:IProps) => {
-
     const { key, label, onClick, style, isActive, isDisabled} = props;
 
     const getClassName = () => {

@@ -12,10 +12,11 @@ interface Props {
     style?:React.CSSProperties
     isActive?:boolean;
     isDisabled?:boolean;
+    externalClassName?:string;
 }
 
 export const ImageButton = (props:Props) => {
-    const {size, image, imageAlt, href, onClick, style, isActive, isDisabled} = props;
+    const {size, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
     const imagePadding:number = 10;
 
     const onClickHandler = onClick ? onClick : () => {};
@@ -34,9 +35,10 @@ export const ImageButton = (props:Props) => {
     const getClassName = () => {
         return classNames(
             "ImageButton",
+            externalClassName,
             {
                 "active": isActive,
-                "disabled": isDisabled
+                "disabled": isDisabled,
             }
         );
     };
