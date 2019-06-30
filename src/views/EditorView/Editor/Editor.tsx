@@ -9,11 +9,12 @@ import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {IRect} from "../../../interfaces/IRect";
 import {RectUtil} from "../../../utils/RectUtil";
 import {ImageRepository} from "../../../logic/ImageRepository";
+import {IPoint} from "../../../interfaces/IPoint";
 
 interface IProps {
-    size: ISize,
-    imageData: ImageData,
-    updateImageDataById: (id: string, newImageData: ImageData) => any
+    size: ISize;
+    imageData: ImageData;
+    updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
 
 interface IState {
@@ -22,12 +23,14 @@ interface IState {
 
 class Editor extends React.Component<IProps, IState> {
     private imageCanvas:HTMLCanvasElement;
+    private imageRect: IRect;
+    private mousePosition: IPoint;
 
     constructor(props) {
         super(props);
 
         this.state = {
-            image: null
+            image: null,
         }
     }
 
@@ -62,6 +65,22 @@ class Editor extends React.Component<IProps, IState> {
         this.setState({image});
     };
 
+    private mouseMoveHandler = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        const image = this.state.image;
+        const imageCanvasRect = this.imageCanvas.getBoundingClientRect();
+        const scale = image.width / this.imageRect.width;
+        const x: number = Math.round((event.clientX - imageCanvasRect.left - this.imageRect.x) * scale);
+        const y: number = Math.round((event.clientY - imageCanvasRect.top - this.imageRect.y) * scale);
+
+        if (x >= 0 && x <= image.width && y >= 0 && y <= image.height) {
+            this.mousePosition = {x, y};
+            this.imageCanvas.style.cursor = "crosshair";
+        } else {
+            this.mousePosition = null;
+            this.imageCanvas.style.cursor = "default";
+        }
+    };
+
     private handleLoadImageError = () => {
         console.log("error");
     };
@@ -80,6 +99,7 @@ class Editor extends React.Component<IProps, IState> {
             const canvasRect: IRect = {x: 10, y: 10, width: canvasSize.width - 20, height: canvasSize.height - 20}
             const imageRatio = RectUtil.getRatio(imageRect);
             const imageOnCanvasRect: IRect = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
+            this.imageRect = imageOnCanvasRect;
             ctx.drawImage(this.state.image, imageOnCanvasRect.x, imageOnCanvasRect.y, imageOnCanvasRect.width, imageOnCanvasRect.height);
         }
     };
@@ -87,7 +107,11 @@ class Editor extends React.Component<IProps, IState> {
     public render() {
         return (
             <div className="Editor">
-                <canvas className="ImageCanvas" ref={ref => this.imageCanvas = ref}/>
+                <canvas
+                    className="ImageCanvas"
+                    onMouseMove={this.mouseMoveHandler}
+                    ref={ref => this.imageCanvas = ref}
+                />
             </div>
         );
     }

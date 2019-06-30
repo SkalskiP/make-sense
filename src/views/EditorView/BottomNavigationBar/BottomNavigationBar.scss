@@ -54,4 +54,17 @@
     align-items: center;
     align-content: center;
   }
+
+  .CurrentImageCount {
+    min-width: 80px;
+    padding: 0 20px;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
 }

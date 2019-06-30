@@ -55,6 +55,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 />
                 <BottomNavigationBar
                     imageData={imagesData[activeImageIndex]}
+                    size={calculateEditorSize()}
                     totalImageCount={imagesData.length}
                 />
             </div>

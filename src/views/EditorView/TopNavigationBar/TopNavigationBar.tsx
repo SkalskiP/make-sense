@@ -24,7 +24,7 @@ export const TopNavigationBar: React.FC = () => {
                         under={true}
                     />
                 </div>
-                <div className="NavigationBarGroupWrapper" style={{width: 110}}/>
+                {/*<div className="NavigationBarGroupWrapper" style={{width: 110}}/>*/}
             </div>
         </div>
     );

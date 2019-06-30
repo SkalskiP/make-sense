@@ -5,16 +5,18 @@ import {updateActiveImageIndex} from "../../../store/editor/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
+import {ISize} from "../../../interfaces/ISize";
 
 interface IProps {
+    size: ISize;
     imageData: ImageData;
     totalImageCount: number;
     activeImageIndex: number;
     updateActiveImageIndex: (activeImageIndex: number) => any;
 }
 
-const BottomNavigationBar: React.FC<IProps> = ({imageData, totalImageCount, activeImageIndex, updateActiveImageIndex}) => {
-
+const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, updateActiveImageIndex}) => {
+    const minWidth:number = 400;
     const viewPreviousImage = () => {
         if (activeImageIndex > 0) {
             updateActiveImageIndex(activeImageIndex - 1)
@@ -27,23 +29,28 @@ const BottomNavigationBar: React.FC<IProps> = ({imageData, totalImageCount, acti
         }
     };
 
+    const getImageCounter = () => {
+        return (activeImageIndex + 1) + " / " + totalImageCount;
+    };
+
     return (
         <div className="BottomNavigationBar">
             <ImageButton
                 image={"ico/left.png"}
                 imageAlt={"previous"}
-                size={{width: 35, height: 35}}
+                size={{width: 25, height: 25}}
                 onClick={viewPreviousImage}
                 isDisabled={activeImageIndex === 0}
                 externalClassName={"left"}
             />
-            <div className="CurrentImageName">
-                {imageData.fileData.name}
-            </div>
+            {size.width > minWidth ?
+                <div className="CurrentImageName"> {imageData.fileData.name} </div> :
+                <div className="CurrentImageCount"> {getImageCounter()} </div>
+            }
             <ImageButton
                 image={"ico/right.png"}
                 imageAlt={"next"}
-                size={{width: 35, height: 35}}
+                size={{width: 25, height: 25}}
                 onClick={viewNextImage}
                 isDisabled={activeImageIndex === totalImageCount - 1}
                 externalClassName={"right"}
