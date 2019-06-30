@@ -6,6 +6,7 @@ export class FileUtils {
         return {
             id: uuidv1(),
             fileData: fileData,
+            loadStatus: false,
             labels: []
         }
     }

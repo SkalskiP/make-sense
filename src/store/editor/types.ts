@@ -11,6 +11,7 @@ export type LabelRect = {
 export type ImageData = {
     id: string;
     fileData: File;
+    loadStatus: boolean;
     labels: LabelRect[];
 }
 

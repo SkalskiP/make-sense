@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {IRect} from "../../../interfaces/IRect";
 import {RectUtil} from "../../../utils/RectUtil";
+import {ImageRepository} from "../../../logic/ImageRepository";
 
 interface IProps {
     size: ISize,
@@ -31,20 +32,33 @@ class Editor extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        FileUtils.loadImage(this.props.imageData.fileData, this.saveLoadedImage, this.handleLoadImageError);
+        this.loadImage(this.props.imageData);
         this.resizeEditor(this.props.size);
         this.drawImage(this.props.size)
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
         if (prevProps.imageData.id !== this.props.imageData.id) {
-            FileUtils.loadImage(this.props.imageData.fileData, this.saveLoadedImage, this.handleLoadImageError);
+            this.loadImage(this.props.imageData);
         }
         this.resizeEditor(this.props.size);
         this.drawImage(this.props.size)
     }
 
-    private saveLoadedImage = (image: HTMLImageElement) => {
+    private loadImage = (imageData: ImageData) => {
+        if (imageData.loadStatus) {
+            this.setState({image: ImageRepository.getById(imageData.id)})
+        }
+        else {
+            const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
+            FileUtils.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+        }
+    };
+
+    private saveLoadedImage = (image: HTMLImageElement, imageData: ImageData) => {
+        imageData.loadStatus = true;
+        this.props.updateImageDataById(imageData.id, imageData);
+        ImageRepository.store(imageData.id, image);
         this.setState({image});
     };
 
