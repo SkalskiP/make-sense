@@ -19,18 +19,19 @@ interface IProps {
 
 interface IState {
     image: HTMLImageElement;
+    mousePosition: IPoint;
 }
 
 class Editor extends React.Component<IProps, IState> {
     private imageCanvas:HTMLCanvasElement;
     private imageRect: IRect;
-    private mousePosition: IPoint;
 
     constructor(props) {
         super(props);
 
         this.state = {
             image: null,
+            mousePosition: null,
         }
     }
 
@@ -73,10 +74,10 @@ class Editor extends React.Component<IProps, IState> {
         const y: number = Math.round((event.clientY - imageCanvasRect.top - this.imageRect.y) * scale);
 
         if (x >= 0 && x <= image.width && y >= 0 && y <= image.height) {
-            this.mousePosition = {x, y};
+            this.setState({mousePosition: {x, y}});
             this.imageCanvas.style.cursor = "crosshair";
         } else {
-            this.mousePosition = null;
+            this.setState({mousePosition: null});
             this.imageCanvas.style.cursor = "default";
         }
     };
@@ -104,6 +105,19 @@ class Editor extends React.Component<IProps, IState> {
         }
     };
 
+    private getMousePositionRender = () => {
+        const { mousePosition } = this.state;
+        if (mousePosition) {
+            return(
+                <div className="MousePosition">
+                    {"x: " + mousePosition.x + ", y: " + mousePosition.y}
+                </div>
+            )
+        } else {
+            return null;
+        }
+    };
+
     public render() {
         return (
             <div className="Editor">
@@ -112,6 +126,7 @@ class Editor extends React.Component<IProps, IState> {
                     onMouseMove={this.mouseMoveHandler}
                     ref={ref => this.imageCanvas = ref}
                 />
+                {this.getMousePositionRender()}
             </div>
         );
     }
