@@ -1,0 +1,7 @@
+.ImagePreview {
+  position: absolute;
+  background-color: red;
+  &:hover {
+    background-color: white;
+  }
+}

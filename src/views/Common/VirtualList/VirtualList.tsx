@@ -3,33 +3,41 @@ import {ISize} from "../../../interfaces/ISize";
 import {IRect} from "../../../interfaces/IRect";
 import Scrollbars from 'react-custom-scrollbars';
 import {VirtualListUtil} from "../../../utils/VirtualListUtil";
+import {IPoint} from "../../../interfaces/IPoint";
+import {RectUtil} from "../../../utils/RectUtil";
 
 interface IProps {
     size: ISize;
     childCount: number;
     childSize: ISize;
-    childRender?: (index: number, isScrolling: boolean, style: React.CSSProperties) => any;
+    childRender: (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => any;
     onScroll?: (scrollPosition: number) => any;
-    renderExtensionHeight?: number;
+    overScanHeight?: number;
 }
 
 interface IState {
     viewportRect: IRect;
+    isScrolling: boolean;
 }
 
 export class VirtualList extends React.Component<IProps, IState> {
     private gridSize: ISize;
     private contentSize: ISize;
+    private childAnchors: IPoint[];
+    private scrollbars: Scrollbars;
 
     constructor(props) {
         super(props);
-        this.state = null;
+        this.state = {
+            viewportRect: null,
+            isScrolling: false
+        };
     }
 
     public componentDidMount(): void {
         const {size, childSize, childCount} = this.props;
-        this.gridSize = VirtualListUtil.calculateGridSize(size, childSize, childCount);
-        this.contentSize = VirtualListUtil.calculateContentSize(size, childSize, this.gridSize);
+        this.calculate(size, childSize, childCount);
+        console.table(this.childAnchors);
         this.setState({
             viewportRect: {
                 x: 0,
@@ -39,6 +47,27 @@ export class VirtualList extends React.Component<IProps, IState> {
             }
         });
     }
+
+    public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
+        if (this.props.size.height !== nextProps.size.height || this.props.size.width !== nextProps.size.width) {
+            const {size, childSize, childCount} = nextProps;
+            this.calculate(size, childSize, childCount);
+            this.setState({
+                viewportRect: {
+                    x: this.scrollbars.getValues().scrollLeft,
+                    y: this.scrollbars.getValues().scrollTop,
+                    width: nextProps.size.width,
+                    height: nextProps.size.height
+                }
+            });
+        }
+    }
+
+    private calculate = (size: ISize, childSize: ISize, childCount: number) => {
+        this.gridSize = VirtualListUtil.calculateGridSize(size, childSize, childCount);
+        this.contentSize = VirtualListUtil.calculateContentSize(size, childSize, this.gridSize);
+        this.childAnchors = VirtualListUtil.calculateAnchorPoints(size, childSize, childCount);
+    };
 
     private getVirtualListStyle = ():React.CSSProperties => {
         return {
@@ -52,8 +81,15 @@ export class VirtualList extends React.Component<IProps, IState> {
         return {
             width: this.contentSize.width,
             height: this.contentSize.height,
-            backgroundColor: "red"
         }
+    };
+
+    private onScrollStart = () => {
+        this.setState({isScrolling: true});
+    };
+
+    private onScrollStop = () => {
+        this.setState({isScrolling: false});
     };
 
     private onScroll = (values) => {
@@ -67,6 +103,37 @@ export class VirtualList extends React.Component<IProps, IState> {
         });
     };
 
+    private getChildren = () => {
+        const {viewportRect, isScrolling} = this.state;
+        const {overScanHeight, childSize} = this.props;
+        const overScan: number = !!overScanHeight ? overScanHeight : 0;
+
+        const viewportRectWithOverScan:IRect = {
+            x: viewportRect.x,
+            y: viewportRect.y - overScan,
+            width: viewportRect.width,
+            height: viewportRect.height + 2 * overScan
+        };
+
+        return this.childAnchors.reduce((children, anchor: IPoint, index: number) => {
+            const childRect = Object.assign(anchor, childSize);
+            const isVisible = RectUtil.intersect(viewportRectWithOverScan, childRect);
+
+            if (isVisible) {
+                const childStyle: React.CSSProperties = {
+                    position: "absolute",
+                    left: anchor.x,
+                    top: anchor.y
+                };
+
+                return children.concat(this.props.childRender(index, isScrolling, isVisible, childStyle))
+            }
+            else {
+                return children;
+            }
+        }, [])
+    };
+
     public render() {
         const displayContent = !!this.props.size && !!this.props.childSize && !!this.gridSize;
 
@@ -76,12 +143,17 @@ export class VirtualList extends React.Component<IProps, IState> {
                 style={this.getVirtualListStyle()}
             >
                 <Scrollbars
+                    ref={ref => this.scrollbars = ref}
                     onScrollFrame={this.onScroll}
+                    onScrollStart={this.onScrollStart}
+                    onScrollStop={this.onScrollStop}
                 >
                     {displayContent && <div
                         className="VirtualListContent"
                         style={this.getVirtualListContentStyle()}
-                    />}
+                    >
+                        {this.getChildren()}
+                    </div>}
                 </Scrollbars>
             </div>
         )

@@ -1,4 +1,5 @@
 import {ISize} from "../interfaces/ISize";
+import {IPoint} from "../interfaces/IPoint";
 
 export class VirtualListUtil {
     public static calculateGridSize(listSize: ISize, childSize: ISize, childCount: number): ISize {
@@ -17,5 +18,24 @@ export class VirtualListUtil {
             width: Math.max(listSize.width, sizeFromGrid.width),
             height: sizeFromGrid.height
         }
+    }
+
+    public static calculateAnchorPoints(listSize: ISize, childSize: ISize, childCount: number): IPoint[] {
+        const gridSize: ISize = VirtualListUtil.calculateGridSize(listSize, childSize, childCount);
+        const contentWrapperSize: ISize = VirtualListUtil.calculateContentSize(listSize, childSize, gridSize);
+        const horizontalMargin = (contentWrapperSize.width - gridSize.width * childSize.width) / (gridSize.width + 1);
+
+        let anchors = [];
+        for (let i = 0; i < childCount; i++) {
+            const rowCount: number = Math.floor(i / gridSize.width);
+            const columnCount: number = i % gridSize.width;
+
+            const anchor: IPoint = {
+                x: rowCount * horizontalMargin + columnCount * childSize.width,
+                y: rowCount * childSize.height
+            };
+            anchors.push(anchor);
+        }
+        return anchors;
     }
 }

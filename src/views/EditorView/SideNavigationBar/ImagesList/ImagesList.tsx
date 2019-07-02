@@ -5,6 +5,7 @@ import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import {ImageData} from "../../../../store/editor/types";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
+import {ImagePreview} from "../ImagePreview/ImagePreview";
 
 interface IProps {
     activeImageIndex: number;
@@ -48,6 +49,23 @@ class ImagesList extends React.Component<IProps, IState> {
         })
     };
 
+    private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
+        return <ImagePreview
+            size={{width: 150, height: 150}}
+            style={style}
+        >
+            {"x: " + style.left}
+            <br/>
+            {"y: " + style.top}
+            <br/>
+            {"index: " + index}
+            <br/>
+            {"scrolling: " + isScrolling}
+            <br/>
+            {"visible: " + isVisible}
+        </ImagePreview>
+    };
+
     public render() {
         const { size } = this.state;
         return(
@@ -56,6 +74,8 @@ class ImagesList extends React.Component<IProps, IState> {
                     size={size}
                     childSize={{width: 150, height: 150}}
                     childCount={this.props.imagesData.length}
+                    childRender={this.renderImagePreview}
+                    overScanHeight={200}
                 />}
             </div>
         )
