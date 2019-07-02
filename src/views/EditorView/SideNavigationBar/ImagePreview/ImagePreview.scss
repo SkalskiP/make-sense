@@ -1,7 +1,10 @@
 .ImagePreview {
   position: absolute;
-  background-color: red;
-  &:hover {
-    background-color: white;
-  }
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }

@@ -53,17 +53,9 @@ class ImagesList extends React.Component<IProps, IState> {
         return <ImagePreview
             size={{width: 150, height: 150}}
             style={style}
-        >
-            {"x: " + style.left}
-            <br/>
-            {"y: " + style.top}
-            <br/>
-            {"index: " + index}
-            <br/>
-            {"scrolling: " + isScrolling}
-            <br/>
-            {"visible: " + isVisible}
-        </ImagePreview>
+            showLoader={isScrolling}
+            imageData={this.props.imagesData[index]}
+        />
     };
 
     public render() {
