@@ -10,6 +10,7 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {Settings} from "../../../settings/Settings";
 import {ImageData} from "../../../store/editor/types";
+import ImagesList from "../SideNavigationBar/ImagesList/ImagesList";
 
 interface IProps {
     windowSize: ISize;
@@ -34,20 +35,42 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             return null;
     };
 
+    const leftSideBarCompanionRender = () => {
+        return [
+            <VerticalEditorButton
+                label="Images"
+                image={"/ico/files.png"}
+                imageAlt={"images"}
+                onClick={() => setLeftTabStatus(!leftTabStatus)}
+                isActive={leftTabStatus}
+            />
+        ]
+    };
+
+    const leftSideBarRender = () => {
+        return <ImagesList/>
+    };
+
+    const rightSideBarCompanionRender = () => {
+        return [
+            <VerticalEditorButton
+                label="Labels"
+                image={"/ico/tags.png"}
+                imageAlt={"labels"}
+                onClick={() => setRightTabStatus(!rightTabStatus)}
+                isActive={rightTabStatus}
+            />
+        ]
+    };
+
     return (
         <div className="EditorContainer">
             <SideNavigationBar
                 direction={Direction.LEFT}
                 isOpen={leftTabStatus}
-            >
-                <VerticalEditorButton
-                    label="Images"
-                    image={"/ico/files.png"}
-                    imageAlt={"images"}
-                    onClick={() => setLeftTabStatus(!leftTabStatus)}
-                    isActive={leftTabStatus}
-                />
-            </SideNavigationBar>
+                renderCompanion={leftSideBarCompanionRender}
+                renderContent={leftSideBarRender}
+            />
             <div className="EditorWrapper">
                 <Editor
                     size={calculateEditorSize()}
@@ -62,15 +85,8 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <SideNavigationBar
                 direction={Direction.RIGHT}
                 isOpen={rightTabStatus}
-            >
-                <VerticalEditorButton
-                    label="Labels"
-                    image={"/ico/tags.png"}
-                    imageAlt={"labels"}
-                    onClick={() => setRightTabStatus(!rightTabStatus)}
-                    isActive={rightTabStatus}
-                />
-            </SideNavigationBar>
+                renderCompanion={rightSideBarCompanionRender}
+            />
         </div>
     );
 };

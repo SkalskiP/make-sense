@@ -11,6 +11,7 @@
     "classnames": "^2.2.6",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
     "react-redux": "^7.1.0",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",
+    "@types/react-custom-scrollbars": "^4.0.5",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "^7.1.0",
     "@types/uuid": "^3.4.4",

@@ -63,6 +63,7 @@ const MainView: React.FC = () => {
         return EditorFeatureData.map((data:IEditorFeature) => {
             return <div
                 className="EditorFeaturesTiles"
+                key={data.displayText}
             >
                 <img
                     alt={data.imageAlt}

@@ -6,10 +6,12 @@ import {Direction} from "../../../data/Direction";
 interface IProps {
     direction: Direction
     isOpen: boolean;
+    renderCompanion?: () => any;
+    renderContent?: () => any;
 }
 
 export const SideNavigationBar: React.FC<IProps> = (props) => {
-    const {direction, isOpen} = props;
+    const {direction, isOpen, renderContent, renderCompanion} = props;
 
     const getClassName = () => {
         return classNames(
@@ -25,9 +27,10 @@ export const SideNavigationBar: React.FC<IProps> = (props) => {
     return (
         <div className={getClassName()}>
             <div className="CompanionBar">
-                {props.children}
+                {renderCompanion && renderCompanion()}
             </div>
             {isOpen && <div className="NavigationBarContentWrapper">
+                {renderContent && renderContent()}
             </div>}
         </div>
     );
