@@ -86,9 +86,7 @@ class Editor extends React.Component<IProps, IState> {
         }
     };
 
-    private handleLoadImageError = () => {
-        console.log("error");
-    };
+    private handleLoadImageError = () => {};
 
     private resizeEditor = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!this.imageCanvas) {

@@ -5,11 +5,13 @@ import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import {ImageData} from "../../../../store/editor/types";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import {ImagePreview} from "../ImagePreview/ImagePreview";
+import ImagePreview from "../ImagePreview/ImagePreview";
+import {updateActiveImageIndex} from "../../../../store/editor/actionCreators";
 
 interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
+    updateActiveImageIndex: (activeImageIndex: number) => any;
 }
 
 interface IState {
@@ -51,10 +53,11 @@ class ImagesList extends React.Component<IProps, IState> {
 
     private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
         return <ImagePreview
-            size={{width: 150, height: 150}}
             style={style}
             showLoader={isScrolling}
             imageData={this.props.imagesData[index]}
+            onClick={() => this.props.updateActiveImageIndex(index)}
+            isSelected={this.props.activeImageIndex === index}
         />
     };
 
@@ -74,11 +77,16 @@ class ImagesList extends React.Component<IProps, IState> {
     }
 }
 
+const mapDispatchToProps = {
+    updateActiveImageIndex
+};
+
 const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.editor.activeImageIndex,
     imagesData: state.editor.imagesData
 });
 
 export default connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(ImagesList);

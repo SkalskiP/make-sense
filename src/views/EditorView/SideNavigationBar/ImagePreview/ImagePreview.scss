@@ -1,5 +1,8 @@
+@import '../../../../settings/Settings';
+
 .ImagePreview {
   position: absolute;
+  cursor: pointer;
 
   display: flex;
   flex-direction: row;
@@ -7,4 +10,22 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+
+  > img {
+    max-width: 70%;
+    max-height: 70%;
+  }
+
+  &.selected {
+    > img {
+      border: solid 3px $secondaryColor;
+      border-radius: 3px;
+    }
+  }
+
+  &:hover {
+    > img {
+      transform: scale(1.03);
+    }
+  }
 }

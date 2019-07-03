@@ -123,7 +123,9 @@ export class VirtualList extends React.Component<IProps, IState> {
                 const childStyle: React.CSSProperties = {
                     position: "absolute",
                     left: anchor.x,
-                    top: anchor.y
+                    top: anchor.y,
+                    width: childSize.width,
+                    height: childSize.height
                 };
 
                 return children.concat(this.props.childRender(index, isScrolling, isVisible, childStyle))
