@@ -35,21 +35,21 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
     const getDropZoneContent = () => {
         if (acceptedFiles.length === 0)
             return [
-                <input {...getInputProps()} />,
-                <img alt={"upload"} src={"img/box-opened.png"}/>,
-                <p className="extraBold">Drop some images</p>,
-                <p>or</p>,
-                <p className="extraBold">Click here to select them</p>
+                <input key={1} {...getInputProps()} />,
+                <img key={2} alt={"upload"} src={"img/box-opened.png"}/>,
+                <p key={3} className="extraBold">Drop some images</p>,
+                <p key={4}>or</p>,
+                <p key={5} className="extraBold">Click here to select them</p>
             ];
         else if (acceptedFiles.length === 1)
             return [
-                <img alt={"uploaded"} src={"img/box-closed.png"}/>,
-                <p className="extraBold">1 image loaded</p>
+                <img key={1} alt={"uploaded"} src={"img/box-closed.png"}/>,
+                <p key={2} className="extraBold">1 image loaded</p>
             ];
         else
             return [
-                <img alt={"uploaded"} src={"img/box-closed.png"}/>,
-                <p className="extraBold">{acceptedFiles.length} images loaded</p>
+                <img key={1} alt={"uploaded"} src={"img/box-closed.png"}/>,
+                <p key={2} className="extraBold">{acceptedFiles.length} images loaded</p>
             ];
     };
 

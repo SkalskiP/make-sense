@@ -20,3 +20,12 @@ export function updateActivePopupType(activePopupType: PopupWindowType): General
         }
     }
 }
+
+export function updateImageListScrollPosition(scrollPosition: number): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_IMAGE_LIST_SCROLL_POSITION,
+        payload: {
+            imageScrollListPosition: scrollPosition,
+        }
+    }
+}

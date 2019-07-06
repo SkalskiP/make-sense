@@ -5,6 +5,7 @@ import {PopupWindowType} from "../../data/PopupWindowType";
 export type GeneralState = {
     windowSize: ISize;
     activePopupType: PopupWindowType;
+    imageScrollListPosition: number;
 }
 
 interface UpdateWindowSize {
@@ -21,5 +22,13 @@ interface UpdateActivePopupType {
     }
 }
 
-export type GeneralActionTypes = UpdateWindowSize |
-    UpdateActivePopupType
+interface UpdateImageListScrollPosition {
+    type: typeof Action.UPDATE_IMAGE_LIST_SCROLL_POSITION;
+    payload: {
+        imageScrollListPosition: number;
+    }
+}
+
+export type GeneralActionTypes = UpdateWindowSize
+    | UpdateActivePopupType
+    | UpdateImageListScrollPosition

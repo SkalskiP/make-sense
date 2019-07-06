@@ -3,7 +3,8 @@ import {Action} from "../Actions";
 
 const initialState: GeneralState = {
     windowSize: null,
-    activePopupType: null
+    activePopupType: null,
+    imageScrollListPosition: 0
 };
 
 export function generalReducer(
@@ -21,6 +22,12 @@ export function generalReducer(
             return {
                 ...state,
                 activePopupType: action.payload.activePopupType
+            }
+        }
+        case Action.UPDATE_IMAGE_LIST_SCROLL_POSITION: {
+            return {
+                ...state,
+                imageScrollListPosition: action.payload.imageScrollListPosition
             }
         }
         default:

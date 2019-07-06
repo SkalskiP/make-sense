@@ -23,7 +23,7 @@
     position: absolute;
     z-index: 0;
     background-color: $darkThemeThirdColor;
-    transition: transform 0.3s;
+    transition: background-color 0.3s ease-in-out, transform 0.3s;
   }
 
   &.selected {

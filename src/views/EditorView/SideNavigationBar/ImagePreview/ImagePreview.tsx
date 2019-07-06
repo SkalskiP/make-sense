@@ -128,12 +128,14 @@ class ImagePreview extends React.Component<IProps, IState> {
                 [
                     <img
                         className="Foreground"
+                        key={"Foreground"}
                         src={this.state.image.src}
                         alt={this.state.image.alt}
                         style={this.getStyle()}
                     />,
                     <div
                         className="Background"
+                        key={"Background"}
                         style={this.getStyle()}
                     />
                 ] :

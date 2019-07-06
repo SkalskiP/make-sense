@@ -12,6 +12,7 @@ interface IProps {
     childSize: ISize;
     childRender: (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => any;
     onScroll?: (scrollPosition: number) => any;
+    initialScrollPosition?: number;
     overScanHeight?: number;
 }
 
@@ -37,7 +38,6 @@ export class VirtualList extends React.Component<IProps, IState> {
     public componentDidMount(): void {
         const {size, childSize, childCount} = this.props;
         this.calculate(size, childSize, childCount);
-        console.table(this.childAnchors);
         this.setState({
             viewportRect: {
                 x: 0,
@@ -101,6 +101,8 @@ export class VirtualList extends React.Component<IProps, IState> {
                 height: this.props.size.height
             }
         });
+
+        this.props.onScroll && this.props.onScroll(values.scrollTop);
     };
 
     private getChildren = () => {
@@ -149,6 +151,7 @@ export class VirtualList extends React.Component<IProps, IState> {
                     onScrollFrame={this.onScroll}
                     onScrollStart={this.onScrollStart}
                     onScrollStop={this.onScrollStop}
+                    autoHide={true}
                 >
                     {displayContent && <div
                         className="VirtualListContent"
