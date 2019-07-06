@@ -11,21 +11,37 @@
   align-items: center;
   align-content: center;
 
-  > img {
-    max-width: 70%;
-    max-height: 70%;
+  .Foreground {
+    position: absolute;
+    z-index: 100;
+    transition: transform 0.3s;
+    border: solid 1px $darkThemeFirstColor;
+    box-sizing: border-box;
+  }
+
+  .Background {
+    position: absolute;
+    z-index: 0;
+    background-color: $darkThemeThirdColor;
+    transition: transform 0.3s;
   }
 
   &.selected {
-    > img {
-      border: solid 3px $secondaryColor;
-      border-radius: 3px;
+    .Foreground {
+      transform: translate(-2px, 2px);
+    }
+    .Background {
+      transform: translate(2px, -2px);
+      background-color: $secondaryColor;
     }
   }
 
   &:hover {
-    > img {
-      transform: scale(1.03);
+    .Foreground {
+      transform: translate(-2px, 2px);
+    }
+    .Background {
+      transform: translate(2px, -2px);
     }
   }
 }

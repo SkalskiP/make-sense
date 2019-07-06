@@ -9,11 +9,15 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {FileUtils} from "../../../../utils/FileUtils";
 import classNames from "classnames";
+import {ISize} from "../../../../interfaces/ISize";
+import {RectUtil} from "../../../../utils/RectUtil";
+import {IRect} from "../../../../interfaces/IRect";
 
 interface IProps {
     imageData: ImageData;
     style: React.CSSProperties;
-    showLoader?: boolean;
+    size: ISize;
+    isScrolling?: boolean;
     onClick?: () => any;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
@@ -36,9 +40,28 @@ class ImagePreview extends React.Component<IProps, IState> {
         this.loadImage(this.props.imageData);
     }
 
+    public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
+        if (this.props.imageData.id !== nextProps.imageData.id) {
+            if (nextProps.imageData.loadStatus) {
+                this.loadImage(nextProps.imageData);
+            }
+            else {
+                this.setState({image: null});
+            }
+
+            if (!nextProps.isScrolling)
+                this.loadImage(nextProps.imageData);
+        }
+
+        if (this.props.isScrolling && !nextProps.isScrolling) {
+            this.loadImage(nextProps.imageData);
+        }
+    }
+
     private loadImage = (imageData: ImageData) => {
         if (imageData.loadStatus) {
-            this.setState({image: ImageRepository.getById(imageData.id)})
+            const image = ImageRepository.getById(imageData.id);
+            this.setState({image});
         }
         else {
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
@@ -50,7 +73,37 @@ class ImagePreview extends React.Component<IProps, IState> {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
-        this.setState({image});
+        if (imageData.id === this.props.imageData.id) {
+            this.setState({image});
+        }
+    };
+
+    private getStyle = () => {
+        const { size } = this.props;
+
+        const containerRect: IRect = {
+            x: 0.15 * size.width,
+            y: 0.15 * size.height,
+            width: 0.7 * size.width,
+            height: 0.7 * size.height
+        };
+
+        const imageRect:IRect = {
+            x: 0,
+            y: 0,
+            width: this.state.image.width,
+            height: this.state.image.height
+        };
+
+        const imageRatio = RectUtil.getRatio(imageRect);
+        const imagePosition: IRect = RectUtil.fitInsideRectWithRatio(containerRect, imageRatio);
+
+        return {
+            width: imagePosition.width,
+            height: imagePosition.height,
+            left: imagePosition.x,
+            top: imagePosition.y
+        }
     };
 
     private handleLoadImageError = () => {};
@@ -71,8 +124,19 @@ class ImagePreview extends React.Component<IProps, IState> {
                 style={this.props.style}
                 onClick={this.props.onClick ? this.props.onClick : undefined}
             >
-                {(!!this.state.image && !this.props.showLoader) ?
-                <img src={this.state.image.src}/> :
+                {(!!this.state.image) ?
+                [
+                    <img
+                        className="Foreground"
+                        src={this.state.image.src}
+                        alt={this.state.image.alt}
+                        style={this.getStyle()}
+                    />,
+                    <div
+                        className="Background"
+                        style={this.getStyle()}
+                    />
+                ] :
                 <ClipLoader
                     sizeUnit={"px"}
                     size={30}
