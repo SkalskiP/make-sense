@@ -4,9 +4,7 @@
   align-self: stretch;
   flex: 1;
   overflow: hidden;
-}
 
-.LabelsToolkitContent{
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -14,40 +12,101 @@
   align-items: center;
   align-content: flex-start;
 
-  .ToolkitElement {
+  .Header {
+    position: relative;
+    align-self: stretch;
+    box-sizing: border-box;
+    //border-bottom: solid 1px $darkThemeSecondColor;
+    padding: 0 25px;
+    color: white;
+    font-size: 14px;
+    user-select: none;
+    cursor: pointer;
+
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
-    align-content: flex-start;
+    align-content: space-between;
 
-    &.active {
-      flex: 1;
-    }
-
-    .Header {
+    .HeaderGroupWrapper {
       align-self: stretch;
-      height: 50px;
-      border-bottom: solid 1px $darkThemeSecondColor;
-      padding: 0 25px;
-      color: white;
-      user-select: none;
-      cursor: pointer;
 
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;
-      justify-content: flex-start;
+      justify-content: center;
       align-items: center;
-      align-content: flex-start;
+      align-content: center;
+    }
 
-      > img {
-        max-width: 20px;
-        max-height: 20px;
-        margin-right: 20px;
-        filter: brightness(0) invert(1);
+    .Marker {
+      position: absolute;
+      height: calc(100% - 4px);
+      width: 5px;
+      top: 2px;
+      left: -5px;
+      background-color: $darkThemeThirdColor;
+      transition: background-color 0.3s ease-in-out, transform 0.3s;
+    }
+
+    .Ico {
+      max-width: 20px;
+      max-height: 20px;
+      margin-right: 20px;
+      filter: brightness(0) invert(1);
+    }
+
+    .Arrow {
+      max-width: 15px;
+      max-height: 15px;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      .Marker {
+        transform: translate(5px);
+      }
+    }
+
+    &.active {
+      .Marker {
+        transform: translate(5px);
+        background-color: $secondaryColor;
+      }
+
+      .Arrow {
+        transform: rotate(180deg);
       }
     }
   }
+
+  .Content {
+    align-self: stretch;
+    box-sizing: border-box;
+    height: 0;
+    transition: height 0.3s ease-in-out;
+
+    &.active {
+      //border-bottom: solid 1px $darkThemeSecondColor;
+    }
+  }
 }
+
+//@keyframes cssAnimationHide {
+//  0%   {
+//    opacity: 1;
+//    height: 0;
+//  }
+//  40%  {
+//    opacity: 0;
+//    width: 400px;
+//  }
+//  100% {
+//    opacity: 0;
+//    width: 0;
+//    overflow: hidden;
+//  }
+//}
+

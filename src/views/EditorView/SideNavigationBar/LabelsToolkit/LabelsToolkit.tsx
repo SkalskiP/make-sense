@@ -10,7 +10,8 @@ import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
 import classNames from "classnames";
 import * as _ from "lodash";
-import {LabelToolkitData} from "../../../../data/LabelToolkitData";
+import {ILabelToolkit, LabelToolkitData} from "../../../../data/LabelToolkitData";
+import {Settings} from "../../../../settings/Settings";
 
 interface IProps {
     activeImageIndex:number,
@@ -80,33 +81,51 @@ class LabelsToolkit extends React.Component<IProps, IState> {
     };
 
     private renderChildren = () => {
-        return this.tabs.map((labelType: LabelType) => {
-            const isActive = labelType === this.state.activeLabelType;
-            const className = classNames(
-                    "ToolkitElement",
-                    {
-                        "active": isActive,
-                    }
-                );
+        const {activeLabelType, size} = this.state;
+        return this.tabs.reduce((children, labelType: LabelType) => {
+            const isActive: boolean = labelType === activeLabelType;
+            const tabData: ILabelToolkit = _.find(LabelToolkitData, {labelType});
+            const activeTabContent: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT;
+            const getClassName = (baseClass: string) => classNames(
+                baseClass,
+                {
+                    "active": isActive,
+                }
+            );
 
-            const tabData = _.find(LabelToolkitData, {labelType});
-
-            return <div
-                className={className}
-                style={{width: this.state.size.width}}
-            >
-                <div className="Header"
-                     onClick={() => this.headerClickHandler(labelType)}
+            const header =
+                <div
+                    className={getClassName("Header")}
+                    onClick={() => this.headerClickHandler(labelType)}
+                    style={{height: Settings.TOOLKIT_TAB_HEIGHT}}
                 >
-                    <img
-                        src={tabData.imageSrc}
-                        alt={tabData.imageAlt}
-                    />
-                    {tabData.headerText}
-                </div>
-                <div className="Content"/>
-            </div>
-        })
+                    <div className="Marker"/>
+                    <div className="HeaderGroupWrapper">
+                        <img
+                            className="Ico"
+                            src={tabData.imageSrc}
+                            alt={tabData.imageAlt}
+                        />
+                        {tabData.headerText}
+                    </div>
+                    <div className="HeaderGroupWrapper">
+                        <img
+                            className="Arrow"
+                            src={"ico/down.png"}
+                            alt={"down_arrow"}
+                        />
+                    </div>
+                </div>;
+
+            const content =
+                <div
+                    className={getClassName("Content")}
+                    style={{height: isActive ? activeTabContent : 0}}
+                />;
+
+            children.push([header, content]);
+            return children;
+        }, [])
     };
 
     public render() {
@@ -115,17 +134,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                 className="LabelsToolkit"
                 ref={ref => this.labelsToolkitRef = ref}
             >
-                <Scrollbars>
-                    {this.state.size && <div
-                        className="LabelsToolkitContent"
-                        style={{
-                            width: this.state.size.width,
-                            height: this.state.size.height
-                        }}
-                    >
-                        {this.renderChildren()}
-                    </div>}
-                </Scrollbars>
+                {this.state.size && this.renderChildren()}
             </div>
         )
     }
