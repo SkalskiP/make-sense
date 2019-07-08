@@ -13,21 +13,12 @@
 
   .MousePosition {
     position: absolute;
-    bottom: 10px;
-    right: 10px;
     color: white;
     font-size: 12px;
     background-color: $darkThemeThirdColor;
     opacity: 0.6;
     padding: 5px;
     user-select: none;
-
-    &:active {
-      pointer-events: none;
-    }
-
-    &:hover {
-      opacity: 0;
-    }
+    pointer-events: none;
   }
 }

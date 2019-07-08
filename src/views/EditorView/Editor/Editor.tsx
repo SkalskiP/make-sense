@@ -10,6 +10,8 @@ import {IRect} from "../../../interfaces/IRect";
 import {RectUtil} from "../../../utils/RectUtil";
 import {ImageRepository} from "../../../logic/ImageRepository";
 import {IPoint} from "../../../interfaces/IPoint";
+import {DrawUtil} from "../../../utils/DrawUtil";
+import {Settings} from "../../../settings/Settings";
 
 interface IProps {
     size: ISize;
@@ -19,7 +21,8 @@ interface IProps {
 
 interface IState {
     image: HTMLImageElement;
-    mousePosition: IPoint;
+    mousePositionImageScale: IPoint;
+    mousePositionCanvasScale: IPoint;
 }
 
 class Editor extends React.Component<IProps, IState> {
@@ -31,7 +34,8 @@ class Editor extends React.Component<IProps, IState> {
 
         this.state = {
             image: null,
-            mousePosition: null,
+            mousePositionImageScale: null,
+            mousePositionCanvasScale: null,
         }
     }
 
@@ -78,10 +82,19 @@ class Editor extends React.Component<IProps, IState> {
         const y: number = Math.round((event.clientY - imageCanvasRect.top - this.imageRect.y) * scale);
 
         if (x >= 0 && x <= image.width && y >= 0 && y <= image.height) {
-            this.setState({mousePosition: {x, y}});
+            this.setState({
+                mousePositionImageScale: {x, y},
+                mousePositionCanvasScale: {
+                    x: event.clientX - imageCanvasRect.left,
+                    y: event.clientY - imageCanvasRect.top
+                }
+            });
             this.imageCanvas.style.cursor = "crosshair";
         } else {
-            this.setState({mousePosition: null});
+            this.setState({
+                mousePositionImageScale: null,
+                mousePositionCanvasScale: null,
+            });
             this.imageCanvas.style.cursor = "default";
         }
     };
@@ -104,15 +117,48 @@ class Editor extends React.Component<IProps, IState> {
             const imageOnCanvasRect: IRect = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
             this.imageRect = imageOnCanvasRect;
             ctx.drawImage(this.state.image, imageOnCanvasRect.x, imageOnCanvasRect.y, imageOnCanvasRect.width, imageOnCanvasRect.height);
+
+            const mousePosition = this.state.mousePositionCanvasScale;
+            if (!!mousePosition) {
+                const horizontalStart = {
+                    x: 0,
+                    y: Math.floor(mousePosition.y) + 0.5
+                };
+                const horizontalEnd = {
+                    x: this.imageCanvas.width,
+                    y: mousePosition.y
+                };
+
+                DrawUtil.drawLine(this.imageCanvas, horizontalStart, horizontalEnd, Settings.SECONDARY_COLOR, 1)
+
+                const verticalStart = {
+                    x: Math.floor(mousePosition.x) + 0.5,
+                    y: 0
+                };
+                const verticalEnd = {
+                    x: mousePosition.x,
+                    y: this.imageCanvas.height
+                };
+
+                DrawUtil.drawLine(this.imageCanvas, verticalStart, verticalEnd, Settings.SECONDARY_COLOR, 1)
+
+            }
         }
     };
 
     private getMousePositionRender = () => {
-        const { mousePosition } = this.state;
-        if (mousePosition) {
+        const { mousePositionImageScale } = this.state;
+        if (mousePositionImageScale) {
             return(
-                <div className="MousePosition">
-                    {"x: " + mousePosition.x + ", y: " + mousePosition.y}
+                <div
+                    className="MousePosition"
+                    style={{
+                        top: this.state.mousePositionCanvasScale.y + 10,
+                        left: this.state.mousePositionCanvasScale.x + 10
+                    }}
+
+                >
+                    {"x: " + mousePositionImageScale.x + ", y: " + mousePositionImageScale.y}
                 </div>
             )
         } else {
