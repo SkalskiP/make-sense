@@ -9,6 +9,7 @@
     "@types/react": "16.8.20",
     "@types/react-dom": "16.8.4",
     "classnames": "^2.2.6",
+    "lodash": "^4.17.11",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-custom-scrollbars": "^4.2.1",
@@ -16,9 +17,9 @@
     "react-dropzone": "^10.1.5",
     "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
+    "react-spinners": "^0.5.4",
     "typescript": "3.5.2",
-    "uuid": "^3.3.2",
-    "react-spinners": "^0.5.4"
+    "uuid": "^3.3.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,11 +44,12 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.8",
+    "@types/lodash": "^4.14.135",
     "@types/react-custom-scrollbars": "^4.0.5",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-redux": "^7.1.0",
     "@types/uuid": "^3.4.4",
-    "redux-devtools": "^3.5.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.17.1",
+    "redux-devtools": "^3.5.0"
   }
 }

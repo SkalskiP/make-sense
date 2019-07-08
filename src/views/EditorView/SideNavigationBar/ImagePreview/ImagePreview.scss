@@ -11,6 +11,11 @@
   align-items: center;
   align-content: center;
 
+  border-bottom: solid 1px $darkThemeSecondColor;
+  &:nth-child(odd) {
+    border-right: solid 1px $darkThemeSecondColor;
+  }
+
   .Foreground {
     position: absolute;
     z-index: 100;

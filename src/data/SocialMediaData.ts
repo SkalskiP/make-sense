@@ -8,7 +8,7 @@ export interface ISocialMedia {
     tooltipMessage:string;
 }
 
-export const SocialMediaData:ISocialMedia[] = [
+export const SocialMediaData: ISocialMedia[] = [
     {
         displayName: "Github",
         imageSrc: "/img/github-logo.png",

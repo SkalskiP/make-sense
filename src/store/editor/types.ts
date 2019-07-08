@@ -1,6 +1,7 @@
 import {IRect} from "../../interfaces/IRect";
 import {ProjectType} from "../../data/ProjectType";
 import {Action} from "../Actions";
+import {LabelType} from "../../data/LabelType";
 
 export type LabelRect = {
     id: string;
@@ -18,6 +19,7 @@ export type ImageData = {
 export type EditorState = {
     activeImageIndex: number;
     activeLabelIndex: number;
+    activeLabelType: LabelType;
     projectType: ProjectType;
     imagesData: ImageData[];
     labelNames: string[];
@@ -41,6 +43,13 @@ interface UpdateActiveLabelIndex {
     type: typeof Action.UPDATE_ACTIVE_LABEL_INDEX;
     payload: {
         activeLabelIndex: number;
+    }
+}
+
+interface UpdateActiveLabelType {
+    type: typeof Action.UPDATE_ACTIVE_LABEL_TYPE;
+    payload: {
+        activeLabelType: LabelType;
     }
 }
 
@@ -69,6 +78,7 @@ interface UpdateLabelNamesList {
 export type EditorActionTypes = UpdateProjectType
     | UpdateActiveImageIndex
     | UpdateActiveLabelIndex
+    | UpdateActiveLabelType
     | UpdateImageDataById
     | AddImageData
     | UpdateLabelNamesList

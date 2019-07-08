@@ -4,7 +4,7 @@ export interface IEditorFeature {
     imageAlt:string;
 }
 
-export const EditorFeatureData:IEditorFeature[] = [
+export const EditorFeatureData: IEditorFeature[] = [
     {
         displayText: "Open source and free to use under MIT license",
         imageSrc: "img/open-source.png",

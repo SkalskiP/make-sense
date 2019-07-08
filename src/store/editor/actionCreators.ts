@@ -1,6 +1,7 @@
 import {ProjectType} from "../../data/ProjectType";
 import {EditorActionTypes, ImageData} from "./types";
 import {Action} from "../Actions";
+import {LabelType} from "../../data/LabelType";
 
 export function updateProjectType(projectType: ProjectType): EditorActionTypes {
     return {
@@ -25,6 +26,15 @@ export function updateActiveLabelIndex(activeLabelIndex: number): EditorActionTy
         type: Action.UPDATE_ACTIVE_LABEL_INDEX,
         payload: {
             activeLabelIndex,
+        },
+    };
+}
+
+export function updateActiveLabelType(activeLabelType: LabelType): EditorActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_LABEL_TYPE,
+        payload: {
+            activeLabelType,
         },
     };
 }

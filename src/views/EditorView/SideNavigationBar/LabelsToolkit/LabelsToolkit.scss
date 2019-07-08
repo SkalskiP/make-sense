@@ -1,0 +1,53 @@
+@import '../../../../settings/Settings';
+
+.LabelsToolkit {
+  align-self: stretch;
+  flex: 1;
+  overflow: hidden;
+}
+
+.LabelsToolkitContent{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  .ToolkitElement {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    &.active {
+      flex: 1;
+    }
+
+    .Header {
+      align-self: stretch;
+      height: 50px;
+      border-bottom: solid 1px $darkThemeSecondColor;
+      padding: 0 25px;
+      color: white;
+      user-select: none;
+      cursor: pointer;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: flex-start;
+
+      > img {
+        max-width: 20px;
+        max-height: 20px;
+        margin-right: 20px;
+        filter: brightness(0) invert(1);
+      }
+    }
+  }
+}

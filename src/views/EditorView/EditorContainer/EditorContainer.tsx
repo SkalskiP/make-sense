@@ -11,6 +11,7 @@ import {connect} from "react-redux";
 import {Settings} from "../../../settings/Settings";
 import {ImageData} from "../../../store/editor/types";
 import ImagesList from "../SideNavigationBar/ImagesList/ImagesList";
+import LabelsToolkit from "../SideNavigationBar/LabelsToolkit/LabelsToolkit";
 
 interface IProps {
     windowSize: ISize;
@@ -63,6 +64,10 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
         ]
     };
 
+    const rightSideBarRender = () => {
+        return <LabelsToolkit/>
+    };
+
     return (
         <div className="EditorContainer">
             <SideNavigationBar
@@ -86,6 +91,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 direction={Direction.RIGHT}
                 isOpen={rightTabStatus}
                 renderCompanion={rightSideBarCompanionRender}
+                renderContent={rightSideBarRender}
             />
         </div>
     );

@@ -4,6 +4,7 @@ import {Action} from "../Actions";
 const initialState: EditorState = {
     activeImageIndex: null,
     activeLabelIndex: null,
+    activeLabelType: null,
     projectType: null,
     imagesData: [],
     labelNames: [],
@@ -30,6 +31,11 @@ export function editorReducer(
             return {
                 ...state,
                 activeLabelIndex: action.payload.activeLabelIndex
+            }
+        }case Action.UPDATE_ACTIVE_LABEL_TYPE: {
+            return {
+                ...state,
+                activeLabelType: action.payload.activeLabelType
             }
         }
         case Action.UPDATE_IMAGE_DATA_BY_ID: {
