@@ -7,7 +7,6 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {IRect} from "../../../interfaces/IRect";
-import {RectUtil} from "../../../utils/RectUtil";
 import {ImageRepository} from "../../../logic/ImageRepository";
 import {IPoint} from "../../../interfaces/IPoint";
 import {EditorCanvasRenderHelper} from "../../../logic/EditorCanvasRenderHelper";
@@ -99,6 +98,13 @@ class Editor extends React.Component<IProps, IState> {
         }
     };
 
+    private mouseLeaveHandler = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
+        this.setState({
+            mousePositionImageScale: null,
+            mousePositionCanvasScale: null,
+        });
+    };
+
     private handleLoadImageError = () => {};
 
     private updateCanvasSize = (newCanvasSize: ISize) => {
@@ -142,6 +148,7 @@ class Editor extends React.Component<IProps, IState> {
                 <canvas
                     className="ImageCanvas"
                     onMouseMove={this.mouseMoveHandler}
+                    onMouseLeave={this.mouseLeaveHandler}
                     ref={ref => this.imageCanvas = ref}
                 />
                 {this.getMousePositionRender()}
