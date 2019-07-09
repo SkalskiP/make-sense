@@ -11,7 +11,6 @@ interface IProps {
     childCount: number;
     childSize: ISize;
     childRender: (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => any;
-    onScroll?: (scrollPosition: number) => any;
     initialScrollPosition?: number;
     overScanHeight?: number;
 }
@@ -101,8 +100,6 @@ export class VirtualList extends React.Component<IProps, IState> {
                 height: this.props.size.height
             }
         });
-
-        this.props.onScroll && this.props.onScroll(values.scrollTop);
     };
 
     private getChildren = () => {

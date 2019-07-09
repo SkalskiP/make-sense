@@ -10,4 +10,8 @@ export class Settings {
     public static readonly TOOLKIT_TAB_HEIGHT: number = 40;
 
     public static readonly SECONDARY_COLOR: string = "#009efd";
+
+    public static readonly CANVAS_PADDING_WIDTH: number = 10;
+    public static readonly CROSS_HAIR_THICKNESS: number = 1;
+    public static readonly CROSS_HAIR_COLOR: string = "#000";
 }

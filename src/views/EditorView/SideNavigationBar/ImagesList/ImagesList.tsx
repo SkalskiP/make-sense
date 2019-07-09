@@ -7,13 +7,11 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import {updateActiveImageIndex} from "../../../../store/editor/actionCreators";
-import {updateImageListScrollPosition} from "../../../../store/general/actionCreators";
 
 interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
     updateActiveImageIndex: (activeImageIndex: number) => any;
-    updateImageListScrollPosition: (scrollPosition: number) => any;
     imageScrollListPosition: number;
 }
 
@@ -65,10 +63,6 @@ class ImagesList extends React.Component<IProps, IState> {
         />
     };
 
-    private onScroll = (value: number) => {
-        this.props.updateImageListScrollPosition(value);
-    };
-
     public render() {
         const { size } = this.state;
         return(
@@ -79,7 +73,6 @@ class ImagesList extends React.Component<IProps, IState> {
                     childCount={this.props.imagesData.length}
                     childRender={this.renderImagePreview}
                     overScanHeight={200}
-                    onScroll={this.onScroll}
                     initialScrollPosition={this.props.imageScrollListPosition}
                 />}
             </div>
@@ -89,7 +82,6 @@ class ImagesList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = {
     updateActiveImageIndex,
-    updateImageListScrollPosition
 };
 
 const mapStateToProps = (state: AppState) => ({

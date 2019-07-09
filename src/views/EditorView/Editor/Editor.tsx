@@ -10,8 +10,7 @@ import {IRect} from "../../../interfaces/IRect";
 import {RectUtil} from "../../../utils/RectUtil";
 import {ImageRepository} from "../../../logic/ImageRepository";
 import {IPoint} from "../../../interfaces/IPoint";
-import {DrawUtil} from "../../../utils/DrawUtil";
-import {Settings} from "../../../settings/Settings";
+import {EditorCanvasRenderHelper} from "../../../logic/EditorCanvasRenderHelper";
 
 interface IProps {
     size: ISize;
@@ -27,7 +26,7 @@ interface IState {
 
 class Editor extends React.Component<IProps, IState> {
     private imageCanvas:HTMLCanvasElement;
-    private imageRect: IRect;
+    private baseRenderEngine: EditorCanvasRenderHelper;
 
     constructor(props) {
         super(props);
@@ -41,16 +40,17 @@ class Editor extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
         this.loadImage(this.props.imageData);
-        this.resizeEditor(this.props.size);
-        this.drawImage(this.props.size)
+        this.updateCanvasSize(this.props.size);
+        this.baseRenderEngine = new EditorCanvasRenderHelper(this.imageCanvas);
+        this.drawImage()
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
         if (prevProps.imageData.id !== this.props.imageData.id) {
             this.loadImage(this.props.imageData);
         }
-        this.resizeEditor(this.props.size);
-        this.drawImage(this.props.size)
+        this.updateCanvasSize(this.props.size);
+        this.drawImage()
     }
 
     private loadImage = (imageData: ImageData) => {
@@ -74,12 +74,12 @@ class Editor extends React.Component<IProps, IState> {
         const image = this.state.image;
         const imageCanvasRect = this.imageCanvas.getBoundingClientRect();
 
-        if (!image || !this.imageRect)
-            return;
+        if (!image) return;
 
-        const scale = image.width / this.imageRect.width;
-        const x: number = Math.round((event.clientX - imageCanvasRect.left - this.imageRect.x) * scale);
-        const y: number = Math.round((event.clientY - imageCanvasRect.top - this.imageRect.y) * scale);
+        const imageRect: IRect = this.baseRenderEngine.getImageRect();
+        const scale = image.width / imageRect.width;
+        const x: number = Math.round((event.clientX - imageCanvasRect.left - imageRect.x) * scale);
+        const y: number = Math.round((event.clientY - imageCanvasRect.top - imageRect.y) * scale);
 
         if (x >= 0 && x <= image.width && y >= 0 && y <= image.height) {
             this.setState({
@@ -101,48 +101,18 @@ class Editor extends React.Component<IProps, IState> {
 
     private handleLoadImageError = () => {};
 
-    private resizeEditor = (newCanvasSize: ISize) => {
+    private updateCanvasSize = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!this.imageCanvas) {
             this.imageCanvas.width = newCanvasSize.width;
             this.imageCanvas.height = newCanvasSize.height;
         }
     };
 
-    private drawImage = (canvasSize: ISize) => {
+    private drawImage = () => {
         if (!!this.state.image) {
-            const ctx = this.imageCanvas.getContext("2d");
-            const imageRect: IRect = { x: 0, y: 0, width: this.state.image.width, height: this.state.image.height}
-            const canvasRect: IRect = {x: 10, y: 10, width: canvasSize.width - 20, height: canvasSize.height - 20}
-            const imageRatio = RectUtil.getRatio(imageRect);
-            const imageOnCanvasRect: IRect = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
-            this.imageRect = imageOnCanvasRect;
-            ctx.drawImage(this.state.image, imageOnCanvasRect.x, imageOnCanvasRect.y, imageOnCanvasRect.width, imageOnCanvasRect.height);
-
-            const mousePosition = this.state.mousePositionCanvasScale;
-            if (!!mousePosition) {
-                const horizontalStart = {
-                    x: 0,
-                    y: Math.floor(mousePosition.y) + 0.5
-                };
-                const horizontalEnd = {
-                    x: this.imageCanvas.width,
-                    y: mousePosition.y
-                };
-
-                DrawUtil.drawLine(this.imageCanvas, horizontalStart, horizontalEnd, Settings.SECONDARY_COLOR, 1)
-
-                const verticalStart = {
-                    x: Math.floor(mousePosition.x) + 0.5,
-                    y: 0
-                };
-                const verticalEnd = {
-                    x: mousePosition.x,
-                    y: this.imageCanvas.height
-                };
-
-                DrawUtil.drawLine(this.imageCanvas, verticalStart, verticalEnd, Settings.SECONDARY_COLOR, 1)
-
-            }
+            this.baseRenderEngine.updateImageRect(this.state.image);
+            this.baseRenderEngine.drawImage(this.state.image);
+            this.baseRenderEngine.drawCrossHair(this.state.mousePositionCanvasScale);
         }
     };
 

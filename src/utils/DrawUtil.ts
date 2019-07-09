@@ -93,4 +93,34 @@ export class DrawUtil {
     public static getRandomRGBColor():string {
         return "rgb(" + Math.round(Math.random() * 255) + "," + Math.round(Math.random() * 255) + "," + Math.round(Math.random() * 255) + ")";
     }
+
+    public static setValueBetweenPixels(value: number): number {
+        return Math.floor(value) + 0.5;
+    }
+
+    public static setPointBetweenPixels(point: IPoint): IPoint {
+        return {
+            x: DrawUtil.setValueBetweenPixels(point.x),
+            y: DrawUtil.setValueBetweenPixels(point.y)
+        }
+    }
+
+    public static setRectBetweenPixels(rect: IRect): IRect {
+        const topLeft: IPoint = {
+            x: rect.x,
+            y: rect.y
+        };
+        const bottomRight: IPoint = {
+            x: rect.x + rect.width,
+            y: rect.y + rect.height
+        };
+        const topLeftBetweenPixels = DrawUtil.setPointBetweenPixels(topLeft);
+        const bottomRightBetweenPixels = DrawUtil.setPointBetweenPixels(bottomRight);
+        return {
+            x: topLeftBetweenPixels.x,
+            y: topLeftBetweenPixels.y,
+            width: bottomRightBetweenPixels.x - topLeftBetweenPixels.x,
+            height: bottomRightBetweenPixels.y - topLeftBetweenPixels.y
+        }
+    }
 }

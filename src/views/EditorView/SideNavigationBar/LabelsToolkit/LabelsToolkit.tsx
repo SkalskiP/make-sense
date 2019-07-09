@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import {LabelType} from "../../../../data/LabelType";
 import {ProjectType} from "../../../../data/ProjectType";
 import {ISize} from "../../../../interfaces/ISize";
-import Scrollbars from 'react-custom-scrollbars';
 import classNames from "classnames";
 import * as _ from "lodash";
 import {ILabelToolkit, LabelToolkitData} from "../../../../data/LabelToolkitData";
