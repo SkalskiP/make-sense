@@ -37,7 +37,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
     };
 
     const leftSideBarCompanionRender = () => {
-        return [
+        return <>
             <VerticalEditorButton
                 label="Images"
                 image={"/ico/files.png"}
@@ -45,7 +45,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 onClick={() => setLeftTabStatus(!leftTabStatus)}
                 isActive={leftTabStatus}
             />
-        ]
+        </>
     };
 
     const leftSideBarRender = () => {
@@ -53,7 +53,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
     };
 
     const rightSideBarCompanionRender = () => {
-        return [
+        return <>
             <VerticalEditorButton
                 label="Labels"
                 image={"/ico/tags.png"}
@@ -61,7 +61,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 onClick={() => setRightTabStatus(!rightTabStatus)}
                 isActive={rightTabStatus}
             />
-        ]
+        </>
     };
 
     const rightSideBarRender = () => {

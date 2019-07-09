@@ -51,30 +51,30 @@ const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelN
 
     const getDropZoneContent = () => {
         if (invalidFileLoadedStatus)
-            return [
-                <input {...getInputProps()} />,
-                <img alt={"upload"} src={"img/box-opened.png"}/>,
-                <p className="extraBold">Loading of labels file was unsuccessful</p>,
+            return <>
+                <input {...getInputProps()} />
+                <img alt={"upload"} src={"img/box-opened.png"}/>
+                <p className="extraBold">Loading of labels file was unsuccessful</p>
                 <p className="extraBold">Try again</p>
-            ];
+            </>;
         else if (acceptedFiles.length === 0)
-            return [
-                <input {...getInputProps()} />,
-                <img alt={"upload"} src={"img/box-opened.png"}/>,
-                <p className="extraBold">Drop labels file</p>,
-                <p>or</p>,
+            return <>
+                <input {...getInputProps()} />
+                <img alt={"upload"} src={"img/box-opened.png"}/>
+                <p className="extraBold">Drop labels file</p>
+                <p>or</p>
                 <p className="extraBold">Click here to select it</p>
-            ];
+            </>;
         else if (labelsList.length === 1)
-            return [
-                <img alt={"uploaded"} src={"img/box-closed.png"}/>,
+            return <>
+                <img alt={"uploaded"} src={"img/box-closed.png"}/>
                 <p className="extraBold">only 1 label found</p>
-            ];
+            </>;
         else
-            return [
-                <img alt={"uploaded"} src={"img/box-closed.png"}/>,
+            return <>
+                <img alt={"uploaded"} src={"img/box-closed.png"}/>
                 <p className="extraBold">{labelsList.length} labels found</p>
-            ];
+            </>;
     };
 
     const renderContent = () => {

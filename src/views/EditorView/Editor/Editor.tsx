@@ -10,10 +10,13 @@ import {IRect} from "../../../interfaces/IRect";
 import {ImageRepository} from "../../../logic/ImageRepository";
 import {IPoint} from "../../../interfaces/IPoint";
 import {EditorCanvasRenderHelper} from "../../../logic/EditorCanvasRenderHelper";
+import {LabelType} from "../../../data/LabelType";
+import {RectRenderHelper} from "../../../logic/RectRenderHelper";
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
+    activeLabelType: LabelType;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
 
@@ -25,7 +28,8 @@ interface IState {
 
 class Editor extends React.Component<IProps, IState> {
     private imageCanvas:HTMLCanvasElement;
-    private baseRenderEngine: EditorCanvasRenderHelper;
+    private baseRenderingEngine: EditorCanvasRenderHelper;
+    private supportRenderingEngine: any;
 
     constructor(props) {
         super(props);
@@ -38,15 +42,20 @@ class Editor extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        this.loadImage(this.props.imageData);
-        this.updateCanvasSize(this.props.size);
-        this.baseRenderEngine = new EditorCanvasRenderHelper(this.imageCanvas);
+        const {imageData, size ,activeLabelType} = this.props;
+        this.loadImage(imageData);
+        this.updateCanvasSize(size);
+        this.baseRenderingEngine = new EditorCanvasRenderHelper(this.imageCanvas);
+        this.mountSupportRenderingEngine(activeLabelType);
         this.drawImage()
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
         if (prevProps.imageData.id !== this.props.imageData.id) {
             this.loadImage(this.props.imageData);
+        }
+        if (prevProps.activeLabelType !== this.props.activeLabelType) {
+            this.mountSupportRenderingEngine(this.props.activeLabelType)
         }
         this.updateCanvasSize(this.props.size);
         this.drawImage()
@@ -69,13 +78,24 @@ class Editor extends React.Component<IProps, IState> {
         this.setState({image});
     };
 
+    private mountSupportRenderingEngine = (activeLabelType: LabelType) => {
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                this.supportRenderingEngine = new RectRenderHelper(this.imageCanvas);
+                break;
+            default:
+                this.supportRenderingEngine = null;
+                break;
+        }
+    };
+
     private mouseMoveHandler = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const image = this.state.image;
         const imageCanvasRect = this.imageCanvas.getBoundingClientRect();
 
         if (!image) return;
 
-        const imageRect: IRect = this.baseRenderEngine.getImageRect();
+        const imageRect: IRect = this.baseRenderingEngine.getImageRect();
         const scale = image.width / imageRect.width;
         const x: number = Math.round((event.clientX - imageCanvasRect.left - imageRect.x) * scale);
         const y: number = Math.round((event.clientY - imageCanvasRect.top - imageRect.y) * scale);
@@ -116,9 +136,9 @@ class Editor extends React.Component<IProps, IState> {
 
     private drawImage = () => {
         if (!!this.state.image) {
-            this.baseRenderEngine.updateImageRect(this.state.image);
-            this.baseRenderEngine.drawImage(this.state.image);
-            this.baseRenderEngine.drawCrossHair(this.state.mousePositionCanvasScale);
+            this.baseRenderingEngine.updateImageRect(this.state.image);
+            this.baseRenderingEngine.drawImage(this.state.image);
+            this.baseRenderingEngine.drawCrossHair(this.state.mousePositionCanvasScale);
         }
     };
 
@@ -161,7 +181,9 @@ const mapDispatchToProps = {
     updateImageDataById
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    activeLabelType: state.editor.activeLabelType
+});
 
 export default connect(
     mapStateToProps,

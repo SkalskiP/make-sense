@@ -81,7 +81,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
     private renderChildren = () => {
         const {activeLabelType, size} = this.state;
-        return this.tabs.reduce((children, labelType: LabelType) => {
+        return this.tabs.reduce((children, labelType: LabelType, index: number) => {
             const isActive: boolean = labelType === activeLabelType;
             const tabData: ILabelToolkit = _.find(LabelToolkitData, {labelType});
             const activeTabContent: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT;
@@ -94,6 +94,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
             const header =
                 <div
+                    key={"Header_" + index}
                     className={getClassName("Header")}
                     onClick={() => this.headerClickHandler(labelType)}
                     style={{height: Settings.TOOLKIT_TAB_HEIGHT}}
@@ -118,6 +119,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
             const content =
                 <div
+                    key={"Content_" + index}
                     className={getClassName("Content")}
                     style={{height: isActive ? activeTabContent : 0}}
                 />;

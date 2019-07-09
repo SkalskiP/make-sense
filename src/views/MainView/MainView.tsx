@@ -44,11 +44,17 @@ const MainView: React.FC = () => {
     }))(Tooltip);
 
     const getSocialMediaButtons = (size:ISize) => {
-        return SocialMediaData.map((data:ISocialMedia) => {
-            return <DarkTooltip disableFocusListener title={data.tooltipMessage} TransitionComponent={Fade} TransitionProps={{ timeout: 600 }} placement="left">
+        return SocialMediaData.map((data:ISocialMedia, index: number) => {
+            return <DarkTooltip
+                key={index}
+                disableFocusListener
+                title={data.tooltipMessage}
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                placement="left"
+            >
                 <div>
                     <ImageButton
-                        key={data.displayName}
                         size={size}
                         image={data.imageSrc}
                         imageAlt={data.imageAlt}
