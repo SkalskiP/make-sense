@@ -5,6 +5,7 @@ const initialState: EditorState = {
     activeImageIndex: null,
     activeLabelIndex: null,
     activeLabelType: null,
+    activeLabelId: null,
     projectType: null,
     imagesData: [],
     labelNames: [],

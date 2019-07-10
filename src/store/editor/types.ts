@@ -2,6 +2,7 @@ import {IRect} from "../../interfaces/IRect";
 import {ProjectType} from "../../data/ProjectType";
 import {Action} from "../Actions";
 import {LabelType} from "../../data/LabelType";
+import {IPoint} from "../../interfaces/IPoint";
 
 export type LabelRect = {
     id: string;
@@ -9,17 +10,25 @@ export type LabelRect = {
     rect: IRect;
 }
 
+export type LabelPoint = {
+    id: string;
+    labelIndex: number;
+    point: IPoint;
+}
+
 export type ImageData = {
     id: string;
     fileData: File;
     loadStatus: boolean;
-    labels: LabelRect[];
+    labelRects: LabelRect[];
+    labelPoints: LabelPoint[];
 }
 
 export type EditorState = {
     activeImageIndex: number;
     activeLabelIndex: number;
     activeLabelType: LabelType;
+    activeLabelId: string;
     projectType: ProjectType;
     imagesData: ImageData[];
     labelNames: string[];

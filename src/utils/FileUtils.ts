@@ -7,7 +7,8 @@ export class FileUtils {
             id: uuidv1(),
             fileData: fileData,
             loadStatus: false,
-            labels: []
+            labelRects: [],
+            labelPoints: []
         }
     }
 

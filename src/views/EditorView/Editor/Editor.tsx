@@ -76,7 +76,6 @@ class Editor extends React.Component<IProps, IState> {
     private mouseMoveEventBus = (event: MouseEvent) => {
         this.primaryRenderingEngine.mouseMoveHandler(event);
         this.supportRenderingEngine && this.supportRenderingEngine.mouseMoveHandler(event);
-        // this.updateCursorStyle(event);
         this.updateMousePositionIndicator(event);
         this.fullCanvasRender();
     };
@@ -114,18 +113,6 @@ class Editor extends React.Component<IProps, IState> {
         this.primaryRenderingEngine.render();
         this.supportRenderingEngine && this.supportRenderingEngine.render();
     }
-
-    private updateCursorStyle = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) => {
-        if (!this.canvas || !this.imageRect) return;
-
-        const mousePositionOnCanvas: IPoint = this.getMousePositionOnCanvasFromEvent(event);
-        const mouseOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePositionOnCanvas);
-
-        if (mouseOverImage)
-            this.canvas.style.cursor = "crosshair";
-        else
-            this.canvas.style.cursor = "default";
-    };
 
     private updateMousePositionIndicator = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) => {
         const image = this.state.image;
@@ -182,9 +169,8 @@ class Editor extends React.Component<IProps, IState> {
                 y: event.clientY - canvasRect.top
             }
         }
-        else {
+        else
             return null;
-        }
     }
 
     private resizeCanvas = (newCanvasSize: ISize) => {
