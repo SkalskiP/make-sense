@@ -9,9 +9,13 @@
     position: absolute;
     top: 0;
     left: 0;
+
+    &:hover {
+      cursor: crosshair;
+    }
   }
 
-  .MousePosition {
+  .MousePositionIndicator {
     position: absolute;
     color: white;
     font-size: 12px;

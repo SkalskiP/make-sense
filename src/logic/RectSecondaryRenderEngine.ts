@@ -4,8 +4,9 @@ import {IRect} from "../interfaces/IRect";
 import {RectUtil} from "../utils/RectUtil";
 import {Settings} from "../settings/Settings";
 import {DrawUtil} from "../utils/DrawUtil";
+import {BaseRenderEngine} from "./BaseRenderEngine";
 
-export class RectRenderHelper {
+export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
     private labelingInProgress: boolean = false;
     private boundingBoxColor: string = Settings.SECONDARY_COLOR;
@@ -15,17 +16,16 @@ export class RectRenderHelper {
     private startPoint: IPoint;
 
     public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
+        super();
         this.canvas = canvas;
         this.imageRect = imageRect;
         console.log("MOUNT RENDER HELPER");
         this.canvas.addEventListener("mousedown", this.mouseDownHandler);
         window.addEventListener("mouseup", this.mouseUpHandler);
-        window.addEventListener("mousemove", this.mouseMoveHandler);
     }
 
     public render() {
-        if (!!this.startPoint && !!this.mousePosition) {
-            console.log("render")
+        if (this.labelingInProgress) {
             const activeRect: IRect = {
                 x: this.startPoint.x,
                 y: this.startPoint.y,
@@ -46,7 +46,6 @@ export class RectRenderHelper {
         console.log("UNMOUNT RENDER HELPER");
         this.canvas.removeEventListener("mousedown", this.mouseDownHandler);
         window.removeEventListener("mouseup", this.mouseUpHandler);
-        window.removeEventListener("mousemove", this.mouseMoveHandler);
     }
 
     private mouseDownHandler = (event: any) => {
@@ -67,16 +66,11 @@ export class RectRenderHelper {
         this.labelingInProgress = false;
     };
 
-    private mouseMoveHandler = (event: any) => {
-        const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
-
-        if (this.labelingInProgress) {
-            this.mousePosition = mousePosition;
-            console.log("MOUSE MOVE");
-        }
+    public mouseMoveHandler = (event: MouseEvent) => {
+        this.mousePosition = this.getMousePositionOnCanvasFromEvent(event);
     };
 
-    private getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>): IPoint {
+    private getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent): IPoint {
         if (!!this.canvas) {
             const canvasRect: ClientRect | DOMRect = this.canvas.getBoundingClientRect();
             return {
