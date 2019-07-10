@@ -1,4 +1,5 @@
 import {IRect} from "../interfaces/IRect";
+import {IPoint} from "../interfaces/IPoint";
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
@@ -12,6 +13,15 @@ export class RectUtil {
             r2.y > r1.y + r1.height ||
             r2.y + r2.height < r1.y
         );
+    }
+
+    public static isPointInside(rect: IRect, point: IPoint): boolean {
+        return (
+            rect.x < point.x &&
+            rect.x + rect.width > point.x &&
+            rect.y < point.y &&
+            rect.y + rect.height > point.y
+        )
     }
 
     public static fitInsideRectWithRatio(containerRect: IRect, ratio: number): IRect {

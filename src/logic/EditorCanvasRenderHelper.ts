@@ -2,12 +2,10 @@ import {IPoint} from "../interfaces/IPoint";
 import {DrawUtil} from "../utils/DrawUtil";
 import {Settings} from "../settings/Settings";
 import {IRect} from "../interfaces/IRect";
-import {RectUtil} from "../utils/RectUtil";
 
 export class EditorCanvasRenderHelper {
     private crossHairColor: string = Settings.CROSS_HAIR_COLOR;
     private crossHairThickness: number = Settings.CROSS_HAIR_THICKNESS;
-    private canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH;
     private canvas: HTMLCanvasElement;
     private imageRect: IRect;
 
@@ -19,18 +17,8 @@ export class EditorCanvasRenderHelper {
         return this.imageRect;
     }
 
-    public updateImageRect(image: HTMLImageElement): void {
-        if (!!image && !!this.canvas) {
-            const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
-            const canvasRect: IRect = {
-                x: this.canvasPaddingWidth,
-                y: this.canvasPaddingWidth,
-                width: this.canvas.width - 2 * this.canvasPaddingWidth,
-                height: this.canvas.height - 2 * this.canvasPaddingWidth
-            };
-            const imageRatio = RectUtil.getRatio(imageRect);
-            this.imageRect = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
-        }
+    public updateImageRect(imageRect: IRect): void {
+        this.imageRect = imageRect;
     }
 
     public drawImage(image: HTMLImageElement) {

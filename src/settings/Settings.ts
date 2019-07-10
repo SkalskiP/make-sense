@@ -14,4 +14,5 @@ export class Settings {
     public static readonly CANVAS_PADDING_WIDTH: number = 10;
     public static readonly CROSS_HAIR_THICKNESS: number = 1;
     public static readonly CROSS_HAIR_COLOR: string = "#000";
+    public static readonly BOUNDING_BOX_THICKNESS: number = 2;
 }

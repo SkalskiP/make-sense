@@ -12,6 +12,8 @@ import {IPoint} from "../../../interfaces/IPoint";
 import {EditorCanvasRenderHelper} from "../../../logic/EditorCanvasRenderHelper";
 import {LabelType} from "../../../data/LabelType";
 import {RectRenderHelper} from "../../../logic/RectRenderHelper";
+import {RectUtil} from "../../../utils/RectUtil";
+import {Settings} from "../../../settings/Settings";
 
 interface IProps {
     size: ISize;
@@ -30,6 +32,7 @@ class Editor extends React.Component<IProps, IState> {
     private imageCanvas:HTMLCanvasElement;
     private baseRenderingEngine: EditorCanvasRenderHelper;
     private supportRenderingEngine: any;
+    private imageRect: IRect;
 
     constructor(props) {
         super(props);
@@ -55,10 +58,11 @@ class Editor extends React.Component<IProps, IState> {
             this.loadImage(this.props.imageData);
         }
         if (prevProps.activeLabelType !== this.props.activeLabelType) {
-            this.mountSupportRenderingEngine(this.props.activeLabelType)
+            this.switchSupportRenderingEngine(this.props.activeLabelType)
         }
         this.updateCanvasSize(this.props.size);
-        this.drawImage()
+        this.updateImageRect(this.state.image);
+        this.drawImage();
     }
 
     private loadImage = (imageData: ImageData) => {
@@ -75,13 +79,21 @@ class Editor extends React.Component<IProps, IState> {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
+        this.updateImageRect(image);
         this.setState({image});
+    };
+
+    private switchSupportRenderingEngine = (activeLabelType: LabelType) => {
+        if (!!this.supportRenderingEngine) {
+            this.supportRenderingEngine.unmount();
+        }
+        this.mountSupportRenderingEngine(activeLabelType);
     };
 
     private mountSupportRenderingEngine = (activeLabelType: LabelType) => {
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
-                this.supportRenderingEngine = new RectRenderHelper(this.imageCanvas);
+                this.supportRenderingEngine = new RectRenderHelper(this.imageCanvas, this.imageRect);
                 break;
             default:
                 this.supportRenderingEngine = null;
@@ -136,9 +148,29 @@ class Editor extends React.Component<IProps, IState> {
 
     private drawImage = () => {
         if (!!this.state.image) {
-            this.baseRenderingEngine.updateImageRect(this.state.image);
             this.baseRenderingEngine.drawImage(this.state.image);
+            this.supportRenderingEngine && this.supportRenderingEngine.render();
             this.baseRenderingEngine.drawCrossHair(this.state.mousePositionCanvasScale);
+            console.log("drawImage")
+        }
+    };
+
+    private updateImageRect = (image: HTMLImageElement) => {
+        if (!!image) {
+            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH;
+            const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
+            const canvasRect: IRect = {
+                x: canvasPaddingWidth,
+                y: canvasPaddingWidth,
+                width: this.imageCanvas.width - 2 * canvasPaddingWidth,
+                height: this.imageCanvas.height - 2 * canvasPaddingWidth
+            };
+            const imageRatio = RectUtil.getRatio(imageRect);
+            const imageRectOnCanvas = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
+
+            this.baseRenderingEngine.updateImageRect(imageRectOnCanvas);
+            this.supportRenderingEngine && this.supportRenderingEngine.updateImageRect(imageRectOnCanvas);
+            this.imageRect = imageRectOnCanvas;
         }
     };
 
