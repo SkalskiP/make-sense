@@ -5,11 +5,16 @@ import {RectUtil} from "../utils/RectUtil";
 import {Settings} from "../settings/Settings";
 import {DrawUtil} from "../utils/DrawUtil";
 import {BaseRenderEngine} from "./BaseRenderEngine";
+import {store} from "../index";
+import {ImageData, LabelRect} from "../store/editor/types";
+import uuidv1 from 'uuid/v1';
+import {updateImageDataById} from "../store/editor/actionCreators";
 
 export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
     private labelingInProgress: boolean = false;
     private boundingBoxColor: string = Settings.SECONDARY_COLOR;
+    private boundingBoxInactiveColor: string = Settings.BOUNDING_BOX_INACTIVE_COLOR;
     private boundingBoxThickness: number = Settings.BOUNDING_BOX_THICKNESS;
     private mousePosition: IPoint;
     private imageRect: IRect;
@@ -19,7 +24,6 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         super();
         this.canvas = canvas;
         this.imageRect = imageRect;
-        console.log("MOUNT RENDER HELPER");
         this.canvas.addEventListener("mousedown", this.mouseDownHandler);
         window.addEventListener("mouseup", this.mouseUpHandler);
     }
@@ -32,9 +36,18 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                 width: this.mousePosition.x - this.startPoint.x,
                 height: this.mousePosition.y - this.startPoint.y
             };
-
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
             DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
+        }
+
+        const activeImageIndex = store.getState().editor.activeImageIndex;
+        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+
+        if (imageData) {
+            imageData.labelRects.forEach((labelRect: LabelRect) => {
+                const rectBetweenPixels = DrawUtil.setRectBetweenPixels(labelRect.rect);
+                DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxInactiveColor, this.boundingBoxThickness);
+            })
         }
     }
 
@@ -43,7 +56,6 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     }
 
     public unmount() {
-        console.log("UNMOUNT RENDER HELPER");
         this.canvas.removeEventListener("mousedown", this.mouseDownHandler);
         window.removeEventListener("mouseup", this.mouseUpHandler);
     }
@@ -56,11 +68,23 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             this.startPoint = mousePosition;
             this.mousePosition = mousePosition;
             this.labelingInProgress = true;
-            console.log("INSIDE");
         }
     };
 
     private mouseUpHandler = (event: any) => {
+        const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
+        const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
+
+        if (isOverImage && this.labelingInProgress) {
+            const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
+            const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
+            const maxX: number = Math.max(this.startPoint.x, this.mousePosition.x);
+            const maxY: number = Math.max(this.startPoint.y, this.mousePosition.y);
+
+            const rect: IRect = {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+            this.addRectLabel(rect);
+        }
+
         this.startPoint = null;
         this.mousePosition = null;
         this.labelingInProgress = false;
@@ -68,6 +92,19 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
 
     public mouseMoveHandler = (event: MouseEvent) => {
         this.mousePosition = this.getMousePositionOnCanvasFromEvent(event);
+    };
+
+    public addRectLabel = (rect: IRect) => {
+        const activeImageIndex = store.getState().editor.activeImageIndex;
+        const activeLabelIndex = store.getState().editor.activeLabelIndex;
+        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+        const labelRect: LabelRect = {
+            id: uuidv1(),
+            labelIndex: activeLabelIndex,
+            rect: rect
+        };
+        imageData.labelRects.push(labelRect);
+        store.dispatch(updateImageDataById(imageData.id, imageData));
     };
 
     private getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent): IPoint {
