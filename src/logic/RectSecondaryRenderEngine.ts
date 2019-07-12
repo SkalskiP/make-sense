@@ -9,6 +9,7 @@ import {store} from "../index";
 import {ImageData, LabelRect} from "../store/editor/types";
 import uuidv1 from 'uuid/v1';
 import {updateImageDataById} from "../store/editor/actionCreators";
+import {ImageRepository} from "./ImageRepository";
 
 export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
@@ -45,7 +46,15 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
 
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                const rectBetweenPixels = DrawUtil.setRectBetweenPixels(labelRect.rect);
+                const scale = this.getImageScale();
+                const rectImageScale: IRect = labelRect.rect;
+                const rect: IRect = {
+                    x: rectImageScale.x / scale,
+                    y: rectImageScale.y / scale,
+                    width: rectImageScale.width / scale,
+                    height: rectImageScale.height / scale
+                }
+                const rectBetweenPixels = DrawUtil.setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
                 DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxInactiveColor, this.boundingBoxThickness);
             })
         }
@@ -76,12 +85,19 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
 
         if (isOverImage && this.labelingInProgress) {
+            const scale = this.getImageScale();
+
             const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
             const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
             const maxX: number = Math.max(this.startPoint.x, this.mousePosition.x);
             const maxY: number = Math.max(this.startPoint.y, this.mousePosition.y);
 
-            const rect: IRect = {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+            const rect: IRect = {
+                x: (minX - this.imageRect.x) * scale,
+                y: (minY - this.imageRect.y) * scale,
+                width: (maxX - minX) * scale,
+                height: (maxY - minY) * scale
+            };
             this.addRectLabel(rect);
         }
 
@@ -93,6 +109,16 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     public mouseMoveHandler = (event: MouseEvent) => {
         this.mousePosition = this.getMousePositionOnCanvasFromEvent(event);
     };
+
+    /*
+    * real image / render image
+    * */
+    public getImageScale(): number {
+        const activeImageIndex = store.getState().editor.activeImageIndex;
+        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+        return image.width / this.imageRect.width;
+    }
 
     public addRectLabel = (rect: IRect) => {
         const activeImageIndex = store.getState().editor.activeImageIndex;
