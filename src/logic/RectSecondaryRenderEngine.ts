@@ -81,24 +81,26 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     };
 
     private mouseUpHandler = (event: any) => {
-        const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
-        const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
+        if (!!this.imageRect) {
+            const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
+            const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
 
-        if (isOverImage && this.labelingInProgress) {
-            const scale = this.getImageScale();
+            if (isOverImage && this.labelingInProgress) {
+                const scale = this.getImageScale();
 
-            const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
-            const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
-            const maxX: number = Math.max(this.startPoint.x, this.mousePosition.x);
-            const maxY: number = Math.max(this.startPoint.y, this.mousePosition.y);
+                const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
+                const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
+                const maxX: number = Math.max(this.startPoint.x, this.mousePosition.x);
+                const maxY: number = Math.max(this.startPoint.y, this.mousePosition.y);
 
-            const rect: IRect = {
-                x: (minX - this.imageRect.x) * scale,
-                y: (minY - this.imageRect.y) * scale,
-                width: (maxX - minX) * scale,
-                height: (maxY - minY) * scale
-            };
-            this.addRectLabel(rect);
+                const rect: IRect = {
+                    x: (minX - this.imageRect.x) * scale,
+                    y: (minY - this.imageRect.y) * scale,
+                    width: (maxX - minX) * scale,
+                    height: (maxY - minY) * scale
+                };
+                this.addRectLabel(rect);
+            }
         }
 
         this.startPoint = null;

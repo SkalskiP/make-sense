@@ -11,6 +11,7 @@ import classNames from "classnames";
 import * as _ from "lodash";
 import {ILabelToolkit, LabelToolkitData} from "../../../../data/LabelToolkitData";
 import {Settings} from "../../../../settings/Settings";
+import RectLabelsList from "../RectLabelsList/RectLabelsList";
 
 interface IProps {
     activeImageIndex:number,
@@ -81,10 +82,11 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
     private renderChildren = () => {
         const {activeLabelType, size} = this.state;
+        const {activeImageIndex, imagesData} = this.props;
         return this.tabs.reduce((children, labelType: LabelType, index: number) => {
             const isActive: boolean = labelType === activeLabelType;
             const tabData: ILabelToolkit = _.find(LabelToolkitData, {labelType});
-            const activeTabContent: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT;
+            const activeTabContentHeight: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT;
             const getClassName = (baseClass: string) => classNames(
                 baseClass,
                 {
@@ -121,8 +123,16 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                 <div
                     key={"Content_" + index}
                     className={getClassName("Content")}
-                    style={{height: isActive ? activeTabContent : 0}}
-                />;
+                    style={{height: isActive ? activeTabContentHeight : 0}}
+                >
+                    {activeLabelType === LabelType.RECTANGLE && <RectLabelsList
+                        size={{
+                            width: size.width - 20,
+                            height: activeTabContentHeight - 20
+                        }}
+                        imageData={imagesData[activeImageIndex]}
+                    />}
+                </div>;
 
             children.push([header, content]);
             return children;

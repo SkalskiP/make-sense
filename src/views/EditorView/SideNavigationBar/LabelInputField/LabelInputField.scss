@@ -1,0 +1,118 @@
+@import '../../../../settings/Settings';
+
+.LabelInputField {
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+
+  .LabelInputFieldWrapper {
+    position: absolute;
+    left: calc(-100% - 5px);
+    transition: left 0.3s ease-in-out;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: space-between;
+
+    .Marker {
+      width: 5px;
+      height: calc(100% - 4px);
+      background-color: $darkThemeThirdColor;
+    }
+
+    .Content {
+      flex: 1;
+      height: 100%;
+      padding: 0 10px;
+
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: space-between;
+      align-items: center;
+      align-content: space-between;
+
+      .ContentWrapper {
+        align-self: stretch;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+      }
+
+      .DropdownLabel {
+        position: relative;
+        font-size: 14px;
+        cursor: pointer;
+        user-select: none;
+        min-width: 160px;
+        height: 30px;
+        padding: 0 5px;
+        color: white;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: space-between;
+
+        .Dropdown {
+          position: fixed;
+          z-index: 1000;
+          background-color: $darkThemeSecondColor;
+        }
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+
+          &::after {
+            background-color: $secondaryColor;
+          }
+        }
+
+        &::after {
+          background: $darkThemeThirdColor;
+          width: 100%;
+          position: absolute;
+          bottom: 0;
+          height: 1px;    // <- adjust
+          left: 0;
+          z-index: 100;
+          display: block;
+          content: "";
+        }
+      }
+
+      .ImageButton {
+        transition: transform 0.3s;
+
+        img {
+          filter: brightness(0) invert(1);
+        }
+
+        &:hover {
+          background-color: transparent;
+        }
+      }
+    }
+
+    &:hover {
+      .Marker {
+        background-color: $secondaryColor;
+      }
+    }
+  }
+
+  &.loaded {
+    .LabelInputFieldWrapper {
+      left: 0;
+    }
+  }
+}

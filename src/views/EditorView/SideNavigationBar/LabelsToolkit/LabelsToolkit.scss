@@ -87,10 +87,14 @@
     box-sizing: border-box;
     height: 0;
     transition: height 0.3s ease-in-out;
+    overflow: hidden;
 
-    &.active {
-      //border-bottom: solid 1px $darkThemeSecondColor;
-    }
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
   }
 }
 
