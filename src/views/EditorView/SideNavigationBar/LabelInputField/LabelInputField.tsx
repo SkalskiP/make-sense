@@ -11,8 +11,10 @@ interface IProps {
     size: ISize;
     isActive: boolean;
     id: string;
-    value?: string;
-    options?: string[];
+    value: string;
+    options: string[];
+    onDelete: (id: string) => any;
+    onSelectLabel: (labelRectId: string, labelNameIndex: number) => any;
 }
 
 interface IState {
@@ -21,6 +23,7 @@ interface IState {
 }
 
 export class LabelInputField extends React.Component<IProps, IState> {
+    private dropdownOptionHeight: number = 30;
     private dropdownLabel: HTMLDivElement;
     private dropdown: HTMLDivElement;
 
@@ -72,27 +75,48 @@ export class LabelInputField extends React.Component<IProps, IState> {
         const clientRect = this.dropdownLabel.getBoundingClientRect();
         return {
             width: clientRect.width,
-            height: 150,
+            height: this.props.options.length * this.dropdownOptionHeight,
             top: clientRect.top + clientRect.height + 4,
             left: clientRect.left
         }
     };
 
+    private getDropdownOptions = () => {
+        const onClick = (index: number) => {
+            this.setState({isOpen: false});
+            window.removeEventListener("mousedown", this.closeDropdown)
+            this.props.onSelectLabel(this.props.id, index);
+        };
+
+        return this.props.options.map((option: string, index: number) => {
+            return <div
+                className="DropdownOption"
+                key={option}
+                style={{height: this.dropdownOptionHeight}}
+                onClick={() => onClick(index)}
+            >
+                {option}
+            </div>
+        })
+    };
+
     public render() {
+        const {size, id, value, onDelete} = this.props;
+
         return(
             <div
                 className={this.getClassName()}
                 style={{
-                    width: this.props.size.width,
-                    height: this.props.size.height,
+                    width: size.width,
+                    height: size.height,
                 }}
-                key={this.props.id}
+                key={id}
             >
                 <div
                     className="LabelInputFieldWrapper"
                     style={{
-                        width: this.props.size.width,
-                        height: this.props.size.height,
+                        width: size.width,
+                        height: size.height,
                     }}
                 >
                     <div className="Marker"/>
@@ -102,13 +126,15 @@ export class LabelInputField extends React.Component<IProps, IState> {
                                  ref={ref => this.dropdownLabel = ref}
                                  onClick={this.openDropdown}
                             >
-                                {this.props.value ? this.props.value : "Select label"}
-                                {this.state.isOpen && <div
-                                    className="Dropdown"
-                                    style={this.getDropdownStyle()}
-                                    ref={ref => this.dropdown = ref}
-                                />}
+                                {value ? value : "Select label"}
                             </div>
+                            {this.state.isOpen && <div
+                                className="Dropdown"
+                                style={this.getDropdownStyle()}
+                                ref={ref => this.dropdown = ref}
+                            >
+                                {this.getDropdownOptions()}
+                            </div>}
                         </div>
                         <div className="ContentWrapper">
                             <ImageButton
@@ -120,6 +146,7 @@ export class LabelInputField extends React.Component<IProps, IState> {
                                 image={"ico/remove.png"}
                                 imageAlt={"remove_rect"}
                                 size={{width: 30, height: 30}}
+                                onClick={() => onDelete(id)}
                             />
                         </div>
                     </div>

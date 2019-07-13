@@ -63,12 +63,6 @@
         align-items: center;
         align-content: space-between;
 
-        .Dropdown {
-          position: fixed;
-          z-index: 1000;
-          background-color: $darkThemeSecondColor;
-        }
-
         &:hover {
           background-color: rgba(0, 0, 0, 0.05);
 
@@ -87,6 +81,40 @@
           z-index: 100;
           display: block;
           content: "";
+        }
+      }
+
+      .Dropdown {
+        position: fixed;
+        z-index: 1000;
+        background-color: $darkThemeSecondColor;
+
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+
+        .DropdownOption {
+          align-self: stretch;
+
+          display: flex;
+          flex-direction: row;
+          flex-wrap: nowrap;
+          justify-content: flex-start;
+          align-items: center;
+          align-content: flex-start;
+
+          font-size: 14px;
+          cursor: pointer;
+          user-select: none;
+          padding: 0 5px;
+          color: white;
+
+          &:hover {
+            background-color: $darkThemeThirdColor;
+          }
         }
       }
 

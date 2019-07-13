@@ -10,6 +10,7 @@ import {ImageData, LabelRect} from "../store/editor/types";
 import uuidv1 from 'uuid/v1';
 import {updateImageDataById} from "../store/editor/actionCreators";
 import {ImageRepository} from "./ImageRepository";
+import {PointUtil} from "../utils/PointUtil";
 
 export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
@@ -85,7 +86,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
 
-            if (isOverImage && this.labelingInProgress) {
+            if (isOverImage && this.labelingInProgress && !PointUtil.equals(this.startPoint, this.mousePosition)) {
                 const scale = this.getImageScale();
 
                 const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
