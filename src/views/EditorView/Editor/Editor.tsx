@@ -15,12 +15,14 @@ import {RectUtil} from "../../../utils/RectUtil";
 import {Settings} from "../../../settings/Settings";
 import {DrawUtil} from "../../../utils/DrawUtil";
 import {IPoint} from "../../../interfaces/IPoint";
+import {PopupWindowType} from "../../../data/PopupWindowType";
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
     activeLabelType: LabelType;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
+    activePopupType: PopupWindowType;
 }
 
 interface IState {
@@ -76,7 +78,7 @@ class Editor extends React.Component<IProps, IState> {
     private mouseMoveEventBus = (event: MouseEvent) => {
         this.primaryRenderingEngine.mouseMoveHandler(event);
         this.supportRenderingEngine && this.supportRenderingEngine.mouseMoveHandler(event);
-        this.updateMousePositionIndicator(event);
+        !this.props.activePopupType && this.updateMousePositionIndicator(event);
         this.fullCanvasRender();
     };
 
@@ -110,8 +112,10 @@ class Editor extends React.Component<IProps, IState> {
     private fullCanvasRender() {
         DrawUtil.clearCanvas(this.canvas);
         this.primaryRenderingEngine.drawImage(this.state.image);
-        this.primaryRenderingEngine.render();
-        this.supportRenderingEngine && this.supportRenderingEngine.render();
+        if (!this.props.activePopupType) {
+            this.primaryRenderingEngine.render();
+            this.supportRenderingEngine && this.supportRenderingEngine.render();
+        }
     }
 
     private updateMousePositionIndicator = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) => {
@@ -220,7 +224,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.editor.activeLabelType
+    activeLabelType: state.editor.activeLabelType,
+    activePopupType: state.general.activePopupType
 });
 
 export default connect(
