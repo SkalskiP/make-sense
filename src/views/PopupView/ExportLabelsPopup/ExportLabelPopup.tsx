@@ -8,6 +8,7 @@ import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {ExportFormatType} from "../../../data/ExportFormatType";
 import {ExportFormatData, IExportFormat} from "../../../data/ExportFormatData";
+import {RectLabelsExporter} from "../../../logic/RectLabelsExporter";
 
 interface IProps {
     imagesData: ImageData[],
@@ -16,6 +17,13 @@ interface IProps {
 
 const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType}) => {
     const [exportFormatType, setExportFormatType] = useState(null);
+
+    const onAccept = () => {
+        if (exportFormatType) {
+            RectLabelsExporter.export(exportFormatType);
+            updateActivePopupType(null);
+        }
+    };
 
     const onReject = () => {
         updateActivePopupType(null);
@@ -56,7 +64,7 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
             title={"Export your labels"}
             renderContent={renderContent}
             acceptLabel={"Export"}
-            onAccept={() => null}
+            onAccept={onAccept}
             rejectLabel={"I'm not ready yet"}
             onReject={onReject}
         />
