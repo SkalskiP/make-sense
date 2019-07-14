@@ -31,6 +31,6 @@ We don't store your images, because we don't send them anywhere in the first pla
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
 
-[1]: makesense.ai
+[1]: http://makesense.ai
 [2]: ./LICENSE
 [3]: https://twitter.com/PiotrSkalski92
