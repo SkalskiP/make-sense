@@ -21,6 +21,7 @@
     "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
     "react-spinners": "^0.5.4",
+    "redux": "^4.0.4",
     "typescript": "3.5.2",
     "uuid": "^3.3.2"
   },
