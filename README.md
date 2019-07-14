@@ -12,7 +12,7 @@
 
 Our application is being actively expanded. See what improvements we are planning for you in the future. If you have an idea for a new functionality, please contact us on [Twitter][3] or create an issue where you can describe your concept.
 
-* Labelling objects using polygons and faceless curves
+* Labelling objects using polygons and Bézier curves
 * Export labels in COCO JSON format
 * Support basic image operations like crop and resize
 * Converting video to image frames
