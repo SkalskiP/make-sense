@@ -7,7 +7,7 @@ import {ImageRepository} from "../../../../logic/ImageRepository";
 import {updateImageDataById} from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import {FileUtils} from "../../../../utils/FileUtils";
+import {FileUtil} from "../../../../utils/FileUtil";
 import classNames from "classnames";
 import {ISize} from "../../../../interfaces/ISize";
 import {RectUtil} from "../../../../utils/RectUtil";
@@ -65,7 +65,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
         else {
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            FileUtils.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
         }
     };
 

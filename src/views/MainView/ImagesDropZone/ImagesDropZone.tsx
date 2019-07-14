@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {addImageData, updateActiveImageIndex, updateProjectType} from "../../../store/editor/actionCreators";
 import {AppState} from "../../../store";
 import {ProjectType} from "../../../data/ProjectType";
-import {FileUtils} from "../../../utils/FileUtils";
+import {FileUtil} from "../../../utils/FileUtil";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 
@@ -27,7 +27,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
         if (acceptedFiles.length > 0) {
             updateProjectType(projectType);
             updateActiveImageIndex(0);
-            addImageData(acceptedFiles.map((fileData:File) => FileUtils.mapFileDataToImageData(fileData)));
+            addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
             updateActivePopupType(PopupWindowType.LOAD_LABELS);
         }
     };

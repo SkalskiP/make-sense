@@ -7,7 +7,7 @@ import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
-import {FileUtils} from "../../../utils/FileUtils";
+import {FileUtil} from "../../../utils/FileUtil";
 
 interface IProps {
     updateActiveLabelIndex: (activeLabelIndex: number) => any;
@@ -23,7 +23,7 @@ const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelN
         multiple: false,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length === 1) {
-                FileUtils.loadLabelsList(acceptedFiles[0], onSuccess, onFailure);
+                FileUtil.loadLabelsList(acceptedFiles[0], onSuccess, onFailure);
             }
         }
     });

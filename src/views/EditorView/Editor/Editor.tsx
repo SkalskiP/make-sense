@@ -2,7 +2,7 @@ import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
 import {ImageData} from "../../../store/editor/types";
-import {FileUtils} from "../../../utils/FileUtils";
+import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
@@ -92,7 +92,7 @@ class Editor extends React.Component<IProps, IState> {
         }
         else {
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            FileUtils.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
         }
     };
 

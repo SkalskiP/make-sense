@@ -1,7 +1,7 @@
 import {ImageData} from "../store/editor/types";
 import uuidv1 from 'uuid/v1';
 
-export class FileUtils {
+export class FileUtil {
     public static mapFileDataToImageData(fileData: File): ImageData {
         return {
             id: uuidv1(),
