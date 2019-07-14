@@ -23,16 +23,16 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
                     </div>
                 </div>
                 <div className="NavigationBarGroupWrapper">
-                    <UnderlineTextButton
-                        label={"LOAD LABELS"}
-                        under={true}
-                        onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}
-                    />
-                    <UnderlineTextButton
-                        label={"LOAD IMAGES"}
-                        under={true}
-                        onClick={() => updateActivePopupType(PopupWindowType.LOAD_IMAGES)}
-                    />
+                    {/*<UnderlineTextButton*/}
+                        {/*label={"LOAD LABELS"}*/}
+                        {/*under={true}*/}
+                        {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}*/}
+                    {/*/>*/}
+                    {/*<UnderlineTextButton*/}
+                        {/*label={"LOAD IMAGES"}*/}
+                        {/*under={true}*/}
+                        {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_IMAGES)}*/}
+                    {/*/>*/}
                     <UnderlineTextButton
                         label={"EXPORT LABELS"}
                         under={true}

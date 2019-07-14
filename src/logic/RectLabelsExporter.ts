@@ -4,6 +4,7 @@ import {ImageRepository} from "./ImageRepository";
 import {store} from "../index";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import moment from 'moment';
 
 export class RectLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -25,10 +26,10 @@ export class RectLabelsExporter {
                 zip.file(fileName, fileContent);
             }
         });
-
+        const date: string = moment().format('YYYYMMDDhhmmss');
         zip.generateAsync({type:"blob"})
             .then(function(content) {
-                saveAs(content, "labels.zip");
+                saveAs(content, "labels_yolo_" + date + ".zip");
             });
     }
 

@@ -6,7 +6,7 @@ export interface IEditorFeature {
 
 export const EditorFeatureData: IEditorFeature[] = [
     {
-        displayText: "Open source and free to use under MIT license",
+        displayText: "Open source and free to use under GPLv3 license",
         imageSrc: "img/open-source.png",
         imageAlt: "open-source",
     },
@@ -26,7 +26,7 @@ export const EditorFeatureData: IEditorFeature[] = [
         imageAlt: "labels",
     },
     {
-        displayText: "Support multiple output file formats - YOLO, COCO",
+        displayText: "Support output file formats like YOLO, CSV",
         imageSrc: "img/file.png",
         imageAlt: "file",
     },
