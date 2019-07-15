@@ -12,6 +12,9 @@ export class RectLabelsExporter {
             case ExportFormatType.YOLO:
                 RectLabelsExporter.exportAsYOLO();
                 break;
+            case ExportFormatType.CSV:
+                RectLabelsExporter.exportAsCSV();
+                break;
             default:
                 return;
         }
@@ -47,6 +50,41 @@ export class RectLabelsExporter {
                 (labelRect.rect.height / image.height).toFixed(6) + ""
             ];
             return labelFields.join(" ")
+        });
+        return labelRectsString.join("\n");
+    }
+
+    private static exportAsCSV(): void {
+        const content: string = store.getState().editor.imagesData
+            .map((imageData: ImageData) => {
+                return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
+            .filter((imageLabelData: string) => {
+                return !!imageLabelData})
+            .join("\n");
+
+        const date: string = moment().format('YYYYMMDDhhmmss');
+        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "labels_yolo_" + date + ".csv");
+    }
+
+    private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
+        if (imageData.labelRects.length === 0 || !imageData.loadStatus)
+            return null;
+
+        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+        const labelNamesList: string[] = store.getState().editor.labelNames;
+        const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
+            const labelFields = [
+                labelNamesList[labelRect.labelIndex],
+                Math.round(labelRect.rect.x) + "",
+                Math.round(labelRect.rect.y) + "",
+                Math.round(labelRect.rect.width) + "",
+                Math.round(labelRect.rect.height) + "",
+                imageData.fileData.name,
+                image.width + "",
+                image.height + ""
+            ];
+            return labelFields.join(",")
         });
         return labelRectsString.join("\n");
     }
