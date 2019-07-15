@@ -26,7 +26,13 @@ Our application is being actively developed. If you have an idea for a new funct
 * A .zip package containing files in YOLO format
 
 <details><summary><i>example of file in YOLO format</i></summary><p>
-    
+
+`label_index rel_rect_center_x rel_rect_center_y rel_rect_width rel_rect_height`  
+`label_index` - index of the selected label  
+`rel_rect_center_x` - horizontal position of the centre of the rect in relation to overall image width  
+`rel_rect_center_y` - vertical position of the centre of the rect in relation to overall image height  
+`rel_rect_width` - rect width in relation to overall image width  
+`rel_rect_height` - rect height in relation to overall image height  
 ```
 1 0.404528 0.543963 0.244094 0.727034
 2 0.610236 0.494751 0.188976 0.437008
@@ -37,8 +43,17 @@ Our application is being actively developed. If you have an idea for a new funct
 * Single CSV file
 
 <details><summary><i>example of CSV file</i></summary><p>
+    
+`label_name,rect_left,rect_top,rect_width,rect_height,image_name,image_width,image_height`  
 
 ```
+banana,491,164,530,614,000000.jpg,1280,960
+banana,462,245,466,353,000001.jpg,1280,960
+banana,542,477,587,375,000001.jpg,1280,960
+banana,636,109,561,695,000007.jpg,1280,960
+kiwi,198,477,317,251,000007.jpg,1280,960
+kiwi,558,423,219,222,000008.jpg,1280,960
+kiwi,758,360,252,236,000008.jpg,1280,960
 ```
 </p></details>
 
