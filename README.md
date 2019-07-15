@@ -6,11 +6,11 @@
 
 ## Description
 
-[makesense.ai][1] is a free to use online tool for labelling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready.It is perfect for small computer vision deeploearning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded to your computer in one of multiple supported formats.
+[makesense.ai][1] is a free to use online tool for labelling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deeploearning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded  in one of multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
 
 ## Road Map
 
-Our application is being actively expanded. See what improvements we are planning for you in the future. If you have an idea for a new functionality, please contact us on [Twitter][3] or create an issue where you can describe your concept.
+Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
 * Labelling objects using polygons and Bézier curves
 * Export labels in COCO JSON format
@@ -23,6 +23,25 @@ Our application is being actively expanded. See what improvements we are plannin
 
 ## Supported Output Formats
 
+* A .zip package containing files in YOLO format
+
+<details><summary><i>example of file in YOLO format</i></summary><p>
+    
+```
+1 0.404528 0.543963 0.244094 0.727034
+2 0.610236 0.494751 0.188976 0.437008
+1 0.754921 0.791339 0.354331 0.413386
+```
+</p></details>
+
+* Single CSV file
+
+<details><summary><i>example of CSV file</i></summary><p>
+
+```
+```
+</p></details>
+
 ## Privacy
 
 We don't store your images, because we don't send them anywhere in the first place.
@@ -30,6 +49,8 @@ We don't store your images, because we don't send them anywhere in the first pla
 ## License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
+
+Copyright (c) 2019-present, Piotr Skalski
 
 [1]: http://makesense.ai
 [2]: ./LICENSE
