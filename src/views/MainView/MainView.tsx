@@ -85,14 +85,14 @@ const MainView: React.FC = () => {
     return (
         <div className={getClassName()}>
             <div className="Slider" id="lower">
-                <div className="Triangle">
-                    <div className="TriangleContent"/>
+                <div className="TriangleVertical">
+                    <div className="TriangleVerticalContent"/>
                 </div>
             </div>
 
             <div className="Slider" id="upper">
-                <div className="Triangle">
-                    <div className="TriangleContent"/>
+                <div className="TriangleVertical">
+                    <div className="TriangleVerticalContent"/>
                 </div>
             </div>
 
@@ -103,8 +103,8 @@ const MainView: React.FC = () => {
                 <div className="EditorFeaturesWrapper">
                     {getEditorFeatureTiles()}
                 </div>
-                <div className="Triangle">
-                    <div className="TriangleContent"/>
+                <div className="TriangleVertical">
+                    <div className="TriangleVerticalContent"/>
                 </div>
                 {projectInProgress && <TextButton
                     label={"Go Back"}

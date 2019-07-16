@@ -90,7 +90,7 @@
   width: 75%;
   height: 100%;
 
-  .TriangleContent{
+  .TriangleVerticalContent{
     background-color: rgba(0, 0, 0, 0.3);
   }
 }
@@ -166,7 +166,7 @@
   }
 }
 
-.Triangle {
+.TriangleVertical {
   width: 200px;
   height: 100%;
   position: absolute;
@@ -175,7 +175,7 @@
   background-color: transparent;
   overflow: hidden;
 }
-.TriangleContent{
+.TriangleVerticalContent{
   width: 200px;
   height: 100%;
   position: absolute;

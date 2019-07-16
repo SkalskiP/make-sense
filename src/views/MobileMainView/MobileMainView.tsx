@@ -17,7 +17,9 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
                 style={{width: size.width}}
             >
                 <div className="TopRow">
-
+                    <div className="TriangleHorizontal">
+                        <div className="TriangleHorizontalContent"/>
+                    </div>
                 </div>
                 <div className="BottomRow">
 

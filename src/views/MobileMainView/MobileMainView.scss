@@ -20,8 +20,28 @@
 
     .TopRow {
       align-self: stretch;
+      position: relative;
       height: 600px;
       background-color: $darkThemeSecondColor;
+
+      .TriangleHorizontal {
+        height: 200px;
+        width: 100%;
+        position: absolute;
+        bottom: -200px;
+        background-color: transparent;
+        overflow: hidden;
+
+        .TriangleHorizontalContent{
+          height: 200px;
+          width: 100%;
+          position: absolute;
+          left: 0;
+          top: -100px;
+          transform: skew(96deg) translateY(50%);
+          background-color: $darkThemeSecondColor;
+        }
+      }
     }
 
     .BottomRow {
