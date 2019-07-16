@@ -1,0 +1,32 @@
+@import '../../settings/_Settings';
+
+.MobileMainView {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+
+  background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
+
+  .MobileMainViewContent{
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+
+    .TopRow {
+      align-self: stretch;
+      height: 600px;
+      background-color: $darkThemeSecondColor;
+    }
+
+    .BottomRow {
+      align-self: stretch;
+      height: 500px;
+    }
+  }
+}

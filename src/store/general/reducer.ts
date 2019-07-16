@@ -4,7 +4,7 @@ import {Action} from "../Actions";
 const initialState: GeneralState = {
     windowSize: null,
     activePopupType: null,
-    imageScrollListPosition: 0
+    mobileDeviceData: null
 };
 
 export function generalReducer(
@@ -24,10 +24,10 @@ export function generalReducer(
                 activePopupType: action.payload.activePopupType
             }
         }
-        case Action.UPDATE_IMAGE_LIST_SCROLL_POSITION: {
+        case Action.UPDATE_MOBILE_DEVICE_DATA: {
             return {
                 ...state,
-                imageScrollListPosition: action.payload.imageScrollListPosition
+                mobileDeviceData: action.payload.mobileDeviceData
             }
         }
         default:

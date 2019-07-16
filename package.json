@@ -12,6 +12,7 @@
     "file-saver": "^2.0.2",
     "jszip": "^3.2.2",
     "lodash": "^4.17.11",
+    "mobile-detect": "^1.4.3",
     "moment": "^2.24.0",
     "node-sass": "^4.12.0",
     "react": "^16.8.6",

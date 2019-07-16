@@ -1,11 +1,12 @@
 import {ISize} from "../../interfaces/ISize";
 import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/PopupWindowType";
+import {MobileDeviceData} from "../../data/MobileDeviceData";
 
 export type GeneralState = {
     windowSize: ISize;
+    mobileDeviceData: MobileDeviceData;
     activePopupType: PopupWindowType;
-    imageScrollListPosition: number;
 }
 
 interface UpdateWindowSize {
@@ -22,13 +23,13 @@ interface UpdateActivePopupType {
     }
 }
 
-interface UpdateImageListScrollPosition {
-    type: typeof Action.UPDATE_IMAGE_LIST_SCROLL_POSITION;
+interface UpdateMobileDeviceData {
+    type: typeof Action.UPDATE_MOBILE_DEVICE_DATA;
     payload: {
-        imageScrollListPosition: number;
+        mobileDeviceData: MobileDeviceData;
     }
 }
 
 export type GeneralActionTypes = UpdateWindowSize
     | UpdateActivePopupType
-    | UpdateImageListScrollPosition
+    | UpdateMobileDeviceData

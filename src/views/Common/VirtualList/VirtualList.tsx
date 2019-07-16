@@ -11,7 +11,6 @@ interface IProps {
     childCount: number;
     childSize: ISize;
     childRender: (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => any;
-    initialScrollPosition?: number;
     overScanHeight?: number;
 }
 

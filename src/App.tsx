@@ -6,13 +6,18 @@ import {ProjectType} from "./data/ProjectType";
 import {AppState} from "./store";
 import {connect} from "react-redux";
 import PopupView from "./views/PopupView/PopupView";
+import {MobileDeviceData} from "./data/MobileDeviceData";
+import MobileMainView from "./views/MobileMainView/MobileMainView";
 
 interface IProps {
     projectType: ProjectType;
+    mobileDeviceData: MobileDeviceData;
 }
 
-const App: React.FC<IProps> = ({projectType}) => {
+const App: React.FC<IProps> = ({projectType, mobileDeviceData}) => {
     const selectRoute = () => {
+        if (!!mobileDeviceData.manufacturer && !!mobileDeviceData.os)
+            return <MobileMainView/>;
         if (!projectType)
             return <MainView/>;
         else
@@ -28,7 +33,8 @@ const App: React.FC<IProps> = ({projectType}) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectType: state.editor.projectType
+    projectType: state.editor.projectType,
+    mobileDeviceData: state.general.mobileDeviceData
 });
 
 export default connect(

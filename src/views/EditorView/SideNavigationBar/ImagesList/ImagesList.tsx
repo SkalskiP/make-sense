@@ -12,7 +12,6 @@ interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
     updateActiveImageIndex: (activeImageIndex: number) => any;
-    imageScrollListPosition: number;
 }
 
 interface IState {
@@ -74,7 +73,6 @@ class ImagesList extends React.Component<IProps, IState> {
                     childCount={this.props.imagesData.length}
                     childRender={this.renderImagePreview}
                     overScanHeight={200}
-                    initialScrollPosition={this.props.imageScrollListPosition}
                 />}
             </div>
         )
@@ -88,7 +86,6 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.editor.activeImageIndex,
     imagesData: state.editor.imagesData,
-    imageScrollListPosition: state.general.imageScrollListPosition
 });
 
 export default connect(
