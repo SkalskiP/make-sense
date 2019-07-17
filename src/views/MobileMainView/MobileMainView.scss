@@ -9,7 +9,7 @@
 
   background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
 
-  .MobileMainViewContent{
+  .MobileMainViewContent {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -18,9 +18,16 @@
     justify-items: center;
 
     .FirstStage {
+      position: relative;
       align-self: stretch;
-      height: 1000px;
+      height: 400px;
       background-color: $darkThemeSecondColor;
+
+      .TriangleHorizontal.Bottom {
+        .TriangleHorizontalContent {
+          transform: skew(80deg) translateY(50%);
+        }
+      }
     }
 
     .SecondStage {
@@ -71,7 +78,7 @@
     &.Bottom {
       bottom: -300px;
       .TriangleHorizontalContent {
-        top: -151px;
+        top: -150.1px;
       }
     }
 
@@ -96,6 +103,16 @@
     justify-content: space-between;
     align-items: center;
     align-content: space-between;
+
+    &.Show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    &.Hide {
+      opacity: 0;
+      pointer-events: none;
+    }
 
     .NavigationBarGroupWrapper {
       align-self: stretch;
