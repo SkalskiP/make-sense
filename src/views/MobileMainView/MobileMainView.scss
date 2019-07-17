@@ -10,7 +10,6 @@
   background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
 
   .MobileMainViewContent{
-
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -18,35 +17,121 @@
     align-items: center;
     justify-items: center;
 
-    .TopRow {
+    .FirstStage {
       align-self: stretch;
-      position: relative;
+      height: 1000px;
+      background-color: $darkThemeSecondColor;
+    }
+
+    .SecondStage {
+      align-self: stretch;
       height: 600px;
+    }
+
+    .ThirdStage {
+      position: relative;
+      align-self: stretch;
+      height: 400px;
       background-color: $darkThemeSecondColor;
 
-      .TriangleHorizontal {
-        height: 200px;
-        width: 100%;
-        position: absolute;
-        bottom: -200px;
-        background-color: transparent;
-        overflow: hidden;
+      .TriangleHorizontal.Top {
+        .TriangleHorizontalContent {
+          transform: skew(75deg);
+        }
+      }
 
-        .TriangleHorizontalContent{
-          height: 200px;
-          width: 100%;
-          position: absolute;
-          left: 0;
-          top: -100px;
-          transform: skew(96deg) translateY(50%);
-          background-color: $darkThemeSecondColor;
+      .TriangleHorizontal.Bottom {
+        .TriangleHorizontalContent {
+          transform: skew(97deg) translateY(50%);
         }
       }
     }
 
-    .BottomRow {
+    .FourthStage {
       align-self: stretch;
-      height: 500px;
+      height: 200px;
+    }
+  }
+
+  .TriangleHorizontal {
+    height: 300px;
+    width: 100%;
+    position: absolute;
+    background-color: transparent;
+    overflow: hidden;
+    pointer-events: none;
+
+    &.Top {
+      top: -300px;
+      .TriangleHorizontalContent {
+        bottom: -150px;
+      }
+    }
+
+    &.Bottom {
+      bottom: -300px;
+      .TriangleHorizontalContent {
+        top: -151px;
+      }
+    }
+
+    .TriangleHorizontalContent {
+      height: 300px;
+      width: 100%;
+      position: absolute;
+      left: 0;
+      background-color: $darkThemeSecondColor;
+    }
+  }
+
+  .MobileTopNavigationBar {
+    position: fixed;
+    height: 40px;
+    width: 100%;
+    z-index: 1000;
+    background-color: $darkThemeSecondColor;
+
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+    align-content: space-between;
+
+    .NavigationBarGroupWrapper {
+      align-self: stretch;
+      margin: 0 10px;
+
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+    }
+
+    .Header {
+      align-self: stretch;
+
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+
+      > img {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+      }
+
+      color: white;
+      font-weight: bolder;
+      user-select: none;
+    }
+
+    .TriangleHorizontal.Bottom {
+      .TriangleHorizontalContent {
+        transform: skew(94deg) translateY(50%);
+      }
     }
   }
 }
