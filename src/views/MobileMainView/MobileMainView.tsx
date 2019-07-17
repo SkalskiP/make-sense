@@ -5,6 +5,10 @@ import {ISize} from "../../interfaces/ISize";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import classNames from 'classnames'
+import {EditorFeatureData, IEditorFeature} from "../../data/EditorFeatureData";
+import {ISocialMedia, SocialMediaData} from "../../data/SocialMediaData";
+import Fade from "@material-ui/core/Fade";
+import {ImageButton} from "../Common/ImageButton/ImageButton";
 
 interface IProps {
     size: ISize;
@@ -25,6 +29,35 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         setScrollPosition(value.scrollTop);
     };
 
+    const getEditorFeatureTiles = (features: IEditorFeature[]) => {
+        return features.map((data:IEditorFeature) => {
+            return <div
+                className="EditorFeaturesTiles"
+                key={data.displayText}
+            >
+                <img
+                    alt={data.imageAlt}
+                    src={data.imageSrc}
+                />
+                <div className="EditorFeatureLabel">
+                    {data.displayText}
+                </div>
+            </div>
+        });
+    };
+
+    const getSocialMediaButtons = (size:ISize) => {
+        return SocialMediaData.map((data:ISocialMedia, index: number) => {
+            return <ImageButton
+                key={index}
+                size={size}
+                image={data.imageSrc}
+                imageAlt={data.imageAlt}
+                href={data.href}
+            />
+        });
+    };
+
     const topNavigationBar = <div className={getClassName()}>
         <div className="NavigationBarGroupWrapper">
             <div className="Header">
@@ -38,14 +71,18 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
     </div>;
 
     const firstStage = <div className="FirstStage">
+        <img alt={"main-logo"} src={"img/main-image-color.png"}/>
         <div className="TriangleHorizontal Bottom">
             <div className="TriangleHorizontalContent"/>
         </div>
     </div>;
 
-    const secondStage = <div className="SecondStage"/>;
+    const secondStage = <div className="SecondStage">
+        {getEditorFeatureTiles(EditorFeatureData.slice(0, 3))}
+    </div>;
 
     const thirdStage = <div className="ThirdStage">
+        {getEditorFeatureTiles(EditorFeatureData.slice(3, 6))}
         <div className="TriangleHorizontal Top">
             <div className="TriangleHorizontalContent"/>
         </div>
@@ -54,7 +91,14 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         </div>
     </div>;
 
-    const fourthStage = <div className="FourthStage"/>;
+    const fourthStage = <div className="FourthStage">
+        <div className="Message">
+            Due to the small size of the screen we do not support our editor on mobile devices. Check what you missed and visit us from a desktop.
+        </div>
+        <div className="SocialMediaWrapper">
+            {getSocialMediaButtons({width: 40, height: 40})}
+        </div>
+    </div>;
 
     return(<div className="MobileMainView">
         {topNavigationBar}

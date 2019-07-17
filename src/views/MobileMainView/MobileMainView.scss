@@ -16,12 +16,25 @@
     justify-content: center;
     align-items: center;
     justify-items: center;
+    overflow: hidden;
 
     .FirstStage {
       position: relative;
       align-self: stretch;
       height: 400px;
       background-color: $darkThemeSecondColor;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      justify-items: center;
+
+      img {
+        max-width: 300px;
+        max-height: 300px;
+      }
 
       .TriangleHorizontal.Bottom {
         .TriangleHorizontalContent {
@@ -32,14 +45,23 @@
 
     .SecondStage {
       align-self: stretch;
-      height: 600px;
+      padding-top: 100px;
+      padding-bottom: 100px;
+
+      .EditorFeaturesTiles {
+        color: black;
+
+        img {
+          filter: none;
+        }
+      }
     }
 
     .ThirdStage {
       position: relative;
       align-self: stretch;
-      height: 400px;
       background-color: $darkThemeSecondColor;
+      padding-bottom: 50px;
 
       .TriangleHorizontal.Top {
         .TriangleHorizontalContent {
@@ -56,12 +78,41 @@
 
     .FourthStage {
       align-self: stretch;
-      height: 200px;
+      padding-top: 100px;
+      padding-bottom: 50px;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      justify-items: center;
+
+      .Message {
+        width: 80%;
+        max-width: 400px;
+        margin-bottom: 50px;
+
+        text-align: center;
+        user-select: none;
+      }
+
+      .SocialMediaWrapper {
+        width: 100%;
+        max-width: 200px;
+
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        align-items: center;
+        justify-items: center;
+      }
     }
   }
 
   .TriangleHorizontal {
-    height: 300px;
+    height: 600px;
     width: 100%;
     position: absolute;
     background-color: transparent;
@@ -69,21 +120,21 @@
     pointer-events: none;
 
     &.Top {
-      top: -300px;
+      top: -600px;
       .TriangleHorizontalContent {
-        bottom: -150px;
+        bottom: -300px;
       }
     }
 
     &.Bottom {
-      bottom: -300px;
+      bottom: -600px;
       .TriangleHorizontalContent {
-        top: -150.1px;
+        top: -300.1px;
       }
     }
 
     .TriangleHorizontalContent {
-      height: 300px;
+      height: 600px;
       width: 100%;
       position: absolute;
       left: 0;
@@ -93,7 +144,7 @@
 
   .MobileTopNavigationBar {
     position: fixed;
-    height: 40px;
+    height: 50px;
     width: 100%;
     z-index: 1000;
     background-color: $darkThemeSecondColor;
@@ -135,11 +186,12 @@
       align-content: center;
 
       > img {
-        width: 25px;
-        height: 25px;
-        margin-right: 5px;
+        width: 35px;
+        height: 35px;
+        margin-right: 10px;
       }
 
+      font-size: 18px;
       color: white;
       font-weight: bolder;
       user-select: none;

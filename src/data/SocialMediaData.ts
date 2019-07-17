@@ -24,7 +24,7 @@ export const SocialMediaData: ISocialMedia[] = [
         tooltipMessage: "Read my AI content on Medium",
     },
     {
-        displayName: "Twitter",
+        displayName: "Patreon",
         imageSrc: "/img/patreon-logo.png",
         imageAlt: "Patreon Logo",
         href: Settings.PATREON_URL,
