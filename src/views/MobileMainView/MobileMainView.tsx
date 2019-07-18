@@ -7,7 +7,6 @@ import {connect} from "react-redux";
 import classNames from 'classnames'
 import {EditorFeatureData, IEditorFeature} from "../../data/EditorFeatureData";
 import {ISocialMedia, SocialMediaData} from "../../data/SocialMediaData";
-import Fade from "@material-ui/core/Fade";
 import {ImageButton} from "../Common/ImageButton/ImageButton";
 
 interface IProps {

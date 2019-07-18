@@ -28,7 +28,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
             updateProjectType(projectType);
             updateActiveImageIndex(0);
             addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
-            updateActivePopupType(PopupWindowType.LOAD_LABELS);
+            updateActivePopupType(PopupWindowType.LOAD_LABEL_NAMES);
         }
     };
 

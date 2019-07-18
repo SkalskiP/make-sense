@@ -14,7 +14,7 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
 
     const selectPopup = () => {
         switch (activePopupType) {
-            case PopupWindowType.LOAD_LABELS:
+            case PopupWindowType.LOAD_LABEL_NAMES:
                 return <LoadLabelsPopup/>;
             case PopupWindowType.EXPORT_LABELS:
                 return <ExportLabelPopup/>;

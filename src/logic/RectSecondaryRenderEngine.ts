@@ -27,7 +27,6 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         this.canvas = canvas;
         this.imageRect = imageRect;
         this.canvas.addEventListener("mousedown", this.mouseDownHandler);
-        window.addEventListener("mouseup", this.mouseUpHandler);
     }
 
     public render() {
@@ -67,7 +66,6 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
 
     public unmount() {
         this.canvas.removeEventListener("mousedown", this.mouseDownHandler);
-        window.removeEventListener("mouseup", this.mouseUpHandler);
     }
 
     private mouseDownHandler = (event: any) => {
@@ -81,7 +79,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         }
     };
 
-    private mouseUpHandler = (event: any) => {
+    public mouseUpHandler = (event: MouseEvent) => {
         if (!!this.imageRect) {
             const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);

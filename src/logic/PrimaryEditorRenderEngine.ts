@@ -22,6 +22,10 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
         this.mousePosition = this.getMousePositionOnCanvasFromEvent(event);
     }
 
+    public mouseUpHandler(event: MouseEvent): void {
+        this.mousePosition = this.getMousePositionOnCanvasFromEvent(event);
+    }
+
     public render(): void {
         this.drawCrossHair();
     }
