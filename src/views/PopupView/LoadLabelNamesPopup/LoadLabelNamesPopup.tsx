@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import './LoadLabelsPopup.scss'
+import './LoadLabelNamesPopup.scss'
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateActiveLabelIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
@@ -15,9 +15,10 @@ interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
 }
 
-const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
+const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
     const [labelsList, setLabelsList] = useState([]);
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
+
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: 'text/plain',
         multiple: false,
@@ -46,7 +47,7 @@ const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelN
     };
 
     const onReject = () => {
-        updateActivePopupType(null);
+        updateActivePopupType(PopupWindowType.INSERT_LABEL_NAMES);
     };
 
     const getDropZoneContent = () => {
@@ -82,7 +83,7 @@ const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelN
             <div className="Message">
                 Before you start, please load a text file with a list of labels you are planning to use. The names of
                 each label should be separated by new line. If you don't have a prepared file, no problem. You can
-                create your own list during the labeling process.
+                create your own list now.
             </div>
             <div {...getRootProps({className: 'DropZone'})}>
                 {getDropZoneContent()}
@@ -94,9 +95,10 @@ const LoadLabelsPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelN
         <GenericYesNoPopup
             title={"Load file with labels description"}
             renderContent={renderContent}
-            acceptLabel={"Load"}
+            acceptLabel={"Start"}
             onAccept={onAccept}
-            rejectLabel={"Create along the way"}
+            disableAcceptButton={labelsList.length === 0}
+            rejectLabel={"Create labels list"}
             onReject={onReject}
         />
     );
@@ -113,4 +115,4 @@ const mapStateToProps = (state: AppState) => ({});
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LoadLabelsPopup);
+)(LoadLabelNamesPopup);

@@ -3,8 +3,9 @@ import './PopupView.scss';
 import {PopupWindowType} from "../../data/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
-import LoadLabelsPopup from "./LoadLabelsPopup/LoadLabelsPopup";
+import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
 import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
+import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -18,6 +19,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <LoadLabelsPopup/>;
             case PopupWindowType.EXPORT_LABELS:
                 return <ExportLabelPopup/>;
+            case PopupWindowType.INSERT_LABEL_NAMES:
+                return <InsertLabelNamesPopup/>;
             default:
                 return null;
         }

@@ -50,3 +50,17 @@
     }
   }
 }
+
+.TextButton {
+  &.disabled {
+    box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 2px inset;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 2px inset;
+      color: rgba(0, 0, 0, 0.5);
+      background-color: transparent;
+    }
+  }
+}

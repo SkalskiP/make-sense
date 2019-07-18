@@ -3,15 +3,31 @@ import './GenericYesNoPopup.scss'
 import {TextButton} from "../../Common/TextButton/TextButton";
 
 interface IProps {
-    title: string
+    title: string;
     renderContent: () => any;
-    acceptLabel: string
-    onAccept: () => any
-    rejectLabel: string
-    onReject: () => any
+    acceptLabel: string;
+    onAccept: () => any;
+    skipAcceptButton?: boolean;
+    disableAcceptButton?: boolean;
+    rejectLabel: string;
+    onReject: () => any;
+    skipRejectButton?: boolean;
+    disableRejectButton?: boolean;
 }
 
-export const GenericYesNoPopup: React.FC<IProps> = ({title, renderContent, acceptLabel, onAccept, rejectLabel, onReject}) => {
+export const GenericYesNoPopup: React.FC<IProps> = (
+    {
+        title,
+        renderContent,
+        acceptLabel,
+        onAccept,
+        skipAcceptButton,
+        disableAcceptButton,
+        rejectLabel,
+        onReject,
+        skipRejectButton,
+        disableRejectButton
+    }) => {
     return (
         <div className="GenericYesNoPopup">
             <div className="Header">
@@ -21,16 +37,18 @@ export const GenericYesNoPopup: React.FC<IProps> = ({title, renderContent, accep
                 {renderContent()}
             </div>
             <div className="Footer">
-                <TextButton
+                {!skipAcceptButton && <TextButton
                     label={!!acceptLabel ? acceptLabel : "YES"}
                     onClick={onAccept}
                     externalClassName={"accept"}
-                />
-                <TextButton
+                    isDisabled={disableAcceptButton}
+                />}
+                {!skipRejectButton && <TextButton
                     label={!!rejectLabel ? rejectLabel : "NO, THANKS"}
                     onClick={onReject}
                     externalClassName={"reject"}
-                />
+                    isDisabled={disableRejectButton}
+                />}
             </div>
         </div>
     )
