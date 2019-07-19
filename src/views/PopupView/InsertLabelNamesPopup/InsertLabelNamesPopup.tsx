@@ -8,6 +8,8 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
+import {ImageButton} from "../../Common/ImageButton/ImageButton";
+import uuidv1 from 'uuid/v1';
 
 interface IProps {
     updateActiveLabelIndex: (activeLabelIndex: number) => any;
@@ -16,7 +18,31 @@ interface IProps {
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
-    const onAccept = () => {};
+    const [labelNames, setLabelNames] = useState({});
+
+    const addNew = () => {
+        const newLabelNames = {...labelNames, [uuidv1()]: ""};
+        setLabelNames(newLabelNames);
+    };
+
+    const labelInputs = Object.keys(labelNames).map((key: string) => {
+        return <TextInput
+            key={key}
+            isPassword={false}
+            onChange={(value: string) => onChange(key, value)}
+        />
+    });
+
+    const onChange = (key: string, value: string) => {
+        const newLabelNames = {...labelNames, [key]: value};
+        setLabelNames(newLabelNames);
+    };
+
+    const onAccept = () => {
+        const labelNamesList: string[] = Object.values(labelNames).filter((value => !!value)) as string[];
+        updateLabelNamesList(labelNamesList);
+        updateActivePopupType(null);
+    };
 
     const onReject = () => {
         updateActivePopupType(PopupWindowType.LOAD_LABEL_NAMES);
@@ -25,81 +51,26 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
     const renderContent = () => {
         return(<div className="InsertLabelNamesPopup">
             <div className="LeftContainer">
-
+                <ImageButton
+                    image={"ico/plus.png"}
+                    imageAlt={"plus"}
+                    size={{width: 40, height: 40}}
+                    onClick={addNew}
+                />
             </div>
             <div className="RightContainer">
-                <Scrollbars>
-                    <div
-                        className="InsertLabelNamesPopupContent"
-                    >
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-                        <TextInput
-                            key={"1"}
-                            isPassword={false}
-                            onChange={() => {}}
-                        />
-
-                    </div>
-                </Scrollbars>
+                <div className="Message">
+                    Enter below the labels names you want to use in your projections. Use + to add another empty text field.
+                </div>
+                <div className="LabelsContainer">
+                    <Scrollbars>
+                        <div
+                            className="InsertLabelNamesPopupContent"
+                        >
+                            {labelInputs}
+                        </div>
+                    </Scrollbars>
+                </div>
             </div>
         </div>);
     };

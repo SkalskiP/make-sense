@@ -2,7 +2,7 @@
 
 $secondary-color: black;
 $main-color: transparent;
-$width: 350px;
+$width: 320px;
 
 * {
   box-sizing: border-box;
@@ -63,7 +63,7 @@ input {
 }
 
 .Bar {
-  background: $secondaryColor;
+  background: white;
   content: '';
   width: $width;
   height: 1px;
