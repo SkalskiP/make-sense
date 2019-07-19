@@ -52,7 +52,7 @@
     align-items: center;
 
     .TextButton {
-      width: 137px;
+      width: calc(50% - 3px);
       display: flex;
       flex-direction: row;
       flex-wrap: nowrap;

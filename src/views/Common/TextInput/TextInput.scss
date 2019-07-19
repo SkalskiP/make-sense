@@ -2,7 +2,7 @@
 
 $secondary-color: black;
 $main-color: transparent;
-$width: 400px;
+$width: 350px;
 
 * {
   box-sizing: border-box;
@@ -10,10 +10,9 @@ $width: 400px;
 
 .TextInput {
   width: 100%;
-  height: $width/5;
+  height: $width/6;
   overflow: hidden;
   position: relative;
-  margin-bottom: 15px;
 }
 
 label {

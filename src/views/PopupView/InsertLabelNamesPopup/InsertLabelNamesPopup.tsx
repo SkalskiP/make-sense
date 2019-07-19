@@ -6,6 +6,8 @@ import {updateActiveLabelIndex, updateLabelNamesList} from "../../../store/edito
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
+import Scrollbars from 'react-custom-scrollbars';
+import TextInput from "../../Common/TextInput/TextInput";
 
 interface IProps {
     updateActiveLabelIndex: (activeLabelIndex: number) => any;
@@ -21,7 +23,24 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
     };
 
     const renderContent = () => {
-        return(<div className="InsertLabelNamesPopupContent"/>);
+        return(<div className="InsertLabelNamesPopup">
+            <Scrollbars>
+                <div
+                    className="InsertLabelNamesPopupContent"
+                >
+                    <TextInput
+                        key={"1"}
+                        isPassword={false}
+                        onChange={() => {}}
+                    />
+                    <TextInput
+                        key={"1"}
+                        isPassword={false}
+                        onChange={() => {}}
+                    />
+                </div>
+            </Scrollbars>
+        </div>);
     };
 
     return(

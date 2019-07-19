@@ -154,6 +154,16 @@
   align-items: center;
   align-content: center;
 
+  .TextButton {
+    box-shadow: black 0 0 0 2px inset;
+    color: black;
+
+    &:hover {
+      background-color: black;
+      color: white;
+    }
+  }
+
   .ImagesDropZone {
     overflow: hidden;
     width: 0;
