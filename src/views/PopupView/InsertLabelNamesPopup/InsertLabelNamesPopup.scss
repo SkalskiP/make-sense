@@ -1,11 +1,37 @@
+@import '../../../settings/Settings';
+
 .InsertLabelNamesPopup {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
   align-content: center;
 
   align-self: stretch;
-  height: 500px;
+  flex: 1;
+
+  .LeftContainer {
+    width: 50px;
+    align-self: stretch;
+    border-right: solid 1px $darkThemeFirstColor;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    padding: 20px 0;
+  }
+
+  .RightContainer {
+    align-self: stretch;
+    flex: 1;
+
+    .InsertLabelNamesPopupContent {
+      margin-left: 40px;
+    }
+  }
 }

@@ -105,7 +105,7 @@
 
 .LeftColumn {
   position: relative;
-  background-color: $darkThemeSecondColor;
+  background-color: $darkThemeFirstColor;
   padding: 20px;
   z-index: 100;
 
@@ -192,7 +192,7 @@
   left: 0;
   top: 0;
   transform: skew(-6deg) translateX(-50%);
-  background-color: $darkThemeSecondColor;
+  background-color: $darkThemeFirstColor;
 }
 
 .EditorFeaturesTiles {

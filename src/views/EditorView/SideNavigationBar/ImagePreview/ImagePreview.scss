@@ -11,16 +11,16 @@
   align-items: center;
   align-content: center;
 
-  border-bottom: solid 1px $darkThemeSecondColor;
+  border-bottom: solid 1px $darkThemeFirstColor;
   &:nth-child(odd) {
-    border-right: solid 1px $darkThemeSecondColor;
+    border-right: solid 1px $darkThemeFirstColor;
   }
 
   .Foreground {
     position: absolute;
     z-index: 100;
     transition: transform 0.3s;
-    border: solid 1px $darkThemeFirstColor;
+    border: solid 1px $darkThemeSecondColor;
     box-sizing: border-box;
   }
 

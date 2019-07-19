@@ -24,22 +24,83 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
 
     const renderContent = () => {
         return(<div className="InsertLabelNamesPopup">
-            <Scrollbars>
-                <div
-                    className="InsertLabelNamesPopupContent"
-                >
-                    <TextInput
-                        key={"1"}
-                        isPassword={false}
-                        onChange={() => {}}
-                    />
-                    <TextInput
-                        key={"1"}
-                        isPassword={false}
-                        onChange={() => {}}
-                    />
-                </div>
-            </Scrollbars>
+            <div className="LeftContainer">
+
+            </div>
+            <div className="RightContainer">
+                <Scrollbars>
+                    <div
+                        className="InsertLabelNamesPopupContent"
+                    >
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+                        <TextInput
+                            key={"1"}
+                            isPassword={false}
+                            onChange={() => {}}
+                        />
+
+                    </div>
+                </Scrollbars>
+            </div>
         </div>);
     };
 

@@ -1,3 +1,5 @@
+@import '../../../settings/Settings';
+
 .LoadLabelsPopupContent {
   display: flex;
   flex-direction: column;
@@ -5,10 +7,12 @@
   justify-content: center;
   align-items: center;
   align-content: center;
+  padding: 30px 40px;
+  flex: 1;
 
   .Message {
     align-self: stretch;
-    color: black;
+    color: white;
     margin-bottom: 25px;
     font-size: 15px;
   }
@@ -16,10 +20,10 @@
   .DropZone {
     user-select: none;
     align-self: stretch;
-    height: 200px;
-    box-shadow: black 0 0 0 2px inset;
+    //box-shadow: black 0 0 0 2px inset;
     border-radius: 4px;
-    margin-bottom: 6px;
+    flex: 1;
+    color: white;
 
     display: flex;
     flex-direction: column;
@@ -29,10 +33,15 @@
 
     outline: none;
 
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
     > img {
       max-width: 60px;
       max-height: 60px;
       margin-bottom: 10px;
+      filter: brightness(0) invert(1);
     }
 
     > input {
@@ -47,20 +56,6 @@
         font-size: 18px;
         font-weight: 600;
       }
-    }
-  }
-}
-
-.TextButton {
-  &.disabled {
-    box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 2px inset;
-    color: rgba(0, 0, 0, 0.5);
-    cursor: default;
-
-    &:hover {
-      box-shadow: rgba(0, 0, 0, 0.5) 0 0 0 2px inset;
-      color: rgba(0, 0, 0, 0.5);
-      background-color: transparent;
     }
   }
 }

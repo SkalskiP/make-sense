@@ -22,7 +22,7 @@
       position: relative;
       align-self: stretch;
       height: 400px;
-      background-color: $darkThemeSecondColor;
+      background-color: $darkThemeFirstColor;
 
       display: flex;
       flex-direction: column;
@@ -60,7 +60,7 @@
     .ThirdStage {
       position: relative;
       align-self: stretch;
-      background-color: $darkThemeSecondColor;
+      background-color: $darkThemeFirstColor;
       padding-bottom: 50px;
 
       .TriangleHorizontal.Top {
@@ -138,7 +138,7 @@
       width: 100%;
       position: absolute;
       left: 0;
-      background-color: $darkThemeSecondColor;
+      background-color: $darkThemeFirstColor;
     }
   }
 
@@ -147,7 +147,7 @@
     height: 50px;
     width: 100%;
     z-index: 1000;
-    background-color: $darkThemeSecondColor;
+    background-color: $darkThemeFirstColor;
 
     display: flex;
     flex-wrap: nowrap;
