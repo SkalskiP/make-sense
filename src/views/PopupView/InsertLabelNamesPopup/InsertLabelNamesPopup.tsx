@@ -79,7 +79,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
             </div>
             <div className="RightContainer">
                 <div className="Message">
-                    Enter below the labels names you want to use in your projections. Use + to add another empty text field.
+                    Create a list of labels you would like to use in your project. Use the + button to add a new empty
+                    text field. When exporting photo labels, you will also be able to download a file containing the
+                    list you are currently creating.
                 </div>
                 <div className="LabelsContainer">
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
