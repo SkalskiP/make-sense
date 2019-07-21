@@ -1,21 +1,29 @@
+@import '../../../settings/Settings';
+
 .ExportLabelPopupContent {
+  align-self: stretch;
+  flex: 1;
+
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  align-content: center;
-  padding: 20px;
+  align-content: flex-start;
+
+  padding-top: 30px;
 
   .Message {
     align-self: stretch;
-    color: black;
-    margin-bottom: 25px;
+    color: white;
     font-size: 15px;
+    padding: 0 40px 30px 40px;
+    border-bottom: solid 1px $darkThemeFirstColor;
   }
 
   .Options {
     align-self: stretch;
+    padding: 20px 40px 0;
 
     display: flex;
     flex-direction: column;
@@ -31,17 +39,18 @@
       justify-content: center;
       align-items: center;
       align-content: center;
+      color: white;
 
       cursor: pointer;
       user-select: none;
       font-size: 15px;
-      color: black;
       padding: 5px 0;
 
       > img {
         max-width: 20px;
         max-height: 20px;
         margin-right: 5px;
+        filter: brightness(0) invert(1);
       }
     }
   }
