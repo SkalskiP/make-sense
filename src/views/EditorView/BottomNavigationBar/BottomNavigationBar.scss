@@ -3,8 +3,8 @@
 .BottomNavigationBar {
   align-self: stretch;
   height: $bottomNavigationBarHeight;
-  border-top: solid 1px $darkThemeSecondColor;
-  background-color: $darkThemeFirstColor;
+  border-top: solid 1px $darkThemeFirstColor;
+  background-color: $darkThemeSecondColor;
   user-select: none;
 
   display: flex;

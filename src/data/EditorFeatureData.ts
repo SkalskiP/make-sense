@@ -32,7 +32,7 @@ export const EditorFeatureData: IEditorFeature[] = [
     },
     {
         displayText: "Support basic image operations like crop and resize",
-        imageSrc: "img/resize.png",
-        imageAlt: "resize",
+        imageSrc: "img/crop.png",
+        imageAlt: "crop",
     },
 ];

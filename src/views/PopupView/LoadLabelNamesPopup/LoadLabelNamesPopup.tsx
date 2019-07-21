@@ -95,7 +95,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLa
         <GenericYesNoPopup
             title={"Load file with labels description"}
             renderContent={renderContent}
-            acceptLabel={"Start"}
+            acceptLabel={"Start project"}
             onAccept={onAccept}
             disableAcceptButton={labelsList.length === 0}
             rejectLabel={"Create labels list"}

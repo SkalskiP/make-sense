@@ -1,15 +1,14 @@
 @import '../../../settings/Settings';
 
-$secondary-color: black;
+$secondary-color: white;
 $main-color: transparent;
-$width: 350px;
+$width: 320px;
 
 * {
   box-sizing: border-box;
 }
 
 .TextInput {
-  width: 100%;
   height: $width/6;
   overflow: hidden;
   position: relative;
@@ -18,7 +17,7 @@ $width: 350px;
 label {
   position: absolute;
   top: $width/15;
-  color: rgba(black, .5);
+  color: white;
   font: 400 $width/15;
   cursor: text;
   transition: .25s ease;
@@ -30,7 +29,7 @@ input {
   padding-top: $width/15;
   border: none;
   border-radius: 0; // For iOS
-  color: black;
+  color: white;
   background: $main-color;
   font-size: $width/20;
   transition: .3s ease;
@@ -38,7 +37,7 @@ input {
     ~label {
       top: 0;
       font: 700 $width/25;
-      color: rgba(black, .5);
+      color: white;
     }
   }
   &:focus {
@@ -63,7 +62,7 @@ input {
 }
 
 .Bar {
-  background: $secondaryColor;
+  background: white;
   content: '';
   width: $width;
   height: 1px;

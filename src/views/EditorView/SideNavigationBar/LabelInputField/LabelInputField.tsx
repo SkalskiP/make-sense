@@ -138,12 +138,7 @@ export class LabelInputField extends React.Component<IProps, IState> {
                         </div>
                         <div className="ContentWrapper">
                             <ImageButton
-                                image={"ico/move.png"}
-                                imageAlt={"move_rect"}
-                                size={{width: 30, height: 30}}
-                            />
-                            <ImageButton
-                                image={"ico/remove.png"}
+                                image={"ico/trash.png"}
                                 imageAlt={"remove_rect"}
                                 size={{width: 30, height: 30}}
                                 onClick={() => onDelete(id)}

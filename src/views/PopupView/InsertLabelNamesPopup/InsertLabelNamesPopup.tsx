@@ -8,6 +8,8 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
+import {ImageButton} from "../../Common/ImageButton/ImageButton";
+import uuidv1 from 'uuid/v1';
 
 interface IProps {
     updateActiveLabelIndex: (activeLabelIndex: number) => any;
@@ -16,7 +18,50 @@ interface IProps {
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
-    const onAccept = () => {};
+    const [labelNames, setLabelNames] = useState({});
+
+    const addHandle = () => {
+        const newLabelNames = {...labelNames, [uuidv1()]: ""};
+        setLabelNames(newLabelNames);
+    };
+
+    const deleteHandle = (key: string) => {
+        const newLabelNames = {...labelNames};
+        delete newLabelNames[key];
+        setLabelNames(newLabelNames);
+    };
+
+    const labelInputs = Object.keys(labelNames).map((key: string) => {
+        return <div className="LabelEntry" key={key}>
+                <TextInput
+                    key={key}
+                    isPassword={false}
+                    onChange={(value: string) => onChange(key, value)}
+                    label={"Inset label"}
+                />
+                <ImageButton
+                    image={"ico/trash.png"}
+                    imageAlt={"remove_label"}
+                    size={{width: 30, height: 30}}
+                    onClick={() => deleteHandle(key)}
+                />
+            </div>
+    });
+
+    const onChange = (key: string, value: string) => {
+        const newLabelNames = {...labelNames, [key]: value};
+        setLabelNames(newLabelNames);
+    };
+
+    const onAccept = () => {
+        const labelNamesList: string[] = extractLabelNamesList();
+        updateLabelNamesList(labelNamesList);
+        updateActivePopupType(null);
+    };
+
+    const extractLabelNamesList = (): string[] => {
+        return Object.values(labelNames).filter((value => !!value)) as string[];
+    };
 
     const onReject = () => {
         updateActivePopupType(PopupWindowType.LOAD_LABEL_NAMES);
@@ -24,22 +69,32 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
 
     const renderContent = () => {
         return(<div className="InsertLabelNamesPopup">
-            <Scrollbars>
-                <div
-                    className="InsertLabelNamesPopupContent"
-                >
-                    <TextInput
-                        key={"1"}
-                        isPassword={false}
-                        onChange={() => {}}
-                    />
-                    <TextInput
-                        key={"1"}
-                        isPassword={false}
-                        onChange={() => {}}
-                    />
+            <div className="LeftContainer">
+                <ImageButton
+                    image={"ico/plus.png"}
+                    imageAlt={"plus"}
+                    size={{width: 40, height: 40}}
+                    onClick={addHandle}
+                />
+            </div>
+            <div className="RightContainer">
+                <div className="Message">
+                    Enter below the labels names you want to use in your projections. Use + to add another empty text field.
                 </div>
-            </Scrollbars>
+                <div className="LabelsContainer">
+                    {Object.keys(labelNames).length !== 0 ? <Scrollbars>
+                        <div
+                            className="InsertLabelNamesPopupContent"
+                        >
+                            {labelInputs}
+                        </div>
+                    </Scrollbars> :
+                    <>
+                        <img alt={"upload"} src={"ico/labels_list_empty.png"}/>
+                        <p className="extraBold">Your label list is empty</p>
+                    </>}
+                </div>
+            </div>
         </div>);
     };
 
@@ -47,8 +102,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
         <GenericYesNoPopup
             title={"Create label names list"}
             renderContent={renderContent}
-            acceptLabel={"Create"}
+            acceptLabel={"Start project"}
             onAccept={onAccept}
+            disableAcceptButton={extractLabelNamesList().length === 0}
             rejectLabel={"Back"}
             onReject={onReject}
         />)
