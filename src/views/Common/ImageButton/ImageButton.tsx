@@ -19,7 +19,10 @@ export const ImageButton = (props:Props) => {
     const {size, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
     const imagePadding:number = 10;
 
-    const onClickHandler = onClick ? onClick : () => {};
+    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.stopPropagation();
+        !!onClick && onClick();
+    };
 
     const buttonStyle:React.CSSProperties = {
         ...style,

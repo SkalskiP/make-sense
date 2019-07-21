@@ -19,7 +19,7 @@ interface IProps {
     labelNames: string[];
 }
 
-const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelIndex}) => {
+const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelIndex, activeLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -58,14 +58,14 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
         updateActiveLabelIndex(labelNameIndex);
     };
 
-    const children =
-        imageData.labelRects.map((labelRect: LabelRect) => {
+    const getChildren = () => {
+        return imageData.labelRects.map((labelRect: LabelRect) => {
             return <LabelInputField
                 size={{
                     width: size.width,
                     height: labelInputFieldHeight
                 }}
-                isActive={false}
+                isActive={labelRect.id === activeLabelId}
                 id={labelRect.id}
                 key={labelRect.id}
                 onDelete={deleteRectLabelById}
@@ -74,6 +74,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
                 onSelectLabel={updateRectLabel}
             />
         });
+    };
 
     return (
         <div
@@ -85,7 +86,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
                     className="RectLabelsListContent"
                     style={listStyleContent}
                 >
-                    {children}
+                    {getChildren()}
                 </div>
             </Scrollbars>
         </div>

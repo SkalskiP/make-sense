@@ -8,7 +8,7 @@ import {BaseRenderEngine} from "./BaseRenderEngine";
 import {store} from "../index";
 import {ImageData, LabelRect} from "../store/editor/types";
 import uuidv1 from 'uuid/v1';
-import {updateImageDataById} from "../store/editor/actionCreators";
+import {updateActiveLabelId, updateImageDataById} from "../store/editor/actionCreators";
 import {ImageRepository} from "./ImageRepository";
 import {PointUtil} from "../utils/PointUtil";
 
@@ -41,6 +41,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         }
 
         const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const activeLabelId: string = store.getState().editor.activeLabelId;
         const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
         const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
 
@@ -54,7 +55,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                     width: rectImageScale.width / scale,
                     height: rectImageScale.height / scale
                 };
-                const color: string = labelRect.id === highlightedLabelId ? this.boundingBoxColor : this.boundingBoxInactiveColor;
+                const color: string = (labelRect.id === highlightedLabelId || labelRect.id === activeLabelId) ? this.boundingBoxColor : this.boundingBoxInactiveColor;
 
                 const rectBetweenPixels = DrawUtil.setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
                 DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
@@ -71,6 +72,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     public mouseDownHandler = (event: MouseEvent) => {
         const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
         const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
+        store.dispatch(updateActiveLabelId(null));
 
         if (isOverImage) {
             this.startPoint = mousePosition;

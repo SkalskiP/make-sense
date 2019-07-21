@@ -1,7 +1,7 @@
 import React from "react";
 import './LabelsToolkit.scss';
 import {ImageData} from "../../../../store/editor/types";
-import {updateActiveLabelType, updateImageDataById} from "../../../../store/editor/actionCreators";
+import {updateActiveLabelId, updateActiveLabelType, updateImageDataById} from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {LabelType} from "../../../../data/LabelType";
@@ -20,6 +20,7 @@ interface IProps {
     projectType: ProjectType;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
     updateActiveLabelType: (activeLabelType: LabelType) => any;
+    updateActiveLabelId: (highlightedLabelId: string) => any;
 }
 
 interface IState {
@@ -78,6 +79,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
     private headerClickHandler = (activeTab: LabelType) => {
         this.setState({activeLabelType: activeTab});
         this.props.updateActiveLabelType(activeTab);
+        this.props.updateActiveLabelId(null);
     };
 
     private renderChildren = () => {
@@ -153,7 +155,8 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = {
     updateImageDataById,
-    updateActiveLabelType
+    updateActiveLabelType,
+    updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({

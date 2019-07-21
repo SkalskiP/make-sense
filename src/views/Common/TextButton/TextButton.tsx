@@ -26,10 +26,15 @@ export const TextButton = (props:IProps) => {
         );
     };
 
+    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        event.stopPropagation();
+        !!onClick && onClick();
+    };
+
     return(
         <div
             className={getClassName()}
-            onClick={!!onClick ? onClick : undefined}
+            onClick={onClickHandler}
             key={key}
             style={style}
         >

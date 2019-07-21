@@ -8,7 +8,7 @@ import {IPoint} from "../../../../interfaces/IPoint";
 import {RectUtil} from "../../../../utils/RectUtil";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import {updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
+import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
 
 interface IProps {
     size: ISize;
@@ -19,6 +19,7 @@ interface IProps {
     onDelete: (id: string) => any;
     onSelectLabel: (labelRectId: string, labelNameIndex: number) => any;
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
+    updateActiveLabelId: (highlightedLabelId: string) => any;
 }
 
 interface IState {
@@ -49,7 +50,8 @@ class LabelInputField extends React.Component<IProps, IState> {
         return classNames(
             "LabelInputField",
             {
-                "loaded": this.state.animate
+                "loaded": this.state.animate,
+                "active": this.props.isActive
             }
         );
     }
@@ -112,6 +114,10 @@ class LabelInputField extends React.Component<IProps, IState> {
         this.props.updateHighlightedLabelId(null);
     };
 
+    private onClickHandler = () => {
+        this.props.updateActiveLabelId(this.props.id);
+    };
+
     public render() {
         const {size, id, value, onDelete} = this.props;
 
@@ -125,6 +131,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                 key={id}
                 onMouseEnter={this.mouseEnterHandler}
                 onMouseLeave={this.mouseLeaveHandler}
+                onClick={this.onClickHandler}
             >
                 <div
                     className="LabelInputFieldWrapper"
@@ -166,7 +173,8 @@ class LabelInputField extends React.Component<IProps, IState> {
 }
 
 const mapDispatchToProps = {
-    updateHighlightedLabelId
+    updateHighlightedLabelId,
+    updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({});

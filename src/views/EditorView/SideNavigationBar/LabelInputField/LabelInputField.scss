@@ -6,10 +6,6 @@
   overflow: hidden;
   cursor: pointer;
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-  }
-
   .LabelInputFieldWrapper {
     position: absolute;
     left: calc(-100% - 5px);
@@ -137,9 +133,17 @@
     }
 
     &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
       .Marker {
         background-color: $secondaryColor;
       }
+    }
+  }
+
+  &.active {
+    background-color: rgba(0, 0, 0, 0.05);
+    .Marker {
+      background-color: $secondaryColor;
     }
   }
 
