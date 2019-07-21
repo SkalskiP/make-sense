@@ -30,6 +30,24 @@ export function updateActiveLabelIndex(activeLabelIndex: number): EditorActionTy
     };
 }
 
+export function updateActiveLabelId(activeLabelId: string): EditorActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_LABEL_ID,
+        payload: {
+            activeLabelId,
+        },
+    };
+}
+
+export function updateHighlightedLabelId(highlightedLabelId: string): EditorActionTypes {
+    return {
+        type: Action.UPDATE_HIGHLIGHTED_LABEL_ID,
+        payload: {
+            highlightedLabelId,
+        },
+    };
+}
+
 export function updateActiveLabelType(activeLabelType: LabelType): EditorActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_TYPE,

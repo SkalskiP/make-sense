@@ -6,6 +6,7 @@ const initialState: EditorState = {
     activeLabelIndex: null,
     activeLabelType: null,
     activeLabelId: null,
+    highlightedLabelId: null,
     projectType: null,
     imagesData: [],
     labelNames: [],
@@ -33,7 +34,20 @@ export function editorReducer(
                 ...state,
                 activeLabelIndex: action.payload.activeLabelIndex
             }
-        }case Action.UPDATE_ACTIVE_LABEL_TYPE: {
+        }
+        case Action.UPDATE_ACTIVE_LABEL_ID: {
+            return {
+                ...state,
+                activeLabelId: action.payload.activeLabelId
+            }
+        }
+        case Action.UPDATE_HIGHLIGHTED_LABEL_ID: {
+            return {
+                ...state,
+                highlightedLabelId: action.payload.highlightedLabelId
+            }
+        }
+        case Action.UPDATE_ACTIVE_LABEL_TYPE: {
             return {
                 ...state,
                 activeLabelType: action.payload.activeLabelType

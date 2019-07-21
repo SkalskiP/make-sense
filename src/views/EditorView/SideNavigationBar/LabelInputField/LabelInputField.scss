@@ -4,6 +4,11 @@
   background-color: transparent;
   position: relative;
   overflow: hidden;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
 
   .LabelInputFieldWrapper {
     position: absolute;

@@ -29,6 +29,7 @@ export type EditorState = {
     activeLabelIndex: number;
     activeLabelType: LabelType;
     activeLabelId: string;
+    highlightedLabelId: string;
     projectType: ProjectType;
     imagesData: ImageData[];
     labelNames: string[];
@@ -52,6 +53,20 @@ interface UpdateActiveLabelIndex {
     type: typeof Action.UPDATE_ACTIVE_LABEL_INDEX;
     payload: {
         activeLabelIndex: number;
+    }
+}
+
+interface UpdateActiveLabelId {
+    type: typeof Action.UPDATE_ACTIVE_LABEL_ID;
+    payload: {
+        activeLabelId: string;
+    }
+}
+
+interface UpdateHighlightedLabelId {
+    type: typeof Action.UPDATE_HIGHLIGHTED_LABEL_ID;
+    payload: {
+        highlightedLabelId: string;
     }
 }
 
@@ -84,6 +99,8 @@ interface UpdateLabelNamesList {
     }
 }
 
+
+
 export type EditorActionTypes = UpdateProjectType
     | UpdateActiveImageIndex
     | UpdateActiveLabelIndex
@@ -91,4 +108,6 @@ export type EditorActionTypes = UpdateProjectType
     | UpdateImageDataById
     | AddImageData
     | UpdateLabelNamesList
+    | UpdateActiveLabelId
+    | UpdateHighlightedLabelId
 
