@@ -1,6 +1,6 @@
 @import '../../../settings/Settings';
 
-$secondary-color: black;
+$secondary-color: white;
 $main-color: transparent;
 $width: 320px;
 
@@ -9,7 +9,6 @@ $width: 320px;
 }
 
 .TextInput {
-  //width: 100%;
   height: $width/6;
   overflow: hidden;
   position: relative;
@@ -18,7 +17,7 @@ $width: 320px;
 label {
   position: absolute;
   top: $width/15;
-  color: rgba(black, .5);
+  color: white;
   font: 400 $width/15;
   cursor: text;
   transition: .25s ease;
@@ -38,7 +37,7 @@ input {
     ~label {
       top: 0;
       font: 700 $width/25;
-      color: rgba(black, .5);
+      color: white;
     }
   }
   &:focus {

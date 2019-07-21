@@ -27,11 +27,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
 
     const deleteHandle = (key: string) => {
         const newLabelNames = {...labelNames};
-        console.log("BEFORE");
-        console.log(newLabelNames);
         delete newLabelNames[key];
-        console.log("AFTER");
-        console.log(newLabelNames);
         setLabelNames(newLabelNames);
     };
 
@@ -41,6 +37,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
                     key={key}
                     isPassword={false}
                     onChange={(value: string) => onChange(key, value)}
+                    label={"Inset label"}
                 />
                 <ImageButton
                     image={"ico/trash.png"}
@@ -85,13 +82,17 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
                     Enter below the labels names you want to use in your projections. Use + to add another empty text field.
                 </div>
                 <div className="LabelsContainer">
-                    <Scrollbars>
+                    {Object.keys(labelNames).length !== 0 ? <Scrollbars>
                         <div
                             className="InsertLabelNamesPopupContent"
                         >
                             {labelInputs}
                         </div>
-                    </Scrollbars>
+                    </Scrollbars> :
+                    <>
+                        <img alt={"upload"} src={"ico/labels_list_empty.png"}/>
+                        <p className="extraBold">Your label list is empty</p>
+                    </>}
                 </div>
             </div>
         </div>);
