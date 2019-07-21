@@ -20,17 +20,35 @@ interface IProps {
 const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
     const [labelNames, setLabelNames] = useState({});
 
-    const addNew = () => {
+    const addHandle = () => {
         const newLabelNames = {...labelNames, [uuidv1()]: ""};
         setLabelNames(newLabelNames);
     };
 
+    const deleteHandle = (key: string) => {
+        const newLabelNames = {...labelNames};
+        console.log("BEFORE");
+        console.log(newLabelNames);
+        delete newLabelNames[key];
+        console.log("AFTER");
+        console.log(newLabelNames);
+        setLabelNames(newLabelNames);
+    };
+
     const labelInputs = Object.keys(labelNames).map((key: string) => {
-        return <TextInput
-            key={key}
-            isPassword={false}
-            onChange={(value: string) => onChange(key, value)}
-        />
+        return <div className="LabelEntry" key={key}>
+                <TextInput
+                    key={key}
+                    isPassword={false}
+                    onChange={(value: string) => onChange(key, value)}
+                />
+                <ImageButton
+                    image={"ico/trash.png"}
+                    imageAlt={"remove_label"}
+                    size={{width: 30, height: 30}}
+                    onClick={() => deleteHandle(key)}
+                />
+            </div>
     });
 
     const onChange = (key: string, value: string) => {
@@ -39,9 +57,13 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
     };
 
     const onAccept = () => {
-        const labelNamesList: string[] = Object.values(labelNames).filter((value => !!value)) as string[];
+        const labelNamesList: string[] = extractLabelNamesList();
         updateLabelNamesList(labelNamesList);
         updateActivePopupType(null);
+    };
+
+    const extractLabelNamesList = (): string[] => {
+        return Object.values(labelNames).filter((value => !!value)) as string[];
     };
 
     const onReject = () => {
@@ -55,7 +77,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
                     image={"ico/plus.png"}
                     imageAlt={"plus"}
                     size={{width: 40, height: 40}}
-                    onClick={addNew}
+                    onClick={addHandle}
                 />
             </div>
             <div className="RightContainer">
@@ -79,8 +101,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
         <GenericYesNoPopup
             title={"Create label names list"}
             renderContent={renderContent}
-            acceptLabel={"Create"}
+            acceptLabel={"Start project"}
             onAccept={onAccept}
+            disableAcceptButton={extractLabelNamesList().length === 0}
             rejectLabel={"Back"}
             onReject={onReject}
         />)

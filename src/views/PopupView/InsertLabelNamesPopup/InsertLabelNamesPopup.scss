@@ -66,7 +66,9 @@
     .Message {
       align-self: stretch;
       color: white;
+      font-size: 15px;
       padding: 30px 40px;
+      border-bottom: solid 1px $darkThemeFirstColor;
     }
 
     .LabelsContainer {
@@ -75,7 +77,30 @@
     }
 
     .InsertLabelNamesPopupContent {
-      margin-left: 30px;
+      margin-left: 40px;
+      margin-right: 10px;
+
+      .LabelEntry {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: space-between;
+
+        .ImageButton {
+          margin-right: 15px;
+
+          img {
+            filter: brightness(0) invert(1);
+          }
+
+          &:hover {
+            background-color: transparent;
+          }
+        }
+      }
     }
   }
 }

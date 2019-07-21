@@ -7,14 +7,15 @@
   justify-content: center;
   align-items: center;
   align-content: center;
-  padding: 30px 40px;
+  padding-top: 30px;
   flex: 1;
 
   .Message {
     align-self: stretch;
     color: white;
-    margin-bottom: 25px;
     font-size: 15px;
+    padding: 0 40px 30px 40px;
+    border-bottom: solid 1px $darkThemeFirstColor;
   }
 
   .DropZone {
