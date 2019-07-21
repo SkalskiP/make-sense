@@ -29,6 +29,14 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     }
 
     public render() {
+        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const activeLabelId: string = store.getState().editor.activeLabelId;
+        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
+        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+
+        /*
+        * actively edited rect
+        * */
         if (this.labelingInProgress) {
             const activeRect: IRect = {
                 x: this.startPoint.x,
@@ -40,27 +48,49 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
         }
 
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
-        const activeLabelId: string = store.getState().editor.activeLabelId;
-        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
-        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
-
         if (imageData) {
+            /*
+            * all rect labels created till now
+            * */
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                const scale = this.getImageScale();
-                const rectImageScale: IRect = labelRect.rect;
-                const rect: IRect = {
-                    x: rectImageScale.x / scale,
-                    y: rectImageScale.y / scale,
-                    width: rectImageScale.width / scale,
-                    height: rectImageScale.height / scale
-                };
-                const color: string = (labelRect.id === highlightedLabelId || labelRect.id === activeLabelId) ? this.boundingBoxColor : this.boundingBoxInactiveColor;
-
-                const rectBetweenPixels = DrawUtil.setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
+                const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+                const color: string = (labelRect.id === highlightedLabelId || labelRect.id === activeLabelId) ?
+                    this.boundingBoxColor : this.boundingBoxInactiveColor;
+                const rectBetweenPixels = DrawUtil
+                    .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
                 DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
+
+                /*
+                * rect marked as active
+                * */
+                if (labelRect.id === activeLabelId) {
+                    const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+                    const handleCenters: IPoint[] = RectUtil.getRectVertices(rect);
+                    handleCenters.forEach((center: IPoint) => {
+                        const handleDimension: number = Settings.RESIZE_HANDLE_DIMENSION;
+                        const handleRect: IRect = {
+                            x: center.x - 0.5 * handleDimension,
+                            y: center.y - 0.5 * handleDimension,
+                            width: handleDimension,
+                            height: handleDimension
+                        }
+                        const handleRectBetweenPixels: IRect = DrawUtil
+                            .setRectBetweenPixels({...handleRect, x: handleRect.x + this.imageRect.x, y: handleRect.y + this.imageRect.y});
+                        DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, Settings.RESIZE_HANDLE_COLOR);
+                    })
+                }
             })
         }
+    }
+
+    private calculateRectDimensionsRelativeToActiveImage(rect: IRect):IRect {
+        const scale = this.getActiveImageScale();
+        return {
+            x: rect.x / scale,
+            y: rect.y / scale,
+            width: rect.width / scale,
+            height: rect.height / scale
+        };
     }
 
     public updateImageRect(imageRect: IRect): void {
@@ -87,7 +117,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
 
             if (isOverImage && this.labelingInProgress && !PointUtil.equals(this.startPoint, this.mousePosition)) {
-                const scale = this.getImageScale();
+                const scale = this.getActiveImageScale();
 
                 const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
                 const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
@@ -116,7 +146,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     /*
     * real image / render image
     * */
-    public getImageScale(): number {
+    public getActiveImageScale(): number {
         const activeImageIndex = store.getState().editor.activeImageIndex;
         const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);

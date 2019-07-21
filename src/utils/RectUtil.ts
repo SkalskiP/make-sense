@@ -24,6 +24,27 @@ export class RectUtil {
         )
     }
 
+    public static getRectVertices(rect: IRect): IPoint[] {
+        return [
+            {
+                x: rect.x,
+                y: rect.y
+            },
+            {
+                x: rect.x,
+                y: rect.y + rect.height
+            },
+            {
+                x: rect.x + rect.width,
+                y: rect.y
+            },
+            {
+                x: rect.x + rect.width,
+                y: rect.y + rect.height
+            }
+        ]
+    }
+
     public static fitInsideRectWithRatio(containerRect: IRect, ratio: number): IRect {
         const containerRectRatio = RectUtil.getRatio(containerRect);
         if (containerRectRatio < ratio) {
