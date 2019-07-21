@@ -48,6 +48,7 @@ class Editor extends React.Component<IProps, IState> {
     public componentDidMount(): void {
         window.addEventListener("mousemove", this.mouseMoveEventBus);
         window.addEventListener("mouseup", this.mouseUpEventBus);
+        this.canvas.addEventListener("mousedown", this.mouseDownEventBus);
         const {imageData, size ,activeLabelType} = this.props;
         this.loadImage(imageData);
         this.resizeCanvas(size);
@@ -59,6 +60,7 @@ class Editor extends React.Component<IProps, IState> {
     public componentWillUnmount(): void {
         window.removeEventListener("mousemove", this.mouseMoveEventBus);
         window.removeEventListener("mouseup", this.mouseUpEventBus);
+        this.canvas.removeEventListener("mousedown", this.mouseDownEventBus);
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
@@ -80,6 +82,13 @@ class Editor extends React.Component<IProps, IState> {
     private mouseMoveEventBus = (event: MouseEvent) => {
         this.primaryRenderingEngine.mouseMoveHandler(event);
         this.supportRenderingEngine && this.supportRenderingEngine.mouseMoveHandler(event);
+        !this.props.activePopupType && this.updateMousePositionIndicator(event);
+        this.fullCanvasRender();
+    };
+
+    private mouseDownEventBus = (event: MouseEvent) => {
+        this.primaryRenderingEngine.mouseDownHandler(event);
+        this.supportRenderingEngine && this.supportRenderingEngine.mouseDownHandler(event);
         !this.props.activePopupType && this.updateMousePositionIndicator(event);
         this.fullCanvasRender();
     };
