@@ -3,11 +3,11 @@ import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
 import {ImageData, LabelRect} from "../../../../store/editor/types";
 import './RectLabelsList.scss';
-import {LabelInputField} from "../LabelInputField/LabelInputField";
 import {updateActiveLabelIndex, updateImageDataById} from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import * as _ from "lodash";
+import LabelInputField from "../LabelInputField/LabelInputField";
 
 interface IProps {
     size: ISize;

@@ -6,6 +6,9 @@ import {ImageButton} from "../../../Common/ImageButton/ImageButton";
 import {IRect} from "../../../../interfaces/IRect";
 import {IPoint} from "../../../../interfaces/IPoint";
 import {RectUtil} from "../../../../utils/RectUtil";
+import {AppState} from "../../../../store";
+import {connect} from "react-redux";
+import {updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
 
 interface IProps {
     size: ISize;
@@ -15,6 +18,7 @@ interface IProps {
     options: string[];
     onDelete: (id: string) => any;
     onSelectLabel: (labelRectId: string, labelNameIndex: number) => any;
+    updateHighlightedLabelId: (highlightedLabelId: string) => any;
 }
 
 interface IState {
@@ -22,7 +26,7 @@ interface IState {
     isOpen: boolean;
 }
 
-export class LabelInputField extends React.Component<IProps, IState> {
+class LabelInputField extends React.Component<IProps, IState> {
     private dropdownOptionHeight: number = 30;
     private dropdownLabel: HTMLDivElement;
     private dropdown: HTMLDivElement;
@@ -100,6 +104,14 @@ export class LabelInputField extends React.Component<IProps, IState> {
         })
     };
 
+    private mouseEnterHandler = () => {
+        this.props.updateHighlightedLabelId(this.props.id);
+    };
+
+    private mouseLeaveHandler =() => {
+        this.props.updateHighlightedLabelId(null);
+    };
+
     public render() {
         const {size, id, value, onDelete} = this.props;
 
@@ -111,6 +123,8 @@ export class LabelInputField extends React.Component<IProps, IState> {
                     height: size.height,
                 }}
                 key={id}
+                onMouseEnter={this.mouseEnterHandler}
+                onMouseLeave={this.mouseLeaveHandler}
             >
                 <div
                     className="LabelInputFieldWrapper"
@@ -150,3 +164,14 @@ export class LabelInputField extends React.Component<IProps, IState> {
         )
     }
 }
+
+const mapDispatchToProps = {
+    updateHighlightedLabelId
+};
+
+const mapStateToProps = (state: AppState) => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LabelInputField);

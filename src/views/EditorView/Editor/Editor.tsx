@@ -23,6 +23,7 @@ interface IProps {
     activeLabelType: LabelType;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
     activePopupType: PopupWindowType;
+    activeLabelId: string;
 }
 
 interface IState {
@@ -243,7 +244,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.editor.activeLabelType,
-    activePopupType: state.general.activePopupType
+    activePopupType: state.general.activePopupType,
+    activeLabelId: state.editor.activeLabelId
 });
 
 export default connect(

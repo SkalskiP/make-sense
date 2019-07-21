@@ -40,7 +40,8 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
         }
 
-        const activeImageIndex = store.getState().editor.activeImageIndex;
+        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
         const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
 
         if (imageData) {
@@ -52,9 +53,11 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                     y: rectImageScale.y / scale,
                     width: rectImageScale.width / scale,
                     height: rectImageScale.height / scale
-                }
+                };
+                const color: string = labelRect.id === highlightedLabelId ? this.boundingBoxColor : this.boundingBoxInactiveColor;
+
                 const rectBetweenPixels = DrawUtil.setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
-                DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxInactiveColor, this.boundingBoxThickness);
+                DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
             })
         }
     }
