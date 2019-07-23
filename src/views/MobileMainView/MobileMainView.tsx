@@ -34,12 +34,17 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
                 className="EditorFeaturesTiles"
                 key={data.displayText}
             >
-                <img
-                    alt={data.imageAlt}
-                    src={data.imageSrc}
-                />
-                <div className="EditorFeatureLabel">
-                    {data.displayText}
+                <div
+                    className="EditorFeaturesTilesWrapper"
+                >
+                    <img
+                        draggable={false}
+                        alt={data.imageAlt}
+                        src={data.imageSrc}
+                    />
+                    <div className="EditorFeatureLabel">
+                        {data.displayText}
+                    </div>
                 </div>
             </div>
         });
@@ -60,7 +65,11 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
     const topNavigationBar = <div className={getClassName()}>
         <div className="NavigationBarGroupWrapper">
             <div className="Header">
-                <img alt={"make-sense"} src={"/make-sense-ico-transparent.png"}/>
+                <img
+                    draggable={false}
+                    alt={"make-sense"}
+                    src={"/make-sense-ico-transparent.png"}
+                />
                 Make Sense
             </div>
         </div>
@@ -70,7 +79,11 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
     </div>;
 
     const firstStage = <div className="FirstStage">
-        <img alt={"main-logo"} src={"img/main-image-color.png"}/>
+        <img
+            draggable={false}
+            alt={"main-logo"}
+            src={"img/main-image-color.png"}
+        />
         <div className="TriangleHorizontal Bottom">
             <div className="TriangleHorizontalContent"/>
         </div>

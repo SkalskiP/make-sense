@@ -6,12 +6,13 @@ import {ImageData} from "../../../../store/editor/types";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import ImagePreview from "../ImagePreview/ImagePreview";
-import {updateActiveImageIndex} from "../../../../store/editor/actionCreators";
+import {updateActiveImageIndex, updateActiveLabelId} from "../../../../store/editor/actionCreators";
 
 interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
     updateActiveImageIndex: (activeImageIndex: number) => any;
+    updateActiveLabelId: (activeLabelId: string) => any;
 }
 
 interface IState {
@@ -51,6 +52,11 @@ class ImagesList extends React.Component<IProps, IState> {
         })
     };
 
+    private onClickHandler = (index: number) => {
+        this.props.updateActiveImageIndex(index);
+        this.props.updateActiveLabelId(null);
+    };
+
     private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
         return <ImagePreview
             key={index}
@@ -58,7 +64,7 @@ class ImagesList extends React.Component<IProps, IState> {
             size={{width: 150, height: 150}}
             isScrolling={isScrolling}
             imageData={this.props.imagesData[index]}
-            onClick={() => this.props.updateActiveImageIndex(index)}
+            onClick={() => this.onClickHandler(index)}
             isSelected={this.props.activeImageIndex === index}
         />
     };
@@ -81,6 +87,7 @@ class ImagesList extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = {
     updateActiveImageIndex,
+    updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({

@@ -15,9 +15,10 @@ import {PointUtil} from "../utils/PointUtil";
 export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
     private labelingInProgress: boolean = false;
+    private resizeInProgress: boolean = false;
     private boundingBoxColor: string = Settings.SECONDARY_COLOR;
     private boundingBoxInactiveColor: string = Settings.BOUNDING_BOX_INACTIVE_COLOR;
-    private boundingBoxThickness: number = Settings.BOUNDING_BOX_THICKNESS;
+    private boundingBoxThickness: number = Settings.BOUNDING_BOX_THICKNESS_PX;
     private mousePosition: IPoint;
     private imageRect: IRect;
     private startPoint: IPoint;
@@ -28,15 +29,30 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         this.imageRect = imageRect;
     }
 
+    // =================================================================================================================
+    // RENDERING
+    // =================================================================================================================
+
     public render() {
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
         const activeLabelId: string = store.getState().editor.activeLabelId;
         const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
         const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
 
-        /*
-        * actively edited rect
-        * */
+        if (imageData) {
+            this.drawActivelyCreatedRect();
+
+            imageData.labelRects.forEach((labelRect: LabelRect) => {
+                if (labelRect.id === activeLabelId) {
+                    this.drawActiveRect(labelRect);
+                    this.setCursorStyle(labelRect);
+                }
+                else
+                    this.drawInactiveRect(labelRect);
+            })
+        }
+    }
+
+    private drawActivelyCreatedRect() {
         if (this.labelingInProgress) {
             const activeRect: IRect = {
                 x: this.startPoint.x,
@@ -47,41 +63,53 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
             DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
         }
+    }
 
-        if (imageData) {
-            /*
-            * all rect labels created till now
-            * */
-            imageData.labelRects.forEach((labelRect: LabelRect) => {
-                const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
-                const color: string = (labelRect.id === highlightedLabelId || labelRect.id === activeLabelId) ?
-                    this.boundingBoxColor : this.boundingBoxInactiveColor;
-                const rectBetweenPixels = DrawUtil
-                    .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
-                DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
+    private drawInactiveRect(labelRect: LabelRect) {
+        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+        const color: string = labelRect.id === highlightedLabelId ? this.boundingBoxColor : this.boundingBoxInactiveColor;
+        const rectBetweenPixels = DrawUtil
+            .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
+    }
 
-                /*
-                * rect marked as active
-                * */
-                if (labelRect.id === activeLabelId) {
-                    const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
-                    const handleCenters: IPoint[] = RectUtil.getRectVertices(rect);
-                    handleCenters.forEach((center: IPoint) => {
-                        const handleDimension: number = Settings.RESIZE_HANDLE_DIMENSION;
-                        const handleRect: IRect = {
-                            x: center.x - 0.5 * handleDimension,
-                            y: center.y - 0.5 * handleDimension,
-                            width: handleDimension,
-                            height: handleDimension
-                        }
-                        const handleRectBetweenPixels: IRect = DrawUtil
-                            .setRectBetweenPixels({...handleRect, x: handleRect.x + this.imageRect.x, y: handleRect.y + this.imageRect.y});
-                        DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, Settings.RESIZE_HANDLE_COLOR);
-                    })
-                }
-            })
+    private drawActiveRect(labelRect: LabelRect) {
+        const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+        const rectBetweenPixels = DrawUtil
+            .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
+
+        const handleCenters: IPoint[] = RectUtil.getRectVertices(rect);
+        handleCenters.forEach((center: IPoint) => {
+            const handleDimension: number = Settings.RESIZE_HANDLE_DIMENSION_PX;
+            const handleRect: IRect = {
+                x: center.x - 0.5 * handleDimension,
+                y: center.y - 0.5 * handleDimension,
+                width: handleDimension,
+                height: handleDimension
+            };
+            const handleRectBetweenPixels: IRect = DrawUtil
+                .setRectBetweenPixels({...handleRect, x: handleRect.x + this.imageRect.x, y: handleRect.y + this.imageRect.y});
+            DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, Settings.RESIZE_HANDLE_COLOR);
+        })
+    }
+
+    private setCursorStyle(labelRect: LabelRect) {
+        if (this.canvas) {
+            if (this.resizeInProgress) {
+
+            }
+            // else {
+            //     const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+            //     // const nwseResize: IPoint
+            // }
         }
     }
+
+    // =================================================================================================================
+    // LOGIC
+    // =================================================================================================================
 
     private calculateRectDimensionsRelativeToActiveImage(rect: IRect):IRect {
         const scale = this.getActiveImageScale();

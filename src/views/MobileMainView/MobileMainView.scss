@@ -34,6 +34,7 @@
       img {
         max-width: 300px;
         max-height: 300px;
+        user-select: none;
       }
 
       .TriangleHorizontal.Bottom {
@@ -53,6 +54,7 @@
 
         img {
           filter: none;
+          user-select: none;
         }
       }
     }
@@ -79,7 +81,7 @@
     .FourthStage {
       align-self: stretch;
       padding-top: 100px;
-      padding-bottom: 50px;
+      padding-bottom: 100px;
 
       display: flex;
       flex-direction: column;
@@ -189,6 +191,7 @@
         width: 35px;
         height: 35px;
         margin-right: 10px;
+        user-select: none;
       }
 
       font-size: 18px;

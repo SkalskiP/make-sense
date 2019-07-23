@@ -71,12 +71,17 @@ const MainView: React.FC = () => {
                 className="EditorFeaturesTiles"
                 key={data.displayText}
             >
-                <img
-                    alt={data.imageAlt}
-                    src={data.imageSrc}
-                />
-                <div className="EditorFeatureLabel">
-                    {data.displayText}
+                <div
+                    className="EditorFeaturesTilesWrapper"
+                >
+                    <img
+                        draggable={false}
+                        alt={data.imageAlt}
+                        src={data.imageSrc}
+                    />
+                    <div className="EditorFeatureLabel">
+                        {data.displayText}
+                    </div>
                 </div>
             </div>
         });
@@ -98,7 +103,11 @@ const MainView: React.FC = () => {
 
             <div className="LeftColumn">
                 <div className={"LogoWrapper"}>
-                    <img alt={"main-logo"} src={"img/main-image-color.png"}/>
+                    <img
+                        draggable={false}
+                        alt={"main-logo"}
+                        src={"img/main-image-color.png"}
+                    />
                 </div>
                 <div className="EditorFeaturesWrapper">
                     {getEditorFeatureTiles()}

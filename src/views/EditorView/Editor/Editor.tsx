@@ -205,7 +205,7 @@ class Editor extends React.Component<IProps, IState> {
 
     private calculateImageRect = (image: HTMLImageElement) => {
         if (!!image) {
-            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH;
+            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
             const canvasRect: IRect = {
                 x: canvasPaddingWidth,

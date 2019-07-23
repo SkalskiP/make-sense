@@ -34,7 +34,11 @@ export const VerticalEditorButton = (props:IProps) => {
             key={key}
             style={style}
         >
-            {image && <img alt={imageAlt} src={image}/>}
+            {image && <img 
+                draggable={false}
+                alt={imageAlt} 
+                src={image}
+            />}
             {label}
         </div>
     )

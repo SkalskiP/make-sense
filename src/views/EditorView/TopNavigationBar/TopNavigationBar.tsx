@@ -18,7 +18,11 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
             <div className="TopNavigationBarWrapper">
                 <div className="NavigationBarGroupWrapper">
                     <div className="Header">
-                        <img alt={"make-sense"} src={"/make-sense-ico-transparent.png"}/>
+                        <img
+                            draggable={false}
+                            alt={"make-sense"}
+                            src={"/make-sense-ico-transparent.png"}
+                        />
                         Make Sense
                     </div>
                 </div>
@@ -27,11 +31,6 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
                         {/*label={"LOAD LABELS"}*/}
                         {/*under={true}*/}
                         {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}*/}
-                    {/*/>*/}
-                    {/*<UnderlineTextButton*/}
-                        {/*label={"LOAD IMAGES"}*/}
-                        {/*under={true}*/}
-                        {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_IMAGES)}*/}
                     {/*/>*/}
                     <UnderlineTextButton
                         label={"EXPORT LABELS"}

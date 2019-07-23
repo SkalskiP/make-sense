@@ -92,7 +92,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
                         </div>
                     </Scrollbars> :
                     <>
-                        <img alt={"upload"} src={"ico/labels_list_empty.png"}/>
+                        <img
+                            draggable={false}
+                            alt={"upload"}
+                            src={"ico/labels_list_empty.png"}
+                        />
                         <p className="extraBold">Your label list is empty</p>
                     </>}
                 </div>

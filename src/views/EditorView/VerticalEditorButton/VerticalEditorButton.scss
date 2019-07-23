@@ -26,6 +26,7 @@
     height: 15px;
     filter: brightness(0) invert(1);
     margin-right: 3px;
+    user-select: none;
   }
 
   &:hover {

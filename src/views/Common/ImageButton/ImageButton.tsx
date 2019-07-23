@@ -49,9 +49,19 @@ export const ImageButton = (props:Props) => {
     return(
         <div className={getClassName()} style={buttonStyle} onClick={onClickHandler}>
             {!!href && <a href={href} style={imageStyle}>
-                <img alt={imageAlt} src={image} style={imageStyle}/>
+                <img
+                    draggable={false}
+                    alt={imageAlt}
+                    src={image}
+                    style={imageStyle}
+                />
             </a>}
-            {!href && <img alt={imageAlt} src={image} style={imageStyle}/>}
+            {!href && <img
+                draggable={false}
+                alt={imageAlt}
+                src={image}
+                style={imageStyle}
+            />}
         </div>
     );
 };

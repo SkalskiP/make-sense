@@ -8,7 +8,7 @@ import {RectUtil} from "../utils/RectUtil";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     private crossHairColor: string = Settings.CROSS_HAIR_COLOR;
-    private crossHairThickness: number = Settings.CROSS_HAIR_THICKNESS;
+    private crossHairThickness: number = Settings.CROSS_HAIR_THICKNESS_PX;
     private canvas: HTMLCanvasElement;
     private imageRect: IRect;
     private mousePosition: IPoint;

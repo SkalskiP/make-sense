@@ -128,6 +128,7 @@
 
     > img {
       width: 220px;
+      user-select: none;
     }
   }
 
@@ -200,7 +201,7 @@
   min-width: 200px;
   height: 200px;
   color: white;
-  transition: transform .2s;
+
 
   display: flex;
   flex-direction: column;
@@ -208,17 +209,32 @@
   justify-content: center;
   align-items: center;
 
-  .EditorFeatureLabel {
-    width: 180px;
-    text-align: center;
-    user-select: none;
-  }
+  .EditorFeaturesTilesWrapper {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
 
-  > img {
-    filter: brightness(0) invert(1);
-    max-width: 60px;
-    max-height: 60px;
-    margin-bottom: 20px;
+    transition: transform .2s;
+
+    &:hover {
+      transform: scale(1.02);
+    }
+
+    .EditorFeatureLabel {
+      width: 180px;
+      text-align: center;
+      user-select: none;
+    }
+
+    > img {
+      filter: brightness(0) invert(1);
+      max-width: 60px;
+      max-height: 60px;
+      margin-bottom: 20px;
+      user-select: none;
+    }
   }
 }
 

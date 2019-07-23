@@ -127,6 +127,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                 {(!!this.state.image) ?
                 [
                     <img
+                        draggable={false}
                         className="Foreground"
                         key={"Foreground"}
                         src={this.state.image.src}

@@ -42,6 +42,7 @@
       max-height: 60px;
       margin-bottom: 10px;
       filter: brightness(0) invert(1);
+      user-select: none;
     }
 
     > input {

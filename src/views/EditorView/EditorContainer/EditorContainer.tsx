@@ -25,11 +25,11 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
 
     const calculateEditorSize = (): ISize => {
         if (windowSize) {
-            const leftTabWidth = leftTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED;
-            const rightTabWidth = rightTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED;
+            const leftTabWidth = leftTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
+            const rightTabWidth = rightTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
             return {
                 width: windowSize.width - leftTabWidth - rightTabWidth,
-                height: windowSize.height - Settings.TOP_NAVIGATION_BAR_HEIGHT - Settings.BOTTOM_NAVIGATION_BAR_HEIGHT,
+                height: windowSize.height - Settings.TOP_NAVIGATION_BAR_HEIGHT_PX - Settings.BOTTOM_NAVIGATION_BAR_HEIGHT_PX,
             }
         }
         else

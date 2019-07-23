@@ -88,7 +88,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
         return this.tabs.reduce((children, labelType: LabelType, index: number) => {
             const isActive: boolean = labelType === activeLabelType;
             const tabData: ILabelToolkit = _.find(LabelToolkitData, {labelType});
-            const activeTabContentHeight: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT;
+            const activeTabContentHeight: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT_PX;
             const getClassName = (baseClass: string) => classNames(
                 baseClass,
                 {
@@ -101,11 +101,12 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     key={"Header_" + index}
                     className={getClassName("Header")}
                     onClick={() => this.headerClickHandler(labelType)}
-                    style={{height: Settings.TOOLKIT_TAB_HEIGHT}}
+                    style={{height: Settings.TOOLKIT_TAB_HEIGHT_PX}}
                 >
                     <div className="Marker"/>
                     <div className="HeaderGroupWrapper">
                         <img
+                            draggable={false}
                             className="Ico"
                             src={tabData.imageSrc}
                             alt={tabData.imageAlt}
@@ -114,6 +115,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     </div>
                     <div className="HeaderGroupWrapper">
                         <img
+                            draggable={false}
                             className="Arrow"
                             src={"ico/down.png"}
                             alt={"down_arrow"}

@@ -19,6 +19,7 @@
 
     img {
       filter: brightness(0) invert(1);
+      user-select: none;
     }
 
     &:hover {
@@ -38,6 +39,7 @@
     &.disabled {
       img {
         filter: invert(1) opacity(25%);
+        user-select: none;
       }
     }
   }
