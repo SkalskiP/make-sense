@@ -16,7 +16,7 @@ export class Settings {
     public static readonly CROSS_HAIR_COLOR: string = "#000";
     public static readonly BOUNDING_BOX_THICKNESS_PX: number = 2;
     public static readonly BOUNDING_BOX_INACTIVE_COLOR: string = "#4c4c4c";
-    public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 10;
+    public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
     public static readonly RESIZE_HANDLE_COLOR: string = "#2af598";
-    public static readonly RESIZE_HANDLE_DETECTION_RADIOUS_PX = 15;
+    public static readonly RESIZE_HANDLE_DETECTION_RADIUS_PX = 12;
 }

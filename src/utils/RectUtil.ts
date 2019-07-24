@@ -1,5 +1,6 @@
 import {IRect} from "../interfaces/IRect";
 import {IPoint} from "../interfaces/IPoint";
+import {ISize} from "../interfaces/ISize";
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
@@ -43,6 +44,14 @@ export class RectUtil {
                 y: rect.y + rect.height
             }
         ]
+    }
+
+    public static getRectWithCenterAndSize(centerPoint: IPoint, size: ISize): IRect {
+        return {
+            x: centerPoint.x - 0.5 * size.width,
+            y: centerPoint.y - 0.5 * size.height,
+            ...size
+        }
     }
 
     public static fitInsideRectWithRatio(containerRect: IRect, ratio: number): IRect {
