@@ -15,6 +15,7 @@ import {RectAnchor} from "../data/RectAnchor";
 import {RectAnchorType} from "../data/RectAnchorType";
 import {AnchorTypeToCursorStyleMapping} from "../data/AnchorTypeToCursorStyleMapping";
 import {ISize} from "../interfaces/ISize";
+import _ from "lodash";
 
 export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
@@ -80,7 +81,55 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     }
 
     private drawActiveRect(labelRect: LabelRect) {
-        const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+        let rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
+        if (!!this.startResizeRectAnchor) {
+            const startAnchorPosition = {
+                x: this.startResizeRectAnchor.middlePosition.x + this.imageRect.x,
+                y: this.startResizeRectAnchor.middlePosition.y + this.imageRect.y
+            };
+            const delta = {
+                x: this.mousePosition.x - startAnchorPosition.x,
+                y: this.mousePosition.y - startAnchorPosition.y
+            };
+
+            switch (this.startResizeRectAnchor.type) {
+                case RectAnchorType.RIGHT:
+                    rect.width += delta.x;
+                    break;
+                case RectAnchorType.BOTTOM_RIGHT:
+                    rect.width += delta.x;
+                    rect.height += delta.y;
+                    break;
+                case RectAnchorType.BOTTOM:
+                    rect.height += delta.y;
+                    break;
+                case RectAnchorType.TOP_RIGHT:
+                    rect.width += delta.x;
+                    rect.y += delta.y;
+                    rect.height -= delta.y;
+                    break;
+                case RectAnchorType.TOP:
+                    rect.y += delta.y;
+                    rect.height -= delta.y;
+                    break;
+                case RectAnchorType.TOP_LEFT:
+                    rect.x += delta.x;
+                    rect.width -= delta.x;
+                    rect.y += delta.y;
+                    rect.height -= delta.y;
+                    break;
+                case RectAnchorType.LEFT:
+                    rect.x += delta.x;
+                    rect.width -= delta.x;
+                    break;
+                case RectAnchorType.BOTTOM_LEFT:
+                    rect.x += delta.x;
+                    rect.width -= delta.x;
+                    rect.height += delta.y;
+                    break;
+            }
+        }
+
         const rectBetweenPixels = DrawUtil
             .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
         DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
@@ -131,12 +180,44 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     public mouseDownHandler = (event: MouseEvent) => {
         const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
         const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
-        store.dispatch(updateActiveLabelId(null));
 
         if (isOverImage) {
-            this.startPoint = mousePosition;
-            this.mousePosition = mousePosition;
-            this.labelingInProgress = true;
+            const activeLabelRect: LabelRect = this.getActiveRectLabel();
+            if (!!activeLabelRect) {
+                const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(activeLabelRect.rect);
+                const activatedAnchor: RectAnchor = this.mapRectToAnchors(rect)
+                    .map((rectAnchor: RectAnchor) => {
+                        return {
+                            type: rectAnchor.type,
+                            middlePosition: rectAnchor.middlePosition,
+                            rect: this.mapAnchorToActivationRect(rectAnchor.middlePosition)
+                        }
+                    })
+                    .reduce((foundAnchor: RectAnchor, rectAnchor) => {
+                        if (RectUtil.isPointInside(rectAnchor.rect, mousePosition)) {
+                            return {
+                                type: rectAnchor.type,
+                                middlePosition: rectAnchor.middlePosition
+                            }
+                        } else {
+                            return foundAnchor
+                        }
+                    }, null);
+                if(!!activatedAnchor) {
+                    this.resizeInProgress = true;
+                    this.startResizeRectAnchor = activatedAnchor;
+                } else {
+                    this.startPoint = mousePosition;
+                    this.mousePosition = mousePosition;
+                    this.labelingInProgress = true;
+                    store.dispatch(updateActiveLabelId(null));
+                }
+            } else {
+                this.startPoint = mousePosition;
+                this.mousePosition = mousePosition;
+                this.labelingInProgress = true;
+                store.dispatch(updateActiveLabelId(null));
+            }
         }
     };
 
@@ -161,11 +242,84 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                 };
                 this.addRectLabel(rect);
             }
+
+            if (isOverImage && this.resizeInProgress) {
+                const activeLabelRect: LabelRect = this.getActiveRectLabel();
+                const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(activeLabelRect.rect);
+                const startAnchorPosition = {
+                    x: this.startResizeRectAnchor.middlePosition.x + this.imageRect.x,
+                    y: this.startResizeRectAnchor.middlePosition.y + this.imageRect.y
+                };
+                const delta = {
+                    x: this.mousePosition.x - startAnchorPosition.x,
+                    y: this.mousePosition.y - startAnchorPosition.y
+                };
+
+                switch (this.startResizeRectAnchor.type) {
+                    case RectAnchorType.RIGHT:
+                        rect.width += delta.x;
+                        break;
+                    case RectAnchorType.BOTTOM_RIGHT:
+                        rect.width += delta.x;
+                        rect.height += delta.y;
+                        break;
+                    case RectAnchorType.BOTTOM:
+                        rect.height += delta.y;
+                        break;
+                    case RectAnchorType.TOP_RIGHT:
+                        rect.width += delta.x;
+                        rect.y += delta.y;
+                        rect.height -= delta.y;
+                        break;
+                    case RectAnchorType.TOP:
+                        rect.y += delta.y;
+                        rect.height -= delta.y;
+                        break;
+                    case RectAnchorType.TOP_LEFT:
+                        rect.x += delta.x;
+                        rect.width -= delta.x;
+                        rect.y += delta.y;
+                        rect.height -= delta.y;
+                        break;
+                    case RectAnchorType.LEFT:
+                        rect.x += delta.x;
+                        rect.width -= delta.x;
+                        break;
+                    case RectAnchorType.BOTTOM_LEFT:
+                        rect.x += delta.x;
+                        rect.width -= delta.x;
+                        rect.height += delta.y;
+                        break;
+                }
+
+                const scale = this.getActiveImageScale();
+
+                const scaledRect: IRect = {
+                    x: rect.x * scale,
+                    y: rect.y * scale,
+                    width: rect.width * scale,
+                    height: rect.height * scale
+                };
+
+                const imageData = this.getActiveImage();
+                imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
+                    if (labelRect.id === activeLabelRect.id) {
+                        return {
+                            ...labelRect,
+                            rect: scaledRect
+                        };
+                    }
+                    return labelRect;
+                });
+                store.dispatch(updateImageDataById(imageData.id, imageData));
+            }
         }
 
         this.startPoint = null;
         this.mousePosition = null;
         this.labelingInProgress = false;
+        this.startResizeRectAnchor = null;
+        this.resizeInProgress = false;
     };
 
     public mouseMoveHandler = (event: MouseEvent) => {
@@ -249,5 +403,15 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
         else {
             return null;
         }
+    }
+
+    private getActiveImage(): ImageData {
+        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
+        return store.getState().editor.imagesData[activeImageIndex];
+    }
+
+    private getActiveRectLabel(): LabelRect | null {
+        const activeLabelId: string = store.getState().editor.activeLabelId;
+        return _.find(this.getActiveImage().labelRects, {id: activeLabelId});
     }
 }
