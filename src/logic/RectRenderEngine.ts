@@ -16,18 +16,23 @@ import {RectAnchorType} from "../data/RectAnchorType";
 import {AnchorTypeToCursorStyleMapping} from "../data/AnchorTypeToCursorStyleMapping";
 import {ISize} from "../interfaces/ISize";
 import _ from "lodash";
+import {RectRenderEngineConfig} from "../settings/RectRenderEngineConfig";
 
-export class RectSecondaryRenderEngine extends BaseRenderEngine {
+export class RectRenderEngine extends BaseRenderEngine {
     private canvas: HTMLCanvasElement;
-    private labelingInProgress: boolean = false;
-    private resizeInProgress: boolean = false;
-    private boundingBoxColor: string = Settings.SECONDARY_COLOR;
-    private boundingBoxInactiveColor: string = Settings.BOUNDING_BOX_INACTIVE_COLOR;
-    private boundingBoxThickness: number = Settings.BOUNDING_BOX_THICKNESS_PX;
+    private config: RectRenderEngineConfig = new RectRenderEngineConfig();
+
+    // =================================================================================================================
+    // STATE
+    // =================================================================================================================
+
+    private createRectInProgress: boolean = false;
+    private resizeRectInProgress: boolean = false;
+    private startCreateRectPoint: IPoint;
+    private startResizeRectAnchor: RectAnchor;
     private mousePosition: IPoint;
     private imageRect: IRect;
-    private startPoint: IPoint;
-    private startResizeRectAnchor: RectAnchor;
+
 
     public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
         super();
@@ -59,25 +64,25 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     }
 
     private drawActivelyCreatedRect() {
-        if (this.labelingInProgress) {
+        if (this.createRectInProgress) {
             const activeRect: IRect = {
-                x: this.startPoint.x,
-                y: this.startPoint.y,
-                width: this.mousePosition.x - this.startPoint.x,
-                height: this.mousePosition.y - this.startPoint.y
+                x: this.startCreateRectPoint.x,
+                y: this.startCreateRectPoint.y,
+                width: this.mousePosition.x - this.startCreateRectPoint.x,
+                height: this.mousePosition.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.rectActiveColor, this.config.rectThickness);
         }
     }
 
     private drawInactiveRect(labelRect: LabelRect) {
         const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
         const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(labelRect.rect);
-        const color: string = labelRect.id === highlightedLabelId ? this.boundingBoxColor : this.boundingBoxInactiveColor;
+        const color: string = labelRect.id === highlightedLabelId ? this.config.rectActiveColor : this.config.rectInactiveColor;
         const rectBetweenPixels = DrawUtil
             .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.boundingBoxThickness);
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.config.rectThickness);
     }
 
     private drawActiveRect(labelRect: LabelRect) {
@@ -92,47 +97,12 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                 y: this.mousePosition.y - startAnchorPosition.y
             };
 
-            switch (this.startResizeRectAnchor.type) {
-                case RectAnchorType.RIGHT:
-                    rect.width += delta.x;
-                    break;
-                case RectAnchorType.BOTTOM_RIGHT:
-                    rect.width += delta.x;
-                    rect.height += delta.y;
-                    break;
-                case RectAnchorType.BOTTOM:
-                    rect.height += delta.y;
-                    break;
-                case RectAnchorType.TOP_RIGHT:
-                    rect.width += delta.x;
-                    rect.y += delta.y;
-                    rect.height -= delta.y;
-                    break;
-                case RectAnchorType.TOP:
-                    rect.y += delta.y;
-                    rect.height -= delta.y;
-                    break;
-                case RectAnchorType.TOP_LEFT:
-                    rect.x += delta.x;
-                    rect.width -= delta.x;
-                    rect.y += delta.y;
-                    rect.height -= delta.y;
-                    break;
-                case RectAnchorType.LEFT:
-                    rect.x += delta.x;
-                    rect.width -= delta.x;
-                    break;
-                case RectAnchorType.BOTTOM_LEFT:
-                    rect.x += delta.x;
-                    rect.width -= delta.x;
-                    rect.height += delta.y;
-                    break;
-            }
+            rect = RectRenderEngine.resizeRect(rect, this.startResizeRectAnchor.type, delta);
         }
 
         const rectBetweenPixels = DrawUtil
             .setRectBetweenPixels({...rect, x: rect.x + this.imageRect.x, y: rect.y + this.imageRect.y});
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.boundingBoxColor, this.boundingBoxThickness);
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, this.config.rectActiveColor, this.config.rectThickness);
 
         const handleCenters: IPoint[] = this.mapRectToAnchors(rect).map((rectAnchor: RectAnchor) => rectAnchor.middlePosition);
         handleCenters.forEach((center: IPoint) => {
@@ -150,7 +120,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
 
     private setCursorStyle(labelRect: LabelRect) {
         if (!!this.canvas && !!this.mousePosition) {
-            if (this.resizeInProgress) {
+            if (this.resizeRectInProgress) {
 
             }
             else {
@@ -204,18 +174,18 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                         }
                     }, null);
                 if(!!activatedAnchor) {
-                    this.resizeInProgress = true;
+                    this.resizeRectInProgress = true;
                     this.startResizeRectAnchor = activatedAnchor;
                 } else {
-                    this.startPoint = mousePosition;
+                    this.startCreateRectPoint = mousePosition;
                     this.mousePosition = mousePosition;
-                    this.labelingInProgress = true;
+                    this.createRectInProgress = true;
                     store.dispatch(updateActiveLabelId(null));
                 }
             } else {
-                this.startPoint = mousePosition;
+                this.startCreateRectPoint = mousePosition;
                 this.mousePosition = mousePosition;
-                this.labelingInProgress = true;
+                this.createRectInProgress = true;
                 store.dispatch(updateActiveLabelId(null));
             }
         }
@@ -226,13 +196,13 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             const mousePosition: IPoint = this.getMousePositionOnCanvasFromEvent(event);
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRect, mousePosition);
 
-            if (isOverImage && this.labelingInProgress && !PointUtil.equals(this.startPoint, this.mousePosition)) {
+            if (isOverImage && this.createRectInProgress && !PointUtil.equals(this.startCreateRectPoint, this.mousePosition)) {
                 const scale = this.getActiveImageScale();
 
-                const minX: number = Math.min(this.startPoint.x, this.mousePosition.x);
-                const minY: number = Math.min(this.startPoint.y, this.mousePosition.y);
-                const maxX: number = Math.max(this.startPoint.x, this.mousePosition.x);
-                const maxY: number = Math.max(this.startPoint.y, this.mousePosition.y);
+                const minX: number = Math.min(this.startCreateRectPoint.x, this.mousePosition.x);
+                const minY: number = Math.min(this.startCreateRectPoint.y, this.mousePosition.y);
+                const maxX: number = Math.max(this.startCreateRectPoint.x, this.mousePosition.x);
+                const maxY: number = Math.max(this.startCreateRectPoint.y, this.mousePosition.y);
 
                 const rect: IRect = {
                     x: (minX - this.imageRect.x) * scale,
@@ -243,7 +213,7 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                 this.addRectLabel(rect);
             }
 
-            if (isOverImage && this.resizeInProgress) {
+            if (isOverImage && this.resizeRectInProgress) {
                 const activeLabelRect: LabelRect = this.getActiveRectLabel();
                 const rect: IRect = this.calculateRectDimensionsRelativeToActiveImage(activeLabelRect.rect);
                 const startAnchorPosition = {
@@ -254,52 +224,9 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
                     x: this.mousePosition.x - startAnchorPosition.x,
                     y: this.mousePosition.y - startAnchorPosition.y
                 };
-
-                switch (this.startResizeRectAnchor.type) {
-                    case RectAnchorType.RIGHT:
-                        rect.width += delta.x;
-                        break;
-                    case RectAnchorType.BOTTOM_RIGHT:
-                        rect.width += delta.x;
-                        rect.height += delta.y;
-                        break;
-                    case RectAnchorType.BOTTOM:
-                        rect.height += delta.y;
-                        break;
-                    case RectAnchorType.TOP_RIGHT:
-                        rect.width += delta.x;
-                        rect.y += delta.y;
-                        rect.height -= delta.y;
-                        break;
-                    case RectAnchorType.TOP:
-                        rect.y += delta.y;
-                        rect.height -= delta.y;
-                        break;
-                    case RectAnchorType.TOP_LEFT:
-                        rect.x += delta.x;
-                        rect.width -= delta.x;
-                        rect.y += delta.y;
-                        rect.height -= delta.y;
-                        break;
-                    case RectAnchorType.LEFT:
-                        rect.x += delta.x;
-                        rect.width -= delta.x;
-                        break;
-                    case RectAnchorType.BOTTOM_LEFT:
-                        rect.x += delta.x;
-                        rect.width -= delta.x;
-                        rect.height += delta.y;
-                        break;
-                }
-
+                const resizedRect: IRect = RectRenderEngine.resizeRect(rect, this.startResizeRectAnchor.type, delta);
                 const scale = this.getActiveImageScale();
-
-                const scaledRect: IRect = {
-                    x: rect.x * scale,
-                    y: rect.y * scale,
-                    width: rect.width * scale,
-                    height: rect.height * scale
-                };
+                const scaledRect: IRect = RectRenderEngine.scaleRect(resizedRect, scale);
 
                 const imageData = this.getActiveImage();
                 imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
@@ -315,11 +242,11 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
             }
         }
 
-        this.startPoint = null;
+        this.startCreateRectPoint = null;
         this.mousePosition = null;
-        this.labelingInProgress = false;
+        this.createRectInProgress = false;
         this.startResizeRectAnchor = null;
-        this.resizeInProgress = false;
+        this.resizeRectInProgress = false;
     };
 
     public mouseMoveHandler = (event: MouseEvent) => {
@@ -329,6 +256,67 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
     // LOGIC
     // =================================================================================================================
+
+    private static scaleRect(inputRect:IRect, scale: number) {
+        return {
+            x: inputRect.x * scale,
+            y: inputRect.y * scale,
+            width: inputRect.width * scale,
+            height: inputRect.height * scale
+        }
+    }
+
+    private static resizeRect(inputRect: IRect, rectAnchor: RectAnchorType, delta): IRect {
+        const rect: IRect = {...inputRect};
+        switch (rectAnchor) {
+            case RectAnchorType.RIGHT:
+                rect.width += delta.x;
+                break;
+            case RectAnchorType.BOTTOM_RIGHT:
+                rect.width += delta.x;
+                rect.height += delta.y;
+                break;
+            case RectAnchorType.BOTTOM:
+                rect.height += delta.y;
+                break;
+            case RectAnchorType.TOP_RIGHT:
+                rect.width += delta.x;
+                rect.y += delta.y;
+                rect.height -= delta.y;
+                break;
+            case RectAnchorType.TOP:
+                rect.y += delta.y;
+                rect.height -= delta.y;
+                break;
+            case RectAnchorType.TOP_LEFT:
+                rect.x += delta.x;
+                rect.width -= delta.x;
+                rect.y += delta.y;
+                rect.height -= delta.y;
+                break;
+            case RectAnchorType.LEFT:
+                rect.x += delta.x;
+                rect.width -= delta.x;
+                break;
+            case RectAnchorType.BOTTOM_LEFT:
+                rect.x += delta.x;
+                rect.width -= delta.x;
+                rect.height += delta.y;
+                break;
+        }
+
+        if (rect.width < 0)  {
+            rect.x = rect.x + rect.width;
+            rect.width = - rect.width;
+        }
+
+        if (rect.height < 0)  {
+            rect.y = rect.y + rect.height;
+            rect.height = - rect.height;
+        }
+
+        return rect;
+    }
 
     private mapRectToAnchors(rect: IRect): RectAnchor[] {
         return [
@@ -346,10 +334,10 @@ export class RectSecondaryRenderEngine extends BaseRenderEngine {
     private mapAnchorToActivationRect(anchor: IPoint): IRect {
         const anchorCenterClientPosition = {x: anchor.x + this.imageRect.x, y: anchor.y + this.imageRect.y}
         return {
-            x: anchorCenterClientPosition.x - 0.5 * Settings.RESIZE_HANDLE_DETECTION_RADIUS_PX,
-            y: anchorCenterClientPosition.y - 0.5 * Settings.RESIZE_HANDLE_DETECTION_RADIUS_PX,
-            width: Settings.RESIZE_HANDLE_DETECTION_RADIUS_PX,
-            height: Settings.RESIZE_HANDLE_DETECTION_RADIUS_PX
+            x: anchorCenterClientPosition.x - 0.5 * Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX,
+            y: anchorCenterClientPosition.y - 0.5 * Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX,
+            width: Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX,
+            height: Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX
         }
     }
 

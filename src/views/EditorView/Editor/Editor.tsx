@@ -10,7 +10,7 @@ import {IRect} from "../../../interfaces/IRect";
 import {ImageRepository} from "../../../logic/ImageRepository";
 import {PrimaryEditorRenderEngine} from "../../../logic/PrimaryEditorRenderEngine";
 import {LabelType} from "../../../data/LabelType";
-import {RectSecondaryRenderEngine} from "../../../logic/RectSecondaryRenderEngine";
+import {RectRenderEngine} from "../../../logic/RectRenderEngine";
 import {RectUtil} from "../../../utils/RectUtil";
 import {Settings} from "../../../settings/Settings";
 import {DrawUtil} from "../../../utils/DrawUtil";
@@ -172,7 +172,7 @@ class Editor extends React.Component<IProps, IState> {
     private mountSupportRenderingEngine = (activeLabelType: LabelType) => {
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
-                this.supportRenderingEngine = new RectSecondaryRenderEngine(this.canvas, this.imageRect);
+                this.supportRenderingEngine = new RectRenderEngine(this.canvas, this.imageRect);
                 break;
             default:
                 this.supportRenderingEngine = null;
