@@ -1,7 +1,7 @@
-import {ExportFormatType} from "../data/ExportFormatType";
-import {ImageData, LabelRect} from "../store/editor/types";
-import {ImageRepository} from "./ImageRepository";
-import {store} from "../index";
+import {ExportFormatType} from "../../data/ExportFormatType";
+import {ImageData, LabelRect} from "../../store/editor/types";
+import {ImageRepository} from "../imageRepository/ImageRepository";
+import {store} from "../..";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import moment from 'moment';

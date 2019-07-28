@@ -1,15 +1,15 @@
-import {IPoint} from "../interfaces/IPoint";
-import {DrawUtil} from "../utils/DrawUtil";
-import {Settings} from "../settings/Settings";
-import {IRect} from "../interfaces/IRect";
+import {IPoint} from "../../interfaces/IPoint";
+import {DrawUtil} from "../../utils/DrawUtil";
+import {Settings} from "../../settings/Settings";
+import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import React from "react";
-import {RectUtil} from "../utils/RectUtil";
+import {RectUtil} from "../../utils/RectUtil";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
+    private readonly canvas: HTMLCanvasElement;
     private crossHairColor: string = Settings.CROSS_HAIR_COLOR;
     private crossHairThickness: number = Settings.CROSS_HAIR_THICKNESS_PX;
-    private canvas: HTMLCanvasElement;
     private imageRect: IRect;
     private mousePosition: IPoint;
 

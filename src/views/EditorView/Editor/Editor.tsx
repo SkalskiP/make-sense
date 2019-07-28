@@ -7,10 +7,10 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {IRect} from "../../../interfaces/IRect";
-import {ImageRepository} from "../../../logic/ImageRepository";
-import {PrimaryEditorRenderEngine} from "../../../logic/PrimaryEditorRenderEngine";
+import {ImageRepository} from "../../../logic/imageRepository/ImageRepository";
+import {PrimaryEditorRenderEngine} from "../../../logic/render/PrimaryEditorRenderEngine";
 import {LabelType} from "../../../data/LabelType";
-import {RectRenderEngine} from "../../../logic/RectRenderEngine";
+import {RectRenderEngine} from "../../../logic/render/RectRenderEngine";
 import {RectUtil} from "../../../utils/RectUtil";
 import {Settings} from "../../../settings/Settings";
 import {DrawUtil} from "../../../utils/DrawUtil";
@@ -163,9 +163,6 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
 
     private swapSupportRenderingEngine = (activeLabelType: LabelType) => {
-        if (!!this.supportRenderingEngine) {
-            this.supportRenderingEngine.unmount();
-        }
         this.mountSupportRenderingEngine(activeLabelType);
     };
 

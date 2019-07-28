@@ -3,7 +3,7 @@ import './ImagePreview.scss';
 import {ImageData} from "../../../../store/editor/types";
 import {ClipLoader} from "react-spinners";
 import {Settings} from "../../../../settings/Settings";
-import {ImageRepository} from "../../../../logic/ImageRepository";
+import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
 import {updateImageDataById} from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
