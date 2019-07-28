@@ -8,7 +8,7 @@ import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {ExportFormatType} from "../../../data/ExportFormatType";
 import {ExportFormatData, IExportFormat} from "../../../data/ExportFormatData";
-import {RectLabelsExporter} from "../../../logic/RectLabelsExporter";
+import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 
 interface IProps {
     imagesData: ImageData[],
