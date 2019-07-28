@@ -163,9 +163,6 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
 
     private swapSupportRenderingEngine = (activeLabelType: LabelType) => {
-        if (!!this.supportRenderingEngine) {
-            this.supportRenderingEngine.unmount();
-        }
         this.mountSupportRenderingEngine(activeLabelType);
     };
 
