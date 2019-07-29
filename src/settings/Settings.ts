@@ -16,14 +16,10 @@ export class Settings {
     public static readonly DARK_THEME_SECOND_COLOR: string = "#282828";
     public static readonly DARK_THEME_THIRD_COLOR: string = "#4c4c4c";
 
-    public static readonly BOUNDING_BOX_THICKNESS_PX: number = 2;
-
     public static readonly CANVAS_PADDING_WIDTH_PX: number = 10;
     public static readonly CROSS_HAIR_THICKNESS_PX: number = 1;
     public static readonly CROSS_HAIR_COLOR: string = "#000";
 
-    public static readonly BOUNDING_BOX_INACTIVE_COLOR: string = "#4c4c4c";
     public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
-    public static readonly RESIZE_HANDLE_COLOR: string = "#2af598";
     public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 12;
 }

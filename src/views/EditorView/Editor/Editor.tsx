@@ -16,6 +16,9 @@ import {Settings} from "../../../settings/Settings";
 import {DrawUtil} from "../../../utils/DrawUtil";
 import {IPoint} from "../../../interfaces/IPoint";
 import {PopupWindowType} from "../../../data/PopupWindowType";
+import {CanvasUtil} from "../../../utils/CanvasUtil";
+import {PointRenderEngine} from "../../../logic/render/PointRenderEngine";
+import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
 
 interface IProps {
     size: ISize;
@@ -34,8 +37,8 @@ class Editor extends React.Component<IProps, IState> {
     private canvas: HTMLCanvasElement;
     private mousePositionIndicator: HTMLDivElement;
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
-    private supportRenderingEngine: any;
-    private imageRect: IRect;
+    private supportRenderingEngine: BaseRenderEngine;
+    private imageRectOnCanvas: IRect;
 
     constructor(props) {
         super(props);
@@ -50,6 +53,7 @@ class Editor extends React.Component<IProps, IState> {
         window.addEventListener("mousemove", this.mouseMoveEventBus);
         window.addEventListener("mouseup", this.mouseUpEventBus);
         this.canvas.addEventListener("mousedown", this.mouseDownEventBus);
+
         const {imageData, size ,activeLabelType} = this.props;
         this.loadImage(imageData);
         this.resizeCanvas(size);
@@ -139,17 +143,16 @@ class Editor extends React.Component<IProps, IState> {
 
     private updateMousePositionIndicator = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) => {
         const image = this.state.image;
-        const mousePositionOnCanvas: IPoint = this.getMousePositionOnCanvasFromEvent(event);
-        const canvasRect: IRect = { x: 0, y: 0, width: this.canvas.width, height: this.canvas.height };
+        const mousePositionOnCanvas: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
 
-        if (!image || !this.imageRect || !RectUtil.isPointInside(canvasRect, mousePositionOnCanvas)) {
+        if (!image || !this.imageRectOnCanvas || !RectUtil.isPointInside(this.imageRectOnCanvas, mousePositionOnCanvas)) {
             this.mousePositionIndicator.style.display = "none";
             return;
         }
 
-        const scale = image.width / this.imageRect.width;
-        const x: number = Math.round((mousePositionOnCanvas.x - this.imageRect.x) * scale);
-        const y: number = Math.round((mousePositionOnCanvas.y - this.imageRect.y) * scale);
+        const scale = image.width / this.imageRectOnCanvas.width;
+        const x: number = Math.round((mousePositionOnCanvas.x - this.imageRectOnCanvas.x) * scale);
+        const y: number = Math.round((mousePositionOnCanvas.y - this.imageRectOnCanvas.y) * scale);
         const text: string = "x: " + x + ", y: " + y;
 
         this.mousePositionIndicator.innerHTML = text;
@@ -169,7 +172,10 @@ class Editor extends React.Component<IProps, IState> {
     private mountSupportRenderingEngine = (activeLabelType: LabelType) => {
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
-                this.supportRenderingEngine = new RectRenderEngine(this.canvas, this.imageRect);
+                this.supportRenderingEngine = new RectRenderEngine(this.canvas, this.imageRectOnCanvas);
+                break;
+            case LabelType.POINT:
+                this.supportRenderingEngine = new PointRenderEngine(this.canvas, this.imageRectOnCanvas);
                 break;
             default:
                 this.supportRenderingEngine = null;
@@ -180,18 +186,6 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
     // HELPER METHODS
     // =================================================================================================================
-
-    private getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent): IPoint {
-        if (!!this.canvas) {
-            const canvasRect: ClientRect | DOMRect = this.canvas.getBoundingClientRect();
-            return {
-                x: event.clientX - canvasRect.left,
-                y: event.clientY - canvasRect.top
-            }
-        }
-        else
-            return null;
-    }
 
     private resizeCanvas = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!this.canvas) {
@@ -215,7 +209,7 @@ class Editor extends React.Component<IProps, IState> {
 
             this.primaryRenderingEngine.updateImageRect(imageRectOnCanvas);
             this.supportRenderingEngine && this.supportRenderingEngine.updateImageRect(imageRectOnCanvas);
-            this.imageRect = imageRectOnCanvas;
+            this.imageRectOnCanvas = imageRectOnCanvas;
         }
     };
 
