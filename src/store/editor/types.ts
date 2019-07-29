@@ -26,7 +26,7 @@ export type ImageData = {
 
 export type EditorState = {
     activeImageIndex: number;
-    activeLabelIndex: number;
+    activeLabelNameIndex: number;
     activeLabelType: LabelType;
     activeLabelId: string;
     highlightedLabelId: string;
@@ -49,10 +49,10 @@ interface UpdateActiveImageIndex {
     }
 }
 
-interface UpdateActiveLabelIndex {
-    type: typeof Action.UPDATE_ACTIVE_LABEL_INDEX;
+interface UpdateActiveLabelNameIndex {
+    type: typeof Action.UPDATE_ACTIVE_LABEL_NAME_INDEX;
     payload: {
-        activeLabelIndex: number;
+        activeLabelNameIndex: number;
     }
 }
 
@@ -103,7 +103,7 @@ interface UpdateLabelNamesList {
 
 export type EditorActionTypes = UpdateProjectType
     | UpdateActiveImageIndex
-    | UpdateActiveLabelIndex
+    | UpdateActiveLabelNameIndex
     | UpdateActiveLabelType
     | UpdateImageDataById
     | AddImageData

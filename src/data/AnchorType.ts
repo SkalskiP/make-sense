@@ -1,4 +1,4 @@
-export enum RectAnchorType {
+export enum AnchorType {
     TOP = "TOP",
     BOTTOM = "BOTTOM",
     LEFT = "LEFT",
@@ -6,5 +6,6 @@ export enum RectAnchorType {
     TOP_RIGHT = "TOP_RIGHT",
     TOP_LEFT = "TOP_LEFT",
     BOTTOM_RIGHT = "BOTTOM_RIGHT",
-    BOTTOM_LEFT = "BOTTOM_LEFT"
+    BOTTOM_LEFT = "BOTTOM_LEFT",
+    CENTER = "CENTER"
 }

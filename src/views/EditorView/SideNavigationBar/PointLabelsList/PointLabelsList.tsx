@@ -1,8 +1,8 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelRect} from "../../../../store/editor/types";
-import './RectLabelsList.scss';
+import {ImageData, LabelPoint} from "../../../../store/editor/types";
+import './PointLabelsList.scss';
 import {
     updateActiveLabelId,
     updateActiveLabelNameIndex,
@@ -24,7 +24,7 @@ interface IProps {
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, updateActiveLabelId}) => {
+const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, updateActiveLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -32,31 +32,30 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
     };
     const listStyleContent: React.CSSProperties = {
         width: size.width,
-        height: imageData.labelRects.length * labelInputFieldHeight
+        height: imageData.labelPoints.length * labelInputFieldHeight
     };
 
-    const deleteRectLabelById = (labelRectId: string) => {
+    const deletePointLabelById = (labelPointId: string) => {
         const newImageData = {
             ...imageData,
-            labelRects: _.filter(imageData.labelRects, (currentLabel: LabelRect) => {
-                return currentLabel.id !== labelRectId;
+            labelPoints: _.filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
+                return currentLabel.id !== labelPointId;
             })
         };
         updateImageDataById(imageData.id, newImageData);
     };
 
-    const updateRectLabel = (labelRectId: string, labelNameIndex: number) => {
+    const updatePointLabel = (labelPointId: string, labelNameIndex: number) => {
         const newImageData = {
             ...imageData,
-            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
-                if (labelRect.id === labelRectId) {
+            labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
+                if (labelPoint.id === labelPointId) {
                     return {
-                        ...labelRect,
+                        ...labelPoint,
                         labelIndex: labelNameIndex
                     }
-                } else {
-                    return labelRect
                 }
+                return labelPoint
             })
         };
         updateImageDataById(imageData.id, newImageData);
@@ -68,32 +67,32 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
     };
 
     const getChildren = () => {
-        return imageData.labelRects.map((labelRect: LabelRect) => {
+        return imageData.labelPoints.map((labelPoint: LabelPoint) => {
             return <LabelInputField
                 size={{
                     width: size.width,
                     height: labelInputFieldHeight
                 }}
-                isActive={labelRect.id === activeLabelId}
-                id={labelRect.id}
-                key={labelRect.id}
-                onDelete={deleteRectLabelById}
-                value={labelRect.labelIndex !== null ? labelNames[labelRect.labelIndex] : null}
+                isActive={labelPoint.id === activeLabelId}
+                id={labelPoint.id}
+                key={labelPoint.id}
+                onDelete={deletePointLabelById}
+                value={labelPoint.labelIndex !== null ? labelNames[labelPoint.labelIndex] : null}
                 options={labelNames}
-                onSelectLabel={updateRectLabel}
+                onSelectLabel={updatePointLabel}
             />
         });
     };
 
     return (
         <div
-            className="RectLabelsList"
+            className="PointLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
             <Scrollbars>
                 <div
-                    className="RectLabelsListContent"
+                    className="PointLabelsListContent"
                     style={listStyleContent}
                 >
                     {getChildren()}
@@ -118,4 +117,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(RectLabelsList);
+)(PointLabelsList);

@@ -21,11 +21,11 @@ export function updateActiveImageIndex(activeImageIndex: number): EditorActionTy
     };
 }
 
-export function updateActiveLabelIndex(activeLabelIndex: number): EditorActionTypes {
+export function updateActiveLabelNameIndex(activeLabelNameIndex: number): EditorActionTypes {
     return {
-        type: Action.UPDATE_ACTIVE_LABEL_INDEX,
+        type: Action.UPDATE_ACTIVE_LABEL_NAME_INDEX,
         payload: {
-            activeLabelIndex,
+            activeLabelNameIndex,
         },
     };
 }

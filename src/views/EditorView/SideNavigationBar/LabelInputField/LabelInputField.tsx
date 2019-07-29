@@ -88,10 +88,13 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     private getDropdownOptions = () => {
-        const onClick = (index: number) => {
+        const onClick = (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             this.setState({isOpen: false});
-            window.removeEventListener("mousedown", this.closeDropdown)
+            window.removeEventListener("mousedown", this.closeDropdown);
             this.props.onSelectLabel(this.props.id, index);
+            this.props.updateHighlightedLabelId(null);
+            this.props.updateActiveLabelId(this.props.id);
+            event.stopPropagation();
         };
 
         return this.props.options.map((option: string, index: number) => {
@@ -99,7 +102,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                 className="DropdownOption"
                 key={option}
                 style={{height: this.dropdownOptionHeight}}
-                onClick={() => onClick(index)}
+                onClick={(event) => onClick(index, event)}
             >
                 {option}
             </div>

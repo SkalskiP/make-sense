@@ -3,7 +3,7 @@ import {Action} from "../Actions";
 
 const initialState: EditorState = {
     activeImageIndex: null,
-    activeLabelIndex: null,
+    activeLabelNameIndex: null,
     activeLabelType: null,
     activeLabelId: null,
     highlightedLabelId: null,
@@ -29,10 +29,10 @@ export function editorReducer(
                 activeImageIndex: action.payload.activeImageIndex
             }
         }
-        case Action.UPDATE_ACTIVE_LABEL_INDEX: {
+        case Action.UPDATE_ACTIVE_LABEL_NAME_INDEX: {
             return {
                 ...state,
-                activeLabelIndex: action.payload.activeLabelIndex
+                activeLabelNameIndex: action.payload.activeLabelNameIndex
             }
         }
         case Action.UPDATE_ACTIVE_LABEL_ID: {

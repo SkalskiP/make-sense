@@ -1,12 +1,13 @@
-import {RectAnchorType} from "./RectAnchorType";
+import {AnchorType} from "./AnchorType";
 
 export const AnchorTypeToCursorStyleMapping = new Map<string, string>([
-    [RectAnchorType.TOP, "ns-resize"],
-    [RectAnchorType.BOTTOM, "ns-resize"],
-    [RectAnchorType.LEFT, "ew-resize"],
-    [RectAnchorType.RIGHT, "ew-resize"],
-    [RectAnchorType.TOP_LEFT, "nwse-resize"],
-    [RectAnchorType.BOTTOM_RIGHT, "nwse-resize"],
-    [RectAnchorType.TOP_RIGHT, "nesw-resize"],
-    [RectAnchorType.BOTTOM_LEFT, "nesw-resize"],
+    [AnchorType.TOP, "ns-resize"],
+    [AnchorType.BOTTOM, "ns-resize"],
+    [AnchorType.LEFT, "ew-resize"],
+    [AnchorType.RIGHT, "ew-resize"],
+    [AnchorType.TOP_LEFT, "nwse-resize"],
+    [AnchorType.BOTTOM_RIGHT, "nwse-resize"],
+    [AnchorType.TOP_RIGHT, "nesw-resize"],
+    [AnchorType.BOTTOM_LEFT, "nesw-resize"],
+    [AnchorType.CENTER, "move"]
 ]);
