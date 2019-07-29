@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './LoadLabelNamesPopup.scss'
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateActiveLabelIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
+import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
@@ -121,7 +121,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLa
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelIndex,
+    updateActiveLabelIndex: updateActiveLabelNameIndex,
     updateLabelNamesList,
     updateActivePopupType,
 };

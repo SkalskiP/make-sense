@@ -7,7 +7,6 @@ import {RectUtil} from "../../utils/RectUtil";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
-    private readonly canvas: HTMLCanvasElement;
     private crossHairColor: string = Settings.CROSS_HAIR_COLOR;
     private crossHairThickness: number = Settings.CROSS_HAIR_THICKNESS_PX;
 
@@ -15,12 +14,10 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // STATE
     // =================================================================================================================
 
-    private imageRectOnCanvas: IRect;
     private mousePosition: IPoint;
 
-    public constructor(canvas: HTMLCanvasElement) {
-        super();
-        this.canvas = canvas;
+    public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
+        super(canvas, imageRect);
     }
 
     // =================================================================================================================

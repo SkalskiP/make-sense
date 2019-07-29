@@ -3,7 +3,11 @@ import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
 import {ImageData, LabelRect} from "../../../../store/editor/types";
 import './RectLabelsList.scss';
-import {updateActiveLabelIndex, updateImageDataById} from "../../../../store/editor/actionCreators";
+import {
+    updateActiveLabelId,
+    updateActiveLabelNameIndex,
+    updateImageDataById
+} from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import * as _ from "lodash";
@@ -15,11 +19,12 @@ interface IProps {
     updateImageDataById: (id: string, newImageData: ImageData) => any;
     activeLabelIndex: number;
     activeLabelId: string;
-    updateActiveLabelIndex: (activeLabelIndex: number) => any;
+    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     labelNames: string[];
+    updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelIndex, activeLabelId}) => {
+const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, updateActiveLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -55,7 +60,11 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
             })
         };
         updateImageDataById(imageData.id, newImageData);
-        updateActiveLabelIndex(labelNameIndex);
+        updateActiveLabelNameIndex(labelNameIndex);
+    };
+
+    const onClickHandler = () => {
+        updateActiveLabelId(null);
     };
 
     const getChildren = () => {
@@ -80,6 +89,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
         <div
             className="RectLabelsList"
             style={listStyle}
+            onClickCapture={onClickHandler}
         >
             <Scrollbars>
                 <div
@@ -95,11 +105,12 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
 
 const mapDispatchToProps = {
     updateImageDataById,
-    updateActiveLabelIndex
+    updateActiveLabelNameIndex,
+    updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelIndex: state.editor.activeLabelIndex,
+    activeLabelIndex: state.editor.activeLabelNameIndex,
     activeLabelId: state.editor.activeLabelId,
     labelNames : state.editor.labelNames
 });

@@ -57,7 +57,7 @@ class Editor extends React.Component<IProps, IState> {
         const {imageData, size ,activeLabelType} = this.props;
         this.loadImage(imageData);
         this.resizeCanvas(size);
-        this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas);
+        this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas, this.imageRectOnCanvas);
         this.mountSupportRenderingEngine(activeLabelType);
         this.fullCanvasRender()
     }
