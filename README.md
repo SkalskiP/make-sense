@@ -14,6 +14,7 @@ Our application is being actively developed. If you have an idea for a new funct
 
 * Labelling objects using polygons and Bézier curves
 * Export labels in COCO JSON format
+* Separate tab with settings
 * Support basic image operations like crop and resize
 * Converting video to image frames
 * Keyboard shortcuts to improve productivity 
