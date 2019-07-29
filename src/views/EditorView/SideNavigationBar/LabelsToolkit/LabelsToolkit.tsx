@@ -12,6 +12,7 @@ import * as _ from "lodash";
 import {ILabelToolkit, LabelToolkitData} from "../../../../data/LabelToolkitData";
 import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
+import PointLabelsList from "../PointLabelsList/PointLabelsList";
 
 interface IProps {
     activeImageIndex:number,
@@ -130,6 +131,13 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     style={{height: isActive ? activeTabContentHeight : 0}}
                 >
                     {activeLabelType === LabelType.RECTANGLE && <RectLabelsList
+                        size={{
+                            width: size.width - 20,
+                            height: activeTabContentHeight - 20
+                        }}
+                        imageData={imagesData[activeImageIndex]}
+                    />}
+                    {activeLabelType === LabelType.POINT && <PointLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20

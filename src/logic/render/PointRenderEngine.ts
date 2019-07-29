@@ -11,6 +11,8 @@ import {RectUtil} from "../../utils/RectUtil";
 import _ from "lodash";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
+import {AnchorTypeToCursorStyleMapping} from "../../data/AnchorTypeToCursorStyleMapping";
+import {AnchorType} from "../../data/AnchorType";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -19,7 +21,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     // STATE
     // =================================================================================================================
 
-    private startTransformPoint: IPoint;
+    private transformInProgres: boolean;
     private mousePosition: IPoint;
 
     public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
@@ -34,17 +36,52 @@ export class PointRenderEngine extends BaseRenderEngine {
         const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         const isMouseOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
         if (isMouseOverImage) {
-            const scale = this.getActiveImageScale();
-            const point: IPoint = {
-                x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,
-                y: (mousePosition.y - this.imageRectOnCanvas.y) * scale
-            };
-            this.addPointLabel(point);
+            const labelPoint: LabelPoint = this.getActivePointLabel();
+            if (!!labelPoint) {
+                const pointOnImage: IPoint = this.calculatePointRelativeToActiveImage(labelPoint.point);
+                const pointBetweenPixels = DrawUtil
+                    .setPointBetweenPixels(PointUtil.translate(pointOnImage, this.imageRectOnCanvas));
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
+                if (RectUtil.isPointInside(handleRect, this.mousePosition)) {
+                    this.transformInProgres = true;
+                    return;
+                }
+            } else {
+                const scale = this.getActiveImageScale();
+                const point: IPoint = {
+                    x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,
+                    y: (mousePosition.y - this.imageRectOnCanvas.y) * scale
+                };
+                this.addPointLabel(point);
+            }
         }
     }
 
     public mouseUpHandler(event: MouseEvent): void {
+        const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
+        const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
 
+        if (isOverImage && this.transformInProgres) {
+            const scale = this.getActiveImageScale();
+            const activeLabelPoint: LabelPoint = this.getActivePointLabel();
+            const scaledPoint: IPoint = PointRenderEngine.scalePoint({
+                x: mousePosition.x - this.imageRectOnCanvas.x,
+                y: mousePosition.y - this.imageRectOnCanvas.y,
+            }, scale);
+
+            const imageData = this.getActiveImage();
+            imageData.labelPoints = imageData.labelPoints.map((labelPoint: LabelPoint) => {
+                if (labelPoint.id === activeLabelPoint.id) {
+                    return {
+                        ...labelPoint,
+                        point: scaledPoint
+                    };
+                }
+                return labelPoint;
+            });
+            store.dispatch(updateImageDataById(imageData.id, imageData));
+        }
+        this.transformInProgres = false;
     }
 
     public mouseMoveHandler(event: MouseEvent): void {
@@ -57,13 +94,25 @@ export class PointRenderEngine extends BaseRenderEngine {
 
     public render(): void {
         const activeLabelId: string = store.getState().editor.activeLabelId;
+        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
         const imageData: ImageData = this.getActiveImage();
 
         if (imageData) {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
-                this.renderPoint(labelPoint, labelPoint.id === activeLabelId);
+                if (labelPoint.id === activeLabelId) {
+                    if (this.transformInProgres) {
+                        const pointBetweenPixels = DrawUtil.setPointBetweenPixels(this.mousePosition);
+                        const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
+                        DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+                    } else {
+                        this.renderPoint(labelPoint, true);
+                    }
+                } else {
+                    this.renderPoint(labelPoint, labelPoint.id === activeLabelId || labelPoint.id === highlightedLabelId);
+                }
             });
         }
+        this.updateCursorStyle();
     }
 
     private renderPoint(labelPoint: LabelPoint, isActive: boolean) {
@@ -73,6 +122,23 @@ export class PointRenderEngine extends BaseRenderEngine {
         const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
         const handleColor: string = isActive ? this.config.activeAnchorColor : this.config.inactiveAnchorColor;
         DrawUtil.drawRectWithFill(this.canvas, handleRect, handleColor);
+    }
+
+    private updateCursorStyle() {
+        if (!!this.canvas && !!this.mousePosition) {
+            const labelPoint: LabelPoint = this.getActivePointLabel();
+            if (!!labelPoint) {
+                const pointOnImage: IPoint = this.calculatePointRelativeToActiveImage(labelPoint.point);
+                const pointBetweenPixels = DrawUtil
+                    .setPointBetweenPixels(PointUtil.translate(pointOnImage, this.imageRectOnCanvas));
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
+                if (RectUtil.isPointInside(handleRect, this.mousePosition)) {
+                    this.canvas.style.cursor = AnchorTypeToCursorStyleMapping.get(AnchorType.CENTER);
+                    return;
+                }
+            }
+            this.canvas.style.cursor = (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) ? "crosshair" : "default";
+        }
     }
 
     // =================================================================================================================
