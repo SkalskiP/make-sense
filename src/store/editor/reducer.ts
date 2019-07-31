@@ -10,6 +10,7 @@ const initialState: EditorState = {
     projectType: null,
     imagesData: [],
     labelNames: [],
+    firstLabelCreatedFlag: false
 };
 
 export function editorReducer(
@@ -71,6 +72,12 @@ export function editorReducer(
             return {
                 ...state,
                 labelNames: action.payload.labelNames
+            }
+        }
+        case Action.UPDATE_FIRST_LABEL_CREATED_FLAG: {
+            return {
+                ...state,
+                firstLabelCreatedFlag: action.payload.firstLabelCreatedFlag
             }
         }
         default:

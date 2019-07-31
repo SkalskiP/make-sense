@@ -1,0 +1,28 @@
+.EmptyLabelList {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  width: 150px;
+  color: white;
+  font-size: 16px;
+  user-select: none;
+
+  > img {
+    filter: brightness(0) invert(1);
+    max-width: 80px;
+    max-height: 80px;
+    margin-bottom: 20px;
+    user-select: none;
+  }
+
+  > p {
+    &.extraBold {
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+}

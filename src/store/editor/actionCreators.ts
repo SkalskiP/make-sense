@@ -84,3 +84,12 @@ export function updateLabelNamesList(labelNames: string[]) {
         }
     }
 }
+
+export function updateFirstLabelCreatedFlag(firstLabelCreatedFlag: boolean) {
+    return {
+        type: Action.UPDATE_FIRST_LABEL_CREATED_FLAG,
+        payload: {
+            firstLabelCreatedFlag
+        }
+    }
+}

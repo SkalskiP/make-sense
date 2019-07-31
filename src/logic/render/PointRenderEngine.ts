@@ -6,7 +6,7 @@ import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
 import {ImageData, LabelPoint, LabelRect} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
-import {updateImageDataById} from "../../store/editor/actionCreators";
+import {updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 import {RectUtil} from "../../utils/RectUtil";
 import _ from "lodash";
 import {DrawUtil} from "../../utils/DrawUtil";
@@ -177,5 +177,6 @@ export class PointRenderEngine extends BaseRenderEngine {
         };
         imageData.labelPoints.push(labelPoint);
         store.dispatch(updateImageDataById(imageData.id, imageData));
+        store.dispatch(updateFirstLabelCreatedFlag(true));
     };
 }

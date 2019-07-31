@@ -6,7 +6,7 @@ import {BaseRenderEngine} from "./BaseRenderEngine";
 import {store} from "../..";
 import {ImageData, LabelRect} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
-import {updateActiveLabelId, updateImageDataById} from "../../store/editor/actionCreators";
+import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
 import {AnchorTypeToCursorStyleMapping} from "../../data/AnchorTypeToCursorStyleMapping";
@@ -219,6 +219,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         };
         imageData.labelRects.push(labelRect);
         store.dispatch(updateImageDataById(imageData.id, imageData));
+        store.dispatch(updateFirstLabelCreatedFlag(true));
     };
 
     private getActiveRectLabel(): LabelRect | null {
