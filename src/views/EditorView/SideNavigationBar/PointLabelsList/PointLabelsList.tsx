@@ -12,6 +12,7 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import * as _ from "lodash";
 import LabelInputField from "../LabelInputField/LabelInputField";
+import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 
 interface IProps {
     size: ISize;
@@ -90,14 +91,20 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            <Scrollbars>
-                <div
-                    className="PointLabelsListContent"
-                    style={listStyleContent}
-                >
-                    {getChildren()}
-                </div>
-            </Scrollbars>
+            {imageData.labelPoints.length === 0 ?
+                <EmptyLabelList
+                    labelBefore={"Mark the first point"}
+                    labelAfter={"No labels created for this image"}
+                /> :
+                <Scrollbars>
+                    <div
+                        className="PointLabelsListContent"
+                        style={listStyleContent}
+                    >
+                        {getChildren()}
+                    </div>
+                </Scrollbars>
+            }
         </div>
     );
 };

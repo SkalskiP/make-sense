@@ -12,6 +12,7 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import * as _ from "lodash";
 import LabelInputField from "../LabelInputField/LabelInputField";
+import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 
 interface IProps {
     size: ISize;
@@ -91,14 +92,20 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            <Scrollbars>
-                <div
-                    className="RectLabelsListContent"
-                    style={listStyleContent}
-                >
-                    {getChildren()}
-                </div>
-            </Scrollbars>
+            {imageData.labelRects.length === 0 ?
+                <EmptyLabelList
+                    labelBefore={"Draw the first rect"}
+                    labelAfter={"No labels created for this image"}
+                /> :
+                <Scrollbars>
+                    <div
+                        className="RectLabelsListContent"
+                        style={listStyleContent}
+                    >
+                        {getChildren()}
+                    </div>
+                </Scrollbars>
+            }
         </div>
     );
 };

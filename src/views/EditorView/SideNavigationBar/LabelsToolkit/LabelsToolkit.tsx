@@ -13,6 +13,7 @@ import {ILabelToolkit, LabelToolkitData} from "../../../../data/LabelToolkitData
 import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
 import PointLabelsList from "../PointLabelsList/PointLabelsList";
+import {FeatureInProgress} from "../../FeatureInProgress/FeatureInProgress";
 
 interface IProps {
     activeImageIndex:number,
@@ -144,6 +145,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         }}
                         imageData={imagesData[activeImageIndex]}
                     />}
+                    {activeLabelType === LabelType.POLYGON && <FeatureInProgress/>}
                 </div>;
 
             children.push([header, content]);
