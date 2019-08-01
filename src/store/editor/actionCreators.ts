@@ -76,6 +76,15 @@ export function addImageData(imageData: ImageData[]): EditorActionTypes {
     };
 }
 
+export function updateImageData(imageData: ImageData[]): EditorActionTypes {
+    return {
+        type: Action.UPDATE_IMAGES_DATA,
+        payload: {
+            imageData,
+        },
+    };
+}
+
 export function updateLabelNamesList(labelNames: string[]) {
     return {
         type: Action.UPDATE_LABEL_NAMES_LIST,

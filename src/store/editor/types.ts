@@ -93,6 +93,13 @@ interface AddImageData {
     }
 }
 
+interface UpdateImageData {
+    type: typeof Action.UPDATE_IMAGES_DATA;
+    payload: {
+        imageData: ImageData[];
+    }
+}
+
 interface UpdateLabelNamesList {
     type: typeof Action.UPDATE_LABEL_NAMES_LIST;
     payload: {
@@ -113,6 +120,7 @@ export type EditorActionTypes = UpdateProjectType
     | UpdateActiveLabelType
     | UpdateImageDataById
     | AddImageData
+    | UpdateImageData
     | UpdateLabelNamesList
     | UpdateActiveLabelId
     | UpdateHighlightedLabelId

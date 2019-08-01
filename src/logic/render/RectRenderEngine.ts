@@ -231,7 +231,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         const rectAnchors: RectAnchor[] = RectUtil.mapRectToAnchors(rect);
         for (let i = 0; i < rectAnchors.length; i++) {
             const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].middlePosition, this.config.anchorHoverSize), this.imageRectOnCanvas)
-            if (RectUtil.isPointInside(anchorRect, this.mousePosition)) {
+            if (!!this.mousePosition && RectUtil.isPointInside(anchorRect, this.mousePosition)) {
                 return rectAnchors[i];
             }
         }
