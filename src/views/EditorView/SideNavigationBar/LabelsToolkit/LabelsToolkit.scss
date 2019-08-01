@@ -95,6 +95,12 @@
     justify-content: center;
     align-items: center;
     align-content: center;
+
+    //&:not(.active) {
+    //  animation-duration: 0.6s;
+    //  animation-name: cssAnimationHide;
+    //  animation-fill-mode: forwards;
+    //}
   }
 }
 
@@ -103,13 +109,13 @@
 //    opacity: 1;
 //    height: 0;
 //  }
-//  40%  {
+//  20%  {
 //    opacity: 0;
-//    width: 400px;
+//    //width: 400px;
 //  }
 //  100% {
 //    opacity: 0;
-//    width: 0;
+//    //width: 0;
 //    overflow: hidden;
 //  }
 //}

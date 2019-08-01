@@ -4,7 +4,7 @@ import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
-import {ImageData, LabelPoint, LabelRect} from "../../store/editor/types";
+import {ImageData, LabelPoint} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
 import {updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 import {RectUtil} from "../../utils/RectUtil";

@@ -17,7 +17,10 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
             <StateBar/>
             <div className="TopNavigationBarWrapper">
                 <div className="NavigationBarGroupWrapper">
-                    <div className="Header">
+                    <div
+                        className="Header"
+                        onClick={() => updateActivePopupType(PopupWindowType.EXIT_PROJECT)}
+                    >
                         <img
                             draggable={false}
                             alt={"make-sense"}
