@@ -3,15 +3,14 @@
 .ExportLabelPopupContent {
   align-self: stretch;
   flex: 1;
-
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
-
   padding-top: 30px;
+  height: 200px;
 
   .Message {
     align-self: stretch;

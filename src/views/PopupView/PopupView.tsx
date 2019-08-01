@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
 import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
+import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -21,6 +22,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <ExportLabelPopup/>;
             case PopupWindowType.INSERT_LABEL_NAMES:
                 return <InsertLabelNamesPopup/>;
+            case PopupWindowType.EXIT_PROJECT:
+                return <ExitProjectPopup/>;
             default:
                 return null;
         }

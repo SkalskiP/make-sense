@@ -37,12 +37,12 @@
 
     .Header {
       align-self: stretch;
-
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
       align-content: center;
+      cursor: pointer;
 
       > img {
         width: 25px;

@@ -68,6 +68,12 @@ export function editorReducer(
                 imagesData: state.imagesData.concat(action.payload.imageData)
             }
         }
+        case Action.UPDATE_IMAGES_DATA: {
+            return {
+                ...state,
+                imagesData: action.payload.imageData
+            }
+        }
         case Action.UPDATE_LABEL_NAMES_LIST: {
             return {
                 ...state,

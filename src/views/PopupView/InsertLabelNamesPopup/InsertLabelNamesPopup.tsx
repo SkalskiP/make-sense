@@ -12,12 +12,12 @@ import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import uuidv1 from 'uuid/v1';
 
 interface IProps {
-    updateActiveLabelIndex: (activeLabelIndex: number) => any;
+    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
 }
 
-const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
+const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType}) => {
     const [labelNames, setLabelNames] = useState({});
 
     const addHandle = () => {
@@ -117,7 +117,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, update
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelIndex: updateActiveLabelNameIndex,
+    updateActiveLabelNameIndex,
     updateLabelNamesList,
     updateActivePopupType,
 };

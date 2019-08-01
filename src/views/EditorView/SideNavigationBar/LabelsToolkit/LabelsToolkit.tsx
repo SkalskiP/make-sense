@@ -131,21 +131,21 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     className={getClassName("Content")}
                     style={{height: isActive ? activeTabContentHeight : 0}}
                 >
-                    {activeLabelType === LabelType.RECTANGLE && <RectLabelsList
+                    {labelType === LabelType.RECTANGLE && <RectLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20
                         }}
                         imageData={imagesData[activeImageIndex]}
                     />}
-                    {activeLabelType === LabelType.POINT && <PointLabelsList
+                    {labelType === LabelType.POINT && <PointLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20
                         }}
                         imageData={imagesData[activeImageIndex]}
                     />}
-                    {activeLabelType === LabelType.POLYGON && <FeatureInProgress/>}
+                    {labelType === LabelType.POLYGON && <FeatureInProgress/>}
                 </div>;
 
             children.push([header, content]);
