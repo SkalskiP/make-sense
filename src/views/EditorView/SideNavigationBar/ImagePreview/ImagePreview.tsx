@@ -12,6 +12,7 @@ import classNames from "classnames";
 import {ISize} from "../../../../interfaces/ISize";
 import {RectUtil} from "../../../../utils/RectUtil";
 import {IRect} from "../../../../interfaces/IRect";
+import {LabelType} from "../../../../data/LabelType";
 
 interface IProps {
     imageData: ImageData;
@@ -21,6 +22,7 @@ interface IProps {
     onClick?: () => any;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
+    activeLabelType: LabelType;
 }
 
 interface IState {
@@ -115,22 +117,44 @@ class ImagePreview extends React.Component<IProps, IState> {
     };
 
     public render() {
+        const {
+            activeLabelType,
+            imageData,
+            style,
+            onClick
+        } = this.props;
+
+        const isChecked: boolean =
+            activeLabelType === LabelType.RECTANGLE && imageData.labelRects.length > 0 ||
+            activeLabelType === LabelType.POINT && imageData.labelPoints.length > 0;
+
         return(
             <div
                 className={this.getClassName()}
-                style={this.props.style}
-                onClick={this.props.onClick ? this.props.onClick : undefined}
+                style={style}
+                onClick={onClick ? onClick : undefined}
             >
                 {(!!this.state.image) ?
                 [
-                    <img
-                        draggable={false}
+                    <div
                         className="Foreground"
                         key={"Foreground"}
-                        src={this.state.image.src}
-                        alt={this.state.image.alt}
                         style={this.getStyle()}
-                    />,
+                    >
+                        <img
+                            className="Image"
+                            draggable={false}
+                            src={this.state.image.src}
+                            alt={this.state.image.alt}
+                            style={{...this.getStyle(), left: 0, top: 0}}
+                        />
+                        {isChecked && <img
+                            className="CheckBox"
+                            draggable={false}
+                            src={"ico/checkbox-checked-color.png"}
+                            alt={"checkbox"}
+                        />}
+                    </div>,
                     <div
                         className="Background"
                         key={"Background"}
@@ -151,7 +175,9 @@ const mapDispatchToProps = {
     updateImageDataById
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    activeLabelType: state.editor.activeLabelType
+});
 
 export default connect(
     mapStateToProps,

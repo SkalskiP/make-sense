@@ -20,8 +20,22 @@
     position: absolute;
     z-index: 100;
     transition: transform 0.3s;
-    border: solid 1px $darkThemeSecondColor;
-    box-sizing: border-box;
+
+    .Image {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border: solid 1px $darkThemeSecondColor;
+    }
+
+    .CheckBox {
+      position: absolute;
+      z-index: 1000;
+      max-width: 15px;
+      max-height: 15px;
+      bottom: 5px;
+      left: 5px;
+    }
   }
 
   .Background {

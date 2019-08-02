@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './ExitProjectPopup.scss'
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {
     updateActiveImageIndex,
-    updateActiveLabelNameIndex, updateFirstLabelCreatedFlag, updateImageData,
+    updateActiveLabelNameIndex,
+    updateFirstLabelCreatedFlag,
+    updateImageData,
     updateLabelNamesList,
     updateProjectType
 } from "../../../store/editor/actionCreators";
