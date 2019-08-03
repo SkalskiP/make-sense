@@ -4,53 +4,95 @@
   align-self: stretch;
   flex: 1;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   flex-wrap: nowrap;
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
-  padding-top: 30px;
-  height: 200px;
+  height: 300px;
 
-  .Message {
+  .LeftContainer {
+    width: 50px;
     align-self: stretch;
-    color: white;
-    font-size: 15px;
-    padding: 0 40px 30px 40px;
-    border-bottom: solid 1px $darkThemeFirstColor;
-  }
-
-  .Options {
-    align-self: stretch;
-    padding: 20px 40px 0;
+    border-right: solid 1px $darkThemeFirstColor;
 
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     align-content: flex-start;
 
-    .OptionsItem {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
-      color: white;
+    .ImageButton {
+      transition: transform 0.3s;
 
-      cursor: pointer;
-      user-select: none;
-      font-size: 15px;
-      padding: 5px 0;
-
-      > img {
-        max-width: 20px;
-        max-height: 20px;
-        margin-right: 5px;
+      img {
         filter: brightness(0) invert(1);
+      }
+
+      &:hover {
+        background-color: transparent;
+        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+      }
+
+      &.active {
+        background-color: transparent;
+        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+      }
+    }
+  }
+
+  .RightContainer {
+    align-self: stretch;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    .Message {
+      align-self: stretch;
+      color: white;
+      font-size: 15px;
+      padding: 30px 40px;
+      border-bottom: solid 1px $darkThemeFirstColor;
+    }
+
+    .Options {
+      align-self: stretch;
+      padding: 30px 40px;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+
+      .OptionsItem {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        color: white;
+
+        cursor: pointer;
         user-select: none;
+        font-size: 15px;
+        padding: 5px 0;
+
+        > img {
+          max-width: 20px;
+          max-height: 20px;
+          margin-right: 5px;
+          filter: brightness(0) invert(1);
+          user-select: none;
+        }
       }
     }
   }

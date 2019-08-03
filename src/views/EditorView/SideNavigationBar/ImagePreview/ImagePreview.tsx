@@ -125,8 +125,8 @@ class ImagePreview extends React.Component<IProps, IState> {
         } = this.props;
 
         const isChecked: boolean =
-            activeLabelType === LabelType.RECTANGLE && imageData.labelRects.length > 0 ||
-            activeLabelType === LabelType.POINT && imageData.labelPoints.length > 0;
+            (activeLabelType === LabelType.RECTANGLE && imageData.labelRects.length > 0) ||
+            (activeLabelType === LabelType.POINT && imageData.labelPoints.length > 0);
 
         return(
             <div

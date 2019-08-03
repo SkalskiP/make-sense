@@ -5,6 +5,7 @@ import classNames from "classnames";
 
 interface Props {
     size:ISize,
+    padding?:number;
     image:string,
     imageAlt:string,
     href?:string
@@ -16,8 +17,8 @@ interface Props {
 }
 
 export const ImageButton = (props:Props) => {
-    const {size, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
-    const imagePadding:number = 10;
+    const {size, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
+    const imagePadding:number = !!padding ? padding : 10;
 
     const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();

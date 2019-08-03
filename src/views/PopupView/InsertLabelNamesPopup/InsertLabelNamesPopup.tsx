@@ -79,9 +79,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
             </div>
             <div className="RightContainer">
                 <div className="Message">
-                    Create a list of labels you would like to use in your project. Use the + button to add a new empty
-                    text field. When exporting photo labels, you will also be able to download a file containing the
-                    list you are currently creating.
+                    Before you start, please create a list of labels you would like to use in your project. Use the + button to add a new empty
+                    text field.
                 </div>
                 <div className="LabelsContainer">
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
@@ -91,14 +90,17 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                             {labelInputs}
                         </div>
                     </Scrollbars> :
-                    <>
+                    <div
+                        className="EmptyList"
+                        onClick={addHandle}
+                    >
                         <img
                             draggable={false}
                             alt={"upload"}
-                            src={"ico/labels_list_empty.png"}
+                            src={"img/type-writer.png"}
                         />
                         <p className="extraBold">Your label list is empty</p>
-                    </>}
+                    </div>}
                 </div>
             </div>
         </div>);
@@ -111,7 +113,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
             acceptLabel={"Start project"}
             onAccept={onAccept}
             disableAcceptButton={extractLabelNamesList().length === 0}
-            rejectLabel={"Back"}
+            rejectLabel={"Load labels list"}
             onReject={onReject}
         />)
 };

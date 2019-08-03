@@ -1,11 +1,7 @@
 import {ExportFormatType} from "./ExportFormatType";
+import {IExportFormat} from "../interfaces/IExportFormat";
 
-export interface IExportFormat {
-    type: ExportFormatType,
-    label: string
-}
-
-export const ExportFormatData: IExportFormat[] = [
+export const RectExportFormatData: IExportFormat[] = [
     {
         type: ExportFormatType.YOLO,
         label: "A .zip package containing files in YOLO format."

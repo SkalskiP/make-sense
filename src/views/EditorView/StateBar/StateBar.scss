@@ -14,7 +14,8 @@
 
   .done {
     align-self: stretch;
-    width: 30%;
+    //width: 30%;
     background-color: $secondaryColor;
+    transition: width 0.4s ease-out;
   }
 }

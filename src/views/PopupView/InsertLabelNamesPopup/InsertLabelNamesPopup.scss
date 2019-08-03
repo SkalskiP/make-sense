@@ -33,22 +33,12 @@
 
       &:hover {
         background-color: transparent;
-      }
-
-      &:not(.disabled):hover {
         filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
-        &.right {
-          transform: translate(2px);
-        }
-        &.left {
-          transform: translate(-2px);
-        }
       }
 
-      &.disabled {
-        img {
-          filter: invert(1) opacity(25%);
-        }
+      &.active {
+        background-color: transparent;
+        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
       }
     }
   }
@@ -85,21 +75,38 @@
 
       color: white;
 
-      > img {
-        max-width: 60px;
-        max-height: 60px;
-        margin-bottom: 10px;
-        filter: brightness(0) invert(1);
-        user-select: none;
-      }
+      .EmptyList {
+        align-self: stretch;
+        flex: 1;
 
-      > p {
-        margin-top: 2px;
-        margin-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        cursor: pointer;
 
-        &.extraBold {
-          font-size: 18px;
-          font-weight: 600;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.03);
+        }
+
+        > img {
+          max-width: 60px;
+          max-height: 60px;
+          margin-bottom: 10px;
+          filter: brightness(0) invert(1);
+          user-select: none;
+        }
+
+        > p {
+          margin-top: 2px;
+          margin-bottom: 0;
+
+          &.extraBold {
+            font-size: 18px;
+            font-weight: 600;
+          }
         }
       }
     }

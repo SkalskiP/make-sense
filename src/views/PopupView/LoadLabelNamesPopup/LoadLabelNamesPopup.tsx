@@ -97,7 +97,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLa
     const renderContent = () => {
         return(<div className="LoadLabelsPopupContent">
             <div className="Message">
-                Before you start, please load a text file with a list of labels you are planning to use. The names of
+                Load a text file with a list of labels you are planning to use. The names of
                 each label should be separated by new line. If you don't have a prepared file, no problem. You can
                 create your own list now.
             </div>
