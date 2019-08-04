@@ -9,6 +9,13 @@
   box-sizing: border-box;
   transition: background-color 0.7s ease;
   margin: 5px 2px;
+
+  &:hover ~ .Cursor {
+    width: 20px;
+    height: 20px;
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
 }
 
 .ImageButton:not(.disabled):hover {

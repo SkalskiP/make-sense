@@ -6,13 +6,13 @@ import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
 import {ImageData, LabelPoint} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
-import {updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
+import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 import {RectUtil} from "../../utils/RectUtil";
 import _ from "lodash";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
-import {AnchorTypeToCursorStyleMapping} from "../../data/AnchorTypeToCursorStyleMapping";
-import {AnchorType} from "../../data/AnchorType";
+import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -45,6 +45,14 @@ export class PointRenderEngine extends BaseRenderEngine {
                 if (RectUtil.isPointInside(handleRect, this.mousePosition)) {
                     this.transformInProgres = true;
                     return;
+                } else {
+                    store.dispatch(updateActiveLabelId(null));
+                    const scale = this.getActiveImageScale();
+                    const point: IPoint = {
+                        x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,
+                        y: (mousePosition.y - this.imageRectOnCanvas.y) * scale
+                    };
+                    this.addPointLabel(point);
                 }
             } else {
                 const scale = this.getActiveImageScale();
@@ -132,12 +140,17 @@ export class PointRenderEngine extends BaseRenderEngine {
                 const pointBetweenPixels = DrawUtil
                     .setPointBetweenPixels(PointUtil.translate(pointOnImage, this.imageRectOnCanvas));
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
-                if (RectUtil.isPointInside(handleRect, this.mousePosition)) {
-                    this.canvas.style.cursor = AnchorTypeToCursorStyleMapping.get(AnchorType.CENTER);
+                if (RectUtil.isPointInside(handleRect, this.mousePosition) || this.transformInProgres) {
+                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
                     return;
                 }
             }
-            this.canvas.style.cursor = (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) ? "crosshair" : "default";
+            if (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) {
+                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                this.canvas.style.cursor = "none";
+            } else {
+                this.canvas.style.cursor = "default";
+            }
         }
     }
 

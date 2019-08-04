@@ -21,7 +21,7 @@ export class Settings {
 
     public static readonly CANVAS_PADDING_WIDTH_PX: number = 10;
     public static readonly CROSS_HAIR_THICKNESS_PX: number = 1;
-    public static readonly CROSS_HAIR_COLOR: string = "#000";
+    public static readonly CROSS_HAIR_COLOR: string = "#fff";
 
     public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
     public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 12;

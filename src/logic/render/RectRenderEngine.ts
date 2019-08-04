@@ -9,10 +9,11 @@ import uuidv1 from 'uuid/v1';
 import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
-import {AnchorTypeToCursorStyleMapping} from "../../data/AnchorTypeToCursorStyleMapping";
 import _ from "lodash";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
+import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -177,12 +178,17 @@ export class RectRenderEngine extends BaseRenderEngine {
             if (!!labelRect) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(labelRect.rect);
                 const rectAnchorUnderMouse: RectAnchor = this.getRectAnchorUnderMouse(rect);
-                if (!!rectAnchorUnderMouse) {
-                    this.canvas.style.cursor = AnchorTypeToCursorStyleMapping.get(rectAnchorUnderMouse.type);
+                if (!!rectAnchorUnderMouse || !!this.startResizeRectAnchor) {
+                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
                     return;
                 }
             }
-            this.canvas.style.cursor = (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) ? "crosshair" : "default";
+            if (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) {
+                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                this.canvas.style.cursor = "none";
+            } else {
+                this.canvas.style.cursor = "default";
+            }
         }
     }
 

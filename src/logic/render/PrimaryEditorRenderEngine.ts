@@ -41,7 +41,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(): void {
-        this.drawCrossHair();
+        // this.drawCrossHair();
     }
 
     public drawCrossHair(): void {

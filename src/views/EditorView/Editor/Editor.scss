@@ -9,9 +9,10 @@
     position: absolute;
     top: 0;
     left: 0;
+    cursor: none;
 
     &:hover {
-      cursor: crosshair;
+      cursor: none;
     }
   }
 
@@ -26,5 +27,24 @@
     pointer-events: none;
     z-index: 100;
     width: fit-content;
+  }
+
+  .Cursor {
+    position: relative;
+    width: 6px;
+    height: 6px;
+    transition: width 0.1s ease-out, height 0.1s ease-out, background-color 0.1s ease-in;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    border: 2px solid white;
+    background-color: white;
+    z-index: 100000;
+
+    &.move {
+      width: 30px;
+      height: 30px;
+      background-color: transparent;
+    }
   }
 }

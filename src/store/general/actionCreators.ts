@@ -3,6 +3,7 @@ import {GeneralActionTypes} from "./types";
 import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
+import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
@@ -27,6 +28,15 @@ export function updateMobileDeviceData(mobileDeviceData: MobileDeviceData): Gene
         type: Action.UPDATE_MOBILE_DEVICE_DATA,
         payload: {
             mobileDeviceData,
+        }
+    }
+}
+
+export function updateCustomcursorStyle(customCursorStyle: CustomCursorStyle): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_CUSTOM_CURSOR_STYLE,
+        payload: {
+            customCursorStyle,
         }
     }
 }
