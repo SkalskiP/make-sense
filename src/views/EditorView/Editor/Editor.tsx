@@ -19,6 +19,9 @@ import {PopupWindowType} from "../../../data/PopupWindowType";
 import {CanvasUtil} from "../../../utils/CanvasUtil";
 import {PointRenderEngine} from "../../../logic/render/PointRenderEngine";
 import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
+import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
+import classNames from "classnames";
+import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 
 interface IProps {
     size: ISize;
@@ -27,6 +30,7 @@ interface IProps {
     updateImageDataById: (id: string, newImageData: ImageData) => any;
     activePopupType: PopupWindowType;
     activeLabelId: string;
+    customCursorStyle: CustomCursorStyle;
 }
 
 interface IState {
@@ -36,6 +40,7 @@ interface IState {
 class Editor extends React.Component<IProps, IState> {
     private canvas: HTMLCanvasElement;
     private mousePositionIndicator: HTMLDivElement;
+    private cursor: HTMLDivElement;
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
     private supportRenderingEngine: BaseRenderEngine;
     private imageRectOnCanvas: IRect;
@@ -147,6 +152,7 @@ class Editor extends React.Component<IProps, IState> {
 
         if (!image || !this.imageRectOnCanvas || !RectUtil.isPointInside(this.imageRectOnCanvas, mousePositionOnCanvas)) {
             this.mousePositionIndicator.style.display = "none";
+            this.cursor.style.display = "none";
             return;
         }
 
@@ -156,9 +162,13 @@ class Editor extends React.Component<IProps, IState> {
         const text: string = "x: " + x + ", y: " + y;
 
         this.mousePositionIndicator.innerHTML = text;
-        this.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 10) + "px";
-        this.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 10) + "px";
+        this.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 15) + "px";
+        this.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 15) + "px";
         this.mousePositionIndicator.style.display = "block";
+
+        this.cursor.style.left = mousePositionOnCanvas.x + "px";
+        this.cursor.style.top = mousePositionOnCanvas.y + "px";
+        this.cursor.style.display = "block";
     };
 
     // =================================================================================================================
@@ -176,6 +186,9 @@ class Editor extends React.Component<IProps, IState> {
                 break;
             case LabelType.POINT:
                 this.supportRenderingEngine = new PointRenderEngine(this.canvas, this.imageRectOnCanvas);
+                break;
+            case LabelType.POLYGON:
+                this.supportRenderingEngine = new PolygonRenderEngine(this.canvas, this.imageRectOnCanvas);
                 break;
             default:
                 this.supportRenderingEngine = null;
@@ -213,6 +226,14 @@ class Editor extends React.Component<IProps, IState> {
         }
     };
 
+    private getCursorStyle = () => {
+        return classNames(
+            "Cursor", {
+                "move": this.props.customCursorStyle === CustomCursorStyle.MOVE
+            }
+        );
+    };
+
     public render() {
         return (
             <div className="Editor">
@@ -223,6 +244,10 @@ class Editor extends React.Component<IProps, IState> {
                 <div
                     className="MousePositionIndicator"
                     ref={ref => this.mousePositionIndicator = ref}
+                />
+                <div
+                    className={this.getCursorStyle()}
+                    ref={ref => this.cursor = ref}
                 />
             </div>
         );
@@ -236,7 +261,8 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.editor.activeLabelType,
     activePopupType: state.general.activePopupType,
-    activeLabelId: state.editor.activeLabelId
+    activeLabelId: state.editor.activeLabelId,
+    customCursorStyle: state.general.customCursorStyle
 });
 
 export default connect(

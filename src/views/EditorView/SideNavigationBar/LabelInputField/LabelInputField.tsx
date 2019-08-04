@@ -13,6 +13,7 @@ import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/e
 interface IProps {
     size: ISize;
     isActive: boolean;
+    isHighlighted: boolean;
     id: string;
     value: string;
     options: string[];
@@ -51,7 +52,8 @@ class LabelInputField extends React.Component<IProps, IState> {
             "LabelInputField",
             {
                 "loaded": this.state.animate,
-                "active": this.props.isActive
+                "active": this.props.isActive,
+                "highlighted": this.props.isHighlighted
             }
         );
     }

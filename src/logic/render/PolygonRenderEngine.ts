@@ -1,9 +1,15 @@
-import {IPoint} from "../../interfaces/IPoint";
-import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
+import {IRect} from "../../interfaces/IRect";
+import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
+import {IPoint} from "../../interfaces/IPoint";
 import {CanvasUtil} from "../../utils/CanvasUtil";
+import {store} from "../../index";
+import {RectUtil} from "../../utils/RectUtil";
+import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 
-export class PrimaryEditorRenderEngine extends BaseRenderEngine {
+export class PolygonRenderEngine extends BaseRenderEngine {
+    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -19,10 +25,6 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // EVENT HANDLERS
     // =================================================================================================================
 
-    public mouseMoveHandler(event: MouseEvent): void {
-        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-    }
-
     public mouseDownHandler(event: MouseEvent): void {
         this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
     }
@@ -31,16 +33,26 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
         this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
     }
 
+    public mouseMoveHandler(event: MouseEvent): void {
+        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
+    }
+
     // =================================================================================================================
     // RENDERING
     // =================================================================================================================
 
-    public render(): void {}
+    public render(): void {
+        this.updateCursorStyle();
+    }
 
-    public drawImage(image: HTMLImageElement) {
-        if (!!image && !!this.canvas) {
-            const ctx = this.canvas.getContext("2d");
-            ctx.drawImage(image, this.imageRectOnCanvas.x, this.imageRectOnCanvas.y, this.imageRectOnCanvas.width, this.imageRectOnCanvas.height);
+    private updateCursorStyle() {
+        if (!!this.canvas && !!this.mousePosition) {
+            if (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) {
+                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                this.canvas.style.cursor = "none";
+            } else {
+                this.canvas.style.cursor = "default";
+            }
         }
     }
 

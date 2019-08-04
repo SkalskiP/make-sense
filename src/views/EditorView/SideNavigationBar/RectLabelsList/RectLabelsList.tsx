@@ -20,12 +20,13 @@ interface IProps {
     updateImageDataById: (id: string, newImageData: ImageData) => any;
     activeLabelIndex: number;
     activeLabelId: string;
+    highlightedLabelId: string;
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     labelNames: string[];
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, updateActiveLabelId}) => {
+const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -76,6 +77,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
                     height: labelInputFieldHeight
                 }}
                 isActive={labelRect.id === activeLabelId}
+                isHighlighted={labelRect.id === highlightedLabelId}
                 id={labelRect.id}
                 key={labelRect.id}
                 onDelete={deleteRectLabelById}
@@ -119,6 +121,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: AppState) => ({
     activeLabelIndex: state.editor.activeLabelNameIndex,
     activeLabelId: state.editor.activeLabelId,
+    highlightedLabelId: state.editor.highlightedLabelId,
     labelNames : state.editor.labelNames
 });
 
