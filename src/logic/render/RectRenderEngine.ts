@@ -4,7 +4,7 @@ import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {store} from "../..";
-import {ImageData, LabelPoint, LabelRect} from "../../store/editor/types";
+import {ImageData, LabelRect} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
 import {
     updateActiveLabelId,
