@@ -22,6 +22,10 @@ Our application is being actively developed. If you have an idea for a new funct
 
 ## Sneak Peek
 
+<p align="center"> 
+    <img width="1000" src=".//examples/alfa-demo.gif" alt="Logo">
+</p>
+
 ## Supported Output Formats
 
 * A .zip package containing files in YOLO format
