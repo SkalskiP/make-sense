@@ -10,7 +10,7 @@
 
   align-self: stretch;
   flex: 1;
-  min-height: 500px;
+  min-height: 450px;
 
   .LeftContainer {
     width: 50px;
@@ -23,6 +23,7 @@
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
+    padding: 30px 0;
 
     .ImageButton {
       transition: transform 0.3s;
