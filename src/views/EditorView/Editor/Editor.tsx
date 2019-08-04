@@ -21,6 +21,7 @@ import {PointRenderEngine} from "../../../logic/render/PointRenderEngine";
 import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
 import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
+import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 
 interface IProps {
     size: ISize;
@@ -185,6 +186,9 @@ class Editor extends React.Component<IProps, IState> {
                 break;
             case LabelType.POINT:
                 this.supportRenderingEngine = new PointRenderEngine(this.canvas, this.imageRectOnCanvas);
+                break;
+            case LabelType.POLYGON:
+                this.supportRenderingEngine = new PolygonRenderEngine(this.canvas, this.imageRectOnCanvas);
                 break;
             default:
                 this.supportRenderingEngine = null;
