@@ -23,10 +23,8 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
     const getProgress = () => {
         switch (activeLabelType) {
             case LabelType.POINT:
-                console.log(pointLabeledImages);
                 return (100 * pointLabeledImages) / imagesData.length;
             case LabelType.RECTANGLE:
-                console.log(rectLabeledImages);
                 return (100 * rectLabeledImages) / imagesData.length;
             default:
                 return 0;

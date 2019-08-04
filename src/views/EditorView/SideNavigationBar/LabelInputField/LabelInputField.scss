@@ -152,4 +152,11 @@
       left: 0;
     }
   }
+
+  &.highlighted {
+    background-color: rgba(0, 0, 0, 0.05);
+    .Marker {
+      background-color: $secondaryColor;
+    }
+  }
 }

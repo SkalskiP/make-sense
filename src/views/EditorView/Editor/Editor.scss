@@ -33,7 +33,7 @@
     position: relative;
     width: 6px;
     height: 6px;
-    transition: width 0.1s ease-out, height 0.1s ease-out, background-color 0.1s ease-in;
+    transition: width 0.05s ease-out, height 0.05s ease-out, background-color 0.05s ease-in;
     transform: translate(-50%, -50%);
     border-radius: 50%;
     pointer-events: none;

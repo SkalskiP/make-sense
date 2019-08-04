@@ -24,5 +24,5 @@ export class Settings {
     public static readonly CROSS_HAIR_COLOR: string = "#fff";
 
     public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
-    public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 12;
+    public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 14;
 }
