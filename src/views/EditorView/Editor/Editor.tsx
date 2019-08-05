@@ -82,11 +82,7 @@ class Editor extends React.Component<IProps, IState> {
             this.swapSupportRenderingEngine(this.props.activeLabelType)
         }
         this.resizeCanvas(this.props.size);
-
-        if (prevState.image !== this.state.image) {
-            this.calculateImageRect(this.state.image);
-        }
-
+        this.calculateImageRect(this.state.image);
         this.fullCanvasRender();
     }
 
