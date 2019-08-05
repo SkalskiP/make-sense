@@ -59,10 +59,18 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
     }
 
+    shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+        return (
+            this.props.imageData.id !== nextProps.imageData.id ||
+            this.state.image !== nextState.image)
+    }
+
     private loadImage = (imageData: ImageData, isScrolling: boolean) => {
         if (imageData.loadStatus) {
             const image = ImageRepository.getById(imageData.id);
-            this.setState({image});
+            if (this.state.image !== image) {
+                this.setState({image});
+            }
         }
         else if (!isScrolling || !this.isLoading) {
             this.isLoading = true;
