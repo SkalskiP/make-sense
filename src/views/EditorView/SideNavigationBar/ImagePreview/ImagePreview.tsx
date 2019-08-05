@@ -30,6 +30,8 @@ interface IState {
 }
 
 class ImagePreview extends React.Component<IProps, IState> {
+    private isLoading: boolean = false;
+
     constructor(props) {
         super(props);
 
@@ -62,7 +64,8 @@ class ImagePreview extends React.Component<IProps, IState> {
             const image = ImageRepository.getById(imageData.id);
             this.setState({image});
         }
-        else if (!isScrolling) {
+        else if (!isScrolling || !this.isLoading) {
+            this.isLoading = true;
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
             FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
         }
@@ -74,6 +77,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         ImageRepository.store(imageData.id, image);
         if (imageData.id === this.props.imageData.id) {
             this.setState({image});
+            this.isLoading = false;
         }
     };
 

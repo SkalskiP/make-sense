@@ -28,6 +28,7 @@ export class PointRenderEngine extends BaseRenderEngine {
 
     private transformInProgress: boolean;
     private mousePosition: IPoint;
+    private scale: number;
 
     public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
         super(canvas, imageRect);
@@ -53,7 +54,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                     return;
                 } else {
                     store.dispatch(updateActiveLabelId(null));
-                    const scale = this.getActiveImageScale();
+                    const scale = this.scale;
                     const point: IPoint = {
                         x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,
                         y: (mousePosition.y - this.imageRectOnCanvas.y) * scale
@@ -61,7 +62,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                     this.addPointLabel(point);
                 }
             } else {
-                const scale = this.getActiveImageScale();
+                const scale = this.scale;
                 const point: IPoint = {
                     x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,
                     y: (mousePosition.y - this.imageRectOnCanvas.y) * scale
@@ -76,7 +77,7 @@ export class PointRenderEngine extends BaseRenderEngine {
         const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
 
         if (isOverImage && this.transformInProgress) {
-            const scale = this.getActiveImageScale();
+            const scale = this.scale;
             const activeLabelPoint: LabelPoint = this.getActivePointLabel();
             const scaledPoint: IPoint = PointRenderEngine.scalePoint({
                 x: mousePosition.x - this.imageRectOnCanvas.x,
@@ -182,6 +183,7 @@ export class PointRenderEngine extends BaseRenderEngine {
 
     public updateImageRect(imageRect: IRect): void {
         this.imageRectOnCanvas = imageRect;
+        this.scale = this.getActiveImageScale();
     }
 
     private static scalePoint(inputPoint:IPoint, scale: number): IPoint {
@@ -192,7 +194,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private calculatePointRelativeToActiveImage(point: IPoint):IPoint {
-        const scale = this.getActiveImageScale();
+        const scale = this.scale;
         return PointRenderEngine.scalePoint(point, 1/scale);
     }
 

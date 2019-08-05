@@ -44,6 +44,7 @@ class Editor extends React.Component<IProps, IState> {
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
     private supportRenderingEngine: BaseRenderEngine;
     private imageRectOnCanvas: IRect;
+    private isLoading: boolean = false;
 
     constructor(props) {
         super(props);
@@ -81,7 +82,11 @@ class Editor extends React.Component<IProps, IState> {
             this.swapSupportRenderingEngine(this.props.activeLabelType)
         }
         this.resizeCanvas(this.props.size);
-        this.calculateImageRect(this.state.image);
+
+        if (prevState.image !== this.state.image) {
+            this.calculateImageRect(this.state.image);
+        }
+
         this.fullCanvasRender();
     }
 
@@ -119,8 +124,11 @@ class Editor extends React.Component<IProps, IState> {
             this.setState({image: ImageRepository.getById(imageData.id)})
         }
         else {
-            const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            if (!this.isLoading) {
+                this.isLoading = true;
+                const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
+                FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            }
         }
     };
 
@@ -129,6 +137,7 @@ class Editor extends React.Component<IProps, IState> {
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
         this.setState({image});
+        this.isLoading = false;
     };
 
     private handleLoadImageError = () => {};
