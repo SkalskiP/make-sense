@@ -30,6 +30,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     private startCreateRectPoint: IPoint;
     private startResizeRectAnchor: RectAnchor;
     private mousePosition: IPoint;
+    private scale: number;
 
     public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
         super(canvas, imageRect);
@@ -65,7 +66,7 @@ export class RectRenderEngine extends BaseRenderEngine {
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
 
             if (isOverImage && !!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, this.mousePosition)) {
-                const scale = this.getActiveImageScale();
+                const scale = this.scale;
 
                 const minX: number = Math.min(this.startCreateRectPoint.x, this.mousePosition.x);
                 const minY: number = Math.min(this.startCreateRectPoint.y, this.mousePosition.y);
@@ -93,7 +94,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                     y: this.mousePosition.y - startAnchorPosition.y
                 };
                 const resizedRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
-                const scale = this.getActiveImageScale();
+                const scale = this.scale;
                 const scaledRect: IRect = RectRenderEngine.scaleRect(resizedRect, scale);
 
                 const imageData = this.getActiveImage();
@@ -228,12 +229,13 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private calculateRectRelativeToActiveImage(rect: IRect):IRect {
-        const scale = this.getActiveImageScale();
+        const scale = this.scale;
         return RectRenderEngine.scaleRect(rect, 1/scale);
     }
 
     public updateImageRect(imageRect: IRect): void {
         this.imageRectOnCanvas = imageRect;
+        this.scale = this.getActiveImageScale();
     }
 
     private addRectLabel = (rect: IRect) => {
@@ -304,7 +306,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private transferRectToImage(rect:IRect): IRect {
-        const scale = this.getActiveImageScale();
+        const scale = this.scale;
         const scaledRect = RectRenderEngine.scaleRect(rect, 1/scale);
         return {
             ...scaledRect,

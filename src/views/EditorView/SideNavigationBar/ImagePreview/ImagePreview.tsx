@@ -12,17 +12,16 @@ import classNames from "classnames";
 import {ISize} from "../../../../interfaces/ISize";
 import {RectUtil} from "../../../../utils/RectUtil";
 import {IRect} from "../../../../interfaces/IRect";
-import {LabelType} from "../../../../data/LabelType";
 
 interface IProps {
     imageData: ImageData;
     style: React.CSSProperties;
     size: ISize;
     isScrolling?: boolean;
+    isChecked?: boolean;
     onClick?: () => any;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
-    activeLabelType: LabelType;
 }
 
 interface IState {
@@ -30,6 +29,8 @@ interface IState {
 }
 
 class ImagePreview extends React.Component<IProps, IState> {
+    private isLoading: boolean = false;
+
     constructor(props) {
         super(props);
 
@@ -57,12 +58,24 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
     }
 
+    shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
+        return (
+            this.props.imageData.id !== nextProps.imageData.id ||
+            this.state.image !== nextState.image ||
+            this.props.isSelected !== nextProps.isSelected ||
+            this.props.isChecked !== nextProps.isChecked
+        )
+    }
+
     private loadImage = (imageData: ImageData, isScrolling: boolean) => {
         if (imageData.loadStatus) {
             const image = ImageRepository.getById(imageData.id);
-            this.setState({image});
+            if (this.state.image !== image) {
+                this.setState({image});
+            }
         }
-        else if (!isScrolling) {
+        else if (!isScrolling || !this.isLoading) {
+            this.isLoading = true;
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
             FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
         }
@@ -74,6 +87,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         ImageRepository.store(imageData.id, image);
         if (imageData.id === this.props.imageData.id) {
             this.setState({image});
+            this.isLoading = false;
         }
     };
 
@@ -118,15 +132,10 @@ class ImagePreview extends React.Component<IProps, IState> {
 
     public render() {
         const {
-            activeLabelType,
-            imageData,
+            isChecked,
             style,
             onClick
         } = this.props;
-
-        const isChecked: boolean =
-            (activeLabelType === LabelType.RECTANGLE && imageData.labelRects.length > 0) ||
-            (activeLabelType === LabelType.POINT && imageData.labelPoints.length > 0);
 
         return(
             <div
@@ -175,9 +184,7 @@ const mapDispatchToProps = {
     updateImageDataById
 };
 
-const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.editor.activeLabelType
-});
+const mapStateToProps = (state: AppState) => ({});
 
 export default connect(
     mapStateToProps,

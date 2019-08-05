@@ -7,12 +7,14 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import {updateActiveImageIndex, updateActiveLabelId} from "../../../../store/editor/actionCreators";
+import {LabelType} from "../../../../data/LabelType";
 
 interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
     updateActiveImageIndex: (activeImageIndex: number) => any;
     updateActiveLabelId: (activeLabelId: string) => any;
+    activeLabelType: LabelType;
 }
 
 interface IState {
@@ -63,6 +65,10 @@ class ImagesList extends React.Component<IProps, IState> {
             style={style}
             size={{width: 150, height: 150}}
             isScrolling={isScrolling}
+            isChecked={
+                (this.props.activeLabelType === LabelType.RECTANGLE && this.props.imagesData[index].labelRects.length > 0) ||
+                (this.props.activeLabelType === LabelType.POINT && this.props.imagesData[index].labelPoints.length > 0)
+            }
             imageData={this.props.imagesData[index]}
             onClick={() => this.onClickHandler(index)}
             isSelected={this.props.activeImageIndex === index}
@@ -93,6 +99,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.editor.activeImageIndex,
     imagesData: state.editor.imagesData,
+    activeLabelType: state.editor.activeLabelType
 });
 
 export default connect(
