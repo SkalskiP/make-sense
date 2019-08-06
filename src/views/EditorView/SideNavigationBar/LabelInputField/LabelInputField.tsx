@@ -9,6 +9,7 @@ import {RectUtil} from "../../../../utils/RectUtil";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
+import Scrollbars from 'react-custom-scrollbars';
 
 interface IProps {
     size: ISize;
@@ -83,7 +84,7 @@ class LabelInputField extends React.Component<IProps, IState> {
         const clientRect = this.dropdownLabel.getBoundingClientRect();
         return {
             width: clientRect.width,
-            height: this.props.options.length * this.dropdownOptionHeight,
+            height: Math.min(this.props.options.length, 6) * this.dropdownOptionHeight,
             top: clientRect.top + clientRect.height + 4,
             left: clientRect.left
         }
@@ -159,7 +160,12 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 style={this.getDropdownStyle()}
                                 ref={ref => this.dropdown = ref}
                             >
-                                {this.getDropdownOptions()}
+                                <Scrollbars>
+                                    <div>
+                                        {this.getDropdownOptions()}
+                                    </div>
+                                </Scrollbars>
+
                             </div>}
                         </div>
                         <div className="ContentWrapper">
