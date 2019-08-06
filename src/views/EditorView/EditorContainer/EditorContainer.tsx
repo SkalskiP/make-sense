@@ -1,17 +1,15 @@
 import React, {useState} from 'react';
-import './EditorContainer.scss';
-import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
-import {Direction} from "../../../data/Direction";
-import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
-import Editor from "../Editor/Editor";
-import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
-import {ISize} from "../../../interfaces/ISize";
-import {AppState} from "../../../store";
 import {connect} from "react-redux";
+import {Direction} from "../../../data/Direction";
+import {ISize} from "../../../interfaces/ISize";
 import {Settings} from "../../../settings/Settings";
+import {AppState} from "../../../store";
 import {ImageData} from "../../../store/editor/types";
 import ImagesList from "../SideNavigationBar/ImagesList/ImagesList";
 import LabelsToolkit from "../SideNavigationBar/LabelsToolkit/LabelsToolkit";
+import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
+import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
+import './EditorContainer.scss';
 
 interface IProps {
     windowSize: ISize;
@@ -77,7 +75,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 renderContent={leftSideBarRender}
             />
             <div className="EditorWrapper">
-                <Editor
+                {/*<Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
                 />
@@ -85,7 +83,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
                     totalImageCount={imagesData.length}
-                />
+                />*/}
             </div>
             <SideNavigationBar
                 direction={Direction.RIGHT}
