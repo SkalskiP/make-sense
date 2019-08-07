@@ -26,6 +26,22 @@ Our application is being actively developed. If you have an idea for a new funct
     <img width="1000" src=".//examples/alfa-demo.gif" alt="Logo">
 </p>
 
+## Set Up the Project Locally
+
+```bash
+# clone repository
+git clone https://github.com/SkalskiP/make-sense.git
+
+# navigate to main dir
+cd make-sense
+
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:3000
+npm start
+```
+
 ## Supported Output Formats
 
 * A .zip package containing files in YOLO format
