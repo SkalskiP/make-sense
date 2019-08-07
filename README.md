@@ -12,6 +12,7 @@
 
 Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
+* Optimization of the process of loading photos from disk - queuing 
 * Labelling objects using polygons and Bézier curves
 * Export labels in COCO JSON format
 * Separate tab with settings
