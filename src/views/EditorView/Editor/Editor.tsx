@@ -22,7 +22,7 @@ import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
 import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
-import {ImageLoader} from "../../../logic/imageRepository/ImageLoader";
+import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
 
 interface IProps {
     size: ISize;
@@ -63,15 +63,13 @@ class Editor extends React.Component<IProps, IState> {
 
         const {imageData, size ,activeLabelType} = this.props;
 
-        ImageLoader.add(async () => {
-            await this.loadImage(imageData);
-        });
+        ImageLoadManager.add(this.loadImage(imageData));
 
         this.resizeCanvas(size);
         this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas, this.imageRectOnCanvas);
         this.mountSupportRenderingEngine(activeLabelType);
         this.fullCanvasRender();
-        setTimeout(() => ImageLoader.run(), 10);
+        ImageLoadManager.run();
     }
 
     public componentWillUnmount(): void {
@@ -82,9 +80,7 @@ class Editor extends React.Component<IProps, IState> {
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
         if (prevProps.imageData.id !== this.props.imageData.id) {
-            ImageLoader.add(async () => {
-                await this.loadImage(this.props.imageData);
-            });
+            ImageLoadManager.add(this.loadImage(this.props.imageData));
         }
         if (prevProps.activeLabelType !== this.props.activeLabelType) {
             this.swapSupportRenderingEngine(this.props.activeLabelType)
@@ -92,7 +88,7 @@ class Editor extends React.Component<IProps, IState> {
         this.resizeCanvas(this.props.size);
         this.calculateImageRect(this.state.image);
         this.fullCanvasRender();
-        setTimeout(() => ImageLoader.run(), 10);
+        ImageLoadManager.run();
     }
 
     // =================================================================================================================
@@ -124,7 +120,7 @@ class Editor extends React.Component<IProps, IState> {
     // LOAD IMAGE
     // =================================================================================================================
 
-    private loadImage = async (imageData: ImageData) => {
+    private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
             this.setState({image: ImageRepository.getById(imageData.id)})
         }

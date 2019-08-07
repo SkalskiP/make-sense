@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from 'react';
 import {connect} from "react-redux";
 import {ClipLoader} from "react-spinners";
-import {ImageLoader} from "../../../../logic/imageRepository/ImageLoader";
+import {ImageLoadManager} from "../../../../logic/imageRepository/ImageLoadManager";
 import {IRect} from "../../../../interfaces/IRect";
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
@@ -41,18 +41,14 @@ class ImagePreview extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        ImageLoader.add(async () => {
-            await this.loadImage(this.props.imageData, this.props.isScrolling);
-        });
-        setTimeout(() => ImageLoader.run(), 10);
+        ImageLoadManager.add(this.loadImage(this.props.imageData, this.props.isScrolling));
+        ImageLoadManager.run();
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
-                ImageLoader.add(async () => {
-                    await this.loadImage(nextProps.imageData, nextProps.isScrolling);
-                });
+                ImageLoadManager.add(this.loadImage(nextProps.imageData, nextProps.isScrolling));
             }
             else {
                 this.setState({image: null});
@@ -60,11 +56,9 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
 
         if (this.props.isScrolling && !nextProps.isScrolling) {
-            ImageLoader.add(async () => {
-                this.loadImage(nextProps.imageData, false);
-            });
+            ImageLoadManager.add(this.loadImage(nextProps.imageData, false));
         }
-        setTimeout(() => ImageLoader.run(), 10);
+        ImageLoadManager.run();
     }
 
     shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
