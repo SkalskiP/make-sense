@@ -1,5 +1,5 @@
-import {ImageData} from "../store/editor/types";
 import uuidv1 from 'uuid/v1';
+import {ImageData} from "../store/editor/types";
 
 export class FileUtil {
     public static mapFileDataToImageData(fileData: File): ImageData {
@@ -12,15 +12,21 @@ export class FileUtil {
         }
     }
 
-    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any) {
-        const reader = new FileReader();
-        reader.readAsDataURL(fileData);
-        reader.onloadend = function(evt: any) {
+    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): Promise<void> {
+		return new Promise((resolve, reject) => {
+			const url = URL.createObjectURL(fileData);
             const image = new Image();
-            image.src = evt.target.result;
-            image.onload = () => onSuccess(image);
-            image.onerror = () => onFailure();
-        }
+			image.src = url;
+			image.onload = () => {
+				onSuccess(image);
+				resolve();
+			};
+			image.onerror = () => {
+				onFailure();
+				reject();
+			};
+		})
+
     }
 
     public static loadLabelsList(fileData: File, onSuccess: (labels:string[]) => any, onFailure: () => any) {

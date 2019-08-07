@@ -1,17 +1,18 @@
-import React from 'react';
-import './ImagePreview.scss';
-import {ImageData} from "../../../../store/editor/types";
-import {ClipLoader} from "react-spinners";
-import {Settings} from "../../../../settings/Settings";
-import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
-import {updateImageDataById} from "../../../../store/editor/actionCreators";
-import {AppState} from "../../../../store";
-import {connect} from "react-redux";
-import {FileUtil} from "../../../../utils/FileUtil";
 import classNames from "classnames";
-import {ISize} from "../../../../interfaces/ISize";
-import {RectUtil} from "../../../../utils/RectUtil";
+import React from 'react';
+import {connect} from "react-redux";
+import {ClipLoader} from "react-spinners";
+import {ImageLoadManager} from "../../../../logic/imageRepository/ImageLoadManager";
 import {IRect} from "../../../../interfaces/IRect";
+import {ISize} from "../../../../interfaces/ISize";
+import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
+import {Settings} from "../../../../settings/Settings";
+import {AppState} from "../../../../store";
+import {updateImageDataById} from "../../../../store/editor/actionCreators";
+import {ImageData} from "../../../../store/editor/types";
+import {FileUtil} from "../../../../utils/FileUtil";
+import {RectUtil} from "../../../../utils/RectUtil";
+import './ImagePreview.scss';
 
 interface IProps {
     imageData: ImageData;
@@ -40,13 +41,14 @@ class ImagePreview extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        this.loadImage(this.props.imageData, this.props.isScrolling);
+        ImageLoadManager.add(this.loadImage(this.props.imageData, this.props.isScrolling));
+        ImageLoadManager.run();
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
-                this.loadImage(nextProps.imageData, nextProps.isScrolling);
+                ImageLoadManager.add(this.loadImage(nextProps.imageData, nextProps.isScrolling));
             }
             else {
                 this.setState({image: null});
@@ -54,8 +56,9 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
 
         if (this.props.isScrolling && !nextProps.isScrolling) {
-            this.loadImage(nextProps.imageData, false);
+            ImageLoadManager.add(this.loadImage(nextProps.imageData, false));
         }
+        ImageLoadManager.run();
     }
 
     shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
@@ -67,7 +70,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         )
     }
 
-    private loadImage = (imageData: ImageData, isScrolling: boolean) => {
+    private loadImage = async (imageData:ImageData, isScrolling:boolean) => {
         if (imageData.loadStatus) {
             const image = ImageRepository.getById(imageData.id);
             if (this.state.image !== image) {
@@ -77,7 +80,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         else if (!isScrolling || !this.isLoading) {
             this.isLoading = true;
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            await FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
         }
     };
 
@@ -144,38 +147,38 @@ class ImagePreview extends React.Component<IProps, IState> {
                 onClick={onClick ? onClick : undefined}
             >
                 {(!!this.state.image) ?
-                [
-                    <div
-                        className="Foreground"
-                        key={"Foreground"}
-                        style={this.getStyle()}
-                    >
-                        <img
-                            className="Image"
-                            draggable={false}
-                            src={this.state.image.src}
-                            alt={this.state.image.alt}
-                            style={{...this.getStyle(), left: 0, top: 0}}
+                    [
+                        <div
+                            className="Foreground"
+                            key={"Foreground"}
+                            style={this.getStyle()}
+                        >
+                            <img
+                                className="Image"
+                                draggable={false}
+                                src={this.state.image.src}
+                                alt={this.state.image.alt}
+                                style={{...this.getStyle(), left: 0, top: 0}}
+                            />
+                            {isChecked && <img
+                                className="CheckBox"
+                                draggable={false}
+                                src={"ico/checkbox-checked-color.png"}
+                                alt={"checkbox"}
+                            />}
+                        </div>,
+                        <div
+                            className="Background"
+                            key={"Background"}
+                            style={this.getStyle()}
                         />
-                        {isChecked && <img
-                            className="CheckBox"
-                            draggable={false}
-                            src={"ico/checkbox-checked-color.png"}
-                            alt={"checkbox"}
-                        />}
-                    </div>,
-                    <div
-                        className="Background"
-                        key={"Background"}
-                        style={this.getStyle()}
-                    />
-                ] :
-                <ClipLoader
-                    sizeUnit={"px"}
-                    size={30}
-                    color={Settings.SECONDARY_COLOR}
-                    loading={true}
-                />}
+                    ] :
+                    <ClipLoader
+                        sizeUnit={"px"}
+                        size={30}
+                        color={Settings.SECONDARY_COLOR}
+                        loading={true}
+                    />}
             </div>)
     }
 }
