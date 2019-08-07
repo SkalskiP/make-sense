@@ -12,7 +12,7 @@ export class FileUtil {
         }
     }
 
-    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any) {
+    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): Promise<void> {
 		return new Promise((resolve, reject) => {
 			const url = URL.createObjectURL(fileData);
             const image = new Image();

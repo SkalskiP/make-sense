@@ -2,7 +2,7 @@ import classNames from "classnames";
 import React from 'react';
 import {connect} from "react-redux";
 import {ClipLoader} from "react-spinners";
-import {Enqueuer} from "../../../../Enqueuer";
+import {ImageLoader} from "../../../../logic/imageRepository/ImageLoader";
 import {IRect} from "../../../../interfaces/IRect";
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
@@ -41,15 +41,18 @@ class ImagePreview extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        Enqueuer.add(async () => {
+        ImageLoader.add(async () => {
             await this.loadImage(this.props.imageData, this.props.isScrolling);
         });
+        setTimeout(() => ImageLoader.run(), 10);
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
-                this.loadImage(nextProps.imageData, nextProps.isScrolling);
+                ImageLoader.add(async () => {
+                    await this.loadImage(nextProps.imageData, nextProps.isScrolling);
+                });
             }
             else {
                 this.setState({image: null});
@@ -57,8 +60,11 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
 
         if (this.props.isScrolling && !nextProps.isScrolling) {
-            this.loadImage(nextProps.imageData, false);
+            ImageLoader.add(async () => {
+                this.loadImage(nextProps.imageData, false);
+            });
         }
+        setTimeout(() => ImageLoader.run(), 10);
     }
 
     shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {

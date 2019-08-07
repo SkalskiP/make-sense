@@ -10,6 +10,8 @@ import LabelsToolkit from "../SideNavigationBar/LabelsToolkit/LabelsToolkit";
 import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
 import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
 import './EditorContainer.scss';
+import Editor from "../Editor/Editor";
+import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 
 interface IProps {
     windowSize: ISize;
@@ -75,7 +77,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 renderContent={leftSideBarRender}
             />
             <div className="EditorWrapper">
-                {/*<Editor
+                <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
                 />
@@ -83,7 +85,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
                     totalImageCount={imagesData.length}
-                />*/}
+                />
             </div>
             <SideNavigationBar
                 direction={Direction.RIGHT}

@@ -1,7 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
 import {LabelType} from "../../../../data/LabelType";
-import {Enqueuer} from "../../../../Enqueuer";
 import {ISize} from "../../../../interfaces/ISize";
 import {AppState} from "../../../../store";
 import {updateActiveImageIndex, updateActiveLabelId} from "../../../../store/editor/actionCreators";
@@ -36,7 +35,6 @@ class ImagesList extends React.Component<IProps, IState> {
     public componentDidMount(): void {
         this.updateListSize();
         window.addEventListener("resize", this.updateListSize);
-        setTimeout(() => Enqueuer.run(), 1000);
     }
 
     public componentWillUnmount(): void {
