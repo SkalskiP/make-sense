@@ -20,6 +20,8 @@ Our application is being actively developed. If you have an idea for a new funct
 * Converting video to image frames
 * Keyboard shortcuts to improve productivity 
 * Automatic detection of objects in a photo - all you have to do is to label them
+* OCR labelling
+* Integration with external storeage - Google Drive, Dropbox
 
 ## Sneak Peek
 
