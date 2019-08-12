@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './TopNavigationBar.scss';
 import StateBar from "../StateBar/StateBar";
 import {UnderlineTextButton} from "../../Common/UnderlineTextButton/UnderlineTextButton";
