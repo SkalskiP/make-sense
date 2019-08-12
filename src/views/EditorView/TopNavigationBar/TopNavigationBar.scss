@@ -38,11 +38,16 @@
     .ProjectName {
       font-weight: 700;
       margin-right: 10px;
+      user-select: none;
     }
 
     .TextInput {
       max-width: 200px;
       height: 25px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.06);
+      }
 
       > input {
         padding-top: 3.5px;
@@ -53,7 +58,6 @@
 
           ~ .Bar {
             background-color: $secondaryColor;
-            height: 1px;
           }
         }
       }

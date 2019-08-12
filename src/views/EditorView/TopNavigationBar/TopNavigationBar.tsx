@@ -16,6 +16,10 @@ interface IProps {
 }
 
 const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjectName, projectName}) => {
+    const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        event.target.setSelectionRange(0, event.target.value.length);
+    };
+
     return (
         <div className="TopNavigationBar">
             <StateBar/>
@@ -39,15 +43,11 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                         key={"ProjectName"}
                         isPassword={false}
                         value={projectName}
-                        onChange={(value: string) => updateProjectName(value)}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => updateProjectName(event.target.value)}
+                        onFocus={onFocus}
                     />
                 </div>
                 <div className="NavigationBarGroupWrapper">
-                    {/*<UnderlineTextButton*/}
-                        {/*label={"LOAD LABELS"}*/}
-                        {/*under={true}*/}
-                        {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}*/}
-                    {/*/>*/}
                     <UnderlineTextButton
                         label={"EXPORT LABELS"}
                         under={true}
