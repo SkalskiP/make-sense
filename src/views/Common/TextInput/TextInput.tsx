@@ -21,7 +21,8 @@ const TextInput = (props: IProps) => {
         onChange,
         inputStyle,
         labelStyle,
-        barStyle
+        barStyle,
+        value
     } = props;
 
     const getInputType = () => {
@@ -31,7 +32,7 @@ const TextInput = (props: IProps) => {
     return (
         <div className="TextInput">
             <input
-                value={!!props.value ? props.value : undefined}
+                value={!!value ? value : undefined}
                 type={getInputType()}
                 id={key}
                 style={inputStyle}
