@@ -23,7 +23,7 @@
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
-    padding: 30px 0;
+    padding: 3px 0;
 
     .ImageButton {
       transition: transform 0.3s;
@@ -33,13 +33,13 @@
       }
 
       &:hover {
-        background-color: transparent;
-        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.1);
       }
 
       &.active {
-        background-color: transparent;
-        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
   }

@@ -74,6 +74,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                     image={"ico/plus.png"}
                     imageAlt={"plus"}
                     size={{width: 40, height: 40}}
+                    padding={25}
                     onClick={addHandle}
                 />
             </div>
