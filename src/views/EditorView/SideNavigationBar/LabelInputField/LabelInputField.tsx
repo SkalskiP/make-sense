@@ -170,6 +170,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                         </div>
                         <div className="ContentWrapper">
                             <ImageButton
+                                externalClassName={"trash"}
                                 image={"ico/trash.png"}
                                 imageAlt={"remove_rect"}
                                 size={{width: 30, height: 30}}

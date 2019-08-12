@@ -24,9 +24,13 @@ export class PointLabelsExporter {
                 return !!imageLabelData})
             .join("\n");
 
+        const projectName: string = store.getState().editor.projectName
+            .toLowerCase()
+            .replace(' ', '-');
+
         const date: string = moment().format('YYYYMMDDhhmmss');
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "labels_" + date + ".csv");
+        saveAs(blob, "labels_" + projectName + "_" + date + ".csv");
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
