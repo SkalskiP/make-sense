@@ -1,9 +1,9 @@
 import {ExportFormatType} from "../../data/ExportFormatType";
-import {store} from "../../index";
 import {ImageData, LabelPoint} from "../../store/editor/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import moment from 'moment';
+import {EditorSelector} from "../../store/selectors/EditorSelector";
 
 export class PointLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -17,16 +17,22 @@ export class PointLabelsExporter {
     }
 
     private static exportAsCSV(): void {
-        const content: string = store.getState().editor.imagesData
+        const content: string = EditorSelector.getImagesData()
             .map((imageData: ImageData) => {
                 return PointLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
 
+        const projectName: string = EditorSelector.getProjectName();
         const date: string = moment().format('YYYYMMDDhhmmss');
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "labels_" + date + ".csv");
+        try {
+            saveAs(blob, `labels_${projectName}_${date}.csv`);
+        } catch (error) {
+            // TODO
+            throw new Error(error);
+        }
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
@@ -34,7 +40,7 @@ export class PointLabelsExporter {
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        const labelNamesList: string[] = store.getState().editor.labelNames;
+        const labelNamesList: string[] = EditorSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
             const labelFields = [
                 labelNamesList[labelPoint.labelIndex],

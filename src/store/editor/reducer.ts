@@ -8,6 +8,7 @@ const initialState: EditorState = {
     activeLabelId: null,
     highlightedLabelId: null,
     projectType: null,
+    projectName: "my-project-name",
     imagesData: [],
     labelNames: [],
     firstLabelCreatedFlag: false
@@ -22,6 +23,12 @@ export function editorReducer(
             return {
                 ...state,
                 projectType: action.payload.projectType
+            }
+        }
+        case Action.UPDATE_PROJECT_NAME: {
+            return {
+                ...state,
+                projectName: action.payload.projectName
             }
         }
         case Action.UPDATE_ACTIVE_IMAGE_INDEX: {

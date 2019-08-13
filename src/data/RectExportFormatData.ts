@@ -7,6 +7,10 @@ export const RectExportFormatData: IExportFormat[] = [
         label: "A .zip package containing files in YOLO format."
     },
     {
+        type: ExportFormatType.VOC,
+        label: "A .zip package containing files in VOC XML format."
+    },
+    {
         type: ExportFormatType.CSV,
         label: "Single CSV file."
     }

@@ -31,6 +31,7 @@ export type EditorState = {
     activeLabelId: string;
     highlightedLabelId: string;
     projectType: ProjectType;
+    projectName: string,
     imagesData: ImageData[];
     labelNames: string[];
     firstLabelCreatedFlag: boolean;
@@ -40,6 +41,13 @@ interface UpdateProjectType {
     type: typeof Action.UPDATE_PROJECT_TYPE;
     payload: {
         projectType: ProjectType;
+    }
+}
+
+interface UpdateProjectName {
+    type: typeof Action.UPDATE_PROJECT_NAME;
+    payload: {
+        projectName: string;
     }
 }
 
@@ -115,6 +123,7 @@ interface UpdateFirstLabelCreatedFlag {
 }
 
 export type EditorActionTypes = UpdateProjectType
+    | UpdateProjectName
     | UpdateActiveImageIndex
     | UpdateActiveLabelNameIndex
     | UpdateActiveLabelType
