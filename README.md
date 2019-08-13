@@ -12,16 +12,19 @@
 
 Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
-* Optimization of the process of loading photos from disk - queuing 
-* Labelling objects using polygons and Bézier curves
-* Export labels in COCO JSON format
-* Separate tab with settings
-* Support basic image operations like crop and resize
-* Converting video to image frames
-* Keyboard shortcuts to improve productivity 
-* Automatic detection of objects in a photo - all you have to do is to label them
-* OCR labelling
-* Integration with external storeage - Google Drive, Dropbox
+- [X] Export labels in Pascal VOC XML format
+- [ ] Optimization of the process of loading photos from disk - queuing 
+- [ ] Labelling objects using polygons and Bézier curves
+- [ ] Labelling objects using lines
+- [ ] Export labels in COCO JSON format
+- [ ] Separate tab with settings
+- [ ] Support basic image operations like crop and resize
+- [ ] Converting video to image frames
+- [ ] Keyboard shortcuts to improve productivity 
+- [ ] Automatic detection of objects in a photo - all you have to do is to label them
+- [ ] OCR labelling
+- [ ] Integration with external storeage - Google Drive, Dropbox
+- [ ] Copy annotations from previous image into the next one
 
 ## Sneak Peek
 
