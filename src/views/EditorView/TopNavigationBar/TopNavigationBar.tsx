@@ -20,6 +20,13 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
         event.target.setSelectionRange(0, event.target.value.length);
     };
 
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value
+            .toLowerCase()
+            .replace(' ', '-');
+        updateProjectName(value)
+    };
+
     return (
         <div className="TopNavigationBar">
             <StateBar/>
@@ -43,7 +50,7 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                         key={"ProjectName"}
                         isPassword={false}
                         value={projectName}
-                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => updateProjectName(event.target.value)}
+                        onChange={onChange}
                         onFocus={onFocus}
                     />
                 </div>
