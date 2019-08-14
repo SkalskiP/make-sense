@@ -18,11 +18,11 @@ import {IPoint} from "../../../interfaces/IPoint";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {CanvasUtil} from "../../../utils/CanvasUtil";
 import {PointRenderEngine} from "../../../logic/render/PointRenderEngine";
-import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
 import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
+import {BaseSuportRenderEngine} from "../../../logic/render/BaseSuportRenderEngine";
 
 interface IProps {
     size: ISize;
@@ -43,7 +43,7 @@ class Editor extends React.Component<IProps, IState> {
     private mousePositionIndicator: HTMLDivElement;
     private cursor: HTMLDivElement;
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
-    private supportRenderingEngine: BaseRenderEngine;
+    private supportRenderingEngine: BaseSuportRenderEngine;
     private imageRectOnCanvas: IRect;
     private isLoading: boolean = false;
 
@@ -250,6 +250,7 @@ class Editor extends React.Component<IProps, IState> {
                 <canvas
                     className="ImageCanvas"
                     ref={ref => this.canvas = ref}
+                    onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
                 />
                 <div
                     className="MousePositionIndicator"

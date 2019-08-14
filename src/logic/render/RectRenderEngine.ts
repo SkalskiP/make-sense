@@ -2,7 +2,6 @@ import {IPoint} from "../../interfaces/IPoint";
 import {IRect} from "../../interfaces/IRect";
 import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
-import {BaseRenderEngine} from "./BaseRenderEngine";
 import {store} from "../..";
 import {ImageData, LabelRect} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
@@ -19,8 +18,9 @@ import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 
-export class RectRenderEngine extends BaseRenderEngine {
+export class RectRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
@@ -117,7 +117,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         if (!!this.imageRectOnCanvas) {
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition);
-            if (isOverImage) {
+            if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse();
                 if (!!labelRect) {
                     if (store.getState().editor.highlightedLabelId !== labelRect.id) {
@@ -219,6 +219,15 @@ export class RectRenderEngine extends BaseRenderEngine {
     // HELPERS
     // =================================================================================================================
 
+    public updateImageRect(imageRect: IRect): void {
+        this.imageRectOnCanvas = imageRect;
+        this.scale = this.getActiveImageScale();
+    }
+
+    public isInProgress(): boolean {
+        return !!this.startCreateRectPoint || !!this.startResizeRectAnchor;
+    }
+
     private static scaleRect(inputRect:IRect, scale: number): IRect {
         return {
             x: inputRect.x * scale,
@@ -231,11 +240,6 @@ export class RectRenderEngine extends BaseRenderEngine {
     private calculateRectRelativeToActiveImage(rect: IRect):IRect {
         const scale = this.scale;
         return RectRenderEngine.scaleRect(rect, 1/scale);
-    }
-
-    public updateImageRect(imageRect: IRect): void {
-        this.imageRectOnCanvas = imageRect;
-        this.scale = this.getActiveImageScale();
     }
 
     private addRectLabel = (rect: IRect) => {
@@ -259,13 +263,38 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private getRectUnderMouse(): LabelRect {
+        const activeRectLabel: LabelRect = this.getActiveRectLabel();
+        if (!!activeRectLabel && this.isMouseOverRectEdges(activeRectLabel.rect)) {
+            return activeRectLabel;
+        }
+
         const labelRects: LabelRect[] = this.getActiveImage().labelRects;
         for (let i = 0; i < labelRects.length; i++) {
-            const rect: IRect = this.calculateRectRelativeToActiveImage(labelRects[i].rect);
-            const rectAnchor = this.getAnchorUnderMouseByRect(rect);
-            if (!!rectAnchor) return labelRects[i];
+            if (this.isMouseOverRectEdges(labelRects[i].rect)) {
+                return labelRects[i];
+            }
         }
         return null;
+    }
+
+    private isMouseOverRectEdges(rect: IRect): boolean {
+        const rectOnImage: IRect = RectUtil.translate(
+            this.calculateRectRelativeToActiveImage(rect), this.imageRectOnCanvas);
+
+        const outerRectDelta: IPoint = {
+            x: this.config.anchorHoverSize.width / 2,
+            y: this.config.anchorHoverSize.height / 2
+        };
+        const outerRect: IRect = RectUtil.expand(rectOnImage, outerRectDelta);
+
+        const innerRectDelta: IPoint = {
+            x: - this.config.anchorHoverSize.width / 2,
+            y: - this.config.anchorHoverSize.height / 2
+        };
+        const innerRect: IRect = RectUtil.expand(rectOnImage, innerRectDelta);
+
+        return (RectUtil.isPointInside(outerRect, this.mousePosition) &&
+            !RectUtil.isPointInside(innerRect, this.mousePosition));
     }
 
     private getAnchorUnderMouseByRect(rect: IRect): RectAnchor {

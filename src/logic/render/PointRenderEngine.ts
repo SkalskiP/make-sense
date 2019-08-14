@@ -1,4 +1,3 @@
-import {BaseRenderEngine} from "./BaseRenderEngine";
 import {IRect} from "../../interfaces/IRect";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
@@ -18,8 +17,9 @@ import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 
-export class PointRenderEngine extends BaseRenderEngine {
+export class PointRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
@@ -184,6 +184,10 @@ export class PointRenderEngine extends BaseRenderEngine {
     public updateImageRect(imageRect: IRect): void {
         this.imageRectOnCanvas = imageRect;
         this.scale = this.getActiveImageScale();
+    }
+
+    public isInProgress(): boolean {
+        return !!this.transformInProgress;
     }
 
     private static scalePoint(inputPoint:IPoint, scale: number): IPoint {
