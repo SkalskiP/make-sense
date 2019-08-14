@@ -48,6 +48,8 @@ npm install
 npm start
 ```
 
+Some Windows 10 users may also have problems with running applications locally. The problems can be solved by adding additional dependencies to the project, through a command: `npm install normalize.css --save`. More information about this problem is available in the [#16][4].
+
 ## Supported Output Formats
 
 * A .zip package containing files in YOLO format
@@ -97,3 +99,4 @@ Copyright (c) 2019-present, Piotr Skalski
 [1]: http://makesense.ai
 [2]: ./LICENSE
 [3]: https://twitter.com/PiotrSkalski92
+[4]: https://github.com/SkalskiP/make-sense/issues/16
