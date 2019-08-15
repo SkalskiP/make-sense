@@ -42,7 +42,10 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
     public mouseDownHandler(event: MouseEvent): void {
         const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         const isMouseOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
-        if (isMouseOverImage) {
+        const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
+            this.mousePosition);
+
+        if (isMouseOverCanvas) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse();
             if (!!labelPoint) {
                 const pointOnImage: IPoint = this.calculatePointRelativeToActiveImage(labelPoint.point);
@@ -62,7 +65,7 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
                     };
                     this.addPointLabel(point);
                 }
-            } else {
+            } else if (isMouseOverImage) {
                 const scale = this.scale;
                 const point: IPoint = {
                     x: (mousePosition.x - this.imageRectOnCanvas.x) * scale,

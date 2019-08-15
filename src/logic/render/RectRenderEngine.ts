@@ -44,7 +44,10 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
     public mouseDownHandler = (event: MouseEvent) => {
         this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         const isMouseOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition);
-        if (isMouseOverImage) {
+        const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
+            this.mousePosition);
+
+        if (isMouseOverCanvas) {
             const rectUnderMouse: LabelRect = this.getRectUnderMouse();
             if (!!rectUnderMouse) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(rectUnderMouse.rect);
@@ -55,7 +58,7 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
                 } else {
                     this.startRectCreation(this.mousePosition);
                 }
-            } else {
+            } else if (isMouseOverImage) {
                 this.startRectCreation(this.mousePosition);
             }
         }
