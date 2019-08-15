@@ -23,7 +23,7 @@ Our application is being actively developed. If you have an idea for a new funct
 - [ ] Keyboard shortcuts to improve productivity 
 - [ ] Automatic detection of objects in a photo - all you have to do is to label them
 - [ ] OCR labelling
-- [ ] Integration with external storage - Google Drive, Dropbox
+- [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
 - [ ] Copy annotations from previous image into the next one
 
 ## Sneak Peek
@@ -56,12 +56,20 @@ Some Windows 10 users may also have problems with running applications locally. 
 
 <details><summary><i>example of file in YOLO format</i></summary><p>
 
+**Schema:**
+
 `label_index rel_rect_center_x rel_rect_center_y rel_rect_width rel_rect_height`  
+
+**Where:**  
+
 `label_index` - index of the selected label  
-`rel_rect_center_x` - horizontal position of the centre of the rect in relation to overall image width  
-`rel_rect_center_y` - vertical position of the centre of the rect in relation to overall image height  
-`rel_rect_width` - rect width in relation to overall image width  
-`rel_rect_height` - rect height in relation to overall image height  
+`rel_rect_center_x` - horizontal position of the centre of the rect in relation to overall image width, value between [0, 1]  
+`rel_rect_center_y` - vertical position of the centre of the rect in relation to overall image height, value between [0, 1]  
+`rel_rect_width` - rect width in relation to overall image width, value between [0, 1]  
+`rel_rect_height` - rect height in relation to overall image height, value between [0, 1]  
+
+**Example:**  
+
 ```
 1 0.404528 0.543963 0.244094 0.727034
 2 0.610236 0.494751 0.188976 0.437008
@@ -69,11 +77,114 @@ Some Windows 10 users may also have problems with running applications locally. 
 ```
 </p></details>
 
+* A .zip package containing files in Pascal VOC XML format
+
+<details><summary><i>example of file in Pascal VOC XML format</i></summary><p>
+
+**Schema:**
+
+```xml
+<annotation>
+    <folder>{ project_name }</folder>
+    <filename>{ image_name }</filename>
+    <path>{ /project_name/file_name }</path>
+    <source>
+        <database>Unspecified</database>
+    </source>
+    <size>
+        <width>{ image_width }</width>
+        <height>{ image_height }</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>{ label_name }</name>
+        <pose>Unspecified</pose>
+        <truncated>Unspecified</truncated>
+        <difficult>Unspecified</difficult>
+        <bndbox>
+            <xmin>{ rect_left }</xmin>
+            <ymin>{ rect_top }</ymin>
+            <xmax>{ rect_right }</xmax>
+            <ymax>{ rect_bottom }</ymax>
+        </bndbox>
+    </object>
+</annotation>
+```
+
+**Where:**  
+
+`project_name` - user-defined project name  
+`image_name` - name of the photo file  
+`label_name` - selected label name  
+`rect_left` - absolute horizontal distance between the left edge of the image and the left edge of the rect in pixels  
+`rect_top` - absolute vertical distance between the top edge of the image and the top edge of the rect in pixels  
+`rect_right` - absolute horizontal distance between the left edge of the image and the right edge of the rect in pixels  
+`rect_bottom` - absolute vertical distance between the top edge of the image and the bottom edge of the rect in pixels
+`image_width` - absolute image width in pixels  
+`image_height` - absolute image height in pixels  
+
+**Example:** 
+
+```xml
+<annotation>
+	<folder>my-project-name</folder>
+	<filename>000007.jpg</filename>
+	<path>/my-project-name/000007.jpg</path>
+	<source>
+		<database>Unspecified</database>
+	</source>
+	<size>
+		<width>1280</width>
+		<height>960</height>
+		<depth>3</depth>
+	</size>
+	<object>
+		<name>kiwi</name>
+		<pose>Unspecified</pose>
+		<truncated>Unspecified</truncated>
+		<difficult>Unspecified</difficult>
+		<bndbox>
+			<xmin>208</xmin>
+			<ymin>486</ymin>
+			<xmax>497</xmax>
+			<ymax>718</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>banaba</name>
+		<pose>Unspecified</pose>
+		<truncated>Unspecified</truncated>
+		<difficult>Unspecified</difficult>
+		<bndbox>
+			<xmin>643</xmin>
+			<ymin>118</ymin>
+			<xmax>1178</xmax>
+			<ymax>799</ymax>
+		</bndbox>
+	</object>
+</annotation>
+```
+</p></details>
+
 * Single CSV file
 
 <details><summary><i>example of CSV file</i></summary><p>
-    
-`label_name,rect_left,rect_top,rect_width,rect_height,image_name,image_width,image_height`  
+
+**Schema:**
+
+`label_name,rect_left,rect_top,rect_width,rect_height,image_name,image_width,image_height`
+
+**Where:**  
+
+`label_name` - selected label name   
+`rect_left` - absolute horizontal distance between the left edge of the image and the left edge of the rect in pixels  
+`rect_top` - absolute vertical distance between the top edge of the image and the top edge of the rect in pixels  
+`rect_width` - absolute rect width in pixels  
+`rect_height` - absolute rect height in pixels  
+`image_width` - absolute image width in pixels  
+`image_height` - absolute image height in pixels  
+
+**Example:** 
 
 ```
 banana,491,164,530,614,000000.jpg,1280,960
