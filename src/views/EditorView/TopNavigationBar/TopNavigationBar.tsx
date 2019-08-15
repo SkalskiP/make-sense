@@ -6,17 +6,32 @@ import {PopupWindowType} from "../../../data/PopupWindowType";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
+import TextInput from "../../Common/TextInput/TextInput";
+import {updateProjectName} from "../../../store/editor/actionCreators";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    updateProjectName: (projectName: string) => any;
+    projectName: string;
 }
 
-const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
+const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjectName, projectName}) => {
+    const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+        event.target.setSelectionRange(0, event.target.value.length);
+    };
+
+    const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value
+            .toLowerCase()
+            .replace(' ', '-');
+        updateProjectName(value)
+    };
+
     return (
         <div className="TopNavigationBar">
             <StateBar/>
             <div className="TopNavigationBarWrapper">
-                <div className="NavigationBarGroupWrapper">
+                <div>
                     <div
                         className="Header"
                         onClick={() => updateActivePopupType(PopupWindowType.EXIT_PROJECT)}
@@ -30,11 +45,16 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
                     </div>
                 </div>
                 <div className="NavigationBarGroupWrapper">
-                    {/*<UnderlineTextButton*/}
-                        {/*label={"LOAD LABELS"}*/}
-                        {/*under={true}*/}
-                        {/*onClick={() => updateActivePopupType(PopupWindowType.LOAD_LABELS)}*/}
-                    {/*/>*/}
+                    <div className="ProjectName">Project Name:</div>
+                    <TextInput
+                        key={"ProjectName"}
+                        isPassword={false}
+                        value={projectName}
+                        onChange={onChange}
+                        onFocus={onFocus}
+                    />
+                </div>
+                <div className="NavigationBarGroupWrapper">
                     <UnderlineTextButton
                         label={"EXPORT LABELS"}
                         under={true}
@@ -47,10 +67,13 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType}) => {
 };
 
 const mapDispatchToProps = {
-    updateActivePopupType
+    updateActivePopupType,
+    updateProjectName
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    projectName: state.editor.projectName
+});
 
 export default connect(
     mapStateToProps,

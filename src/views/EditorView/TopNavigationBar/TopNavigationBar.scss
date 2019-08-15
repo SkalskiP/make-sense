@@ -35,6 +35,38 @@
       align-content: center;
     }
 
+    .ProjectName {
+      font-weight: 700;
+      margin-right: 10px;
+      user-select: none;
+    }
+
+    .TextInput {
+      max-width: 200px;
+      height: 25px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.06);
+      }
+
+      > input {
+        padding-top: 3.5px;
+
+        &:focus {
+          outline: none;
+          color: $secondaryColor;
+
+          ~ .Bar {
+            background-color: $secondaryColor;
+          }
+        }
+      }
+
+      .Bar {
+        height: 0;
+      }
+    }
+
     .Header {
       align-self: stretch;
       display: flex;

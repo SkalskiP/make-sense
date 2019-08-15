@@ -5,7 +5,8 @@ interface IProps {
     key: string;
     label?: string;
     isPassword: boolean;
-    onChange: (value: string) => any;
+    onChange?: (event: React.ChangeEvent<HTMLInputElement>) => any;
+    onFocus?: (event: React.FocusEvent<HTMLInputElement>) => any;
     inputStyle?: React.CSSProperties;
     labelStyle?: React.CSSProperties;
     barStyle?: React.CSSProperties;
@@ -19,9 +20,11 @@ const TextInput = (props: IProps) => {
         label,
         isPassword,
         onChange,
+        onFocus,
         inputStyle,
         labelStyle,
-        barStyle
+        barStyle,
+        value
     } = props;
 
     const getInputType = () => {
@@ -31,11 +34,12 @@ const TextInput = (props: IProps) => {
     return (
         <div className="TextInput">
             <input
-                value={!!props.value ? props.value : undefined}
+                value={!!value ? value : undefined}
                 type={getInputType()}
                 id={key}
                 style={inputStyle}
-                onChange={(event) => onChange(event.target.value)}
+                onChange={onChange ? onChange : undefined}
+                onFocus={onFocus ? onFocus : undefined}
             />
             {!!label && <label
                 htmlFor={key}

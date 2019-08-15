@@ -12,6 +12,15 @@ export function updateProjectType(projectType: ProjectType): EditorActionTypes {
     };
 }
 
+export function updateProjectName(projectName: string): EditorActionTypes {
+    return {
+        type: Action.UPDATE_PROJECT_NAME,
+        payload: {
+            projectName,
+        },
+    };
+}
+
 export function updateActiveImageIndex(activeImageIndex: number): EditorActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_IMAGE_INDEX,
