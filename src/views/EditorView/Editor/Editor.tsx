@@ -158,23 +158,38 @@ class Editor extends React.Component<IProps, IState> {
 
     private updateMousePositionIndicator = (event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) => {
         const image = this.state.image;
-        const mousePositionOnCanvas: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
 
-        if (!image || !this.imageRectOnCanvas || !RectUtil.isPointInside(this.imageRectOnCanvas, mousePositionOnCanvas)) {
+        if (!image || !this.imageRectOnCanvas || !this.canvas) {
             this.mousePositionIndicator.style.display = "none";
             this.cursor.style.display = "none";
             return;
         }
 
-        const scale = image.width / this.imageRectOnCanvas.width;
-        const x: number = Math.round((mousePositionOnCanvas.x - this.imageRectOnCanvas.x) * scale);
-        const y: number = Math.round((mousePositionOnCanvas.y - this.imageRectOnCanvas.y) * scale);
-        const text: string = "x: " + x + ", y: " + y;
+        const mousePositionOnCanvas: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
+        const canvasRect: IRect = {x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)};
+        const isOverCanvas: boolean = RectUtil.isPointInside(canvasRect, mousePositionOnCanvas);
 
-        this.mousePositionIndicator.innerHTML = text;
-        this.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 15) + "px";
-        this.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 15) + "px";
-        this.mousePositionIndicator.style.display = "block";
+        if (!isOverCanvas) {
+            this.mousePositionIndicator.style.display = "none";
+            this.cursor.style.display = "none";
+            return;
+        }
+
+        const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePositionOnCanvas);
+
+        if (isOverImage) {
+            const scale = image.width / this.imageRectOnCanvas.width;
+            const x: number = Math.round((mousePositionOnCanvas.x - this.imageRectOnCanvas.x) * scale);
+            const y: number = Math.round((mousePositionOnCanvas.y - this.imageRectOnCanvas.y) * scale);
+            const text: string = "x: " + x + ", y: " + y;
+
+            this.mousePositionIndicator.innerHTML = text;
+            this.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 15) + "px";
+            this.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 15) + "px";
+            this.mousePositionIndicator.style.display = "block";
+        } else {
+            this.mousePositionIndicator.style.display = "none";
+        }
 
         this.cursor.style.left = mousePositionOnCanvas.x + "px";
         this.cursor.style.top = mousePositionOnCanvas.y + "px";

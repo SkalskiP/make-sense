@@ -18,6 +18,7 @@ import {PointUtil} from "../../utils/PointUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
+import {NumberUtil} from "../../utils/NumberUtil";
 
 export class PointRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -74,14 +75,14 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
 
     public mouseUpHandler(event: MouseEvent): void {
         const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-        const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
 
-        if (isOverImage && this.transformInProgress) {
+        if (this.transformInProgress) {
             const scale = this.scale;
             const activeLabelPoint: LabelPoint = this.getActivePointLabel();
+            const snappedPoint: IPoint = this.snapPointToImage(mousePosition);
             const scaledPoint: IPoint = PointRenderEngine.scalePoint({
-                x: mousePosition.x - this.imageRectOnCanvas.x,
-                y: mousePosition.y - this.imageRectOnCanvas.y,
+                x: snappedPoint.x - this.imageRectOnCanvas.x,
+                y: snappedPoint.y - this.imageRectOnCanvas.y,
             }, scale);
 
             const imageData = this.getActiveImage();
@@ -128,7 +129,8 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelId) {
                     if (this.transformInProgress) {
-                        const pointBetweenPixels = DrawUtil.setPointBetweenPixels(this.mousePosition);
+                        const pointSnapped: IPoint = this.snapPointToImage(this.mousePosition);
+                        const pointBetweenPixels: IPoint = DrawUtil.setPointBetweenPixels(pointSnapped);
                         const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
                         DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
                     } else {
@@ -168,7 +170,7 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
                 return;
             }
 
-            if (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) {
+            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, this.mousePosition)) {
                 store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
                 this.canvas.style.cursor = "none";
             } else {
@@ -233,4 +235,14 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
         store.dispatch(updateFirstLabelCreatedFlag(true));
         store.dispatch(updateActiveLabelId(labelPoint.id));
     };
+
+    private snapPointToImage(point: IPoint): IPoint {
+        if (RectUtil.isPointInside(this.imageRectOnCanvas, point))
+            return point;
+
+        return {
+            x: NumberUtil.snapValueToRange(point.x, this.imageRectOnCanvas.x, this.imageRectOnCanvas.x + this.imageRectOnCanvas.width),
+            y: NumberUtil.snapValueToRange(point.y, this.imageRectOnCanvas.y, this.imageRectOnCanvas.y + this.imageRectOnCanvas.height)
+        }
+    }
 }

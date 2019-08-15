@@ -10,6 +10,10 @@
   transition: background-color 0.7s ease;
   margin: 5px 2px;
 
+  > img {
+    user-select: none;
+  }
+
   &:hover ~ .Cursor {
     width: 20px;
     height: 20px;
