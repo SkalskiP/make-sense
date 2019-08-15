@@ -1,4 +1,3 @@
-import {BaseRenderEngine} from "./BaseRenderEngine";
 import {IRect} from "../../interfaces/IRect";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
@@ -7,8 +6,9 @@ import {store} from "../../index";
 import {RectUtil} from "../../utils/RectUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 
-export class PolygonRenderEngine extends BaseRenderEngine {
+export class PolygonRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
@@ -62,5 +62,9 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public updateImageRect(imageRect: IRect): void {
         this.imageRectOnCanvas = imageRect;
+    }
+
+    public isInProgress(): boolean {
+        return false;
     }
 }

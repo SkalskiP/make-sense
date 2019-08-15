@@ -26,7 +26,7 @@ export const EditorFeatureData: IEditorFeature[] = [
         imageAlt: "labels",
     },
     {
-        displayText: "Support output file formats like YOLO, CSV",
+        displayText: "Support output file formats like YOLO, VOC XML, CSV",
         imageSrc: "img/file.png",
         imageAlt: "file",
     },

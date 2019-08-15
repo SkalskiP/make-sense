@@ -2,7 +2,6 @@ import {IPoint} from "../../interfaces/IPoint";
 import {IRect} from "../../interfaces/IRect";
 import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
-import {BaseRenderEngine} from "./BaseRenderEngine";
 import {store} from "../..";
 import {ImageData, LabelRect} from "../../store/editor/types";
 import uuidv1 from 'uuid/v1';
@@ -19,8 +18,10 @@ import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
+import {NumberUtil} from "../../utils/NumberUtil";
 
-export class RectRenderEngine extends BaseRenderEngine {
+export class RectRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
@@ -41,9 +42,12 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public mouseDownHandler = (event: MouseEvent) => {
-        const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-        const isMouseOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
-        if (isMouseOverImage) {
+        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
+        const isMouseOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition);
+        const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
+            this.mousePosition);
+
+        if (isMouseOverCanvas) {
             const rectUnderMouse: LabelRect = this.getRectUnderMouse();
             if (!!rectUnderMouse) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(rectUnderMouse.rect);
@@ -52,26 +56,26 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    this.startRectCreation(mousePosition);
+                    this.startRectCreation(this.mousePosition);
                 }
-            } else {
-                this.startRectCreation(mousePosition);
+            } else if (isMouseOverImage) {
+                this.startRectCreation(this.mousePosition);
             }
         }
     };
 
     public mouseUpHandler = (event: MouseEvent) => {
         if (!!this.imageRectOnCanvas) {
-            const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-            const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, mousePosition);
+            this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
+            const mousePositionSnapped: IPoint = this.snapPointToImage(this.mousePosition);
 
-            if (isOverImage && !!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, this.mousePosition)) {
+            if (!!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, mousePositionSnapped)) {
                 const scale = this.scale;
 
-                const minX: number = Math.min(this.startCreateRectPoint.x, this.mousePosition.x);
-                const minY: number = Math.min(this.startCreateRectPoint.y, this.mousePosition.y);
-                const maxX: number = Math.max(this.startCreateRectPoint.x, this.mousePosition.x);
-                const maxY: number = Math.max(this.startCreateRectPoint.y, this.mousePosition.y);
+                const minX: number = Math.min(this.startCreateRectPoint.x, mousePositionSnapped.x);
+                const minY: number = Math.min(this.startCreateRectPoint.y, mousePositionSnapped.y);
+                const maxX: number = Math.max(this.startCreateRectPoint.x, mousePositionSnapped.x);
+                const maxY: number = Math.max(this.startCreateRectPoint.y, mousePositionSnapped.y);
 
                 const rect: IRect = {
                     x: (minX - this.imageRectOnCanvas.x) * scale,
@@ -82,7 +86,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 this.addRectLabel(rect);
             }
 
-            if (isOverImage && !!this.startResizeRectAnchor) {
+            if (!!this.startResizeRectAnchor) {
                 const activeLabelRect: LabelRect = this.getActiveRectLabel();
                 const rect: IRect = this.calculateRectRelativeToActiveImage(activeLabelRect.rect);
                 const startAnchorPosition = {
@@ -90,12 +94,12 @@ export class RectRenderEngine extends BaseRenderEngine {
                     y: this.startResizeRectAnchor.middlePosition.y + this.imageRectOnCanvas.y
                 };
                 const delta = {
-                    x: this.mousePosition.x - startAnchorPosition.x,
-                    y: this.mousePosition.y - startAnchorPosition.y
+                    x: mousePositionSnapped.x - startAnchorPosition.x,
+                    y: mousePositionSnapped.y - startAnchorPosition.y
                 };
-                const resizedRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
+                const resizeRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
                 const scale = this.scale;
-                const scaledRect: IRect = RectRenderEngine.scaleRect(resizedRect, scale);
+                const scaledRect: IRect = RectRenderEngine.scaleRect(resizeRect, scale);
 
                 const imageData = this.getActiveImage();
                 imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
@@ -117,7 +121,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         if (!!this.imageRectOnCanvas) {
             const isOverImage: boolean = RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition);
-            if (isOverImage) {
+            if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse();
                 if (!!labelRect) {
                     if (store.getState().editor.highlightedLabelId !== labelRect.id) {
@@ -151,11 +155,12 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private drawCurrentlyCreatedRect() {
         if (!!this.startCreateRectPoint) {
+            const mousePositionSnapped: IPoint = this.snapPointToImage(this.mousePosition);
             const activeRect: IRect = {
                 x: this.startCreateRectPoint.x,
                 y: this.startCreateRectPoint.y,
-                width: this.mousePosition.x - this.startCreateRectPoint.x,
-                height: this.mousePosition.y - this.startCreateRectPoint.y
+                width: mousePositionSnapped.x - this.startCreateRectPoint.x,
+                height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
             DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.rectActiveColor, this.config.rectThickness);
@@ -171,13 +176,14 @@ export class RectRenderEngine extends BaseRenderEngine {
     private drawActiveRect(labelRect: LabelRect) {
         let rect: IRect = this.calculateRectRelativeToActiveImage(labelRect.rect);
         if (!!this.startResizeRectAnchor) {
-            const startAnchorPosition = {
+            const startAnchorPosition: IPoint = {
                 x: this.startResizeRectAnchor.middlePosition.x + this.imageRectOnCanvas.x,
                 y: this.startResizeRectAnchor.middlePosition.y + this.imageRectOnCanvas.y
             };
+            const endAnchorPositionSnapped: IPoint = this.snapPointToImage(this.mousePosition);
             const delta = {
-                x: this.mousePosition.x - startAnchorPosition.x,
-                y: this.mousePosition.y - startAnchorPosition.y
+                x: endAnchorPositionSnapped.x - startAnchorPosition.x,
+                y: endAnchorPositionSnapped.y - startAnchorPosition.y
             };
             rect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
         }
@@ -206,8 +212,12 @@ export class RectRenderEngine extends BaseRenderEngine {
                 store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
                 return;
             }
-            if (RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition)) {
-                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, this.mousePosition)) {
+                if (!RectUtil.isPointInside(this.imageRectOnCanvas, this.mousePosition) && !!this.startCreateRectPoint)
+                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                else
+                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+
                 this.canvas.style.cursor = "none";
             } else {
                 this.canvas.style.cursor = "default";
@@ -218,6 +228,15 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
     // HELPERS
     // =================================================================================================================
+
+    public updateImageRect(imageRect: IRect): void {
+        this.imageRectOnCanvas = imageRect;
+        this.scale = this.getActiveImageScale();
+    }
+
+    public isInProgress(): boolean {
+        return !!this.startCreateRectPoint || !!this.startResizeRectAnchor;
+    }
 
     private static scaleRect(inputRect:IRect, scale: number): IRect {
         return {
@@ -231,11 +250,6 @@ export class RectRenderEngine extends BaseRenderEngine {
     private calculateRectRelativeToActiveImage(rect: IRect):IRect {
         const scale = this.scale;
         return RectRenderEngine.scaleRect(rect, 1/scale);
-    }
-
-    public updateImageRect(imageRect: IRect): void {
-        this.imageRectOnCanvas = imageRect;
-        this.scale = this.getActiveImageScale();
     }
 
     private addRectLabel = (rect: IRect) => {
@@ -259,13 +273,38 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private getRectUnderMouse(): LabelRect {
+        const activeRectLabel: LabelRect = this.getActiveRectLabel();
+        if (!!activeRectLabel && this.isMouseOverRectEdges(activeRectLabel.rect)) {
+            return activeRectLabel;
+        }
+
         const labelRects: LabelRect[] = this.getActiveImage().labelRects;
         for (let i = 0; i < labelRects.length; i++) {
-            const rect: IRect = this.calculateRectRelativeToActiveImage(labelRects[i].rect);
-            const rectAnchor = this.getAnchorUnderMouseByRect(rect);
-            if (!!rectAnchor) return labelRects[i];
+            if (this.isMouseOverRectEdges(labelRects[i].rect)) {
+                return labelRects[i];
+            }
         }
         return null;
+    }
+
+    private isMouseOverRectEdges(rect: IRect): boolean {
+        const rectOnImage: IRect = RectUtil.translate(
+            this.calculateRectRelativeToActiveImage(rect), this.imageRectOnCanvas);
+
+        const outerRectDelta: IPoint = {
+            x: this.config.anchorHoverSize.width / 2,
+            y: this.config.anchorHoverSize.height / 2
+        };
+        const outerRect: IRect = RectUtil.expand(rectOnImage, outerRectDelta);
+
+        const innerRectDelta: IPoint = {
+            x: - this.config.anchorHoverSize.width / 2,
+            y: - this.config.anchorHoverSize.height / 2
+        };
+        const innerRect: IRect = RectUtil.expand(rectOnImage, innerRectDelta);
+
+        return (RectUtil.isPointInside(outerRect, this.mousePosition) &&
+            !RectUtil.isPointInside(innerRect, this.mousePosition));
     }
 
     private getAnchorUnderMouseByRect(rect: IRect): RectAnchor {
@@ -312,6 +351,16 @@ export class RectRenderEngine extends BaseRenderEngine {
             ...scaledRect,
             x: scaledRect.x + this.imageRectOnCanvas.x,
             y: scaledRect.y + this.imageRectOnCanvas.y
+        }
+    }
+
+    private snapPointToImage(point: IPoint): IPoint {
+        if (RectUtil.isPointInside(this.imageRectOnCanvas, point))
+            return point;
+
+        return {
+            x: NumberUtil.snapValueToRange(point.x, this.imageRectOnCanvas.x, this.imageRectOnCanvas.x + this.imageRectOnCanvas.width),
+            y: NumberUtil.snapValueToRange(point.y, this.imageRectOnCanvas.y, this.imageRectOnCanvas.y + this.imageRectOnCanvas.height)
         }
     }
 }

@@ -117,6 +117,15 @@ export class RectUtil {
         }
     }
 
+    public static expand(rect: IRect, delta: IPoint): IRect {
+        return {
+            x: rect.x - delta.x,
+            y: rect.y - delta.y,
+            width: rect.width + 2 * delta.x,
+            height: rect.height + 2 * delta.y
+        }
+    }
+
     public static mapRectToAnchors(rect: IRect): RectAnchor[] {
         return [
             {type: AnchorType.TOP_LEFT, middlePosition: {x: rect.x, y: rect.y}},
