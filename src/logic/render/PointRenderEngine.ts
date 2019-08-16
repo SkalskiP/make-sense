@@ -19,6 +19,7 @@ import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 import {NumberUtil} from "../../utils/NumberUtil";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {EditorData} from "../../data/EditorData";
 
 export class PointRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -38,6 +39,10 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
+
+    public update(data: EditorData): void {
+
+    }
 
     public mouseDownHandler(event: MouseEvent): void {
         const mousePosition: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);

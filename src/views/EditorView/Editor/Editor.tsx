@@ -23,6 +23,8 @@ import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
 import {BaseSuportRenderEngine} from "../../../logic/render/BaseSuportRenderEngine";
+import {MouseEventType} from "../../../data/MouseEventType";
+import {EditorData} from "../../../data/EditorData";
 
 interface IProps {
     size: ISize;
@@ -57,30 +59,29 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
 
     public componentDidMount(): void {
-        window.addEventListener("mousemove", this.mouseMoveEventBus);
-        window.addEventListener("mouseup", this.mouseUpEventBus);
-        this.canvas.addEventListener("mousedown", this.mouseDownEventBus);
+        window.addEventListener(MouseEventType.MOVE, this.update);
+        window.addEventListener(MouseEventType.UP, this.update);
+        this.canvas.addEventListener(MouseEventType.DOWN, this.update);
 
         const {imageData, size ,activeLabelType} = this.props;
 
-        ImageLoadManager.add(this.loadImage(imageData));
+        ImageLoadManager.addAndRun(this.loadImage(imageData));
 
         this.resizeCanvas(size);
         this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas, this.imageRectOnCanvas);
         this.mountSupportRenderingEngine(activeLabelType);
         this.fullCanvasRender();
-        ImageLoadManager.run();
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener("mousemove", this.mouseMoveEventBus);
-        window.removeEventListener("mouseup", this.mouseUpEventBus);
-        this.canvas.removeEventListener("mousedown", this.mouseDownEventBus);
+        window.removeEventListener(MouseEventType.MOVE, this.update);
+        window.removeEventListener(MouseEventType.UP, this.update);
+        this.canvas.removeEventListener(MouseEventType.DOWN, this.update);
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
         if (prevProps.imageData.id !== this.props.imageData.id) {
-            ImageLoadManager.add(this.loadImage(this.props.imageData));
+            ImageLoadManager.addAndRun(this.loadImage(this.props.imageData));
         }
         if (prevProps.activeLabelType !== this.props.activeLabelType) {
             this.swapSupportRenderingEngine(this.props.activeLabelType)
@@ -88,30 +89,16 @@ class Editor extends React.Component<IProps, IState> {
         this.resizeCanvas(this.props.size);
         this.calculateImageRect(this.state.image);
         this.fullCanvasRender();
-        ImageLoadManager.run();
     }
 
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
 
-    private mouseMoveEventBus = (event: MouseEvent) => {
-        this.primaryRenderingEngine.mouseMoveHandler(event);
-        this.supportRenderingEngine && this.supportRenderingEngine.mouseMoveHandler(event);
-        !this.props.activePopupType && this.updateMousePositionIndicator(event);
-        this.fullCanvasRender();
-    };
-
-    private mouseDownEventBus = (event: MouseEvent) => {
-        this.primaryRenderingEngine.mouseDownHandler(event);
-        this.supportRenderingEngine && this.supportRenderingEngine.mouseDownHandler(event);
-        !this.props.activePopupType && this.updateMousePositionIndicator(event);
-        this.fullCanvasRender();
-    };
-
-    private mouseUpEventBus = (event: MouseEvent) => {
-        this.primaryRenderingEngine.mouseUpHandler(event);
-        this.supportRenderingEngine && this.supportRenderingEngine.mouseUpHandler(event);
+    private update = (event: MouseEvent) => {
+        const editorData: EditorData = this.buildEditorData(event);
+        this.primaryRenderingEngine.update(editorData);
+        this.supportRenderingEngine && this.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && this.updateMousePositionIndicator(event);
         this.fullCanvasRender();
     };
@@ -224,6 +211,23 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
     // HELPER METHODS
     // =================================================================================================================
+
+    private buildEditorData(event?: MouseEvent): EditorData {
+        return {
+            mousePositionOnCanvas: CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas),
+            canvasSize: CanvasUtil.getSize(this.canvas),
+            activeImageScale: this.getImageScale(),
+            activeImageRectOnCanvas: this.imageRectOnCanvas,
+            event: event
+        }
+    }
+
+    protected getImageScale(): number | null {
+        if (!this.state.image || !this.imageRectOnCanvas)
+            return null;
+
+        return this.state.image.width / this.imageRectOnCanvas.width;
+    }
 
     private resizeCanvas = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!this.canvas) {

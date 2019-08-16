@@ -1,5 +1,11 @@
 import {IPoint} from "../interfaces/IPoint";
+import {IRect} from "../interfaces/IRect";
+import {ISize} from "../interfaces/ISize";
 
 export interface EditorData {
-    mousePositionOnCanvas: IPoint
+    mousePositionOnCanvas: IPoint,
+    canvasSize: ISize,
+    activeImageScale: number,
+    activeImageRectOnCanvas: IRect,
+    event?: MouseEvent
 }

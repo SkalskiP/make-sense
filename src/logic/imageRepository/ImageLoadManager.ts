@@ -11,6 +11,11 @@ export class ImageLoadManager {
 		setTimeout(() => ImageLoadManager.runQueue(), 10);
 	}
 
+	public static addAndRun(fx: Promise<any>) {
+		ImageLoadManager.add(fx);
+		ImageLoadManager.run();
+	}
+
 	public static async runQueue() {
 		if (!ImageLoadManager.isRunning) {
 			ImageLoadManager.isRunning = true;
