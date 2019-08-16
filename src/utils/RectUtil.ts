@@ -3,6 +3,7 @@ import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
 import {AnchorType} from "../data/AnchorType";
 import {RectAnchor} from "../data/RectAnchor";
+import {NumberUtil} from "./NumberUtil";
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
@@ -128,14 +129,24 @@ export class RectUtil {
 
     public static mapRectToAnchors(rect: IRect): RectAnchor[] {
         return [
-            {type: AnchorType.TOP_LEFT, middlePosition: {x: rect.x, y: rect.y}},
-            {type: AnchorType.TOP, middlePosition: {x: rect.x + 0.5 * rect.width, y: rect.y}},
-            {type: AnchorType.TOP_RIGHT, middlePosition: {x: rect.x + rect.width, y: rect.y}},
-            {type: AnchorType.LEFT, middlePosition: {x: rect.x, y: rect.y + 0.5 * rect.height}},
-            {type: AnchorType.RIGHT, middlePosition: {x: rect.x + rect.width, y: rect.y + 0.5 * rect.height}},
-            {type: AnchorType.BOTTOM_LEFT, middlePosition: {x: rect.x, y: rect.y + rect.height}},
-            {type: AnchorType.BOTTOM, middlePosition: {x: rect.x + 0.5 * rect.width, y: rect.y + rect.height}},
-            {type: AnchorType.BOTTOM_RIGHT, middlePosition: {x: rect.x + rect.width, y: rect.y + rect.height}}
+            {type: AnchorType.TOP_LEFT, position: {x: rect.x, y: rect.y}},
+            {type: AnchorType.TOP, position: {x: rect.x + 0.5 * rect.width, y: rect.y}},
+            {type: AnchorType.TOP_RIGHT, position: {x: rect.x + rect.width, y: rect.y}},
+            {type: AnchorType.LEFT, position: {x: rect.x, y: rect.y + 0.5 * rect.height}},
+            {type: AnchorType.RIGHT, position: {x: rect.x + rect.width, y: rect.y + 0.5 * rect.height}},
+            {type: AnchorType.BOTTOM_LEFT, position: {x: rect.x, y: rect.y + rect.height}},
+            {type: AnchorType.BOTTOM, position: {x: rect.x + 0.5 * rect.width, y: rect.y + rect.height}},
+            {type: AnchorType.BOTTOM_RIGHT, position: {x: rect.x + rect.width, y: rect.y + rect.height}}
         ]
+    }
+
+    public static snapPointToRect(point: IPoint, rect: IRect): IPoint {
+        if (RectUtil.isPointInside(rect, point))
+            return point;
+
+        return {
+            x: NumberUtil.snapValueToRange(point.x, rect.x, rect.x + rect.width),
+            y: NumberUtil.snapValueToRange(point.y, rect.y, rect.y + rect.height)
+        }
     }
 }

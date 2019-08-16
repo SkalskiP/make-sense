@@ -3,5 +3,5 @@ import {IPoint} from "../interfaces/IPoint";
 
 export interface RectAnchor {
     type: AnchorType,
-    middlePosition: IPoint
+    position: IPoint
 }

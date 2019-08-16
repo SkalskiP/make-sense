@@ -41,14 +41,13 @@ class ImagePreview extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        ImageLoadManager.add(this.loadImage(this.props.imageData, this.props.isScrolling));
-        ImageLoadManager.run();
+        ImageLoadManager.addAndRun(this.loadImage(this.props.imageData, this.props.isScrolling));
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
-                ImageLoadManager.add(this.loadImage(nextProps.imageData, nextProps.isScrolling));
+                ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, nextProps.isScrolling));
             }
             else {
                 this.setState({image: null});
@@ -56,9 +55,8 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
 
         if (this.props.isScrolling && !nextProps.isScrolling) {
-            ImageLoadManager.add(this.loadImage(nextProps.imageData, false));
+            ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, false));
         }
-        ImageLoadManager.run();
     }
 
     shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {

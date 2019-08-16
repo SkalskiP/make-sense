@@ -1,32 +1,37 @@
-import {IRect} from "../../interfaces/IRect";
-import {store} from "../../index";
-import {ImageData} from "../../store/editor/types";
-import {ImageRepository} from "../imageRepository/ImageRepository";
+import {EditorData} from "../../data/EditorData";
+import {MouseEventUtil} from "../../utils/MouseEventUtil";
+import {MouseEventType} from "../../data/MouseEventType";
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
-    protected imageRectOnCanvas: IRect;
 
-    public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
+    protected constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
-        this.imageRectOnCanvas = imageRect;
     }
 
-    protected getActiveImageScale(): number {
-        const activeImageIndex = store.getState().editor.activeImageIndex;
-        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
-        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        return image.width / this.imageRectOnCanvas.width;
+    public update(data: EditorData): void {
+        if (!!data.event) {
+            switch (MouseEventUtil.getEventType(data.event)) {
+                case MouseEventType.MOVE:
+                    this.mouseMoveHandler(data);
+                    break;
+                case MouseEventType.UP:
+                    this.mouseUpHandler(data);
+                    break;
+                case MouseEventType.DOWN:
+                    this.mouseDownHandler(data);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
-    protected getActiveImage(): ImageData {
-        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
-        return store.getState().editor.imagesData[activeImageIndex];
-    }
+    protected abstract mouseDownHandler(data: EditorData): void;
+    protected abstract mouseMoveHandler(data: EditorData): void;
+    protected abstract mouseUpHandler(data: EditorData): void;
 
-    abstract mouseDownHandler(event: MouseEvent): void;
-    abstract mouseMoveHandler(event: MouseEvent): void;
-    abstract mouseUpHandler(event: MouseEvent): void;
-    abstract updateImageRect(imageRect: IRect): void;
-    abstract render(): void;
+    abstract render(data: EditorData): void;
+
+    abstract isInProgress(): boolean;
 }
