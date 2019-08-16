@@ -265,6 +265,7 @@ class Editor extends React.Component<IProps, IState> {
                 <canvas
                     className="ImageCanvas"
                     ref={ref => this.canvas = ref}
+                    draggable={false}
                     onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
                 />
                 <div

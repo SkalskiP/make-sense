@@ -13,13 +13,13 @@ import {
 } from "../../store/editor/actionCreators";
 import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
-import _ from "lodash";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 import {NumberUtil} from "../../utils/NumberUtil";
+import {EditorSelector} from "../../store/selectors/EditorSelector";
 
 export class RectRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -87,7 +87,7 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
             }
 
             if (!!this.startResizeRectAnchor) {
-                const activeLabelRect: LabelRect = this.getActiveRectLabel();
+                const activeLabelRect: LabelRect = EditorSelector.getActiveRectLabel();
                 const rect: IRect = this.calculateRectRelativeToActiveImage(activeLabelRect.rect);
                 const startAnchorPosition = {
                     x: this.startResizeRectAnchor.middlePosition.x + this.imageRectOnCanvas.x,
@@ -101,7 +101,7 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
                 const scale = this.scale;
                 const scaledRect: IRect = RectRenderEngine.scaleRect(resizeRect, scale);
 
-                const imageData = this.getActiveImage();
+                const imageData = EditorSelector.getActiveImageData();
                 imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
                     if (labelRect.id === activeLabelRect.id) {
                         return {
@@ -142,7 +142,7 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
 
     public render() {
         const activeLabelId: string = store.getState().editor.activeLabelId;
-        const imageData: ImageData = this.getActiveImage();
+        const imageData: ImageData = EditorSelector.getActiveImageData();
 
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
@@ -267,18 +267,13 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
         store.dispatch(updateActiveLabelId(labelRect.id));
     };
 
-    private getActiveRectLabel(): LabelRect | null {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
-        return _.find(this.getActiveImage().labelRects, {id: activeLabelId});
-    }
-
     private getRectUnderMouse(): LabelRect {
-        const activeRectLabel: LabelRect = this.getActiveRectLabel();
+        const activeRectLabel: LabelRect = EditorSelector.getActiveRectLabel();
         if (!!activeRectLabel && this.isMouseOverRectEdges(activeRectLabel.rect)) {
             return activeRectLabel;
         }
 
-        const labelRects: LabelRect[] = this.getActiveImage().labelRects;
+        const labelRects: LabelRect[] = EditorSelector.getActiveImageData().labelRects;
         for (let i = 0; i < labelRects.length; i++) {
             if (this.isMouseOverRectEdges(labelRects[i].rect)) {
                 return labelRects[i];
@@ -319,7 +314,7 @@ export class RectRenderEngine extends BaseSuportRenderEngine {
     }
 
     private getAnchorUnderMouse(): RectAnchor {
-        const labelRects: LabelRect[] = this.getActiveImage().labelRects;
+        const labelRects: LabelRect[] = EditorSelector.getActiveImageData().labelRects;
         for (let i = 0; i < labelRects.length; i++) {
             const rect: IRect = this.calculateRectRelativeToActiveImage(labelRects[i].rect);
             const rectAnchor = this.getAnchorUnderMouseByRect(rect);

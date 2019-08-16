@@ -12,13 +12,13 @@ import {
     updateImageDataById
 } from "../../store/editor/actionCreators";
 import {RectUtil} from "../../utils/RectUtil";
-import _ from "lodash";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {BaseSuportRenderEngine} from "./BaseSuportRenderEngine";
 import {NumberUtil} from "../../utils/NumberUtil";
+import {EditorSelector} from "../../store/selectors/EditorSelector";
 
 export class PointRenderEngine extends BaseSuportRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -81,14 +81,14 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
 
         if (this.transformInProgress) {
             const scale = this.scale;
-            const activeLabelPoint: LabelPoint = this.getActivePointLabel();
+            const activeLabelPoint: LabelPoint = EditorSelector.getActivePointLabel();
             const snappedPoint: IPoint = this.snapPointToImage(mousePosition);
             const scaledPoint: IPoint = PointRenderEngine.scalePoint({
                 x: snappedPoint.x - this.imageRectOnCanvas.x,
                 y: snappedPoint.y - this.imageRectOnCanvas.y,
             }, scale);
 
-            const imageData = this.getActiveImage();
+            const imageData = EditorSelector.getActiveImageData();
             imageData.labelPoints = imageData.labelPoints.map((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelPoint.id) {
                     return {
@@ -127,7 +127,7 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
     public render(): void {
         const activeLabelId: string = store.getState().editor.activeLabelId;
         const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
-        const imageData: ImageData = this.getActiveImage();
+        const imageData: ImageData = EditorSelector.getActiveImageData();
         if (imageData) {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelId) {
@@ -207,13 +207,8 @@ export class PointRenderEngine extends BaseSuportRenderEngine {
         return PointRenderEngine.scalePoint(point, 1/scale);
     }
 
-    private getActivePointLabel(): LabelPoint | null {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
-        return _.find(this.getActiveImage().labelPoints, {id: activeLabelId});
-    }
-
     private getLabelPointUnderMouse(): LabelPoint {
-        const labelPoints: LabelPoint[] = this.getActiveImage().labelPoints;
+        const labelPoints: LabelPoint[] = EditorSelector.getActiveImageData().labelPoints;
         for (let i = 0; i < labelPoints.length; i++) {
             const pointOnImage: IPoint = this.calculatePointRelativeToActiveImage(labelPoints[i].point);
             const handleRect: IRect = RectUtil.getRectWithCenterAndSize(PointUtil.translate(pointOnImage, this.imageRectOnCanvas), this.config.anchorHoverSize);

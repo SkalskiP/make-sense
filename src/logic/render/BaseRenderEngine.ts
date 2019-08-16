@@ -1,7 +1,7 @@
 import {IRect} from "../../interfaces/IRect";
-import {store} from "../../index";
 import {ImageData} from "../../store/editor/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
+import {EditorSelector} from "../../store/selectors/EditorSelector";
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
@@ -13,15 +13,9 @@ export abstract class BaseRenderEngine {
     }
 
     protected getActiveImageScale(): number {
-        const activeImageIndex = store.getState().editor.activeImageIndex;
-        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+        const imageData: ImageData = EditorSelector.getActiveImageData();
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         return image.width / this.imageRectOnCanvas.width;
-    }
-
-    protected getActiveImage(): ImageData {
-        const activeImageIndex: number | null = store.getState().editor.activeImageIndex;
-        return store.getState().editor.imagesData[activeImageIndex];
     }
 
     abstract mouseDownHandler(event: MouseEvent): void;
