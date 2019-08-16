@@ -17,11 +17,11 @@ import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {BaseSupportRenderEngine} from "./BaseSupportRenderEngine";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
+import {BaseRenderEngine} from "./BaseRenderEngine";
 
-export class RectRenderEngine extends BaseSupportRenderEngine {
+export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================

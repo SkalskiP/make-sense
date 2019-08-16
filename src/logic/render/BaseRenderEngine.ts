@@ -5,7 +5,7 @@ import {MouseEventType} from "../../data/MouseEventType";
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
 
-    public constructor(canvas: HTMLCanvasElement) {
+    protected constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
     }
 
@@ -13,13 +13,16 @@ export abstract class BaseRenderEngine {
         if (!!data.event) {
             switch (MouseEventUtil.getEventType(data.event)) {
                 case MouseEventType.MOVE:
-                    return this.mouseMoveHandler(data);
+                    this.mouseMoveHandler(data);
+                    break;
                 case MouseEventType.UP:
-                    return this.mouseUpHandler(data);
+                    this.mouseUpHandler(data);
+                    break;
                 case MouseEventType.DOWN:
-                    return this.mouseDownHandler(data);
+                    this.mouseDownHandler(data);
+                    break;
                 default:
-                    return null;
+                    break;
             }
         }
     }
@@ -27,5 +30,8 @@ export abstract class BaseRenderEngine {
     protected abstract mouseDownHandler(data: EditorData): void;
     protected abstract mouseMoveHandler(data: EditorData): void;
     protected abstract mouseUpHandler(data: EditorData): void;
+
     abstract render(data: EditorData): void;
+
+    abstract isInProgress(): boolean;
 }

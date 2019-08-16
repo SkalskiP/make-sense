@@ -13,9 +13,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public mouseMoveHandler(data: EditorData): void {}
-
     public mouseDownHandler(data: EditorData): void {}
-
     public mouseUpHandler(data: EditorData): void {}
 
     // =================================================================================================================
@@ -29,5 +27,9 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
             const ctx = this.canvas.getContext("2d");
             ctx.drawImage(image, imageRect.x, imageRect.y, imageRect.width, imageRect.height);
         }
+    }
+
+    isInProgress(): boolean {
+        return false;
     }
 }

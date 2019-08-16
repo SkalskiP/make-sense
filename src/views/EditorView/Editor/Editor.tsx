@@ -22,9 +22,9 @@ import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
-import {BaseSupportRenderEngine} from "../../../logic/render/BaseSupportRenderEngine";
 import {MouseEventType} from "../../../data/MouseEventType";
 import {EditorData} from "../../../data/EditorData";
+import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
 
 interface IProps {
     size: ISize;
@@ -45,7 +45,7 @@ class Editor extends React.Component<IProps, IState> {
     private mousePositionIndicator: HTMLDivElement;
     private cursor: HTMLDivElement;
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
-    private supportRenderingEngine: BaseSupportRenderEngine;
+    private supportRenderingEngine: BaseRenderEngine;
     private imageRectOnCanvas: IRect;
     private mousePositionOnCanvas: IPoint;
     private isLoading: boolean = false;

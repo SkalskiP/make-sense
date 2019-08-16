@@ -2,10 +2,10 @@ import {store} from "../../index";
 import {RectUtil} from "../../utils/RectUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {BaseSupportRenderEngine} from "./BaseSupportRenderEngine";
 import {EditorData} from "../../data/EditorData";
+import {BaseRenderEngine} from "./BaseRenderEngine";
 
-export class PolygonRenderEngine extends BaseSupportRenderEngine {
+export class PolygonRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);

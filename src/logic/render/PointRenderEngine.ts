@@ -16,11 +16,11 @@ import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {BaseSupportRenderEngine} from "./BaseSupportRenderEngine";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
+import {BaseRenderEngine} from "./BaseRenderEngine";
 
-export class PointRenderEngine extends BaseSupportRenderEngine {
+export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
