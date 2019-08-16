@@ -1,54 +1,33 @@
-import {IPoint} from "../../interfaces/IPoint";
 import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
-import {CanvasUtil} from "../../utils/CanvasUtil";
+import {EditorData} from "../../data/EditorData";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
 
-    // =================================================================================================================
-    // STATE
-    // =================================================================================================================
-
-    private mousePosition: IPoint;
-
-    public constructor(canvas: HTMLCanvasElement, imageRect: IRect) {
-        super(canvas, imageRect);
+    public constructor(canvas: HTMLCanvasElement) {
+        super(canvas);
     }
 
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
 
-    public mouseMoveHandler(event: MouseEvent): void {
-        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-    }
+    public mouseMoveHandler(data: EditorData): void {}
 
-    public mouseDownHandler(event: MouseEvent): void {
-        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-    }
+    public mouseDownHandler(data: EditorData): void {}
 
-    public mouseUpHandler(event: MouseEvent): void {
-        this.mousePosition = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
-    }
+    public mouseUpHandler(data: EditorData): void {}
 
     // =================================================================================================================
     // RENDERING
     // =================================================================================================================
 
-    public render(): void {}
+    public render(data: EditorData): void {}
 
-    public drawImage(image: HTMLImageElement) {
+    public drawImage(image: HTMLImageElement, imageRect: IRect) {
         if (!!image && !!this.canvas) {
             const ctx = this.canvas.getContext("2d");
-            ctx.drawImage(image, this.imageRectOnCanvas.x, this.imageRectOnCanvas.y, this.imageRectOnCanvas.width, this.imageRectOnCanvas.height);
+            ctx.drawImage(image, imageRect.x, imageRect.y, imageRect.width, imageRect.height);
         }
-    }
-
-    // =================================================================================================================
-    // HELPERS
-    // =================================================================================================================
-
-    public updateImageRect(imageRect: IRect): void {
-        this.imageRectOnCanvas = imageRect;
     }
 }

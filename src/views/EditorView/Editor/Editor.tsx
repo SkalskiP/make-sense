@@ -22,7 +22,7 @@ import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
-import {BaseSuportRenderEngine} from "../../../logic/render/BaseSuportRenderEngine";
+import {BaseSupportRenderEngine} from "../../../logic/render/BaseSupportRenderEngine";
 import {MouseEventType} from "../../../data/MouseEventType";
 import {EditorData} from "../../../data/EditorData";
 
@@ -45,8 +45,9 @@ class Editor extends React.Component<IProps, IState> {
     private mousePositionIndicator: HTMLDivElement;
     private cursor: HTMLDivElement;
     private primaryRenderingEngine: PrimaryEditorRenderEngine;
-    private supportRenderingEngine: BaseSuportRenderEngine;
+    private supportRenderingEngine: BaseSupportRenderEngine;
     private imageRectOnCanvas: IRect;
+    private mousePositionOnCanvas: IPoint;
     private isLoading: boolean = false;
 
     constructor(props) {
@@ -68,7 +69,7 @@ class Editor extends React.Component<IProps, IState> {
         ImageLoadManager.addAndRun(this.loadImage(imageData));
 
         this.resizeCanvas(size);
-        this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas, this.imageRectOnCanvas);
+        this.primaryRenderingEngine = new PrimaryEditorRenderEngine(this.canvas);
         this.mountSupportRenderingEngine(activeLabelType);
         this.fullCanvasRender();
     }
@@ -97,6 +98,7 @@ class Editor extends React.Component<IProps, IState> {
 
     private update = (event: MouseEvent) => {
         const editorData: EditorData = this.buildEditorData(event);
+        this.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas);
         this.primaryRenderingEngine.update(editorData);
         this.supportRenderingEngine && this.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && this.updateMousePositionIndicator(event);
@@ -136,10 +138,10 @@ class Editor extends React.Component<IProps, IState> {
 
     private fullCanvasRender() {
         DrawUtil.clearCanvas(this.canvas);
-        this.primaryRenderingEngine.drawImage(this.state.image);
+        this.primaryRenderingEngine.drawImage(this.state.image, this.imageRectOnCanvas);
         if (!this.props.activePopupType) {
-            this.primaryRenderingEngine.render();
-            this.supportRenderingEngine && this.supportRenderingEngine.render();
+            this.primaryRenderingEngine.render(this.buildEditorData());
+            this.supportRenderingEngine && this.supportRenderingEngine.render(this.buildEditorData());
         }
     }
 
@@ -194,13 +196,13 @@ class Editor extends React.Component<IProps, IState> {
     private mountSupportRenderingEngine = (activeLabelType: LabelType) => {
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
-                this.supportRenderingEngine = new RectRenderEngine(this.canvas, this.imageRectOnCanvas);
+                this.supportRenderingEngine = new RectRenderEngine(this.canvas);
                 break;
             case LabelType.POINT:
-                this.supportRenderingEngine = new PointRenderEngine(this.canvas, this.imageRectOnCanvas);
+                this.supportRenderingEngine = new PointRenderEngine(this.canvas);
                 break;
             case LabelType.POLYGON:
-                this.supportRenderingEngine = new PolygonRenderEngine(this.canvas, this.imageRectOnCanvas);
+                this.supportRenderingEngine = new PolygonRenderEngine(this.canvas);
                 break;
             default:
                 this.supportRenderingEngine = null;
@@ -214,7 +216,7 @@ class Editor extends React.Component<IProps, IState> {
 
     private buildEditorData(event?: MouseEvent): EditorData {
         return {
-            mousePositionOnCanvas: CanvasUtil.getMousePositionOnCanvasFromEvent(event, this.canvas),
+            mousePositionOnCanvas: this.mousePositionOnCanvas,
             canvasSize: CanvasUtil.getSize(this.canvas),
             activeImageScale: this.getImageScale(),
             activeImageRectOnCanvas: this.imageRectOnCanvas,
@@ -248,9 +250,6 @@ class Editor extends React.Component<IProps, IState> {
             };
             const imageRatio = RectUtil.getRatio(imageRect);
             const imageRectOnCanvas = RectUtil.fitInsideRectWithRatio(canvasRect, imageRatio);
-
-            this.primaryRenderingEngine.updateImageRect(imageRectOnCanvas);
-            this.supportRenderingEngine && this.supportRenderingEngine.updateImageRect(imageRectOnCanvas);
             this.imageRectOnCanvas = imageRectOnCanvas;
         }
     };
