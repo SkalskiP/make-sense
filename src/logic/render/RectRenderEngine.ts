@@ -18,7 +18,6 @@ import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomcursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {BaseSupportRenderEngine} from "./BaseSupportRenderEngine";
-import {NumberUtil} from "../../utils/NumberUtil";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
 
@@ -65,7 +64,7 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
 
     public mouseUpHandler = (data: EditorData) => {
         if (!!data.activeImageRectOnCanvas) {
-            const mousePositionSnapped: IPoint = this.snapPointToImage(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
 
             if (!!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, mousePositionSnapped)) {
 
@@ -86,14 +85,9 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
             if (!!this.startResizeRectAnchor) {
                 const activeLabelRect: LabelRect = EditorSelector.getActiveRectLabel();
                 const rect: IRect = this.calculateRectRelativeToActiveImage(activeLabelRect.rect, data.activeImageScale);
-                const startAnchorPosition = {
-                    x: this.startResizeRectAnchor.middlePosition.x + data.activeImageRectOnCanvas.x,
-                    y: this.startResizeRectAnchor.middlePosition.y + data.activeImageRectOnCanvas.y
-                };
-                const delta = {
-                    x: mousePositionSnapped.x - startAnchorPosition.x,
-                    y: mousePositionSnapped.y - startAnchorPosition.y
-                };
+                const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position,
+                    data.activeImageRectOnCanvas);
+                const delta: IPoint = PointUtil.subtract(mousePositionSnapped, startAnchorPosition);
                 const resizeRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
                 const scaledRect: IRect = RectRenderEngine.scaleRect(resizeRect, data.activeImageScale);
 
@@ -150,7 +144,7 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
 
     private drawCurrentlyCreatedRect(mousePosition: IPoint, imageRect: IRect) {
         if (!!this.startCreateRectPoint) {
-            const mousePositionSnapped: IPoint = this.snapPointToImage(mousePosition, imageRect);
+            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(mousePosition, imageRect);
             const activeRect: IRect = {
                 x: this.startCreateRectPoint.x,
                 y: this.startCreateRectPoint.y,
@@ -171,15 +165,9 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
     private drawActiveRect(labelRect: LabelRect, mousePosition: IPoint, imageRect: IRect, scale: number) {
         let rect: IRect = this.calculateRectRelativeToActiveImage(labelRect.rect, scale);
         if (!!this.startResizeRectAnchor) {
-            const startAnchorPosition: IPoint = {
-                x: this.startResizeRectAnchor.middlePosition.x + imageRect.x,
-                y: this.startResizeRectAnchor.middlePosition.y + imageRect.y
-            };
-            const endAnchorPositionSnapped: IPoint = this.snapPointToImage(mousePosition, imageRect);
-            const delta = {
-                x: endAnchorPositionSnapped.x - startAnchorPosition.x,
-                y: endAnchorPositionSnapped.y - startAnchorPosition.y
-            };
+            const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position, imageRect);
+            const endAnchorPositionSnapped: IPoint = RectUtil.snapPointToRect(mousePosition, imageRect);
+            const delta = PointUtil.subtract(endAnchorPositionSnapped, startAnchorPosition);
             rect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
         }
         const rectOnImage: IRect = RectUtil.translate(rect, imageRect);
@@ -191,7 +179,7 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
         const lineColor: string = isActive ? this.config.rectActiveColor : this.config.rectInactiveColor;
         DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.rectThickness);
         if (isActive) {
-            const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.middlePosition);
+            const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, this.config.anchorSize);
                 const handleRectBetweenPixels: IRect = DrawUtil.setRectBetweenPixels(handleRect);
@@ -294,7 +282,7 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
     private getAnchorUnderMouseByRect(rect: IRect, mousePosition: IPoint, imageRect: IRect): RectAnchor {
         const rectAnchors: RectAnchor[] = RectUtil.mapRectToAnchors(rect);
         for (let i = 0; i < rectAnchors.length; i++) {
-            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].middlePosition, this.config.anchorHoverSize), imageRect)
+            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].position, this.config.anchorHoverSize), imageRect)
             if (!!mousePosition && RectUtil.isPointInside(anchorRect, mousePosition)) {
                 return rectAnchors[i];
             }
@@ -332,16 +320,6 @@ export class RectRenderEngine extends BaseSupportRenderEngine {
             ...scaledRect,
             x: scaledRect.x + imageRect.x,
             y: scaledRect.y + imageRect.y
-        }
-    }
-
-    private snapPointToImage(point: IPoint, imageRect: IRect): IPoint {
-        if (RectUtil.isPointInside(imageRect, point))
-            return point;
-
-        return {
-            x: NumberUtil.snapValueToRange(point.x, imageRect.x, imageRect.x + imageRect.width),
-            y: NumberUtil.snapValueToRange(point.y, imageRect.y, imageRect.y + imageRect.height)
         }
     }
 }

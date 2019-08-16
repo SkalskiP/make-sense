@@ -274,10 +274,12 @@ class Editor extends React.Component<IProps, IState> {
                 <div
                     className="MousePositionIndicator"
                     ref={ref => this.mousePositionIndicator = ref}
+                    draggable={false}
                 />
                 <div
                     className={this.getCursorStyle()}
                     ref={ref => this.cursor = ref}
+                    draggable={false}
                 />
             </div>
         );
