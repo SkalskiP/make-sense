@@ -108,7 +108,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     };
 
     public mouseMoveHandler = (data: EditorData) => {
-        if (!!data.activeImageRectOnCanvas) {
+        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
             const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
             if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);

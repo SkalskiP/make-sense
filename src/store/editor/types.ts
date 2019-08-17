@@ -16,12 +16,19 @@ export type LabelPoint = {
     point: IPoint;
 }
 
+export type LabelPolygon = {
+    id: string;
+    labelIndex: number;
+    vertices: IPoint[];
+}
+
 export type ImageData = {
     id: string;
     fileData: File;
     loadStatus: boolean;
     labelRects: LabelRect[];
     labelPoints: LabelPoint[];
+    labelPolygons: LabelPolygon[];
 }
 
 export type EditorState = {
