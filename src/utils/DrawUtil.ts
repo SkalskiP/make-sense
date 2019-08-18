@@ -79,6 +79,20 @@ export class DrawUtil {
         ctx.restore();
     }
 
+    public static drawPolygon(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = "#fff"): void {
+        let ctx:CanvasRenderingContext2D = canvas.getContext('2d');
+        ctx.save();
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(anchors[0].x, anchors[0].y);
+        for (let i = 1; i < anchors.length; i ++) {
+            ctx.lineTo(anchors[i].x, anchors[i].y);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+    }
+
     public static drawText(canvas:HTMLCanvasElement, text:string, textSize:number, anchorPoint:IPoint, color:string = "#ffffff", bold:boolean = false, align:string = "center"):void {
         let ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
@@ -121,6 +135,18 @@ export class DrawUtil {
             y: topLeftBetweenPixels.y,
             width: bottomRightBetweenPixels.x - topLeftBetweenPixels.x,
             height: bottomRightBetweenPixels.y - topLeftBetweenPixels.y
+        }
+    }
+
+    public static hexToRGB(hex: string, alpha: number): string {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+
+        if (alpha) {
+            return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+        } else {
+            return "rgb(" + r + ", " + g + ", " + b + ")";
         }
     }
 }

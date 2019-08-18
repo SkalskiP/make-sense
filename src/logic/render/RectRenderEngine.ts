@@ -152,7 +152,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.rectActiveColor, this.config.rectThickness);
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.lineActiveColor, this.config.lineThickness);
         }
     }
 
@@ -176,8 +176,8 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private renderRect(rectOnImage: IRect, isActive: boolean) {
         const rectBetweenPixels = DrawUtil.setRectBetweenPixels(rectOnImage);
-        const lineColor: string = isActive ? this.config.rectActiveColor : this.config.rectInactiveColor;
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.rectThickness);
+        const lineColor: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.lineThickness);
         if (isActive) {
             const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
