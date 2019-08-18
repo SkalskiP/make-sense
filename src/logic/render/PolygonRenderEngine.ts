@@ -14,7 +14,12 @@ import {PointUtil} from "../../utils/PointUtil";
 import {ImageData, LabelPolygon, LabelRect} from "../../store/editor/types";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import uuidv1 from 'uuid/v1';
-import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
+import {
+    updateActiveLabelId,
+    updateFirstLabelCreatedFlag,
+    updateHighlightedLabelId,
+    updateImageDataById
+} from "../../store/editor/actionCreators";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -54,7 +59,23 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public mouseUpHandler(data: EditorData): void {}
 
-    public mouseMoveHandler(data: EditorData): void {}
+    public mouseMoveHandler(data: EditorData): void {
+        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
+            const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+            if (isOverImage && !this.isInProgress()) {
+                // const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+                // if (!!labelRect) {
+                //     if (store.getState().editor.highlightedLabelId !== labelRect.id) {
+                //         store.dispatch(updateHighlightedLabelId(labelRect.id))
+                //     }
+                // } else {
+                //     if (store.getState().editor.highlightedLabelId !== null) {
+                //         store.dispatch(updateHighlightedLabelId(null))
+                //     }
+                // }
+            }
+        }
+    }
 
     // =================================================================================================================
     // RENDERING
@@ -96,9 +117,10 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private drawExistingLabels(data: EditorData) {
         const activeLabelId: string = store.getState().editor.activeLabelId;
+        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
         const imageData: ImageData = EditorSelector.getActiveImageData();
         imageData.labelPolygons.forEach((labelPolygon: LabelPolygon) => {
-            const isActive: boolean = labelPolygon.id === activeLabelId;
+            const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
             const polygonOnCanvas: IPoint[] = labelPolygon.vertices.map((point: IPoint) => {
                 return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
             });
@@ -177,4 +199,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private mapPointsToAnchors(points: IPoint[]): IRect[] {
         return points.map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize));
     }
+
+    // private getPolygonUnderMouse(data: EditorData): LabelPolygon {
+    //     const labelPolygons: LabelPolygon[] = EditorSelector.getActiveImageData().labelPolygons;
+    // }
 }
