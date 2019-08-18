@@ -10,6 +10,11 @@ import {CanvasUtil} from "../../utils/CanvasUtil";
 import {ILine} from "../../interfaces/ILine";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {IRect} from "../../interfaces/IRect";
+import {PointUtil} from "../../utils/PointUtil";
+import {ImageData, LabelPolygon, LabelRect} from "../../store/editor/types";
+import {EditorSelector} from "../../store/selectors/EditorSelector";
+import uuidv1 from 'uuid/v1';
+import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/editor/actionCreators";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -33,7 +38,17 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             data.mousePositionOnCanvas);
 
         if (isMouseOverCanvas) {
-            this.updateActivelyCreatedLabel(data);
+            if(this.isInProgress()) {
+                const startPointHoverRect: IRect = RectUtil.getRectWithCenterAndSize(this.activePath[0], this.config.anchorSize);
+                const isOverStartPoint: boolean = RectUtil.isPointInside(startPointHoverRect, data.mousePositionOnCanvas);
+                if (isOverStartPoint) {
+                    this.addLabelAndFinishCreation(data);
+                } else  {
+                    this.updateActivelyCreatedLabel(data);
+                }
+            } else {
+                this.updateActivelyCreatedLabel(data);
+            }
         }
     }
 
@@ -46,8 +61,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
-        this.drawActivelyCreatedLabel(data);
-        this.updateCursorStyle(data);
+        const imageData: ImageData = EditorSelector.getActiveImageData();
+        if (imageData) {
+            this.drawExistingLabels(data);
+            this.drawActivelyCreatedLabel(data);
+            this.updateCursorStyle(data);
+        }
     }
 
     private updateCursorStyle(data: EditorData) {
@@ -66,25 +85,37 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const path = standardizedPoints.concat(data.mousePositionOnCanvas);
         const lines: ILine[] = this.mapPointsToLines(path);
 
-        DrawUtil.drawPolygon(this.canvas, path, DrawUtil.hexToRGB(this.config.lineActiveColor, 0.2));
-
+        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(this.config.lineActiveColor, 0.2));
         lines.forEach((line: ILine) => {
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
         });
-
-        this.mapPoinsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
+        this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
             DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
         })
     }
 
-    // private drawPolygon(polygon: IPoint[], isActive: boolean) {
-    //     const color: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
-    //     const standardizedPoints: IPoint[] = polygon.map((point: IPoint) => DrawUtil.setPointBetweenPixels(point));
-    //     const standardizedLines: ILine[] = this.mapPointsToLines(standardizedPoints);
-    //     standardizedLines.forEach((line: ILine) => {
-    //         DrawUtil.drawLine(this.canvas, line.start, line.end, color, this.config.lineThickness);
-    //     });
-    // }
+    private drawExistingLabels(data: EditorData) {
+        const activeLabelId: string = store.getState().editor.activeLabelId;
+        const imageData: ImageData = EditorSelector.getActiveImageData();
+        imageData.labelPolygons.forEach((labelPolygon: LabelPolygon) => {
+            const isActive: boolean = labelPolygon.id === activeLabelId;
+            const polygonOnCanvas: IPoint[] = labelPolygon.vertices.map((point: IPoint) => {
+                return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+            });
+            this.drawPolygon(polygonOnCanvas, isActive);
+        });
+    }
+
+    private drawPolygon(polygon: IPoint[], isActive: boolean) {
+        const color: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        const standardizedPoints: IPoint[] = polygon.map((point: IPoint) => DrawUtil.setPointBetweenPixels(point));
+        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, this.config.lineThickness);
+        if (isActive) {
+            this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
+                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+            })
+        }
+    }
 
     // =================================================================================================================
     // HELPERS
@@ -105,9 +136,27 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         }
     }
 
-    private addLabelAndFinishCreation(point: IPoint, data: EditorData) {
+    private addLabelAndFinishCreation(data: EditorData) {
+        const polygonOnCanvas: IPoint[] = this.activePath.concat(this.activePath[0]);
+        const polygonOnImage: IPoint[] = polygonOnCanvas.map((point: IPoint) => PointUtil.multiply(PointUtil.subtract(
+            point, data.activeImageRectOnCanvas), data.activeImageScale));
+        this.addPolygonLabel(polygonOnImage);
         this.activePath = [];
     }
+
+    private addPolygonLabel = (polygon: IPoint[]) => {
+        const activeLabelIndex = store.getState().editor.activeLabelNameIndex;
+        const imageData: ImageData = EditorSelector.getActiveImageData();
+        const labelPolygon: LabelPolygon = {
+            id: uuidv1(),
+            labelIndex: activeLabelIndex,
+            vertices: polygon
+        };
+        imageData.labelPolygons.push(labelPolygon);
+        store.dispatch(updateImageDataById(imageData.id, imageData));
+        store.dispatch(updateFirstLabelCreatedFlag(true));
+        store.dispatch(updateActiveLabelId(labelPolygon.id));
+    };
 
     private cancelLabelCreation() {
         this.activePath = [];
@@ -125,7 +174,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         return lines;
     }
 
-    private mapPoinsToAnchors(points: IPoint[]): IRect[] {
+    private mapPointsToAnchors(points: IPoint[]): IRect[] {
         return points.map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize));
     }
 }

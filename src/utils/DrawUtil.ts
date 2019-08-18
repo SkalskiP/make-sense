@@ -10,7 +10,7 @@ export class DrawUtil {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    public static drawLine(canvas:HTMLCanvasElement, startPoint:IPoint, endPoint:IPoint, color:string = "#111111", thickness:number = 25): void {
+    public static drawLine(canvas:HTMLCanvasElement, startPoint:IPoint, endPoint:IPoint, color:string = "#111111", thickness:number = 1): void {
         let ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.strokeStyle = color;
@@ -79,7 +79,22 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawPolygon(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = "#fff"): void {
+    public static drawPolygon(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = "#fff", thickness:number = 1): void {
+        let ctx:CanvasRenderingContext2D = canvas.getContext('2d');
+        ctx.save();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = thickness;
+        ctx.beginPath();
+        ctx.moveTo(anchors[0].x, anchors[0].y);
+        for (let i = 1; i < anchors.length; i ++) {
+            ctx.lineTo(anchors[i].x, anchors[i].y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    public static drawPolygonWithFill(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = "#fff"): void {
         let ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.fillStyle = color;
