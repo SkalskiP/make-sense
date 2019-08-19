@@ -118,8 +118,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnCanvas) {
-            const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
-            if (isOverImage) {
+            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
                 if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
                     if (isMouseOverStartAnchor)
@@ -133,7 +132,6 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     } else {
                         store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
                     }
-
                 }
                 this.canvas.style.cursor = "none";
             } else {
