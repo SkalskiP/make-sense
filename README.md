@@ -14,8 +14,9 @@ Our application is being actively developed. If you have an idea for a new funct
 
 - [X] Export labels in Pascal VOC XML format
 - [ ] Optimization of the process of loading photos from disk - queuing 
-- [ ] Labelling objects using polygons and Bézier curves
+- [ ] Labelling objects using polygons
 - [ ] Labelling objects using lines
+- [ ] Autofill in label selection dropdown
 - [ ] Export labels in COCO JSON format
 - [ ] Separate tab with settings
 - [ ] Support basic image operations like crop and resize
