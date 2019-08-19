@@ -11,6 +11,10 @@ export class EditorSelector {
         return store.getState().editor.labelNames;
     }
 
+    public static getActiveLabelNameIndex(): number {
+        return store.getState().editor.activeLabelNameIndex;
+    }
+
     public static getImagesData(): ImageData[] {
         return store.getState().editor.imagesData;
     }
@@ -29,12 +33,16 @@ export class EditorSelector {
         return imagesData[activeImageIndex];
     }
 
-    public static gatActiveLabelId(): string | null {
+    public static getActiveLabelId(): string | null {
         return store.getState().editor.activeLabelId;
     }
 
+    public static getHighlightedLabelId(): string | null {
+        return store.getState().editor.highlightedLabelId;
+    }
+
     public static getActiveRectLabel(): LabelRect | null {
-        const activeLabelId: string | null = EditorSelector.gatActiveLabelId();
+        const activeLabelId: string | null = EditorSelector.getActiveLabelId();
 
         if (activeLabelId === null)
             return null;
@@ -43,7 +51,7 @@ export class EditorSelector {
     }
 
     public static getActivePointLabel(): LabelPoint | null {
-        const activeLabelId: string | null = EditorSelector.gatActiveLabelId();
+        const activeLabelId: string | null = EditorSelector.getActiveLabelId();
 
         if (activeLabelId === null)
             return null;
@@ -52,7 +60,7 @@ export class EditorSelector {
     }
 
     public static getActivePolygonLabel(): LabelPolygon | null {
-        const activeLabelId: string | null = EditorSelector.gatActiveLabelId();
+        const activeLabelId: string | null = EditorSelector.getActiveLabelId();
 
         if (activeLabelId === null)
             return null;

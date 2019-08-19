@@ -167,8 +167,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private drawExistingLabels(data: EditorData) {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const activeLabelId: string = EditorSelector.getActiveLabelId();
+        const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();
         imageData.labelPolygons.forEach((labelPolygon: LabelPolygon) => {
             const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
@@ -217,15 +217,19 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         this.activePath = [];
     }
 
+    private finishLabelCreation() {
+        this.activePath = [];
+    }
+
     private addLabelAndFinishCreation(data: EditorData) {
         const polygonOnImage: IPoint[] = this.activePath.map((point: IPoint) => PointUtil.multiply(PointUtil.subtract(
             point, data.activeImageRectOnCanvas), data.activeImageScale));
         this.addPolygonLabel(polygonOnImage);
-        this.activePath = [];
+        this.finishLabelCreation();
     }
 
     private addPolygonLabel(polygon: IPoint[]) {
-        const activeLabelIndex = store.getState().editor.activeLabelNameIndex;
+        const activeLabelIndex = EditorSelector.getActiveLabelNameIndex();
         const imageData: ImageData = EditorSelector.getActiveImageData();
         const labelPolygon: LabelPolygon = {
             id: uuidv1(),
