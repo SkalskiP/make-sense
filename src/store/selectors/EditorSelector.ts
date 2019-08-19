@@ -1,5 +1,5 @@
 import {store} from "../..";
-import {ImageData, LabelPoint, LabelRect} from "../editor/types";
+import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../editor/types";
 import _ from "lodash";
 
 export class EditorSelector {
@@ -49,5 +49,14 @@ export class EditorSelector {
             return null;
 
         return _.find(EditorSelector.getActiveImageData().labelPoints, {id: activeLabelId});
+    }
+
+    public static getActivePolygonLabel(): LabelPolygon | null {
+        const activeLabelId: string | null = EditorSelector.gatActiveLabelId();
+
+        if (activeLabelId === null)
+            return null;
+
+        return _.find(EditorSelector.getActiveImageData().labelPolygons, {id: activeLabelId});
     }
 }
