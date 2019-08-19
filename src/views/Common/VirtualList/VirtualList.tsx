@@ -47,7 +47,8 @@ export class VirtualList extends React.Component<IProps, IState> {
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
-        if (this.props.size.height !== nextProps.size.height || this.props.size.width !== nextProps.size.width) {
+        if (this.props.size.height !== nextProps.size.height || this.props.size.width !== nextProps.size.width ||
+            this.props.childCount !== nextProps.childCount) {
             const {size, childSize, childCount} = nextProps;
             this.calculate(size, childSize, childCount);
             this.setState({

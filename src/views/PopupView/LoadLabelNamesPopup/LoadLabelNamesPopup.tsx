@@ -10,12 +10,12 @@ import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 
 interface IProps {
-    updateActiveLabelIndex: (activeLabelIndex: number) => any;
+    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
 }
 
-const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLabelNamesList, updateActivePopupType}) => {
+const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType}) => {
     const [labelsList, setLabelsList] = useState([]);
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
 
@@ -40,7 +40,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLa
 
     const onAccept = () => {
         if (labelsList.length > 0) {
-            updateActiveLabelIndex(0);
+            updateActiveLabelNameIndex(0);
             updateLabelNamesList(labelsList);
             updateActivePopupType(null);
         }
@@ -121,7 +121,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelIndex, updateLa
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelIndex: updateActiveLabelNameIndex,
+    updateActiveLabelNameIndex,
     updateLabelNamesList,
     updateActivePopupType,
 };
