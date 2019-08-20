@@ -18,6 +18,7 @@ Our application is being actively developed. If you have an idea for a new funct
 - [ ] Labelling objects using lines
 - [ ] Autofill in label selection dropdown
 - [ ] Export labels in COCO JSON format
+- [ ] Export segmentation labels as image mask
 - [ ] Separate tab with settings
 - [ ] Support basic image operations like crop and resize
 - [ ] Converting video to image frames
