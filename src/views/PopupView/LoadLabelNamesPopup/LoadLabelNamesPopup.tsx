@@ -8,6 +8,7 @@ import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
+import {AcceptedFileType} from "../../../data/AcceptedFileType";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
@@ -20,7 +21,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, upda
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
 
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: 'text/plain',
+        accept: AcceptedFileType.TEXT,
         multiple: false,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length === 1) {

@@ -49,7 +49,7 @@ export const ImageButton = (props:Props) => {
     
     return(
         <div className={getClassName()} style={buttonStyle} onClick={onClickHandler}>
-            {!!href && <a href={href} style={imageStyle} target="_blank">
+            {!!href && <a href={href} style={imageStyle} target="_blank" rel="noopener noreferrer">
                 <img
                     draggable={false}
                     alt={imageAlt}

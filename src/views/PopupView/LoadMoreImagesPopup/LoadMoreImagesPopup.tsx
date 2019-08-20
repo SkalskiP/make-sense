@@ -9,6 +9,7 @@ import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 import {ImageData} from "../../../store/editor/types";
+import {AcceptedFileType} from "../../../data/AcceptedFileType";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
@@ -17,7 +18,7 @@ interface IProps {
 
 const LoadMoreImagesPopup: React.FC<IProps> = ({updateActivePopupType, addImageData}) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: 'image/jpeg, image/png'
+        accept: AcceptedFileType.IMAGE
     });
 
     const onAccept = () => {

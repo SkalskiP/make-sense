@@ -47,16 +47,16 @@ export class VirtualList extends React.Component<IProps, IState> {
     }
 
     public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
-        if (this.props.size.height !== nextProps.size.height || this.props.size.width !== nextProps.size.width ||
-            this.props.childCount !== nextProps.childCount) {
-            const {size, childSize, childCount} = nextProps;
+        const {size, childSize, childCount} = nextProps;
+        if (this.props.size.height !== size.height || this.props.size.width !== size.width ||
+            this.props.childCount !== childCount) {
             this.calculate(size, childSize, childCount);
             this.setState({
                 viewportRect: {
                     x: this.scrollbars.getValues().scrollLeft,
                     y: this.scrollbars.getValues().scrollTop,
-                    width: nextProps.size.width,
-                    height: nextProps.size.height
+                    width: size.width,
+                    height: size.height
                 }
             });
         }
