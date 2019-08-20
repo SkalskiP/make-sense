@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/SkalskiP/make-sense.svg?branch=develop)](https://travis-ci.org/SkalskiP/make-sense)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/SkalskiP/make-sense?include_prereleases)
+[![Gitter](https://badges.gitter.im/make-sense-ai/community.svg)](https://gitter.im/make-sense-ai/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 <h1 align="center">makesense.ai</h1>
 
@@ -11,13 +12,19 @@
 
 [makesense.ai][1] is a free to use online tool for labelling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deeplearning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded  in one of multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
 
+## Motto
+
+> For AI to be free we need not just Open Source, but also a strong Open Data movement.  
+
+Andrew Ng
+
 ## Road Map
 
-Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
+Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
 - [X] Export labels in Pascal VOC XML format
+- [X] Labelling objects using polygons  
 - [ ] Optimization of the process of loading photos from disk - queuing 
-- [ ] Labelling objects using polygons
 - [ ] Labelling objects using lines
 - [ ] Autofill in label selection dropdown
 - [ ] Export labels in COCO JSON format
@@ -217,3 +224,4 @@ Copyright (c) 2019-present, Piotr Skalski
 [2]: ./LICENSE
 [3]: https://twitter.com/PiotrSkalski92
 [4]: https://github.com/SkalskiP/make-sense/issues/16
+[5]: https://gitter.im/make-sense-ai/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link
