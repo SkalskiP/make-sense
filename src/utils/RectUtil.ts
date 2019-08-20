@@ -7,6 +7,8 @@ import {NumberUtil} from "./NumberUtil";
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
+        if (!rect) return null;
+
         return rect.width/rect.height
     }
 
