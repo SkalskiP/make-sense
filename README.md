@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/SkalskiP/make-sense.svg?branch=develop)](https://travis-ci.org/SkalskiP/make-sense)
+![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/SkalskiP/make-sense?include_prereleases)
+
 <h1 align="center">makesense.ai</h1>
 
 <p align="center"> 
