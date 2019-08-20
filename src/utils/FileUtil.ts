@@ -8,7 +8,8 @@ export class FileUtil {
             fileData: fileData,
             loadStatus: false,
             labelRects: [],
-            labelPoints: []
+            labelPoints: [],
+            labelPolygons: []
         }
     }
 

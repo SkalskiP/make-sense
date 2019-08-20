@@ -108,16 +108,16 @@ export class RectRenderEngine extends BaseRenderEngine {
     };
 
     public mouseMoveHandler = (data: EditorData) => {
-        if (!!data.activeImageRectOnCanvas) {
+        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
             const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
             if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
                 if (!!labelRect) {
-                    if (store.getState().editor.highlightedLabelId !== labelRect.id) {
+                    if (EditorSelector.getHighlightedLabelId() !== labelRect.id) {
                         store.dispatch(updateHighlightedLabelId(labelRect.id))
                     }
                 } else {
-                    if (store.getState().editor.highlightedLabelId !== null) {
+                    if (EditorSelector.getHighlightedLabelId() !== null) {
                         store.dispatch(updateHighlightedLabelId(null))
                     }
                 }
@@ -130,7 +130,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData) {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
+        const activeLabelId: string = EditorSelector.getActiveLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();
 
         if (imageData) {
@@ -152,13 +152,13 @@ export class RectRenderEngine extends BaseRenderEngine {
                 height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = DrawUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.rectActiveColor, this.config.rectThickness);
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.lineActiveColor, this.config.lineThickness);
         }
     }
 
     private drawInactiveRect(labelRect: LabelRect, scale: number, imageRect: IRect) {
         const rectOnImage: IRect = this.transferRectToImage(labelRect.rect, scale, imageRect);
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         this.renderRect(rectOnImage, labelRect.id === highlightedLabelId);
     }
 
@@ -176,8 +176,8 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private renderRect(rectOnImage: IRect, isActive: boolean) {
         const rectBetweenPixels = DrawUtil.setRectBetweenPixels(rectOnImage);
-        const lineColor: string = isActive ? this.config.rectActiveColor : this.config.rectInactiveColor;
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.rectThickness);
+        const lineColor: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.lineThickness);
         if (isActive) {
             const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
@@ -230,9 +230,8 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private addRectLabel = (rect: IRect) => {
-        const activeImageIndex = store.getState().editor.activeImageIndex;
-        const activeLabelIndex = store.getState().editor.activeLabelNameIndex;
-        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+        const activeLabelIndex = EditorSelector.getActiveLabelNameIndex();
+        const imageData: ImageData = EditorSelector.getActiveImageData();
         const labelRect: LabelRect = {
             id: uuidv1(),
             labelIndex: activeLabelIndex,
