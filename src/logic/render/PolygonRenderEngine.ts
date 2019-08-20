@@ -90,11 +90,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             if (isOverImage && !this.isCreationInProgress()) {
                 const labelPolygon: LabelPolygon = this.getPolygonUnderMouse(data);
                 if (!!labelPolygon) {
-                    if (store.getState().editor.highlightedLabelId !== labelPolygon.id) {
+                    if (EditorSelector.getHighlightedLabelId() !== labelPolygon.id) {
                         store.dispatch(updateHighlightedLabelId(labelPolygon.id))
                     }
                 } else {
-                    if (store.getState().editor.highlightedLabelId !== null) {
+                    if (EditorSelector.getHighlightedLabelId() !== null) {
                         store.dispatch(updateHighlightedLabelId(null))
                     }
                 }

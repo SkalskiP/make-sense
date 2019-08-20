@@ -113,11 +113,11 @@ export class RectRenderEngine extends BaseRenderEngine {
             if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
                 if (!!labelRect) {
-                    if (store.getState().editor.highlightedLabelId !== labelRect.id) {
+                    if (EditorSelector.getHighlightedLabelId() !== labelRect.id) {
                         store.dispatch(updateHighlightedLabelId(labelRect.id))
                     }
                 } else {
-                    if (store.getState().editor.highlightedLabelId !== null) {
+                    if (EditorSelector.getHighlightedLabelId() !== null) {
                         store.dispatch(updateHighlightedLabelId(null))
                     }
                 }
@@ -130,7 +130,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData) {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
+        const activeLabelId: string = EditorSelector.getActiveLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();
 
         if (imageData) {
@@ -158,7 +158,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private drawInactiveRect(labelRect: LabelRect, scale: number, imageRect: IRect) {
         const rectOnImage: IRect = this.transferRectToImage(labelRect.rect, scale, imageRect);
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         this.renderRect(rectOnImage, labelRect.id === highlightedLabelId);
     }
 
@@ -230,9 +230,8 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private addRectLabel = (rect: IRect) => {
-        const activeImageIndex = store.getState().editor.activeImageIndex;
-        const activeLabelIndex = store.getState().editor.activeLabelNameIndex;
-        const imageData: ImageData = store.getState().editor.imagesData[activeImageIndex];
+        const activeLabelIndex = EditorSelector.getActiveLabelNameIndex();
+        const imageData: ImageData = EditorSelector.getActiveImageData();
         const labelRect: LabelRect = {
             id: uuidv1(),
             labelIndex: activeLabelIndex,

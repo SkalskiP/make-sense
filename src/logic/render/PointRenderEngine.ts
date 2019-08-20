@@ -95,11 +95,11 @@ export class PointRenderEngine extends BaseRenderEngine {
         if (isOverImage) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnCanvas, data.activeImageRectOnCanvas, data.activeImageScale);
             if (!!labelPoint) {
-                if (store.getState().editor.highlightedLabelId !== labelPoint.id) {
+                if (EditorSelector.getHighlightedLabelId() !== labelPoint.id) {
                     store.dispatch(updateHighlightedLabelId(labelPoint.id))
                 }
             } else {
-                if (store.getState().editor.highlightedLabelId !== null) {
+                if (EditorSelector.getHighlightedLabelId() !== null) {
                     store.dispatch(updateHighlightedLabelId(null))
                 }
             }
@@ -111,8 +111,8 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
-        const activeLabelId: string = store.getState().editor.activeLabelId;
-        const highlightedLabelId: string = store.getState().editor.highlightedLabelId;
+        const activeLabelId: string = EditorSelector.getActiveLabelId();
+        const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();
         if (imageData) {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
@@ -189,7 +189,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private addPointLabel = (point: IPoint) => {
-        const activeLabelIndex = store.getState().editor.activeLabelNameIndex;
+        const activeLabelIndex = EditorSelector.getActiveLabelNameIndex();
         const imageData: ImageData = EditorSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
             id: uuidv1(),
