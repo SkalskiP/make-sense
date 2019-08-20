@@ -7,6 +7,7 @@ import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
 import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
+import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -24,6 +25,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <InsertLabelNamesPopup/>;
             case PopupWindowType.EXIT_PROJECT:
                 return <ExitProjectPopup/>;
+            case PopupWindowType.LOAD_IMAGES:
+                return <LoadMoreImagesPopup/>;
             default:
                 return null;
         }
