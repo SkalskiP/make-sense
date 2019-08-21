@@ -18,3 +18,16 @@ export interface VGGRegion {
     shape_attributes: VGGShape,
     region_attributes: { [key:string]:string; }
 }
+
+export type VGGRegionsData = { [key: string]: VGGRegion; }
+
+export type VGGFileData = {
+    fileref: string;
+    size: number;
+    filename: string;
+    base64_img_data: string;
+    file_attributes: object;
+    regions: VGGRegionsData;
+}
+
+export type VGGObject = { [key: string]: VGGFileData; }
