@@ -20,14 +20,14 @@ export class PolygonLabelsExporter {
     private static exportAsVGGJson(): void {
         const imagesData: ImageData[] = EditorSelector.getImagesData();
         const labelNames: string[] = EditorSelector.getLabelNames();
-        const VGGObject: VGGObject = imagesData.reduce((data: VGGObject, image: ImageData) => {
+        const outputObject: VGGObject = imagesData.reduce((data: VGGObject, image: ImageData) => {
             const fileData: VGGFileData = PolygonLabelsExporter.mapImageDataToVGGFileData(image, labelNames);
             if (!!fileData) {
                 data[image.fileData.name] = fileData
             }
             return data;
         }, {});
-        const content: string = JSON.stringify(VGGObject);
+        const content: string = JSON.stringify(outputObject);
         const projectName: string = EditorSelector.getProjectName();
         const date: string = moment().format('YYYYMMDDhhmmss');
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
