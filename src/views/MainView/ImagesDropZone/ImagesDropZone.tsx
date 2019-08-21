@@ -57,6 +57,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
             </>;
         else
             return <>
+                <input {...getInputProps()} />
                 <img
                     draggable={false}
                     key={1}
