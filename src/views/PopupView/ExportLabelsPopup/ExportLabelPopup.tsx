@@ -15,6 +15,7 @@ import {RectExportFormatData} from "../../../data/RectExportFormatData";
 import {PointExportFormatData} from "../../../data/PointExportFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonExportFormatData} from "../../../data/PolygonExportFormatData";
+import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
 
 interface IProps {
     imagesData: ImageData[],
@@ -26,14 +27,19 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
     const [exportFormatType, setExportFormatType] = useState(null);
 
     const onAccept = () => {
-        if (exportFormatType) {
-            if (exportLabelType === LabelType.RECTANGLE) {
+        if (!exportFormatType) return;
+        switch (exportLabelType) {
+            case LabelType.RECTANGLE:
                 RectLabelsExporter.export(exportFormatType);
-            } else if (exportLabelType === LabelType.POINT) {
+                break;
+            case LabelType.POINT:
                 PointLabelsExporter.export(exportFormatType);
-            }
-            updateActivePopupType(null);
+                break;
+            case LabelType.POLYGON:
+                PolygonLabelsExporter.export(exportFormatType);
+                break;
         }
+        updateActivePopupType(null);
     };
 
     const onReject = () => {

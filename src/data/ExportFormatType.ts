@@ -3,5 +3,5 @@ export enum ExportFormatType {
     COCO = "COCO",
     CSV = "CSV",
     VOC = "VOC",
-    VGG = "VGG"
+    VGG_JSON = "VGG_JSON"
 }

@@ -3,7 +3,7 @@ import {ExportFormatType} from "./ExportFormatType";
 
 export const PolygonExportFormatData: IExportFormat[] = [
     {
-        type: ExportFormatType.VGG,
-        label: "Single file in VGG JSON format."
+        type: ExportFormatType.VGG_JSON,
+        label: "Single file in VGG_JSON JSON format."
     }
 ];
