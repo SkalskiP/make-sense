@@ -4,7 +4,7 @@ import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../data/VGG
 import {ImageData, LabelPolygon} from "../../store/editor/types";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {saveAs} from "file-saver";
-import moment from 'moment';
+import {ExporterUtil} from "../../utils/ExporterUtil";
 
 export class PolygonLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -20,23 +20,24 @@ export class PolygonLabelsExporter {
     private static exportAsVGGJson(): void {
         const imagesData: ImageData[] = EditorSelector.getImagesData();
         const labelNames: string[] = EditorSelector.getLabelNames();
-        const outputObject: VGGObject = imagesData.reduce((data: VGGObject, image: ImageData) => {
+        const content: string = JSON.stringify(PolygonLabelsExporter.mapImagesDataToVGGObject(imagesData, labelNames));
+        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+        try {
+            saveAs(blob, `${ExporterUtil.getExportFileName()}.json`);
+        } catch (error) {
+            // TODO
+            throw new Error(error);
+        }
+    }
+
+    private static mapImagesDataToVGGObject(imagesData: ImageData[], labelNames: string[]): VGGObject {
+        return imagesData.reduce((data: VGGObject, image: ImageData) => {
             const fileData: VGGFileData = PolygonLabelsExporter.mapImageDataToVGGFileData(image, labelNames);
             if (!!fileData) {
                 data[image.fileData.name] = fileData
             }
             return data;
         }, {});
-        const content: string = JSON.stringify(outputObject);
-        const projectName: string = EditorSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `labels_${projectName}_${date}.json`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
     }
 
     private static mapImageDataToVGGFileData(imageData: ImageData, labelNames: string[]): VGGFileData {
@@ -56,13 +57,12 @@ export class PolygonLabelsExporter {
         if (!imageData.loadStatus || !imageData.labelPolygons || !imageData.labelPolygons.length ||
             !labelNames || !labelNames.length) return null;
 
-        const validLabels = imageData.labelPolygons.filter((label: LabelPolygon) =>
-            label.labelIndex !== null && !!label.vertices.length);
+        const validLabels: LabelPolygon[] = PolygonLabelsExporter.getValidPolygonLabels(imageData);
 
         if (!validLabels.length) return null;
 
         return validLabels.reduce((data: VGGRegionsData, label: LabelPolygon, index: number) => {
-            data['' + index] = {
+            data[`${index}`] = {
                 shape_attributes: PolygonLabelsExporter.mapPolygonToVGG(label.vertices),
                 region_attributes: {
                     label: labelNames[label.labelIndex]
@@ -70,6 +70,11 @@ export class PolygonLabelsExporter {
             };
             return data;
         }, {})
+    }
+
+    public static getValidPolygonLabels(imageData: ImageData): LabelPolygon[] {
+        return imageData.labelPolygons.filter((label: LabelPolygon) =>
+            label.labelIndex !== null && !!label.vertices.length);
     }
 
     public static mapPolygonToVGG(path: IPoint[]): VGGPolygon {

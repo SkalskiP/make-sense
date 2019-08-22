@@ -2,8 +2,8 @@ import {ExportFormatType} from "../../data/ExportFormatType";
 import {ImageData, LabelPoint} from "../../store/editor/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
-import moment from 'moment';
 import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {ExporterUtil} from "../../utils/ExporterUtil";
 
 export class PointLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -24,11 +24,9 @@ export class PointLabelsExporter {
                 return !!imageLabelData})
             .join("\n");
 
-        const projectName: string = EditorSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
         try {
-            saveAs(blob, `labels_${projectName}_${date}.csv`);
+            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
         } catch (error) {
             // TODO
             throw new Error(error);

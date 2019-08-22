@@ -3,9 +3,9 @@ import {ImageData, LabelRect} from "../../store/editor/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import moment from 'moment';
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
+import {ExporterUtil} from "../../utils/ExporterUtil";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -40,13 +40,10 @@ export class RectLabelsExporter {
                 }
             });
 
-        const projectName: string = EditorSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
-
         try {
             zip.generateAsync({type:"blob"})
                 .then(function(content) {
-                    saveAs(content, `labels_${projectName}_${date}.zip`);
+                    saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
                 });
         } catch (error) {
             // TODO
@@ -88,13 +85,10 @@ export class RectLabelsExporter {
                 }
             });
 
-        const projectName: string = EditorSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
-
         try {
             zip.generateAsync({type:"blob"})
                 .then(function(content) {
-                    saveAs(content, `labels_${projectName}_${date}.zip`);
+                    saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
                 });
         } catch (error) {
             // TODO
@@ -162,12 +156,9 @@ export class RectLabelsExporter {
                 return !!imageLabelData})
             .join("\n");
 
-        const projectName: string = EditorSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-
         try {
-            saveAs(blob, `labels_${projectName}_${date}.csv`);
+            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
         } catch (error) {
             // TODO
             throw new Error(error);
