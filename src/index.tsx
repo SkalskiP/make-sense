@@ -30,14 +30,11 @@ handleResize();
 detectDeviceParams();
 window.addEventListener("resize", handleResize);
 
-const startingPoint = (
-    <Provider store={store}>
+ReactDOM.render(
+    (<Provider store={store}>
         <App/>
-    </Provider>
+    </Provider>),
+    document.getElementById('root') || document.createElement('div') // fix for testing purposes
 );
 
-ReactDOM.render(
-    startingPoint,
-    document.getElementById('root') as HTMLElement
-);
 serviceWorker.unregister();
