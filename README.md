@@ -22,13 +22,13 @@ Andrew Ng
 
 Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
-- [X] Export labels in Pascal VOC XML format
-- [X] Labelling objects using polygons  
+- [X] Export rect labels in Pascal VOC XML format
+- [X] Labelling objects using polygons 
+- [X] Export polygon labels in VGG JSON format
 - [ ] Optimization of the process of loading photos from disk - queuing 
 - [ ] Labelling objects using lines
 - [ ] Autofill in label selection dropdown
 - [ ] Export labels in COCO JSON format
-- [ ] Export labels in VGG JSON format
 - [ ] Export segmentation labels as image mask
 - [ ] Separate tab with settings
 - [ ] Support basic image operations like crop and resize
@@ -65,7 +65,20 @@ Some Windows 10 users may also have problems with running applications locally. 
 
 ## Supported Output Formats
 
-* A .zip package containing files in YOLO format
+|               | CSV | YOLO | VOC XML | VGG JSON | COCO | PIXEL MASK |
+|:-------------:|:---:|:----:|:-------:|:--------:|:----:|:----------:|
+| **Point**     | ☑   | ☒    | ☐       | ☐        | ☐    | ☒          |
+| **Rect**      | ☑   | ☑    | ☑       | ☐        | ☐    | ☒          |
+| **Polygon**   | ☐   | ☒    | ☐       | ☑        | ☐    | ☐          |
+
+**Table 1.** The matrix of supported labels export formatm, where:
+* ☑ - supported format
+* ☐ - not yet supported format
+* ☒ - format does not make sense for a given label type  
+
+
+
+**A .zip package containing files in YOLO format**
 
 <details><summary><i>example of file in YOLO format</i></summary><p>
 
@@ -90,7 +103,7 @@ Some Windows 10 users may also have problems with running applications locally. 
 ```
 </p></details>
 
-* A .zip package containing files in Pascal VOC XML format
+**A .zip package containing files in Pascal VOC XML format**
 
 <details><summary><i>example of file in Pascal VOC XML format</i></summary><p>
 
@@ -179,7 +192,7 @@ Some Windows 10 users may also have problems with running applications locally. 
 ```
 </p></details>
 
-* Single CSV file
+**Single CSV file**
 
 <details><summary><i>example of CSV file</i></summary><p>
 
