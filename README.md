@@ -71,7 +71,7 @@ Some Windows 10 users may also have problems with running applications locally. 
 | **Rect**      | ☑   | ☑    | ☑       | ☐        | ☐    | ☒          |
 | **Polygon**   | ☐   | ☒    | ☐       | ☑        | ☐    | ☐          |
 
-**Table 1.** The matrix of supported labels export formatm, where:
+**Table 1.** The matrix of supported labels export format, where:
 * ☑ - supported format
 * ☐ - not yet supported format
 * ☒ - format does not make sense for a given label type  
