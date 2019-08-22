@@ -18,27 +18,6 @@
 
 Andrew Ng
 
-## Road Map
-
-Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
-
-- [X] Export rect labels in Pascal VOC XML format
-- [X] Labelling objects using polygons 
-- [X] Export polygon labels in VGG JSON format
-- [ ] Optimization of the process of loading photos from disk - queuing 
-- [ ] Labelling objects using lines
-- [ ] Autofill in label selection dropdown
-- [ ] Export labels in COCO JSON format
-- [ ] Export segmentation labels as image mask
-- [ ] Separate tab with settings
-- [ ] Support basic image operations like crop and resize
-- [ ] Converting video to image frames
-- [ ] Keyboard shortcuts to improve productivity 
-- [ ] Automatic detection of objects in a photo - all you have to do is to label them
-- [ ] OCR labelling
-- [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
-- [ ] Copy annotations from previous image into the next one
-
 ## Sneak Peek
 
 <p align="center"> 
@@ -226,6 +205,27 @@ kiwi,758,360,252,236,000008.jpg,1280,960
 ## Privacy
 
 We don't store your images, because we don't send them anywhere in the first place.
+
+## Road Map
+
+Our application is being actively developed. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
+
+- [X] Export rect labels in Pascal VOC XML format
+- [X] Labelling objects using polygons 
+- [X] Export polygon labels in VGG JSON format
+- [ ] Optimization of the process of loading photos from disk - queuing 
+- [ ] Labelling objects using lines
+- [ ] Autofill in label selection dropdown
+- [ ] Export labels in COCO JSON format
+- [ ] Export segmentation labels as image mask
+- [ ] Separate tab with settings
+- [ ] Support basic image operations like crop and resize
+- [ ] Converting video to image frames
+- [ ] Keyboard shortcuts to improve productivity 
+- [ ] Automatic detection of objects in a photo - all you have to do is to label them
+- [ ] OCR labelling
+- [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
+- [ ] Copy annotations from previous image into the next one
 
 ## License
 
