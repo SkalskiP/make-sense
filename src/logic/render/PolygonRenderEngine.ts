@@ -89,7 +89,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
             if (isOverImage && !this.isCreationInProgress()) {
                 const labelPolygon: LabelPolygon = this.getPolygonUnderMouse(data);
-                if (!!labelPolygon) {
+                if (!!labelPolygon && !this.isResizeInProgress()) {
                     if (EditorSelector.getHighlightedLabelId() !== labelPolygon.id) {
                         store.dispatch(updateHighlightedLabelId(labelPolygon.id))
                     }
@@ -175,7 +175,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const polygonOnCanvas: IPoint[] = labelPolygon.vertices.map((point: IPoint) => {
                 return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
             });
-            if (!(isActive && this.isResizeInProgress())) {
+            if (!(labelPolygon.id === activeLabelId && this.isResizeInProgress())) {
                 this.drawPolygon(polygonOnCanvas, isActive);
             }
         });
@@ -338,7 +338,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         for (let i = 0; i < labelPolygons.length; i++) {
             const pathOnCanvas: IPoint[] = labelPolygons[i].vertices.map((point: IPoint) =>
                 PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas));
-            const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas);
+            const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
             for (let j = 0; j < linesOnCanvas.length; j++) {
                 if (this.isMouseOverLine(data.mousePositionOnCanvas, linesOnCanvas[j]))
