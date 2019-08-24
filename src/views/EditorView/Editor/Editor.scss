@@ -41,10 +41,27 @@
     background-color: white;
     z-index: 100000;
 
-    &.move {
+    > img {
+      position: absolute;
+      max-width: 20px;
+      max-height: 20px;
+      filter: brightness(0) invert(1);
+      bottom: calc(50% + 12px);
+      left: calc(50% + 12px);
+      display: none;
+      user-select: none;
+    }
+
+    &.move, &.add, &.resize, &.close {
       width: 30px;
       height: 30px;
       background-color: transparent;
+    }
+
+    &.move, &.add, &.resize, &.close, &.cancel {
+      > img {
+        display: block;
+      }
     }
   }
 }
