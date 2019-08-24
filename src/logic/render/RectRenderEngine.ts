@@ -15,7 +15,7 @@ import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {CanvasUtil} from "../../utils/CanvasUtil";
-import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
@@ -192,14 +192,14 @@ export class RectRenderEngine extends BaseRenderEngine {
         if (!!this.canvas && !!data.mousePositionOnCanvas) {
             const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data.activeImageScale, data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
             if (!!rectAnchorUnderMouse || !!this.startResizeRectAnchor) {
-                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 return;
             }
             if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
                 if (!RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas) && !!this.startCreateRectPoint)
-                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 else
-                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
 
                 this.canvas.style.cursor = "none";
             } else {

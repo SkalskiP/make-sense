@@ -6,7 +6,8 @@ const initialState: GeneralState = {
     windowSize: null,
     activePopupType: null,
     mobileDeviceData: null,
-    customCursorStyle: CustomCursorStyle.DEFAULT
+    customCursorStyle: CustomCursorStyle.DEFAULT,
+    activeContext: null
 };
 
 export function generalReducer(
@@ -36,6 +37,12 @@ export function generalReducer(
             return {
                 ...state,
                 customCursorStyle: action.payload.customCursorStyle
+            }
+        }
+        case Action.UPDATE_CONTEXT: {
+            return {
+                ...state,
+                activeContext: action.payload.activeContext
             }
         }
         default:

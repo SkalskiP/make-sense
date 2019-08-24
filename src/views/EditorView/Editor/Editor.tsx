@@ -22,9 +22,11 @@ import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
 import classNames from "classnames";
 import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
-import {MouseEventType} from "../../../data/MouseEventType";
+import {EventType} from "../../../data/EventType";
 import {EditorData} from "../../../data/EditorData";
 import {BaseRenderEngine} from "../../../logic/render/BaseRenderEngine";
+import {ContextManager} from "../../../logic/context/ContextManager";
+import {Context} from "../../../data/Context";
 
 interface IProps {
     size: ISize;
@@ -60,9 +62,9 @@ class Editor extends React.Component<IProps, IState> {
     // =================================================================================================================
 
     public componentDidMount(): void {
-        window.addEventListener(MouseEventType.MOVE, this.update);
-        window.addEventListener(MouseEventType.UP, this.update);
-        this.canvas.addEventListener(MouseEventType.DOWN, this.update);
+        window.addEventListener(EventType.MOUSE_MOVE, this.update);
+        window.addEventListener(EventType.MOUSE_UP, this.update);
+        this.canvas.addEventListener(EventType.MOUSE_DOWN, this.onMouseDown);
 
         const {imageData, size ,activeLabelType} = this.props;
 
@@ -75,9 +77,9 @@ class Editor extends React.Component<IProps, IState> {
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener(MouseEventType.MOVE, this.update);
-        window.removeEventListener(MouseEventType.UP, this.update);
-        this.canvas.removeEventListener(MouseEventType.DOWN, this.update);
+        window.removeEventListener(EventType.MOUSE_MOVE, this.update);
+        window.removeEventListener(EventType.MOUSE_UP, this.update);
+        this.canvas.removeEventListener(EventType.MOUSE_DOWN, this.onMouseDown);
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
@@ -103,6 +105,11 @@ class Editor extends React.Component<IProps, IState> {
         this.supportRenderingEngine && this.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && this.updateMousePositionIndicator(event);
         this.fullCanvasRender();
+    };
+
+    private onMouseDown = (event: MouseEvent) => {
+        this.register();
+        this.update(event);
     };
 
     // =================================================================================================================
@@ -211,10 +218,34 @@ class Editor extends React.Component<IProps, IState> {
     };
 
     // =================================================================================================================
+    // CONTEXT
+    // =================================================================================================================
+
+    private register(): void {
+        const triggerAction = (event: KeyboardEvent) => {
+            const editorData: EditorData = this.buildEditorData(event);
+            this.primaryRenderingEngine.update(editorData);
+            this.supportRenderingEngine && this.supportRenderingEngine.update(editorData);
+            this.fullCanvasRender();
+        };
+
+        ContextManager.register(Context.EDITOR, [
+            {
+                keyCombo: ["Enter"],
+                action: triggerAction
+            },
+            {
+                keyCombo: ["Escape"],
+                action: triggerAction
+            }
+        ])
+    }
+
+    // =================================================================================================================
     // HELPER METHODS
     // =================================================================================================================
 
-    private buildEditorData(event?: MouseEvent): EditorData {
+    private buildEditorData(event?: Event): EditorData {
         return {
             mousePositionOnCanvas: this.mousePositionOnCanvas,
             canvasSize: CanvasUtil.getSize(this.canvas),

@@ -1,6 +1,6 @@
 import {store} from "../../index";
 import {RectUtil} from "../../utils/RectUtil";
-import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
@@ -21,6 +21,8 @@ import {
     updateImageDataById
 } from "../../store/editor/actionCreators";
 import {LineUtil} from "../../utils/LineUtil";
+import {MouseEventUtil} from "../../utils/MouseEventUtil";
+import {EventType} from "../../data/EventType";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -39,6 +41,30 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
+
+    public update(data: EditorData): void {
+        if (!!data.event) {
+            switch (MouseEventUtil.getEventType(data.event)) {
+                case EventType.MOUSE_MOVE:
+                    this.mouseMoveHandler(data);
+                    break;
+                case EventType.MOUSE_UP:
+                    this.mouseUpHandler(data);
+                    break;
+                case EventType.MOUSE_DOWN:
+                    this.mouseDownHandler(data);
+                    break;
+                case EventType.KEY_DOWN:
+                    if ((data.event as KeyboardEvent).key === "Escape")
+                        this.cancelLabelCreation();
+                    else if ((data.event as KeyboardEvent).key === "Enter")
+                        this.addLabelAndFinishCreation(data);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     public mouseDownHandler(data: EditorData): void {
         const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
@@ -122,15 +148,15 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                 if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
                     if (isMouseOverStartAnchor)
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     else
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
                 } else {
                     const anchorUnderMouse: IPoint = this.getAnchorUnderMouse(data);
                     if (!!anchorUnderMouse || this.isResizeInProgress()) {
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     } else {
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
                     }
                 }
                 this.canvas.style.cursor = "none";
@@ -222,10 +248,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private addLabelAndFinishCreation(data: EditorData) {
-        const polygonOnImage: IPoint[] = this.activePath.map((point: IPoint) => PointUtil.multiply(PointUtil.subtract(
-            point, data.activeImageRectOnCanvas), data.activeImageScale));
-        this.addPolygonLabel(polygonOnImage);
-        this.finishLabelCreation();
+        if (this.isCreationInProgress()) {
+            const polygonOnImage: IPoint[] = this.activePath.map((point: IPoint) => PointUtil.multiply(PointUtil.subtract(
+                point, data.activeImageRectOnCanvas), data.activeImageScale));
+            this.addPolygonLabel(polygonOnImage);
+            this.finishLabelCreation();
+        }
     }
 
     private addPolygonLabel(polygon: IPoint[]) {

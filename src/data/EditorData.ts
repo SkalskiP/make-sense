@@ -7,5 +7,5 @@ export interface EditorData {
     canvasSize: ISize,
     activeImageScale: number,
     activeImageRectOnCanvas: IRect,
-    event?: MouseEvent
+    event?: Event
 }

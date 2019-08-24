@@ -7,6 +7,7 @@ import configureStore from "./configureStore";
 import {Provider} from "react-redux";
 import {updateMobileDeviceData, updateWindowSize} from "./store/general/actionCreators";
 import MobileDetect from 'mobile-detect'
+import {ContextManager} from "./logic/context/ContextManager";
 
 export const store = configureStore();
 
@@ -29,6 +30,7 @@ const detectDeviceParams = () => {
 handleResize();
 detectDeviceParams();
 window.addEventListener("resize", handleResize);
+ContextManager.init();
 
 ReactDOM.render(
     (<Provider store={store}>
