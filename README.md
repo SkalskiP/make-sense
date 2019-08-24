@@ -20,8 +20,22 @@ Andrew Ng
 
 ## Sneak Peek
 
+### Bounding boxes
+
 <p align="center"> 
-    <img width="1000" src=".//examples/alfa-demo.gif" alt="Logo">
+    <img width="1000" src=".//examples/bbox-demo.gif" alt="bbox">
+</p>
+
+### Points
+
+<p align="center"> 
+    <img width="1000" src=".//examples/points-demo.gif" alt="points">
+</p>
+
+### Polygons
+
+<p align="center"> 
+    <img width="1000" src=".//examples/polygon-demo.gif" alt="polygon">
 </p>
 
 ## Set Up the Project Locally
