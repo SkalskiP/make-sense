@@ -251,7 +251,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
             if (isMouseOverSuggestedAnchor) {
                 const handleRect = RectUtil.getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.anchorSize);
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.lineInactiveColor);
             }
         }
     }
