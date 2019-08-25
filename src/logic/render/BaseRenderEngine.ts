@@ -1,6 +1,6 @@
 import {EditorData} from "../../data/EditorData";
 import {MouseEventUtil} from "../../utils/MouseEventUtil";
-import {MouseEventType} from "../../data/MouseEventType";
+import {EventType} from "../../data/EventType";
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
@@ -12,13 +12,13 @@ export abstract class BaseRenderEngine {
     public update(data: EditorData): void {
         if (!!data.event) {
             switch (MouseEventUtil.getEventType(data.event)) {
-                case MouseEventType.MOVE:
+                case EventType.MOUSE_MOVE:
                     this.mouseMoveHandler(data);
                     break;
-                case MouseEventType.UP:
+                case EventType.MOUSE_UP:
                     this.mouseUpHandler(data);
                     break;
-                case MouseEventType.DOWN:
+                case EventType.MOUSE_DOWN:
                     this.mouseDownHandler(data);
                     break;
                 default:

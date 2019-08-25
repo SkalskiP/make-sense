@@ -1,6 +1,6 @@
 import {store} from "../../index";
 import {RectUtil} from "../../utils/RectUtil";
-import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
@@ -21,6 +21,8 @@ import {
     updateImageDataById
 } from "../../store/editor/actionCreators";
 import {LineUtil} from "../../utils/LineUtil";
+import {MouseEventUtil} from "../../utils/MouseEventUtil";
+import {EventType} from "../../data/EventType";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
@@ -42,6 +44,30 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
+
+    public update(data: EditorData): void {
+        if (!!data.event) {
+            switch (MouseEventUtil.getEventType(data.event)) {
+                case EventType.MOUSE_MOVE:
+                    this.mouseMoveHandler(data);
+                    break;
+                case EventType.MOUSE_UP:
+                    this.mouseUpHandler(data);
+                    break;
+                case EventType.MOUSE_DOWN:
+                    this.mouseDownHandler(data);
+                    break;
+                case EventType.KEY_DOWN:
+                    if ((data.event as KeyboardEvent).key === "Escape")
+                        this.cancelLabelCreation();
+                    else if ((data.event as KeyboardEvent).key === "Enter")
+                        this.addLabelAndFinishCreation(data);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 
     public mouseDownHandler(data: EditorData): void {
         const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
@@ -141,19 +167,19 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
                 if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
-                    if (isMouseOverStartAnchor)
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.CLOSE));
+                    if (isMouseOverStartAnchor && this.activePath.length > 2)
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CLOSE));
                     else
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
                 } else {
                     const anchorUnderMouse: IPoint = this.getAnchorUnderMouse(data);
                     const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.suggestedAnchorPositionOnCanvas);
                     if (!!isMouseOverNewAnchor) {
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.ADD));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.ADD));
                     } else if (this.isResizeInProgress()) {
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     } else if (!!anchorUnderMouse) {
-                        store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     } else {
                         RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                     }
@@ -225,7 +251,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
             if (isMouseOverSuggestedAnchor) {
                 const handleRect = RectUtil.getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.anchorSize);
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.lineInactiveColor);
             }
         }
     }
@@ -257,9 +283,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private addLabelAndFinishCreation(data: EditorData) {
-        const polygonOnImage: IPoint[] = this.mapPolygonFromCanvasToImage(this.activePath, data);
-        this.addPolygonLabel(polygonOnImage);
-        this.finishLabelCreation();
+        if (this.isCreationInProgress() && this.activePath.length > 2) {
+            const polygonOnImage: IPoint[] = this.mapPolygonFromCanvasToImage(this.activePath, data);
+            this.addPolygonLabel(polygonOnImage);
+            this.finishLabelCreation();
+        }
     }
 
     private addPolygonLabel(polygon: IPoint[]) {

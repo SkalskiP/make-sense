@@ -14,7 +14,7 @@ import {
 import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PointUtil} from "../../utils/PointUtil";
-import {updateCustomcursorStyle} from "../../store/general/actionCreators";
+import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
@@ -152,11 +152,11 @@ export class PointRenderEngine extends BaseRenderEngine {
                     .setPointBetweenPixels(PointUtil.add(pointOnImage, data.activeImageRectOnCanvas));
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
                 if (RectUtil.isPointInside(handleRect, data.mousePositionOnCanvas)) {
-                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     return;
                 }
             } else if (this.transformInProgress) {
-                store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
+                store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 return;
             }
 

@@ -1,16 +1,20 @@
-import {MouseEventType} from "../data/MouseEventType";
+import {EventType} from "../data/EventType";
 
 export class MouseEventUtil {
-    public static getEventType(event: MouseEvent): MouseEventType | null {
+    public static getEventType(event: Event): EventType | null {
         if (!event) return null;
 
         switch (event.type) {
-            case MouseEventType.DOWN:
-                return MouseEventType.DOWN;
-            case MouseEventType.UP:
-                return MouseEventType.UP;
-            case MouseEventType.MOVE:
-                return MouseEventType.MOVE;
+            case EventType.MOUSE_DOWN:
+                return EventType.MOUSE_DOWN;
+            case EventType.MOUSE_UP:
+                return EventType.MOUSE_UP;
+            case EventType.MOUSE_MOVE:
+                return EventType.MOUSE_MOVE;
+            case EventType.KEY_DOWN:
+                return EventType.KEY_DOWN;
+            case EventType.KEY_UP:
+                return EventType.KEY_UP;
             default:
                 return null;
         }
