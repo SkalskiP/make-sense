@@ -18,6 +18,7 @@ export class Settings {
     public static readonly DARK_THEME_FIRST_COLOR: string = "#171717";
     public static readonly DARK_THEME_SECOND_COLOR: string = "#282828";
     public static readonly DARK_THEME_THIRD_COLOR: string = "#4c4c4c";
+    public static readonly DARK_THEME_FORTH_COLOR: string = "#1f2c33";
 
     public static readonly CANVAS_PADDING_WIDTH_PX: number = 20;
     public static readonly CROSS_HAIR_THICKNESS_PX: number = 1;

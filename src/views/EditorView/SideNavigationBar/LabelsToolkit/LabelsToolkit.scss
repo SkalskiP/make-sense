@@ -71,6 +71,7 @@
     }
 
     &.active {
+      background-color: rgba(0, 0, 0, 0.05);
       .Marker {
         transform: translate(5px);
         background-color: $secondaryColor;
