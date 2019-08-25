@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import TextInput from "../../Common/TextInput/TextInput";
 import {updateProjectName} from "../../../store/editor/actionCreators";
+import {ImageButton} from "../../Common/ImageButton/ImageButton";
+import {Settings} from "../../../settings/Settings";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
@@ -56,9 +58,20 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                 </div>
                 <div className="NavigationBarGroupWrapper">
                     <UnderlineTextButton
+                        label={"MORE IMAGES"}
+                        under={true}
+                        onClick={() => updateActivePopupType(PopupWindowType.LOAD_IMAGES)}
+                    />
+                    <UnderlineTextButton
                         label={"EXPORT LABELS"}
                         under={true}
                         onClick={() => updateActivePopupType(PopupWindowType.EXPORT_LABELS)}
+                    />
+                    <ImageButton
+                        image={"img/github-logo.png"}
+                        imageAlt={"github-logo.png"}
+                        size={{width: 30, height: 30}}
+                        href={Settings.GITHUB_URL}
                     />
                 </div>
             </div>

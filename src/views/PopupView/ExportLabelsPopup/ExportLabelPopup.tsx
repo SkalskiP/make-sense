@@ -14,6 +14,8 @@ import {IExportFormat} from "../../../interfaces/IExportFormat";
 import {RectExportFormatData} from "../../../data/RectExportFormatData";
 import {PointExportFormatData} from "../../../data/PointExportFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
+import {PolygonExportFormatData} from "../../../data/PolygonExportFormatData";
+import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
 
 interface IProps {
     imagesData: ImageData[],
@@ -25,14 +27,19 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
     const [exportFormatType, setExportFormatType] = useState(null);
 
     const onAccept = () => {
-        if (exportFormatType) {
-            if (exportLabelType === LabelType.RECTANGLE) {
+        if (!exportFormatType) return;
+        switch (exportLabelType) {
+            case LabelType.RECTANGLE:
                 RectLabelsExporter.export(exportFormatType);
-            } else if (exportLabelType === LabelType.POINT) {
+                break;
+            case LabelType.POINT:
                 PointLabelsExporter.export(exportFormatType);
-            }
-            updateActivePopupType(null);
+                break;
+            case LabelType.POLYGON:
+                PolygonLabelsExporter.export(exportFormatType);
+                break;
         }
+        updateActivePopupType(null);
     };
 
     const onReject = () => {
@@ -43,31 +50,8 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
         setExportFormatType(exportFormatType);
     };
 
-    const getRectOptions = () => {
-        return RectExportFormatData.map((entry: IExportFormat) => {
-            return <div
-                className="OptionsItem"
-                onClick={() => onSelect(entry.type)}
-                key={entry.type}
-            >
-                {entry.type === exportFormatType ?
-                <img
-                    draggable={false}
-                    src={"ico/checkbox-checked.png"}
-                    alt={"checked"}
-                /> :
-                <img
-                    draggable={false}
-                    src={"ico/checkbox-unchecked.png"}
-                    alt={"unchecked"}
-                />}
-                {entry.label}
-            </div>
-        })
-    };
-
-    const getPointOptions = () => {
-        return PointExportFormatData.map((entry: IExportFormat) => {
+    const getOptions = (exportFormatData: IExportFormat[]) => {
+        return exportFormatData.map((entry: IExportFormat) => {
             return <div
                 className="OptionsItem"
                 onClick={() => onSelect(entry.type)}
@@ -114,14 +98,26 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
                     }}
                     isActive={exportLabelType === LabelType.POINT}
                 />
+                <ImageButton
+                    image={"ico/polygon.png"}
+                    imageAlt={"polygon"}
+                    size={{width: 40, height:40}}
+                    padding={20}
+                    onClick={() => {
+                        setExportLabelType(LabelType.POLYGON);
+                        setExportFormatType(null);
+                    }}
+                    isActive={exportLabelType === LabelType.POLYGON}
+                />
             </div>
             <div className="RightContainer">
                 <div className="Message">
                     Select label type and the file format you would like to use for exporting labels.
                 </div>
                 <div className="Options">
-                    {exportLabelType === LabelType.RECTANGLE && getRectOptions()}
-                    {exportLabelType === LabelType.POINT && getPointOptions()}
+                    {exportLabelType === LabelType.RECTANGLE && getOptions(RectExportFormatData)}
+                    {exportLabelType === LabelType.POINT && getOptions(PointExportFormatData)}
+                    {exportLabelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
                 </div>
             </div>
         </div>);

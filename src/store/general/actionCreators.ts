@@ -4,6 +4,7 @@ import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {Context} from "../../data/Context";
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
@@ -32,11 +33,20 @@ export function updateMobileDeviceData(mobileDeviceData: MobileDeviceData): Gene
     }
 }
 
-export function updateCustomcursorStyle(customCursorStyle: CustomCursorStyle): GeneralActionTypes {
+export function updateCustomCursorStyle(customCursorStyle: CustomCursorStyle): GeneralActionTypes {
     return {
         type: Action.UPDATE_CUSTOM_CURSOR_STYLE,
         payload: {
             customCursorStyle,
         }
     }
+}
+
+export function updateActiveContext(activeContext: Context): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_CONTEXT,
+        payload: {
+            activeContext,
+        },
+    };
 }

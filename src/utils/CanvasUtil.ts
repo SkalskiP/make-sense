@@ -5,7 +5,7 @@ import {ISize} from "../interfaces/ISize";
 
 export class CanvasUtil {
     public static getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent, canvas: HTMLCanvasElement): IPoint {
-        if (!!canvas) {
+        if (!!canvas && !!event) {
             const canvasRect: ClientRect | DOMRect = canvas.getBoundingClientRect();
             return {
                 x: event.clientX - canvasRect.left,

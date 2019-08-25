@@ -67,7 +67,8 @@ class ImagesList extends React.Component<IProps, IState> {
             isScrolling={isScrolling}
             isChecked={
                 (this.props.activeLabelType === LabelType.RECTANGLE && this.props.imagesData[index].labelRects.length > 0) ||
-                (this.props.activeLabelType === LabelType.POINT && this.props.imagesData[index].labelPoints.length > 0)
+                (this.props.activeLabelType === LabelType.POINT && this.props.imagesData[index].labelPoints.length > 0) ||
+                (this.props.activeLabelType === LabelType.POLYGON && this.props.imagesData[index].labelPolygons.length > 0)
             }
             imageData={this.props.imagesData[index]}
             onClick={() => this.onClickHandler(index)}

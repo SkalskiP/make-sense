@@ -10,6 +10,7 @@ import {ProjectType} from "../../../data/ProjectType";
 import {FileUtil} from "../../../utils/FileUtil";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
+import {AcceptedFileType} from "../../../data/AcceptedFileType";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
@@ -20,7 +21,7 @@ interface IProps {
 
 const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData, updateProjectType, updateActivePopupType}) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: 'image/jpeg, image/png'
+        accept: AcceptedFileType.IMAGE
     });
 
     const startEditor = (projectType: ProjectType) => {
@@ -56,6 +57,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
             </>;
         else
             return <>
+                <input {...getInputProps()} />
                 <img
                     draggable={false}
                     key={1}
