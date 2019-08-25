@@ -10,4 +10,11 @@ export class LineUtil {
         }
         return null;
     }
+
+    public static getCenter(l: ILine): IPoint {
+        return {
+            x: (l.start.x + l.end.x) / 2,
+            y: (l.start.y + l.end.y) / 2
+        }
+    }
 }

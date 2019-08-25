@@ -20,6 +20,7 @@ import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
+import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -199,8 +200,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 if (!RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas) && !!this.startCreateRectPoint)
                     store.dispatch(updateCustomcursorStyle(CustomCursorStyle.MOVE));
                 else
-                    store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
-
+                    RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                 this.canvas.style.cursor = "none";
             } else {
                 this.canvas.style.cursor = "default";

@@ -255,12 +255,34 @@ class Editor extends React.Component<IProps, IState> {
     };
 
     private getCursorStyle = () => {
+        const cursorStyle = this.props.customCursorStyle;
         return classNames(
             "Cursor", {
-                "move": this.props.customCursorStyle === CustomCursorStyle.MOVE
+                "move": cursorStyle === CustomCursorStyle.MOVE,
+                "add": cursorStyle === CustomCursorStyle.ADD,
+                "resize": cursorStyle === CustomCursorStyle.RESIZE,
+                "close": cursorStyle === CustomCursorStyle.CLOSE,
+                "cancel": cursorStyle === CustomCursorStyle.CANCEL,
             }
         );
     };
+
+    private getIndicator = (): string => {
+        switch (this.props.customCursorStyle) {
+            case CustomCursorStyle.ADD:
+                return "ico/plus.png";
+            case CustomCursorStyle.RESIZE:
+                return "ico/resize.png";
+            case CustomCursorStyle.CLOSE:
+                return "ico/close.png";
+            case CustomCursorStyle.MOVE:
+                return "ico/move.png";
+            case CustomCursorStyle.CANCEL:
+                return "ico/cancel.png";
+            default:
+                return null;
+        }
+    }
 
     public render() {
         return (
@@ -280,7 +302,13 @@ class Editor extends React.Component<IProps, IState> {
                     className={this.getCursorStyle()}
                     ref={ref => this.cursor = ref}
                     draggable={false}
-                />
+                >
+                    <img
+                        draggable={false}
+                        alt={"indicator"}
+                        src={this.getIndicator()}
+                    />
+                </div>
             </div>
         );
     }
