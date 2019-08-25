@@ -32,8 +32,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private activePath: IPoint[] = [];
     private resizeAnchorIndex: number = null;
-    private newAnchorPositionOnCanvas: IPoint = null;
-    private newAnchorIndexInPolygon: number = null;
+    private suggestedAnchorPositionOnCanvas: IPoint = null;
+    private suggestedAnchorIndexInPolygon: number = null;
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
@@ -61,9 +61,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     const anchorIndex: number = polygonUnderMouse.vertices.reduce(
                         (indexUnderMouse: number, anchor: IPoint, index: number) => {
                         if (indexUnderMouse === null) {
-                            const anchorOnImage: IPoint = PointUtil.add(
-                                PointUtil.multiply(anchor, 1/data.activeImageScale), data.activeImageRectOnCanvas);
-                            if (this.isMouseOverAnchor(data.mousePositionOnCanvas, anchorOnImage)) {
+                            const anchorOnCanvas: IPoint = this.mapPointFromImageToCanvas(anchor, data);
+                            if (this.isMouseOverAnchor(data.mousePositionOnCanvas, anchorOnCanvas)) {
                                 return index;
                             }
                         }
@@ -73,10 +72,10 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     if (anchorIndex !== null) {
                         this.startExistingLabelResize(data, polygonUnderMouse.id, anchorIndex);
                     } else {
-                        const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.newAnchorPositionOnCanvas);
+                        const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.suggestedAnchorPositionOnCanvas);
                         if (isMouseOverNewAnchor) {
                             store.dispatch(updateActiveLabelId(polygonUnderMouse.id));
-                            this.addNewAnchorToExistingPolygon(data);
+                            this.addSuggestedAnchorToPolygonLabel(data);
                         } else {
                             this.updateActivelyCreatedLabel(data);
                         }
@@ -102,22 +101,20 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     if (EditorSelector.getHighlightedLabelId() !== labelPolygon.id) {
                         store.dispatch(updateHighlightedLabelId(labelPolygon.id))
                     }
-                    const pathOnCanvas: IPoint[] = labelPolygon.vertices.map((point: IPoint) =>
-                        PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas));
+                    const pathOnCanvas: IPoint[] = this.mapPolygonFromImageToCanvas(labelPolygon.vertices, data);
                     const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
                     for (let j = 0; j < linesOnCanvas.length; j++) {
                         if (this.isMouseOverLine(data.mousePositionOnCanvas, linesOnCanvas[j])) {
-                            this.newAnchorPositionOnCanvas = LineUtil.getCenter(linesOnCanvas[j]);
-                            this.newAnchorIndexInPolygon = j + 1;
+                            this.suggestedAnchorPositionOnCanvas = LineUtil.getCenter(linesOnCanvas[j]);
+                            this.suggestedAnchorIndexInPolygon = j + 1;
                             break;
                         }
                     }
                 } else {
                     if (EditorSelector.getHighlightedLabelId() !== null) {
                         store.dispatch(updateHighlightedLabelId(null));
-                        this.newAnchorPositionOnCanvas = null;
-                        this.newAnchorIndexInPolygon = null;
+                        this.discardSuggestedPoint();
                     }
                 }
             }
@@ -133,9 +130,9 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         if (imageData) {
             this.drawExistingLabels(data);
             this.drawActivelyCreatedLabel(data);
-            this.drawActivelyResizedLabel(data);
+            this.drawActivelyResizeLabel(data);
             this.updateCursorStyle(data);
-            this.drawPotentialNewAnchor(data);
+            this.drawSuggestedAnchor(data);
         }
     }
 
@@ -150,7 +147,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         store.dispatch(updateCustomcursorStyle(CustomCursorStyle.DEFAULT));
                 } else {
                     const anchorUnderMouse: IPoint = this.getAnchorUnderMouse(data);
-                    const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.newAnchorPositionOnCanvas);
+                    const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.suggestedAnchorPositionOnCanvas);
                     if (!!isMouseOverNewAnchor) {
                         store.dispatch(updateCustomcursorStyle(CustomCursorStyle.ADD));
                     } else if (this.isResizeInProgress()) {
@@ -182,13 +179,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         })
     }
 
-    private drawActivelyResizedLabel(data: EditorData) {
+    private drawActivelyResizeLabel(data: EditorData) {
         const activeLabelPolygon: LabelPolygon = EditorSelector.getActivePolygonLabel();
         if (!!activeLabelPolygon && this.isResizeInProgress()) {
             const snappedMousePosition: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
             const polygonOnCanvas: IPoint[] = activeLabelPolygon.vertices.map((point: IPoint, index: number) => {
-                return index === this.resizeAnchorIndex ? snappedMousePosition :
-                    PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+                return index === this.resizeAnchorIndex ? snappedMousePosition : this.mapPointFromImageToCanvas(point, data);
             });
             this.drawPolygon(polygonOnCanvas, true);
         }
@@ -200,14 +196,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = EditorSelector.getActiveImageData();
         imageData.labelPolygons.forEach((labelPolygon: LabelPolygon) => {
             const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
-            const polygonOnCanvas: IPoint[] = labelPolygon.vertices.map((point: IPoint) => {
-                return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
-            });
+            const pathOnCanvas: IPoint[] = this.mapPolygonFromImageToCanvas(labelPolygon.vertices, data);
             if (!(labelPolygon.id === activeLabelId && this.isResizeInProgress())) {
-                this.drawPolygon(polygonOnCanvas, isActive);
+                this.drawPolygon(pathOnCanvas, isActive);
             }
         });
-
     }
 
     private drawPolygon(polygon: IPoint[], isActive: boolean) {
@@ -224,11 +217,14 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         }
     }
 
-    private drawPotentialNewAnchor(data: EditorData) {
-        if (this.newAnchorPositionOnCanvas) {
-            const a = RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(this.newAnchorPositionOnCanvas, {width: 100, height: 100}), data.mousePositionOnCanvas)
-            if (a) {
-                const handleRect = RectUtil.getRectWithCenterAndSize(this.newAnchorPositionOnCanvas, this.config.anchorSize);
+    private drawSuggestedAnchor(data: EditorData) {
+        if (this.suggestedAnchorPositionOnCanvas) {
+            const suggestedAnchorRect: IRect = RectUtil
+                .getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.suggestedAnchorDetectionSize);
+            const isMouseOverSuggestedAnchor: boolean = RectUtil.isPointInside(suggestedAnchorRect, data.mousePositionOnCanvas);
+
+            if (isMouseOverSuggestedAnchor) {
+                const handleRect = RectUtil.getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.anchorSize);
                 DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
             }
         }
@@ -261,8 +257,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private addLabelAndFinishCreation(data: EditorData) {
-        const polygonOnImage: IPoint[] = this.activePath.map((point: IPoint) => PointUtil.multiply(PointUtil.subtract(
-            point, data.activeImageRectOnCanvas), data.activeImageScale));
+        const polygonOnImage: IPoint[] = this.mapPolygonFromCanvasToImage(this.activePath, data);
         this.addPolygonLabel(polygonOnImage);
         this.finishLabelCreation();
     }
@@ -282,7 +277,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     };
 
     // =================================================================================================================
-    // RESIZE
+    // TRANSFER
     // =================================================================================================================
 
     private startExistingLabelResize(data: EditorData, labelId: string, anchorIndex: number) {
@@ -291,11 +286,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private endExistingLabelResize(data: EditorData) {
-        this.updatePolygonLabel(data);
+        this.applyResizeToPolygonLabel(data);
         this.resizeAnchorIndex = null;
     }
 
-    private updatePolygonLabel(data: EditorData) {
+    private applyResizeToPolygonLabel(data: EditorData) {
         const imageData: ImageData = EditorSelector.getActiveImageData();
         const activeLabel: LabelPolygon = EditorSelector.getActivePolygonLabel();
         imageData.labelPolygons = imageData.labelPolygons.map((polygon: LabelPolygon) => {
@@ -310,8 +305,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         } else {
                             const snappedMousePosition: IPoint =
                                 RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
-                            return PointUtil.multiply(PointUtil.subtract(
-                                snappedMousePosition, data.activeImageRectOnCanvas), data.activeImageScale)
+                            return this.mapPointFromCanvasToImage(snappedMousePosition, data);
                         }
                     })
                 }
@@ -321,20 +315,23 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         store.dispatch(updateActiveLabelId(activeLabel.id));
     }
 
+    private discardSuggestedPoint(): void {
+        this.suggestedAnchorIndexInPolygon = null;
+        this.suggestedAnchorPositionOnCanvas = null;
+    }
+
     // =================================================================================================================
     // UPDATE
     // =================================================================================================================
 
-    private addNewAnchorToExistingPolygon(data: EditorData) {
+    private addSuggestedAnchorToPolygonLabel(data: EditorData) {
         const imageData: ImageData = EditorSelector.getActiveImageData();
         const activeLabel: LabelPolygon = EditorSelector.getActivePolygonLabel();
-
-        const newAnchorPositionOnImage: IPoint = PointUtil.multiply(PointUtil.subtract(
-            this.newAnchorPositionOnCanvas, data.activeImageRectOnCanvas), data.activeImageScale);
-
+        const newAnchorPositionOnImage: IPoint =
+            this.mapPointFromCanvasToImage(this.suggestedAnchorPositionOnCanvas, data);
         const insert = (arr, index, newItem) => [...arr.slice(0, index), newItem, ...arr.slice(index)];
 
-        const newImageData = {
+        const newImageData: ImageData = {
             ...imageData,
             labelPolygons: imageData.labelPolygons.map((polygon: LabelPolygon) => {
                 if (polygon.id !== activeLabel.id) {
@@ -342,17 +339,15 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                 } else {
                     return {
                         ...polygon,
-                        vertices: insert(polygon.vertices, this.newAnchorIndexInPolygon, newAnchorPositionOnImage)
+                        vertices: insert(polygon.vertices, this.suggestedAnchorIndexInPolygon, newAnchorPositionOnImage)
                     }
                 }
             })
         };
 
         store.dispatch(updateImageDataById(newImageData.id, newImageData));
-        this.startExistingLabelResize(data, activeLabel.id, this.newAnchorIndexInPolygon);
-
-        this.newAnchorIndexInPolygon = null;
-        this.newAnchorPositionOnCanvas = null;
+        this.startExistingLabelResize(data, activeLabel.id, this.suggestedAnchorIndexInPolygon);
+        this.discardSuggestedPoint();
     }
 
     // =================================================================================================================
@@ -404,6 +399,22 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         return points.map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize));
     }
 
+    private mapPolygonFromImageToCanvas(polygon: IPoint[], data: EditorData): IPoint[] {
+        return polygon.map((point: IPoint) => this.mapPointFromImageToCanvas(point, data));
+    }
+
+    private mapPointFromImageToCanvas(point: IPoint, data: EditorData): IPoint {
+        return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+    }
+
+    private mapPolygonFromCanvasToImage(polygon: IPoint[], data: EditorData): IPoint[] {
+        return polygon.map((point: IPoint) => this.mapPointFromCanvasToImage(point, data));
+    }
+
+    private mapPointFromCanvasToImage(point: IPoint, data: EditorData): IPoint {
+        return PointUtil.multiply(PointUtil.subtract(point, data.activeImageRectOnCanvas), data.activeImageScale);
+    }
+
     // =================================================================================================================
     // GETTERS
     // =================================================================================================================
@@ -411,8 +422,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private getPolygonUnderMouse(data: EditorData): LabelPolygon {
         const labelPolygons: LabelPolygon[] = EditorSelector.getActiveImageData().labelPolygons;
         for (let i = 0; i < labelPolygons.length; i++) {
-            const pathOnCanvas: IPoint[] = labelPolygons[i].vertices.map((point: IPoint) =>
-                PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas));
+            const pathOnCanvas: IPoint[] = this.mapPolygonFromImageToCanvas(labelPolygons[i].vertices, data);
             const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
             for (let j = 0; j < linesOnCanvas.length; j++) {
@@ -430,9 +440,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private getAnchorUnderMouse(data: EditorData): IPoint {
         const labelPolygons: LabelPolygon[] = EditorSelector.getActiveImageData().labelPolygons;
         for (let i = 0; i < labelPolygons.length; i++) {
-            const pathOnCanvas: IPoint[] = labelPolygons[i].vertices.map((point: IPoint) =>
-                PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas));
-
+            const pathOnCanvas: IPoint[] = this.mapPolygonFromImageToCanvas(labelPolygons[i].vertices, data);
             for (let j = 0; j < pathOnCanvas.length; j ++) {
                 if (this.isMouseOverAnchor(data.mousePositionOnCanvas, pathOnCanvas[j]))
                     return pathOnCanvas[j];

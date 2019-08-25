@@ -13,6 +13,10 @@ export class RenderEngineConfig {
         width: Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX,
         height: Settings.RESIZE_HANDLE_HOVER_DIMENSION_PX
     };
+    public readonly suggestedAnchorDetectionSize: ISize = {
+        width: 100,
+        height: 100
+    };
     public readonly activeAnchorColor: string = Settings.SECONDARY_COLOR;
     public readonly inactiveAnchorColor: string = Settings.DARK_THEME_SECOND_COLOR;
 }
