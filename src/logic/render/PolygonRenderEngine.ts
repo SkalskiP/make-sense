@@ -167,7 +167,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
                 if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
-                    if (isMouseOverStartAnchor)
+                    if (isMouseOverStartAnchor && this.activePath.length > 2)
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CLOSE));
                     else
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
@@ -283,7 +283,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private addLabelAndFinishCreation(data: EditorData) {
-        if (this.isCreationInProgress()) {
+        if (this.isCreationInProgress() && this.activePath.length > 2) {
             const polygonOnImage: IPoint[] = this.mapPolygonFromCanvasToImage(this.activePath, data);
             this.addPolygonLabel(polygonOnImage);
             this.finishLabelCreation();

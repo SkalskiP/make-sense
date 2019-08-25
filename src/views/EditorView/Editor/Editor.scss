@@ -46,15 +46,15 @@
       max-width: 20px;
       max-height: 20px;
       filter: brightness(0) invert(1);
-      bottom: calc(50% + 12px);
-      left: calc(50% + 12px);
+      bottom: calc(50% + 10px);
+      left: calc(50% + 10px);
       display: none;
       user-select: none;
     }
 
     &.move, &.add, &.resize, &.close {
-      width: 30px;
-      height: 30px;
+      width: 24px;
+      height: 24px;
       background-color: transparent;
     }
 

@@ -229,7 +229,7 @@ class Editor extends React.Component<IProps, IState> {
             this.fullCanvasRender();
         };
 
-        ContextManager.register(Context.EDITOR, [
+        ContextManager.switchCtx(Context.EDITOR, [
             {
                 keyCombo: ["Enter"],
                 action: triggerAction

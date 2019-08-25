@@ -13,7 +13,7 @@ export class ContextManager {
         window.addEventListener("keyup", ContextManager.onUp);
     }
 
-    public static register(context: Context, actions: HotKeyAction[]): void {
+    public static switchCtx(context: Context, actions: HotKeyAction[]): void {
         store.dispatch(updateActiveContext(context));
         ContextManager.actions = actions;
     }
