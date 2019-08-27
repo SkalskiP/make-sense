@@ -25,6 +25,10 @@ export class RenderEngineUtil {
         return PointUtil.multiply(PointUtil.subtract(point, data.activeImageRectOnCanvas), data.activeImageScale);
     }
 
+    public static transferRectFromCanvasToImage(rect: IRect, data: EditorData): IRect {
+        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+    }
+
     public static wrapDefaultCursorStyleInCancel(data: EditorData) {
         if (RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas)) {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));

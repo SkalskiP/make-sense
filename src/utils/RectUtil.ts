@@ -129,6 +129,15 @@ export class RectUtil {
         }
     }
 
+    public static scaleRect(rect:IRect, scale: number): IRect {
+        return {
+            x: rect.x * scale,
+            y: rect.y * scale,
+            width: rect.width * scale,
+            height: rect.height * scale
+        }
+    }
+
     public static mapRectToAnchors(rect: IRect): RectAnchor[] {
         return [
             {type: AnchorType.TOP_LEFT, position: {x: rect.x, y: rect.y}},

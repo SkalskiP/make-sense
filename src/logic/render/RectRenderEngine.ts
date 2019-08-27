@@ -90,7 +90,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                     data.activeImageRectOnCanvas);
                 const delta: IPoint = PointUtil.subtract(mousePositionSnapped, startAnchorPosition);
                 const resizeRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
-                const scaledRect: IRect = RectRenderEngine.scaleRect(resizeRect, data.activeImageScale);
+                const scaledRect: IRect = RectUtil.scaleRect(resizeRect, data.activeImageScale);
 
                 const imageData = EditorSelector.getActiveImageData();
                 imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
@@ -136,7 +136,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                labelRect.id === activeLabelId ? this.drawActiveRect(labelRect, data.mousePositionOnCanvas, data.activeImageRectOnCanvas, data.activeImageScale) : this.drawInactiveRect(labelRect, data.activeImageScale, data.activeImageRectOnCanvas);
+                labelRect.id === activeLabelId ? this.drawActiveRect(labelRect, data.mousePositionOnCanvas, data.activeImageRectOnCanvas, data.activeImageScale) : this.drawInactiveRect(labelRect, data);
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
             this.updateCursorStyle(data);
@@ -157,8 +157,8 @@ export class RectRenderEngine extends BaseRenderEngine {
         }
     }
 
-    private drawInactiveRect(labelRect: LabelRect, scale: number, imageRect: IRect) {
-        const rectOnImage: IRect = this.transferRectToImage(labelRect.rect, scale, imageRect);
+    private drawInactiveRect(labelRect: LabelRect, data: EditorData) {
+        const rectOnImage: IRect = RenderEngineUtil.transferRectFromCanvasToImage(labelRect.rect, data);
         const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         this.renderRect(rectOnImage, labelRect.id === highlightedLabelId);
     }
@@ -216,17 +216,8 @@ export class RectRenderEngine extends BaseRenderEngine {
         return !!this.startCreateRectPoint || !!this.startResizeRectAnchor;
     }
 
-    private static scaleRect(inputRect:IRect, scale: number): IRect {
-        return {
-            x: inputRect.x * scale,
-            y: inputRect.y * scale,
-            width: inputRect.width * scale,
-            height: inputRect.height * scale
-        }
-    }
-
     private calculateRectRelativeToActiveImage(rect: IRect, scale: number):IRect {
-        return RectRenderEngine.scaleRect(rect, 1/scale);
+        return RectUtil.scaleRect(rect, 1/scale);
     }
 
     private addRectLabel = (rect: IRect) => {
@@ -311,14 +302,5 @@ export class RectRenderEngine extends BaseRenderEngine {
     private endRectTransformation() {
         this.startCreateRectPoint = null;
         this.startResizeRectAnchor = null;
-    }
-
-    private transferRectToImage(rect:IRect, scale: number, imageRect: IRect): IRect {
-        const scaledRect = RectRenderEngine.scaleRect(rect, 1/scale);
-        return {
-            ...scaledRect,
-            x: scaledRect.x + imageRect.x,
-            y: scaledRect.y + imageRect.y
-        }
     }
 }

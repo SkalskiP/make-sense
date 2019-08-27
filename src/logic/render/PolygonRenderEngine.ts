@@ -264,8 +264,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
             this.activePath.push(mousePositionSnapped);
         } else {
-            const isMouseOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas,
-                data.mousePositionOnCanvas);
+            const isMouseOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
             if (isMouseOverImage) {
                 this.activePath.push(data.mousePositionOnCanvas);
                 store.dispatch(updateActiveLabelId(null));
