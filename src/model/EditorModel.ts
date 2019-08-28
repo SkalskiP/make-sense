@@ -9,6 +9,7 @@ export class EditorModel {
     public static cursor: HTMLDivElement;
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
+    public static image: HTMLImageElement;
     public static imageRectOnCanvas: IRect;
     public static imageScale: number; // Image / Canvas
     public static mousePositionOnCanvas: IPoint;

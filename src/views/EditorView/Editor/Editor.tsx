@@ -7,20 +7,16 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {ImageRepository} from "../../../logic/imageRepository/ImageRepository";
-import {PrimaryEditorRenderEngine} from "../../../logic/render/PrimaryEditorRenderEngine";
 import {LabelType} from "../../../data/LabelType";
-import {DrawUtil} from "../../../utils/DrawUtil";
 import {PopupWindowType} from "../../../data/PopupWindowType";
 import {CanvasUtil} from "../../../utils/CanvasUtil";
 import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
-import classNames from "classnames";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
 import {EventType} from "../../../data/EventType";
 import {EditorData} from "../../../data/EditorData";
-import {ContextManager} from "../../../logic/context/ContextManager";
-import {Context} from "../../../data/Context";
 import {EditorModel} from "../../../model/EditorModel";
 import {EditorActions} from "../../../logic/actions/EditorActions";
+import {EditorUtil} from "../../../utils/EditorUtil";
 
 interface IProps {
     size: ISize;
@@ -32,73 +28,49 @@ interface IProps {
     customCursorStyle: CustomCursorStyle;
 }
 
-interface IState {
-    image: HTMLImageElement;
-}
-
-class Editor extends React.Component<IProps, IState> {
-    constructor(props) {
-        super(props);
-        this.state = { image: null }
-    }
+class Editor extends React.Component<IProps, {}> {
 
     // =================================================================================================================
     // LIFE CYCLE
     // =================================================================================================================
 
     public componentDidMount(): void {
-        window.addEventListener(EventType.MOUSE_MOVE, this.update);
-        window.addEventListener(EventType.MOUSE_UP, this.update);
-        EditorModel.canvas.addEventListener(EventType.MOUSE_DOWN, this.onMouseDown);
+        this.mountEventListeners();
 
-        const {imageData, size, activeLabelType} = this.props;
+        const {imageData, activeLabelType} = this.props;
 
+        EditorActions.mountRenderEngines(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
-
-        EditorActions.resizeCanvas(size);
-        EditorModel.primaryRenderingEngine = new PrimaryEditorRenderEngine(EditorModel.canvas);
-        EditorActions.mountSupportRenderingEngine(activeLabelType);
-        this.fullCanvasRender();
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener(EventType.MOUSE_MOVE, this.update);
-        window.removeEventListener(EventType.MOUSE_UP, this.update);
-        EditorModel.canvas.removeEventListener(EventType.MOUSE_DOWN, this.onMouseDown);
+        this.unmountEventListeners();
     }
 
-    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
-        if (prevProps.imageData.id !== this.props.imageData.id) {
-            ImageLoadManager.addAndRun(this.loadImage(this.props.imageData));
-        }
-        if (prevProps.activeLabelType !== this.props.activeLabelType) {
-            this.swapSupportRenderingEngine(this.props.activeLabelType)
-        }
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any): void {
+        const {imageData, activeLabelType} = this.props;
 
+        prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
+        prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
-        EditorActions.resizeCanvas(this.props.size);
-        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(this.state.image);
-        EditorModel.imageScale = EditorActions.getImageScale(this.state.image);
-        this.fullCanvasRender();
+        this.updateModelAndRender()
     }
 
     // =================================================================================================================
     // EVENT HANDLERS
     // =================================================================================================================
 
-    private update = (event: MouseEvent) => {
-        const editorData: EditorData = EditorActions.buildEditorData(event);
-        EditorModel.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
-        EditorModel.primaryRenderingEngine.update(editorData);
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
-        !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
-        this.fullCanvasRender();
-    };
+    private mountEventListeners() {
+        window.addEventListener(EventType.MOUSE_MOVE, this.update);
+        window.addEventListener(EventType.MOUSE_UP, this.update);
+        EditorModel.canvas.addEventListener(EventType.MOUSE_DOWN, this.update);
+    }
 
-    private onMouseDown = (event: MouseEvent) => {
-        this.register();
-        this.update(event);
-    };
+    private unmountEventListeners() {
+        window.removeEventListener(EventType.MOUSE_MOVE, this.update);
+        window.removeEventListener(EventType.MOUSE_UP, this.update);
+        EditorModel.canvas.removeEventListener(EventType.MOUSE_DOWN, this.update);
+    }
 
     // =================================================================================================================
     // LOAD IMAGE
@@ -106,7 +78,8 @@ class Editor extends React.Component<IProps, IState> {
 
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
-            this.setState({image: ImageRepository.getById(imageData.id)})
+            EditorModel.image = ImageRepository.getById(imageData.id);
+            this.updateModelAndRender()
         }
         else {
             if (!EditorModel.isLoading) {
@@ -121,92 +94,31 @@ class Editor extends React.Component<IProps, IState> {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
-        this.setState({image});
+        EditorModel.image = image;
         EditorModel.isLoading = false;
+        this.updateModelAndRender()
     };
 
     private handleLoadImageError = () => {};
 
     // =================================================================================================================
-    // RENDERING
-    // =================================================================================================================
-
-    private fullCanvasRender() {
-        DrawUtil.clearCanvas(EditorModel.canvas);
-        EditorModel.primaryRenderingEngine.drawImage(this.state.image, EditorModel.imageRectOnCanvas);
-        EditorModel.primaryRenderingEngine.render(EditorActions.buildEditorData());
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.buildEditorData());
-
-    }
-
-    // =================================================================================================================
-    // RENDERING ENGINES
-    // =================================================================================================================
-
-    private swapSupportRenderingEngine = (activeLabelType: LabelType) => {
-        EditorActions.mountSupportRenderingEngine(activeLabelType);
-    };
-
-    // =================================================================================================================
-    // CONTEXT
-    // =================================================================================================================
-
-    private register(): void {
-        const triggerAction = (event: KeyboardEvent) => {
-            const editorData: EditorData = EditorActions.buildEditorData(event);
-            EditorModel.primaryRenderingEngine.update(editorData);
-            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
-            this.fullCanvasRender();
-        };
-
-        ContextManager.switchCtx(Context.EDITOR, [
-            {
-                keyCombo: ["Enter"],
-                action: triggerAction
-            },
-            {
-                keyCombo: ["Escape"],
-                action: triggerAction
-            }
-        ])
-    }
-
-    // =================================================================================================================
     // HELPER METHODS
     // =================================================================================================================
 
-    private updateModelAndRender = (image: HTMLImageElement) => {
-
+    private updateModelAndRender = () => {
+        EditorActions.resizeCanvas(this.props.size);
+        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(EditorModel.image);
+        EditorModel.imageScale = EditorActions.getImageScale(EditorModel.image);
+        EditorActions.fullRender();
     };
 
-    private getCursorStyle = () => {
-        const cursorStyle = this.props.customCursorStyle;
-        return classNames(
-            "Cursor", {
-                "move": cursorStyle === CustomCursorStyle.MOVE,
-                "add": cursorStyle === CustomCursorStyle.ADD,
-                "resize": cursorStyle === CustomCursorStyle.RESIZE,
-                "close": cursorStyle === CustomCursorStyle.CLOSE,
-                "cancel": cursorStyle === CustomCursorStyle.CANCEL,
-            }
-        );
-    };
-
-    private getIndicator = (): string => {
-        switch (this.props.customCursorStyle) {
-            case CustomCursorStyle.ADD:
-                return "ico/plus.png";
-            case CustomCursorStyle.RESIZE:
-                return "ico/resize.png";
-            case CustomCursorStyle.CLOSE:
-                return "ico/close.png";
-            case CustomCursorStyle.MOVE:
-                return "ico/move.png";
-            case CustomCursorStyle.CANCEL:
-                return "ico/cancel.png";
-            default:
-                return null;
-        }
+    private update = (event: MouseEvent) => {
+        const editorData: EditorData = EditorActions.getEditorData(event);
+        EditorModel.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
+        EditorModel.primaryRenderingEngine.update(editorData);
+        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+        !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
+        EditorActions.fullRender();
     };
 
     public render() {
@@ -224,14 +136,14 @@ class Editor extends React.Component<IProps, IState> {
                     draggable={false}
                 />
                 <div
-                    className={this.getCursorStyle()}
+                    className={EditorUtil.getCursorStyle(this.props.customCursorStyle)}
                     ref={ref => EditorModel.cursor = ref}
                     draggable={false}
                 >
                     <img
                         draggable={false}
                         alt={"indicator"}
-                        src={this.getIndicator()}
+                        src={EditorUtil.getIndicator(this.props.customCursorStyle)}
                     />
                 </div>
             </div>

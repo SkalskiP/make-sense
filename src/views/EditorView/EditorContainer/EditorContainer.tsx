@@ -12,6 +12,11 @@ import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton
 import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
+import {EditorData} from "../../../data/EditorData";
+import {EditorActions} from "../../../logic/actions/EditorActions";
+import {EditorModel} from "../../../model/EditorModel";
+import {ContextManager} from "../../../logic/context/ContextManager";
+import {Context} from "../../../data/Context";
 
 interface IProps {
     windowSize: ISize;
@@ -68,6 +73,26 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
         return <LabelsToolkit/>
     };
 
+    const register = () => {
+        const triggerAction = (event: KeyboardEvent) => {
+            const editorData: EditorData = EditorActions.getEditorData(event);
+            EditorModel.primaryRenderingEngine.update(editorData);
+            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+            EditorActions.fullRender();
+        };
+
+        ContextManager.switchCtx(Context.EDITOR, [
+            {
+                keyCombo: ["Enter"],
+                action: triggerAction
+            },
+            {
+                keyCombo: ["Escape"],
+                action: triggerAction
+            }
+        ])
+    };
+
     return (
         <div className="EditorContainer">
             <SideNavigationBar
@@ -76,7 +101,9 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
             />
-            <div className="EditorWrapper">
+            <div className="EditorWrapper"
+                onClick={() => register()}
+            >
                 <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}

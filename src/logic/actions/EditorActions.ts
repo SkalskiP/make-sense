@@ -11,8 +11,15 @@ import {CanvasUtil} from "../../utils/CanvasUtil";
 import {ISize} from "../../interfaces/ISize";
 import React from "react";
 import {IPoint} from "../../interfaces/IPoint";
+import {DrawUtil} from "../../utils/DrawUtil";
+import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 
 export class EditorActions {
+
+    // =================================================================================================================
+    // RENDER ENGINES
+    // =================================================================================================================
+
     public static mountSupportRenderingEngine(activeLabelType: LabelType) {
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
@@ -29,6 +36,30 @@ export class EditorActions {
                 break;
         }
     };
+
+    public static swapSupportRenderingEngine(activeLabelType: LabelType) {
+        EditorActions.mountSupportRenderingEngine(activeLabelType);
+    };
+
+    public static mountRenderEngines(activeLabelType: LabelType) {
+        EditorModel.primaryRenderingEngine = new PrimaryEditorRenderEngine(EditorModel.canvas);
+        EditorActions.mountSupportRenderingEngine(activeLabelType);
+    }
+
+    // =================================================================================================================
+    // RENDER
+    // =================================================================================================================
+
+    public static fullRender() {
+        DrawUtil.clearCanvas(EditorModel.canvas);
+        EditorModel.primaryRenderingEngine.drawImage(EditorModel.image, EditorModel.imageRectOnCanvas);
+        EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
+        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
+    }
+
+    // =================================================================================================================
+    // GETTERS
+    // =================================================================================================================
 
     public static getImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
@@ -52,7 +83,7 @@ export class EditorActions {
         return image.width / EditorModel.imageRectOnCanvas.width;
     }
 
-    public static buildEditorData(event?: Event): EditorData {
+    public static getEditorData(event?: Event): EditorData {
         return {
             mousePositionOnCanvas: EditorModel.mousePositionOnCanvas,
             canvasSize: CanvasUtil.getSize(EditorModel.canvas),
@@ -61,6 +92,10 @@ export class EditorActions {
             event: event
         }
     }
+
+    // =================================================================================================================
+    // HELPERS
+    // =================================================================================================================
 
     public static resizeCanvas = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!EditorModel.canvas) {
