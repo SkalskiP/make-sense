@@ -58,6 +58,18 @@ export class EditorActions {
     }
 
     // =================================================================================================================
+    // SETTERS
+    // =================================================================================================================
+
+    public static setLoadingStatus(status: boolean) {
+        EditorModel.isLoading = status;
+    }
+
+    public static setActiveImage(image: HTMLImageElement) {
+        EditorModel.image = image;
+    }
+
+    // =================================================================================================================
     // GETTERS
     // =================================================================================================================
 
@@ -96,6 +108,11 @@ export class EditorActions {
     // =================================================================================================================
     // HELPERS
     // =================================================================================================================
+
+    public static calculateActiveImageCharacteristics() {
+        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(EditorModel.image);
+        EditorModel.imageScale = EditorActions.getImageScale(EditorModel.image);
+    }
 
     public static resizeCanvas = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!EditorModel.canvas) {

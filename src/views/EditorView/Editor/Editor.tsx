@@ -78,12 +78,12 @@ class Editor extends React.Component<IProps, {}> {
 
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
-            EditorModel.image = ImageRepository.getById(imageData.id);
+            EditorActions.setActiveImage(ImageRepository.getById(imageData.id));
             this.updateModelAndRender()
         }
         else {
             if (!EditorModel.isLoading) {
-                EditorModel.isLoading = true;
+                EditorActions.setLoadingStatus(true);
                 const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
                 FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
             }
@@ -94,8 +94,8 @@ class Editor extends React.Component<IProps, {}> {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
-        EditorModel.image = image;
-        EditorModel.isLoading = false;
+        EditorActions.setActiveImage(image);
+        EditorActions.setLoadingStatus(false);
         this.updateModelAndRender()
     };
 
@@ -107,8 +107,7 @@ class Editor extends React.Component<IProps, {}> {
 
     private updateModelAndRender = () => {
         EditorActions.resizeCanvas(this.props.size);
-        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(EditorModel.image);
-        EditorModel.imageScale = EditorActions.getImageScale(EditorModel.image);
+        EditorActions.calculateActiveImageCharacteristics();
         EditorActions.fullRender();
     };
 
