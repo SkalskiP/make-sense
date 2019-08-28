@@ -22,6 +22,7 @@ export class RectUtil {
     }
 
     public static isPointInside(rect: IRect, point: IPoint): boolean {
+        if (!rect || !point) return null;
         return (
             rect.x < point.x &&
             rect.x + rect.width > point.x &&
@@ -126,6 +127,15 @@ export class RectUtil {
             y: rect.y - delta.y,
             width: rect.width + 2 * delta.x,
             height: rect.height + 2 * delta.y
+        }
+    }
+
+    public static scaleRect(rect:IRect, scale: number): IRect {
+        return {
+            x: rect.x * scale,
+            y: rect.y * scale,
+            width: rect.width * scale,
+            height: rect.height * scale
         }
     }
 
