@@ -14,7 +14,6 @@ import {
 import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
-import {CanvasUtil} from "../../utils/CanvasUtil";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
@@ -41,11 +40,8 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public mouseDownHandler = (data: EditorData) => {
-        const isMouseOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas,
-            data.mousePositionOnCanvas);
-        const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
-            data.mousePositionOnCanvas);
-
+        const isMouseOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
+        const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
             const rectUnderMouse: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
             if (!!rectUnderMouse) {
@@ -110,7 +106,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     public mouseMoveHandler = (data: EditorData) => {
         if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
-            const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+            const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
             if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
                 if (!!labelRect) {
@@ -196,7 +192,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 return;
             }
-            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
+            if (RenderEngineUtil.isMouseOverCanvas(data)) {
                 if (!RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas) && !!this.startCreateRectPoint)
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 else

@@ -9,6 +9,14 @@ import {IRect} from "../interfaces/IRect";
 
 export class RenderEngineUtil {
 
+    public static isMouseOverImage(data: EditorData): boolean {
+        return RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+    }
+
+    public static isMouseOverCanvas(data: EditorData): boolean {
+        return RectUtil.isPointInside({x: 0, y: 0, ...data.canvasSize}, data.mousePositionOnCanvas);
+    }
+
     public static transferPolygonFromImageToCanvas(polygon: IPoint[], data: EditorData): IPoint[] {
         return polygon.map((point: IPoint) => RenderEngineUtil.transferPointFromImageToCanvas(point, data));
     }

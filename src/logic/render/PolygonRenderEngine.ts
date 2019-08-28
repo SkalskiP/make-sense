@@ -6,7 +6,6 @@ import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
-import {CanvasUtil} from "../../utils/CanvasUtil";
 import {ILine} from "../../interfaces/ILine";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {IRect} from "../../interfaces/IRect";
@@ -69,9 +68,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     public mouseDownHandler(data: EditorData): void {
-        const isMouseOverCanvas: boolean = RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
-            data.mousePositionOnCanvas);
-
+        const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
             if (this.isCreationInProgress()) {
                 const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
@@ -119,7 +116,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public mouseMoveHandler(data: EditorData): void {
         if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
-            const isOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+            const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
             if (isOverImage && !this.isCreationInProgress()) {
                 const labelPolygon: LabelPolygon = this.getPolygonUnderMouse(data);
                 if (!!labelPolygon && !this.isResizeInProgress()) {
@@ -163,7 +160,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnCanvas) {
-            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
+            const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
+            if (isMouseOverCanvas) {
                 if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnCanvas, this.activePath[0]);
                     if (isMouseOverStartAnchor && this.activePath.length > 2)
