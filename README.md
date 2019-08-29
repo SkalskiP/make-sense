@@ -241,6 +241,17 @@ Our application is being actively developed. If you have an idea for a new funct
 - [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
 - [ ] Copy annotations from previous image into the next one
 
+## Citation
+
+```
+@MISC{make-sense,
+   author = {Piotr Skalski},
+   title = {{Make Sense}},
+   howpublished = "\url{https://github.com/SkalskiP/make-sense/}",
+   year = {2019},
+}
+```
+
 ## License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
