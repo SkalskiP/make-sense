@@ -1,9 +1,11 @@
 import {EditorData} from "../../data/EditorData";
 import {MouseEventUtil} from "../../utils/MouseEventUtil";
 import {EventType} from "../../data/EventType";
+import {LabelType} from "../../data/LabelType";
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
+    public labelType: LabelType;
 
     protected constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;

@@ -12,11 +12,13 @@ import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton
 import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
-import {EditorData} from "../../../data/EditorData";
 import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorModel} from "../../../model/EditorModel";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {Context} from "../../../data/Context";
+import {PolygonRenderEngine} from "../../../logic/render/PolygonRenderEngine";
+import {LabelType} from "../../../data/LabelType";
+import {EditorData} from "../../../data/EditorData";
 
 interface IProps {
     windowSize: ISize;
@@ -74,21 +76,24 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
     };
 
     const register = () => {
-        const triggerAction = (event: KeyboardEvent) => {
-            const editorData: EditorData = EditorActions.getEditorData(event);
-            EditorModel.primaryRenderingEngine.update(editorData);
-            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
-            EditorActions.fullRender();
-        };
-
         ContextManager.switchCtx(Context.EDITOR, [
             {
                 keyCombo: ["Enter"],
-                action: triggerAction
+                action: (event: KeyboardEvent) => {
+                    if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.POLYGON) {
+                        const editorData: EditorData = EditorActions.getEditorData();
+                        (EditorModel.supportRenderingEngine as PolygonRenderEngine).addLabelAndFinishCreation(editorData);
+                    }
+                    EditorActions.fullRender();
+                }
             },
             {
                 keyCombo: ["Escape"],
-                action: triggerAction
+                action: (event: KeyboardEvent) => {
+                    if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.POLYGON)
+                        (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                    EditorActions.fullRender();
+                }
             }
         ])
     };
