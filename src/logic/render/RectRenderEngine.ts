@@ -53,9 +53,13 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    this.startRectCreation(data.mousePositionOnCanvas);
+                    if (EditorSelector.getHighlightedLabelId() !== null)
+                        store.dispatch(updateActiveLabelId(EditorSelector.getHighlightedLabelId()));
+                    else
+                        this.startRectCreation(data.mousePositionOnCanvas);
                 }
             } else if (isMouseOverImage) {
+
                 this.startRectCreation(data.mousePositionOnCanvas);
             }
         }

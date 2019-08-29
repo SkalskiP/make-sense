@@ -3,23 +3,40 @@ import {HotKeyAction} from "../../data/HotKeyAction";
 import {store} from "../../index";
 import {updateActiveContext} from "../../store/general/actionCreators";
 import * as _ from "lodash";
+import {EditorContext} from "./EditorContext";
+import {PopupContext} from "./PopupContext";
 
 export class ContextManager {
     private static activeCombo: string[] = [];
     private static actions: HotKeyAction[] = [];
+    private static contextHistory: Context[] = [];
 
     public static init(): void {
         window.addEventListener("keydown", ContextManager.onDown);
         window.addEventListener("keyup", ContextManager.onUp);
     }
 
-    public static switchCtx(context: Context, actions: HotKeyAction[]): void {
+    public static switchCtx(context: Context): void {
         store.dispatch(updateActiveContext(context));
-        ContextManager.actions = actions;
+        switch (context) {
+            case Context.EDITOR:
+                ContextManager.actions = EditorContext.getActions();
+                break;
+            case Context.POPUP:
+                ContextManager.actions = PopupContext.getActions();
+                break;
+            default:
+                ContextManager.actions = [];
+        }
+    }
+
+    public static restoreContext(): void {
+        ContextManager.switchCtx(ContextManager.contextHistory.pop());
     }
 
     private static onDown(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
+        console.log(keyCode);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);
             ContextManager.execute(event);

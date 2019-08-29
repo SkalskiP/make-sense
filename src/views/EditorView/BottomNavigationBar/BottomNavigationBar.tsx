@@ -6,16 +6,19 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {ISize} from "../../../interfaces/ISize";
+import {Context} from "../../../data/Context";
+import classNames from "classnames";
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
     totalImageCount: number;
     activeImageIndex: number;
+    activeContext: Context;
     updateActiveImageIndex: (activeImageIndex: number) => any;
 }
 
-const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, updateActiveImageIndex}) => {
+const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, activeContext, updateActiveImageIndex}) => {
     const minWidth:number = 400;
     const viewPreviousImage = () => {
         if (activeImageIndex > 0) {
@@ -33,8 +36,17 @@ const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount
         return (activeImageIndex + 1) + " / " + totalImageCount;
     };
 
+    const getClassName = () => {
+        return classNames(
+            "BottomNavigationBar",
+            {
+                "with-context": activeContext === Context.EDITOR
+            }
+        );
+    };
+
     return (
-        <div className="BottomNavigationBar">
+        <div className={getClassName()}>
             <ImageButton
                 image={"ico/left.png"}
                 imageAlt={"previous"}
@@ -64,7 +76,8 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeImageIndex: state.editor.activeImageIndex
+    activeImageIndex: state.editor.activeImageIndex,
+    activeContext: state.general.activeContext
 });
 
 export default connect(
