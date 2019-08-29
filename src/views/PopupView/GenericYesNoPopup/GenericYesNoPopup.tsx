@@ -37,7 +37,7 @@ export const GenericYesNoPopup: React.FC<IProps> = (
             ContextManager.switchCtx(Context.POPUP);
             setMountStatus(true);
         }
-    });
+    }, [status]);
 
     return (
         <div className="GenericYesNoPopup">
