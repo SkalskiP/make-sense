@@ -13,6 +13,7 @@ export class RectUtil {
     }
 
     public static intersect(r1: IRect, r2: IRect) {
+        if (!r1 || !r2) return null;
         return !(
             r2.x > r1.x + r1.width ||
             r2.x + r2.width < r1.x ||

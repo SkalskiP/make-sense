@@ -34,7 +34,7 @@ export class PointLabelsExporter {
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
-        if (imageData.labelRects.length === 0 || !imageData.loadStatus)
+        if (imageData.labelPoints.length === 0 || !imageData.loadStatus)
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
