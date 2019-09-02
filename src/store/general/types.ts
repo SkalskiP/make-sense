@@ -3,14 +3,14 @@ import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {Context} from "../../data/Context";
+import {ContextType} from "../../data/ContextType";
 
 export type GeneralState = {
     windowSize: ISize;
     mobileDeviceData: MobileDeviceData;
     activePopupType: PopupWindowType;
     customCursorStyle: CustomCursorStyle;
-    activeContext: Context;
+    activeContext: ContextType;
 }
 
 interface UpdateWindowSize {
@@ -44,7 +44,7 @@ interface UpdateCustomCursorStyle {
 interface UpdateActiveContext {
     type: typeof Action.UPDATE_CONTEXT;
     payload: {
-        activeContext: Context;
+        activeContext: ContextType;
     }
 }
 

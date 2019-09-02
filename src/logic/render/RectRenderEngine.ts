@@ -53,7 +53,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    if (EditorSelector.getHighlightedLabelId() !== null)
+                    if (!!EditorSelector.getHighlightedLabelId())
                         store.dispatch(updateActiveLabelId(EditorSelector.getHighlightedLabelId()));
                     else
                         this.startRectCreation(data.mousePositionOnCanvas);

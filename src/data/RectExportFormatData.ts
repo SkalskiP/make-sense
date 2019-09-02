@@ -14,4 +14,4 @@ export const RectExportFormatData: IExportFormat[] = [
         type: ExportFormatType.CSV,
         label: "Single CSV file."
     }
-]
+];

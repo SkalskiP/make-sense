@@ -6,7 +6,7 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {ISize} from "../../../interfaces/ISize";
-import {Context} from "../../../data/Context";
+import {ContextType} from "../../../data/ContextType";
 import classNames from "classnames";
 
 interface IProps {
@@ -14,7 +14,7 @@ interface IProps {
     imageData: ImageData;
     totalImageCount: number;
     activeImageIndex: number;
-    activeContext: Context;
+    activeContext: ContextType;
     updateActiveImageIndex: (activeImageIndex: number) => any;
 }
 
@@ -40,7 +40,7 @@ const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount
         return classNames(
             "BottomNavigationBar",
             {
-                "with-context": activeContext === Context.EDITOR
+                "with-context": activeContext === ContextType.EDITOR
             }
         );
     };

@@ -4,7 +4,7 @@ import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
 import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {Context} from "../../data/Context";
+import {ContextType} from "../../data/ContextType";
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
@@ -42,7 +42,7 @@ export function updateCustomCursorStyle(customCursorStyle: CustomCursorStyle): G
     }
 }
 
-export function updateActiveContext(activeContext: Context): GeneralActionTypes {
+export function updateActiveContext(activeContext: ContextType): GeneralActionTypes {
     return {
         type: Action.UPDATE_CONTEXT,
         payload: {

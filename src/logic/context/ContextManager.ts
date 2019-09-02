@@ -1,4 +1,4 @@
-import {Context} from "../../data/Context";
+import {ContextType} from "../../data/ContextType";
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {store} from "../../index";
 import {updateActiveContext} from "../../store/general/actionCreators";
@@ -9,20 +9,20 @@ import {PopupContext} from "./PopupContext";
 export class ContextManager {
     private static activeCombo: string[] = [];
     private static actions: HotKeyAction[] = [];
-    private static contextHistory: Context[] = [];
+    private static contextHistory: ContextType[] = [];
 
     public static init(): void {
         window.addEventListener("keydown", ContextManager.onDown);
         window.addEventListener("keyup", ContextManager.onUp);
     }
 
-    public static switchCtx(context: Context): void {
+    public static switchCtx(context: ContextType): void {
         store.dispatch(updateActiveContext(context));
         switch (context) {
-            case Context.EDITOR:
+            case ContextType.EDITOR:
                 ContextManager.actions = EditorContext.getActions();
                 break;
-            case Context.POPUP:
+            case ContextType.POPUP:
                 ContextManager.actions = PopupContext.getActions();
                 break;
             default:

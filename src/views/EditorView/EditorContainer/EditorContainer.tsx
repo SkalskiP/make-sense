@@ -13,7 +13,7 @@ import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 import {ContextManager} from "../../../logic/context/ContextManager";
-import {Context} from "../../../data/Context";
+import {ContextType} from "../../../data/ContextType";
 
 interface IProps {
     windowSize: ISize;
@@ -79,7 +79,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 renderContent={leftSideBarRender}
             />
             <div className="EditorWrapper"
-                onMouseDown={() => ContextManager.switchCtx(Context.EDITOR)}
+                onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
             >
                 <Editor
                     size={calculateEditorSize()}

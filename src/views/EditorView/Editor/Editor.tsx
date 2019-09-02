@@ -18,7 +18,7 @@ import {EditorModel} from "../../../model/EditorModel";
 import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
-import {Context} from "../../../data/Context";
+import {ContextType} from "../../../data/ContextType";
 
 interface IProps {
     size: ISize;
@@ -41,7 +41,7 @@ class Editor extends React.Component<IProps, {}> {
 
         const {imageData, activeLabelType} = this.props;
 
-        ContextManager.switchCtx(Context.EDITOR);
+        ContextManager.switchCtx(ContextType.EDITOR);
         EditorActions.mountRenderEngines(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
     }
