@@ -4,19 +4,17 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {addImageData} from "../../../store/editor/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupWindowType} from "../../../data/PopupWindowType";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 import {ImageData} from "../../../store/editor/types";
 import {AcceptedFileType} from "../../../data/AcceptedFileType";
+import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
-    updateActivePopupType: (activePopupType: PopupWindowType) => any;
     addImageData: (imageData: ImageData[]) => any;
 }
 
-const LoadMoreImagesPopup: React.FC<IProps> = ({updateActivePopupType, addImageData}) => {
+const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.IMAGE
     });
@@ -24,12 +22,12 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({updateActivePopupType, addImageD
     const onAccept = () => {
         if (acceptedFiles.length > 0) {
             addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
-            updateActivePopupType(null);
+            PopupActions.close();
         }
     };
 
     const onReject = () => {
-        updateActivePopupType(null);
+        PopupActions.close();
     };
 
     const getDropZoneContent = () => {
@@ -88,7 +86,6 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({updateActivePopupType, addImageD
 };
 
 const mapDispatchToProps = {
-    updateActivePopupType,
     addImageData
 };
 

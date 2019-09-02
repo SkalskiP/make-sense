@@ -4,10 +4,10 @@ import {PopupWindowType} from "../../data/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
-import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
+import {ExportLabelPopup} from "./ExportLabelsPopup/ExportLabelPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
