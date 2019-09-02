@@ -19,6 +19,7 @@ import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
+import {LabelType} from "../../data/LabelType";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -31,6 +32,7 @@ export class PointRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
+        this.labelType = LabelType.POINT;
     }
 
     // =================================================================================================================

@@ -20,6 +20,7 @@ import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
+import {LabelType} from "../../data/LabelType";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -33,6 +34,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
+        this.labelType = LabelType.RECTANGLE;
     }
 
     // =================================================================================================================
@@ -51,9 +53,13 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    this.startRectCreation(data.mousePositionOnCanvas);
+                    if (!!EditorSelector.getHighlightedLabelId())
+                        store.dispatch(updateActiveLabelId(EditorSelector.getHighlightedLabelId()));
+                    else
+                        this.startRectCreation(data.mousePositionOnCanvas);
                 }
             } else if (isMouseOverImage) {
+
                 this.startRectCreation(data.mousePositionOnCanvas);
             }
         }

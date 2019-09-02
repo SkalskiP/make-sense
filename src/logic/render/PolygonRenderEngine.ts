@@ -22,6 +22,7 @@ import {LineUtil} from "../../utils/LineUtil";
 import {MouseEventUtil} from "../../utils/MouseEventUtil";
 import {EventType} from "../../data/EventType";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
+import {LabelType} from "../../data/LabelType";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -37,6 +38,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
+        this.labelType = LabelType.POLYGON;
     }
 
     // =================================================================================================================
@@ -54,12 +56,6 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     break;
                 case EventType.MOUSE_DOWN:
                     this.mouseDownHandler(data);
-                    break;
-                case EventType.KEY_DOWN:
-                    if ((data.event as KeyboardEvent).key === "Escape")
-                        this.cancelLabelCreation();
-                    else if ((data.event as KeyboardEvent).key === "Enter")
-                        this.addLabelAndFinishCreation(data);
                     break;
                 default:
                     break;
@@ -270,7 +266,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         }
     }
 
-    private cancelLabelCreation() {
+    public cancelLabelCreation() {
         this.activePath = [];
     }
 
@@ -278,7 +274,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         this.activePath = [];
     }
 
-    private addLabelAndFinishCreation(data: EditorData) {
+    public addLabelAndFinishCreation(data: EditorData) {
         if (this.isCreationInProgress() && this.activePath.length > 2) {
             const polygonOnImage: IPoint[] = RenderEngineUtil.transferPolygonFromCanvasToImage(this.activePath, data);
             this.addPolygonLabel(polygonOnImage);
