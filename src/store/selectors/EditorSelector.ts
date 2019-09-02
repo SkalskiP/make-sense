@@ -67,4 +67,8 @@ export class EditorSelector {
 
         return _.find(EditorSelector.getActiveImageData().labelPolygons, {id: activeLabelId});
     }
+
+    public static getCurrentZoomPercentage(): number {
+        return store.getState().editor.zoomPercentage;
+    }
 }

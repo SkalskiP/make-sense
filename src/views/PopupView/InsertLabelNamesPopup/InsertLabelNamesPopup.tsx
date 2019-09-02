@@ -56,8 +56,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
 
     const onAccept = () => {
         const labelNamesList: string[] = extractLabelNamesList();
-        updateLabelNamesList(labelNamesList);
-        PopupActions.close();
+        if (labelNamesList.length > 0) {
+            updateLabelNamesList(labelNamesList);
+            PopupActions.close();
+        }
     };
 
     const extractLabelNamesList = (): string[] => {

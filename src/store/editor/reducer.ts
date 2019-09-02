@@ -11,7 +11,8 @@ const initialState: EditorState = {
     projectName: "my-project-name",
     imagesData: [],
     labelNames: [],
-    firstLabelCreatedFlag: false
+    firstLabelCreatedFlag: false,
+    zoomPercentage: 100
 };
 
 export function editorReducer(
@@ -91,6 +92,12 @@ export function editorReducer(
             return {
                 ...state,
                 firstLabelCreatedFlag: action.payload.firstLabelCreatedFlag
+            }
+        }
+        case Action.UPDATE_ZOOM_PERCENTAGE: {
+            return {
+                ...state,
+                zoomPercentage: action.payload.zoomPercentage
             }
         }
         default:

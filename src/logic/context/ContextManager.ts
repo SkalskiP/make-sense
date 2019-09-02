@@ -43,6 +43,7 @@ export class ContextManager {
     }
 
     private static onDown(event: KeyboardEvent): void {
+        console.log(event)
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);

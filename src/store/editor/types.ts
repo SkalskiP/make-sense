@@ -42,6 +42,7 @@ export type EditorState = {
     imagesData: ImageData[];
     labelNames: string[];
     firstLabelCreatedFlag: boolean;
+    zoomPercentage: number;
 }
 
 interface UpdateProjectType {
@@ -129,6 +130,13 @@ interface UpdateFirstLabelCreatedFlag {
     }
 }
 
+interface UpdateZoomPercentage {
+    type: typeof Action.UPDATE_ZOOM_PERCENTAGE;
+    payload: {
+        zoomPercentage: number;
+    }
+}
+
 export type EditorActionTypes = UpdateProjectType
     | UpdateProjectName
     | UpdateActiveImageIndex
@@ -141,4 +149,5 @@ export type EditorActionTypes = UpdateProjectType
     | UpdateActiveLabelId
     | UpdateHighlightedLabelId
     | UpdateFirstLabelCreatedFlag
+    | UpdateZoomPercentage
 

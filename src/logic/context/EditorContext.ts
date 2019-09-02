@@ -6,8 +6,9 @@ import {EditorActions} from "../actions/EditorActions";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {store} from "../../index";
-import {updateActiveImageIndex} from "../../store/editor/actionCreators";
+import {updateActiveImageIndex, updateZoomPercentage} from "../../store/editor/actionCreators";
 import {BaseContext} from "./BaseContext";
+import {Settings} from "../../settings/Settings";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -40,8 +41,36 @@ export class EditorContext extends BaseContext {
             action: (event: KeyboardEvent) => {
                 EditorContext.getNextImage();
             }
+        },
+        {
+            keyCombo: ["+"],
+            action: (event: KeyboardEvent) => {
+                EditorContext.zoomIn();
+                EditorActions.fullRender();
+            }
+        },
+        {
+            keyCombo: ["-"],
+            action: (event: KeyboardEvent) => {
+                EditorContext.zoomOut();
+                EditorActions.fullRender();
+            }
         }
     ];
+
+    private static zoomIn(): void {
+        const currentZoomPercentage: number = EditorSelector.getCurrentZoomPercentage();
+        const newZoomPercentage: number = Math.min(currentZoomPercentage + Settings.ZOOM_PITCH,
+            Settings.MAX_ZOOM_PERCENTAGE);
+        store.dispatch(updateZoomPercentage(newZoomPercentage));
+    }
+
+    private static zoomOut(): void {
+        const currentZoomPercentage: number = EditorSelector.getCurrentZoomPercentage();
+        const newZoomPercentage: number = Math.max(currentZoomPercentage - Settings.ZOOM_PITCH,
+            Settings.MIN_ZOOM_PERCENTAGE);
+        store.dispatch(updateZoomPercentage(newZoomPercentage));
+    }
 
     private static getPreviousImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();

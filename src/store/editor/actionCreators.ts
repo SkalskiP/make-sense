@@ -111,3 +111,12 @@ export function updateFirstLabelCreatedFlag(firstLabelCreatedFlag: boolean) {
         }
     }
 }
+
+export function updateZoomPercentage(zoomPercentage: number) {
+    return {
+        type: Action.UPDATE_ZOOM_PERCENTAGE,
+        payload: {
+            zoomPercentage
+        }
+    }
+}
