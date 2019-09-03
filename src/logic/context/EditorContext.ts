@@ -9,6 +9,7 @@ import {store} from "../../index";
 import {updateActiveImageIndex, updateZoomPercentage} from "../../store/editor/actionCreators";
 import {BaseContext} from "./BaseContext";
 import {Settings} from "../../settings/Settings";
+import {Direction} from "../../data/Direction";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -31,15 +32,15 @@ export class EditorContext extends BaseContext {
             }
         },
         {
-            keyCombo: ["ArrowLeft"],
+            keyCombo: ["Alt", "ArrowLeft"],
             action: (event: KeyboardEvent) => {
-                EditorContext.getPreviousImage();
+                EditorActions.getPreviousImage();
             }
         },
         {
-            keyCombo: ["ArrowRight"],
+            keyCombo: ["Alt", "ArrowRight"],
             action: (event: KeyboardEvent) => {
-                EditorContext.getNextImage();
+                EditorActions.getNextImage();
             }
         },
         {
@@ -53,7 +54,31 @@ export class EditorContext extends BaseContext {
             action: (event: KeyboardEvent) => {
                 EditorContext.zoomOut();
             }
-        }
+        },
+        {
+            keyCombo: ["ArrowLeft"],
+            action: (event: KeyboardEvent) => {
+                EditorActions.recalculateAfterTranslationAndRender(Direction.LEFT);
+            }
+        },
+        {
+            keyCombo: ["ArrowRight"],
+            action: (event: KeyboardEvent) => {
+                EditorActions.recalculateAfterTranslationAndRender(Direction.RIGHT);
+            }
+        },
+        {
+            keyCombo: ["ArrowUp"],
+            action: (event: KeyboardEvent) => {
+                EditorActions.recalculateAfterTranslationAndRender(Direction.BOTTOM);
+            }
+        },
+        {
+            keyCombo: ["ArrowDown"],
+            action: (event: KeyboardEvent) => {
+                EditorActions.recalculateAfterTranslationAndRender(Direction.TOP);
+            }
+        },
     ];
 
     private static zoomIn(): void {
@@ -61,8 +86,7 @@ export class EditorContext extends BaseContext {
         const newZoomPercentage: number = Math.min(currentZoomPercentage + Settings.CANVAS_ZOOM_PERCENTAGE_STEP,
             Settings.MAX_ZOOM_PERCENTAGE);
         store.dispatch(updateZoomPercentage(newZoomPercentage));
-        EditorActions.calculateActiveImageCharacteristics();
-        EditorActions.fullRender();
+        EditorActions.recalculateAlterZoomAndRender();
     }
 
     private static zoomOut(): void {
@@ -70,22 +94,6 @@ export class EditorContext extends BaseContext {
         const newZoomPercentage: number = Math.max(currentZoomPercentage - Settings.CANVAS_ZOOM_PERCENTAGE_STEP,
             Settings.MIN_ZOOM_PERCENTAGE);
         store.dispatch(updateZoomPercentage(newZoomPercentage));
-        EditorActions.calculateActiveImageCharacteristics();
-        EditorActions.fullRender();
-    }
-
-    private static getPreviousImage(): void {
-        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        const previousImageIndex: number = Math.max(0, currentImageIndex - 1);
-        store.dispatch(updateActiveImageIndex(previousImageIndex));
-        store.dispatch(updateZoomPercentage(100));
-    }
-
-    private static getNextImage(): void {
-        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        const imageCount: number = EditorSelector.getImagesData().length;
-        const nextImageIndex: number = Math.min(imageCount - 1, currentImageIndex + 1);
-        store.dispatch(updateActiveImageIndex(nextImageIndex));
-        store.dispatch(updateZoomPercentage(100));
+        EditorActions.recalculateAlterZoomAndRender();
     }
 }

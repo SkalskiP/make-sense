@@ -2,6 +2,7 @@ import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {EditorData} from "../../data/EditorData";
 import {EditorModel} from "../../model/EditorModel";
+import {RectUtil} from "../../utils/RectUtil";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
 
@@ -25,13 +26,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
         if (!data.viewPortRectOnRenderImage || !data.realImageToRenderImageScale)
             return;
 
-        const rectOnImage = {
-            x: data.viewPortRectOnRenderImage.x * data.realImageToRenderImageScale,
-            y: data.viewPortRectOnRenderImage.y * data.realImageToRenderImageScale,
-            width: data.viewPortRectOnCanvas.width * data.realImageToRenderImageScale,
-            height: data.viewPortRectOnCanvas.height * data.realImageToRenderImageScale
-        };
-
+        const rectOnImage = RectUtil.scaleRect(data.viewPortRectOnRenderImage, data.realImageToRenderImageScale);
         this.drawImage(EditorModel.image, rectOnImage, EditorModel.viewPortRectOnCanvas);
     }
 

@@ -8,7 +8,8 @@ export interface EditorData {
     activeImageScale: number,
     viewPortRectOnCanvas: IRect,
     viewPortRectOnRenderImage: IRect,
-    event?: Event,
+    renderImageSize: ISize,
+    realImageToRenderImageScale: number,
     activeKeyCombo: string[],
-    realImageToRenderImageScale: number
+    event?: Event,
 }

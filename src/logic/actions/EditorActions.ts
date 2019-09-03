@@ -15,6 +15,11 @@ import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {Direction} from "../../data/Direction";
+import {PointUtil} from "../../utils/PointUtil";
+import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
+import {store} from "../../index";
+import {updateActiveImageIndex, updateZoomPercentage} from "../../store/editor/actionCreators";
 
 export class EditorActions {
 
@@ -76,21 +81,24 @@ export class EditorActions {
     // GETTERS
     // =================================================================================================================
 
-    public static getViewPortRect(image: HTMLImageElement): IRect | null {
-        if (!!image && !!EditorModel.canvas) {
-            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
-            const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
-            const canvasRect: IRect = {
-                x: canvasPaddingWidth,
-                y: canvasPaddingWidth,
-                width: EditorModel.canvas.width - 2 * canvasPaddingWidth,
-                height: EditorModel.canvas.height - 2 * canvasPaddingWidth
-            };
-            return RectUtil.fitInsideRectWithRatio(canvasRect, RectUtil.getRatio(imageRect));
-        }
-        return null;
+    // Trigger only on new image
+    public static calculateViewPortRectOnCanvas(image: HTMLImageElement): IRect | null {
+        if (!image || !EditorModel.canvas)
+            return null;
+
+        const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
+        const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
+        const canvasRect: IRect = {
+            x: canvasPaddingWidth,
+            y: canvasPaddingWidth,
+            width: EditorModel.canvas.width - 2 * canvasPaddingWidth,
+            height: EditorModel.canvas.height - 2 * canvasPaddingWidth
+        };
+        return RectUtil.fitInsideRectWithRatio(canvasRect, RectUtil.getRatio(imageRect));
     };
 
+    // Trigger only on new image
+    // todo: to be removed
     public static getImageScale(image: HTMLImageElement): number | null {
         if (!image || !EditorModel.viewPortRectOnCanvas)
             return null;
@@ -98,30 +106,60 @@ export class EditorActions {
         return image.width / EditorModel.viewPortRectOnCanvas.width;
     }
 
-    public static getRenderImageRect(): IRect | null {
+    // Trigger only on new image
+    public static calculateRenderImageSize(): ISize | null {
         if (!EditorModel.viewPortRectOnCanvas)
             return null;
 
         const zoomPercentage: number = EditorSelector.getCurrentZoomPercentage();
         const zoomFactor: number = zoomPercentage / 100;
-        const renderImageSize: ISize = {
+        return {
             width: EditorModel.viewPortRectOnCanvas.width * zoomFactor,
             height: EditorModel.viewPortRectOnCanvas.height * zoomFactor,
         };
+    }
+
+    public static calculateDefaultViewPortRectOnRenderImage(): IRect | null {
+        if (!EditorModel.viewPortRectOnCanvas || !EditorModel.renderImageSize)
+            return null;
+
         return {
-            x: (renderImageSize.width - EditorModel.viewPortRectOnCanvas.width) / 2,
-            y: (renderImageSize.height - EditorModel.viewPortRectOnCanvas.height) / 2,
-            ...renderImageSize
+            ...EditorModel.viewPortRectOnCanvas,
+            x: (EditorModel.renderImageSize.width - EditorModel.viewPortRectOnCanvas.width) / 2,
+            y: (EditorModel.renderImageSize.height - EditorModel.viewPortRectOnCanvas.height) / 2
         }
     }
-    public static getRenderImageScale(image: HTMLImageElement): number | null {
+
+    public static calculateViewPortRectOnRenderImageAfterTranslation(direction: Direction): IRect | null {
+        if (!EditorModel.viewPortRectOnRenderImage || !EditorModel.renderImageSize)
+            return null;
+
+        const currentViewPortPositionOnImage: IPoint = EditorModel.viewPortRectOnRenderImage as IPoint;
+        const translationVector: IPoint = PointUtil.multiply(RenderEngineUtil.transformDirectionIntoVector(direction),
+            Settings.CANVAS_TRANSLATION_PERCENTAGE_STEP * EditorModel.viewPortRectOnRenderImage.width);
+        const nextViewPortPositionOnImage: IPoint = PointUtil.add(currentViewPortPositionOnImage, translationVector);
+
+        if (nextViewPortPositionOnImage.x < 0)
+            nextViewPortPositionOnImage.x = 0;
+        if (nextViewPortPositionOnImage.y < 0)
+            nextViewPortPositionOnImage.y = 0;
+        if (nextViewPortPositionOnImage.x + EditorModel.viewPortRectOnRenderImage.width > EditorModel.renderImageSize.width)
+            nextViewPortPositionOnImage.x = EditorModel.renderImageSize.width - EditorModel.viewPortRectOnRenderImage.width;
+        if (nextViewPortPositionOnImage.y + EditorModel.viewPortRectOnRenderImage.height > EditorModel.renderImageSize.height)
+            nextViewPortPositionOnImage.y = EditorModel.renderImageSize.height - EditorModel.viewPortRectOnRenderImage.height;
+
+        return {
+            ...EditorModel.viewPortRectOnRenderImage,
+            ...nextViewPortPositionOnImage
+        }
+    }
+
+    public static calculateRenderImageScale(image: HTMLImageElement): number | null {
         if (!image || !EditorModel.viewPortRectOnRenderImage)
             return null;
 
-        return image.width / EditorModel.viewPortRectOnRenderImage.width;
+        return image.width / EditorModel.renderImageSize.width;
     }
-
-
 
     public static getEditorData(event?: Event): EditorData {
         return {
@@ -130,9 +168,10 @@ export class EditorActions {
             activeImageScale: EditorModel.realImageToViewPortScale,
             viewPortRectOnCanvas: EditorModel.viewPortRectOnCanvas,
             viewPortRectOnRenderImage: EditorModel.viewPortRectOnRenderImage,
-            event: event,
+            renderImageSize: EditorModel.renderImageSize,
+            realImageToRenderImageScale: EditorModel.realImageToRenderImageScale,
             activeKeyCombo: ContextManager.activeCombo,
-            realImageToRenderImageScale: EditorModel.realImageToRenderImageScale
+            event: event
         }
     }
 
@@ -140,13 +179,52 @@ export class EditorActions {
     // HELPERS
     // =================================================================================================================
 
-    public static calculateActiveImageCharacteristics() {
+    public static recalculateAllAndRender() {
+        EditorActions.recalculateAll();
+        EditorActions.fullRender();
+    }
+
+    public static recalculateAfterTranslationAndRender(direction: Direction) {
         if (!!EditorModel.image) {
-            EditorModel.viewPortRectOnCanvas = EditorActions.getViewPortRect(EditorModel.image);
-            EditorModel.realImageToViewPortScale = EditorActions.getImageScale(EditorModel.image);
-            EditorModel.viewPortRectOnRenderImage = EditorActions.getRenderImageRect();
-            EditorModel.realImageToRenderImageScale = EditorActions.getRenderImageScale(EditorModel.image);
+            EditorModel.viewPortRectOnRenderImage = EditorActions.calculateViewPortRectOnRenderImageAfterTranslation(direction);
+            EditorActions.fullRender();
         }
+    }
+
+    public static recalculateAlterZoomAndRender() {
+        if (!!EditorModel.image) {
+            EditorModel.renderImageSize = EditorActions.calculateRenderImageSize();
+            EditorModel.viewPortRectOnRenderImage = EditorActions.calculateDefaultViewPortRectOnRenderImage();
+            EditorModel.realImageToRenderImageScale = EditorActions.calculateRenderImageScale(EditorModel.image);
+            EditorActions.fullRender();
+        }
+    }
+
+    public static recalculateAll() {
+        if (!!EditorModel.image) {
+            EditorModel.viewPortRectOnCanvas = EditorActions.calculateViewPortRectOnCanvas(EditorModel.image);
+            EditorModel.realImageToViewPortScale = EditorActions.getImageScale(EditorModel.image);
+            EditorModel.renderImageSize = EditorActions.calculateRenderImageSize();
+            EditorModel.viewPortRectOnRenderImage = EditorActions.calculateDefaultViewPortRectOnRenderImage();
+            EditorModel.realImageToRenderImageScale = EditorActions.calculateRenderImageScale(EditorModel.image);
+        }
+    }
+
+    public static getPreviousImage(): void {
+        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
+        const previousImageIndex: number = Math.max(0, currentImageIndex - 1);
+        store.dispatch(updateActiveImageIndex(previousImageIndex));
+        store.dispatch(updateZoomPercentage(100));
+        EditorActions.recalculateAllAndRender();
+    }
+
+    public static getNextImage(): void {
+        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
+        const imageCount: number = EditorSelector.getImagesData().length;
+        const nextImageIndex: number = Math.min(imageCount - 1, currentImageIndex + 1);
+        store.dispatch(updateActiveImageIndex(nextImageIndex));
+        store.dispatch(updateZoomPercentage(100));
+        EditorActions.recalculateAllAndRender();
     }
 
     public static resizeCanvas = (newCanvasSize: ISize) => {

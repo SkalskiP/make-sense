@@ -1,9 +1,9 @@
 import {IRect} from "../interfaces/IRect";
 import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
-import {AnchorType} from "../data/AnchorType";
 import {RectAnchor} from "../data/RectAnchor";
 import {NumberUtil} from "./NumberUtil";
+import {Direction} from "../data/Direction";
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
@@ -62,39 +62,39 @@ export class RectUtil {
         }
     }
 
-    public static resizeRect(inputRect: IRect, rectAnchor: AnchorType, delta): IRect {
+    public static resizeRect(inputRect: IRect, rectAnchor: Direction, delta): IRect {
         const rect: IRect = {...inputRect};
         switch (rectAnchor) {
-            case AnchorType.RIGHT:
+            case Direction.RIGHT:
                 rect.width += delta.x;
                 break;
-            case AnchorType.BOTTOM_RIGHT:
+            case Direction.BOTTOM_RIGHT:
                 rect.width += delta.x;
                 rect.height += delta.y;
                 break;
-            case AnchorType.BOTTOM:
+            case Direction.BOTTOM:
                 rect.height += delta.y;
                 break;
-            case AnchorType.TOP_RIGHT:
+            case Direction.TOP_RIGHT:
                 rect.width += delta.x;
                 rect.y += delta.y;
                 rect.height -= delta.y;
                 break;
-            case AnchorType.TOP:
+            case Direction.TOP:
                 rect.y += delta.y;
                 rect.height -= delta.y;
                 break;
-            case AnchorType.TOP_LEFT:
+            case Direction.TOP_LEFT:
                 rect.x += delta.x;
                 rect.width -= delta.x;
                 rect.y += delta.y;
                 rect.height -= delta.y;
                 break;
-            case AnchorType.LEFT:
+            case Direction.LEFT:
                 rect.x += delta.x;
                 rect.width -= delta.x;
                 break;
-            case AnchorType.BOTTOM_LEFT:
+            case Direction.BOTTOM_LEFT:
                 rect.x += delta.x;
                 rect.width -= delta.x;
                 rect.height += delta.y;
@@ -142,14 +142,14 @@ export class RectUtil {
 
     public static mapRectToAnchors(rect: IRect): RectAnchor[] {
         return [
-            {type: AnchorType.TOP_LEFT, position: {x: rect.x, y: rect.y}},
-            {type: AnchorType.TOP, position: {x: rect.x + 0.5 * rect.width, y: rect.y}},
-            {type: AnchorType.TOP_RIGHT, position: {x: rect.x + rect.width, y: rect.y}},
-            {type: AnchorType.LEFT, position: {x: rect.x, y: rect.y + 0.5 * rect.height}},
-            {type: AnchorType.RIGHT, position: {x: rect.x + rect.width, y: rect.y + 0.5 * rect.height}},
-            {type: AnchorType.BOTTOM_LEFT, position: {x: rect.x, y: rect.y + rect.height}},
-            {type: AnchorType.BOTTOM, position: {x: rect.x + 0.5 * rect.width, y: rect.y + rect.height}},
-            {type: AnchorType.BOTTOM_RIGHT, position: {x: rect.x + rect.width, y: rect.y + rect.height}}
+            {type: Direction.TOP_LEFT, position: {x: rect.x, y: rect.y}},
+            {type: Direction.TOP, position: {x: rect.x + 0.5 * rect.width, y: rect.y}},
+            {type: Direction.TOP_RIGHT, position: {x: rect.x + rect.width, y: rect.y}},
+            {type: Direction.LEFT, position: {x: rect.x, y: rect.y + 0.5 * rect.height}},
+            {type: Direction.RIGHT, position: {x: rect.x + rect.width, y: rect.y + 0.5 * rect.height}},
+            {type: Direction.BOTTOM_LEFT, position: {x: rect.x, y: rect.y + rect.height}},
+            {type: Direction.BOTTOM, position: {x: rect.x + 0.5 * rect.width, y: rect.y + rect.height}},
+            {type: Direction.BOTTOM_RIGHT, position: {x: rect.x + rect.width, y: rect.y + rect.height}}
         ]
     }
 

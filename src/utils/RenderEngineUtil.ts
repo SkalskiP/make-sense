@@ -6,6 +6,7 @@ import {updateCustomCursorStyle} from "../store/general/actionCreators";
 import {IPoint} from "../interfaces/IPoint";
 import {PointUtil} from "./PointUtil";
 import {IRect} from "../interfaces/IRect";
+import {Direction} from "../data/Direction";
 
 export class RenderEngineUtil {
 
@@ -72,6 +73,31 @@ export class RenderEngineUtil {
             y: topLeftBetweenPixels.y,
             width: bottomRightBetweenPixels.x - topLeftBetweenPixels.x,
             height: bottomRightBetweenPixels.y - topLeftBetweenPixels.y
+        }
+    }
+
+    public static transformDirectionIntoVector(direction: Direction): IPoint {
+        switch (direction) {
+            case Direction.RIGHT:
+                return {x: 1, y: 0};
+            case Direction.LEFT:
+                return {x: -1, y: 0};
+            case Direction.TOP:
+                return {x: 0, y: 1};
+            case Direction.BOTTOM:
+                return {x: 0, y: -1};
+            case Direction.TOP_RIGHT:
+                return {x: 1, y: 1};
+            case Direction.TOP_LEFT:
+                return {x: -1, y: 1};
+            case Direction.BOTTOM_RIGHT:
+                return {x: 1, y: -1};
+            case Direction.BOTTOM_LEFT:
+                return {x: -1, y: -1};
+            case Direction.CENTER:
+                return {x: 0, y: 0};
+            default:
+                return null;
         }
     }
 }

@@ -51,12 +51,16 @@ class Editor extends React.Component<IProps, {}> {
     }
 
     public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any): void {
-        const {imageData, activeLabelType} = this.props;
+        const {imageData, activeLabelType, size} = this.props;
 
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
         prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
-        this.updateModelAndRender()
+        if (prevProps.imageData.id !== imageData.id || prevProps.size !== size) {
+            EditorActions.recalculateAll();
+        }
+        EditorActions.resizeCanvas(this.props.size);
+        EditorActions.fullRender();
     }
 
     // =================================================================================================================
@@ -82,7 +86,7 @@ class Editor extends React.Component<IProps, {}> {
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
             EditorActions.setActiveImage(ImageRepository.getById(imageData.id));
-            this.updateModelAndRender()
+            EditorActions.recalculateAllAndRender();
         }
         else {
             if (!EditorModel.isLoading) {
@@ -99,7 +103,7 @@ class Editor extends React.Component<IProps, {}> {
         ImageRepository.store(imageData.id, image);
         EditorActions.setActiveImage(image);
         EditorActions.setLoadingStatus(false);
-        this.updateModelAndRender()
+        EditorActions.recalculateAllAndRender();
     };
 
     private handleLoadImageError = () => {};
@@ -107,12 +111,6 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
     // HELPER METHODS
     // =================================================================================================================
-
-    private updateModelAndRender = () => {
-        EditorActions.resizeCanvas(this.props.size);
-        EditorActions.calculateActiveImageCharacteristics();
-        EditorActions.fullRender();
-    };
 
     private update = (event: MouseEvent) => {
         const editorData: EditorData = EditorActions.getEditorData(event);

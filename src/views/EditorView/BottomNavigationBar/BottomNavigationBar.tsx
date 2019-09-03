@@ -1,13 +1,13 @@
 import React from 'react';
 import './BottomNavigationBar.scss';
 import {ImageData} from "../../../store/editor/types";
-import {updateActiveImageIndex} from "../../../store/editor/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {ISize} from "../../../interfaces/ISize";
 import {ContextType} from "../../../data/ContextType";
 import classNames from "classnames";
+import {EditorActions} from "../../../logic/actions/EditorActions";
 
 interface IProps {
     size: ISize;
@@ -15,21 +15,16 @@ interface IProps {
     totalImageCount: number;
     activeImageIndex: number;
     activeContext: ContextType;
-    updateActiveImageIndex: (activeImageIndex: number) => any;
 }
 
-const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, activeContext, updateActiveImageIndex}) => {
+const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, activeContext}) => {
     const minWidth:number = 400;
     const viewPreviousImage = () => {
-        if (activeImageIndex > 0) {
-            updateActiveImageIndex(activeImageIndex - 1)
-        }
+        EditorActions.getPreviousImage();
     };
 
     const viewNextImage = () => {
-        if (activeImageIndex < totalImageCount - 1) {
-            updateActiveImageIndex(activeImageIndex + 1)
-        }
+        EditorActions.getNextImage();
     };
 
     const getImageCounter = () => {
@@ -71,9 +66,7 @@ const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount
     );
 };
 
-const mapDispatchToProps = {
-    updateActiveImageIndex
-};
+const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.editor.activeImageIndex,
