@@ -6,7 +6,7 @@ import {EditorActions} from "../actions/EditorActions";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {store} from "../../index";
-import {updateActiveImageIndex, updateZoomPercentage} from "../../store/editor/actionCreators";
+import {updateZoomPercentage} from "../../store/editor/actionCreators";
 import {BaseContext} from "./BaseContext";
 import {Settings} from "../../settings/Settings";
 import {Direction} from "../../data/Direction";

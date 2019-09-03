@@ -23,7 +23,7 @@ export class RenderEngineUtil {
     }
 
     public static transferPointFromImageToCanvas(point: IPoint, data: EditorData): IPoint {
-        return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.viewPortRectOnCanvas);
+        return PointUtil.subtract(PointUtil.add(PointUtil.multiply(point, 1/data.realImageToRenderImageScale), data.viewPortRectOnCanvas), data.viewPortRectOnRenderImage);
     }
 
     public static transferPolygonFromCanvasToImage(polygon: IPoint[], data: EditorData): IPoint[] {
@@ -31,11 +31,23 @@ export class RenderEngineUtil {
     }
 
     public static transferPointFromCanvasToImage(point: IPoint, data: EditorData): IPoint {
-        return PointUtil.multiply(PointUtil.subtract(point, data.viewPortRectOnCanvas), data.activeImageScale);
+        return PointUtil.multiply(PointUtil.add(PointUtil.subtract(point, data.viewPortRectOnCanvas), data.viewPortRectOnRenderImage), data.realImageToRenderImageScale);
     }
 
     public static transferRectFromCanvasToImage(rect: IRect, data: EditorData): IRect {
-        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.activeImageScale), data.viewPortRectOnCanvas);
+        const translation: IPoint = {
+            x: data.viewPortRectOnCanvas.x - data.viewPortRectOnRenderImage.x,
+            y: data.viewPortRectOnCanvas.y - data.viewPortRectOnRenderImage.y,
+        };
+        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.realImageToRenderImageScale), translation);
+    }
+
+    public static transferRectFromImageToCanvas(rect: IRect, data: EditorData): IRect {
+        const translation: IPoint = {
+            x: data.viewPortRectOnRenderImage.x - data.viewPortRectOnCanvas.x,
+            y: data.viewPortRectOnRenderImage.y - data.viewPortRectOnCanvas.y,
+        };
+        return RectUtil.scaleRect(RectUtil.translate(rect, translation), data.realImageToRenderImageScale);
     }
 
     public static wrapDefaultCursorStyleInCancel(data: EditorData) {

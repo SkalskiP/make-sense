@@ -76,13 +76,8 @@ export class RectRenderEngine extends BaseRenderEngine {
                 const maxX: number = Math.max(this.startCreateRectPoint.x, mousePositionSnapped.x);
                 const maxY: number = Math.max(this.startCreateRectPoint.y, mousePositionSnapped.y);
 
-                const rect: IRect = {
-                    x: (minX - data.viewPortRectOnCanvas.x) * data.activeImageScale,
-                    y: (minY - data.viewPortRectOnCanvas.y) * data.activeImageScale,
-                    width: (maxX - minX) * data.activeImageScale,
-                    height: (maxY - minY) * data.activeImageScale
-                };
-                this.addRectLabel(rect);
+                const rect: IRect = {x: minX, y: minY, width: maxX - minX, height: maxY - minY};
+                this.addRectLabel(RenderEngineUtil.transferRectFromImageToCanvas(rect, data));
             }
 
             if (!!this.startResizeRectAnchor) {
@@ -234,6 +229,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));
         store.dispatch(updateActiveLabelId(labelRect.id));
+        this.startCreateRectPoint = null;
     };
 
     private getRectUnderMouse(scale: number, imageRect: IRect, mousePosition: IPoint): LabelRect {

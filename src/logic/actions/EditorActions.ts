@@ -120,6 +120,7 @@ export class EditorActions {
     }
 
     public static calculateDefaultViewPortRectOnRenderImage(): IRect | null {
+        console.log("calculateDefaultViewPortRectOnRenderImage");
         if (!EditorModel.viewPortRectOnCanvas || !EditorModel.renderImageSize)
             return null;
 
@@ -180,6 +181,7 @@ export class EditorActions {
     // =================================================================================================================
 
     public static recalculateAllAndRender() {
+        console.log("recalculateAllAndRender");
         EditorActions.recalculateAll();
         EditorActions.fullRender();
     }
@@ -192,6 +194,7 @@ export class EditorActions {
     }
 
     public static recalculateAlterZoomAndRender() {
+        console.log("recalculateAlterZoomAndRender");
         if (!!EditorModel.image) {
             EditorModel.renderImageSize = EditorActions.calculateRenderImageSize();
             EditorModel.viewPortRectOnRenderImage = EditorActions.calculateDefaultViewPortRectOnRenderImage();
@@ -201,6 +204,7 @@ export class EditorActions {
     }
 
     public static recalculateAll() {
+        console.log("recalculateAll");
         if (!!EditorModel.image) {
             EditorModel.viewPortRectOnCanvas = EditorActions.calculateViewPortRectOnCanvas(EditorModel.image);
             EditorModel.realImageToViewPortScale = EditorActions.getImageScale(EditorModel.image);

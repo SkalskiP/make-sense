@@ -19,6 +19,7 @@ import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/ContextType";
+import {SizeUtil} from "../../../utils/SizeUtil";
 
 interface IProps {
     size: ISize;
@@ -56,7 +57,11 @@ class Editor extends React.Component<IProps, {}> {
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
         prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
-        if (prevProps.imageData.id !== imageData.id || prevProps.size !== size) {
+        if (prevProps.imageData.id !== imageData.id || !SizeUtil.eq(prevProps.size, size)) {
+            console.log(prevProps.size);
+            console.log(size);
+            console.log(SizeUtil.eq(prevProps.size, size));
+            console.log("Editor.componentDidUpdate");
             EditorActions.recalculateAll();
         }
         EditorActions.resizeCanvas(this.props.size);
@@ -113,12 +118,14 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private update = (event: MouseEvent) => {
+        console.log("Editor.update START");
         const editorData: EditorData = EditorActions.getEditorData(event);
         EditorModel.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         EditorModel.primaryRenderingEngine.update(editorData);
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
         EditorActions.fullRender();
+        console.log("Editor.update END");
     };
 
     public render() {
