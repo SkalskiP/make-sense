@@ -31,6 +31,8 @@ interface IState {
 
 class LabelInputField extends React.Component<IProps, IState> {
     private dropdownOptionHeight: number = 30;
+    private dropdownOptionCount: number = 6;
+    private dropdownMargin: number = 4;
     private dropdownLabel: HTMLDivElement;
     private dropdown: HTMLDivElement;
 
@@ -82,12 +84,17 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     private getDropdownStyle = ():React.CSSProperties => {
         const clientRect = this.dropdownLabel.getBoundingClientRect();
-        return {
+        const height: number = Math.min(this.props.options.length, this.dropdownOptionCount) * this.dropdownOptionHeight;
+        const style = {
             width: clientRect.width,
-            height: Math.min(this.props.options.length, 6) * this.dropdownOptionHeight,
-            top: clientRect.top + clientRect.height + 4,
+            height: height,
             left: clientRect.left
-        }
+        };
+
+        if (window.innerHeight * 2/3 < clientRect.top)
+            return Object.assign(style, {top: clientRect.top - this.dropdownMargin - height});
+        else
+            return Object.assign(style, {top: clientRect.bottom + this.dropdownMargin});
     };
 
     private getDropdownOptions = () => {
