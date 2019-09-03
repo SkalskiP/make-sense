@@ -1,6 +1,7 @@
 import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {EditorData} from "../../data/EditorData";
+import {EditorModel} from "../../model/EditorModel";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
 
@@ -20,12 +21,25 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // RENDERING
     // =================================================================================================================
 
-    public render(data: EditorData): void {}
+    public render(data: EditorData): void {
+        if (!data.viewPortRectOnRenderImage || !data.realImageToRenderImageScale)
+            return;
 
-    public drawImage(image: HTMLImageElement, imageRect: IRect) {
+        const rectOnImage = {
+            x: data.viewPortRectOnRenderImage.x * data.realImageToRenderImageScale,
+            y: data.viewPortRectOnRenderImage.y * data.realImageToRenderImageScale,
+            width: data.viewPortRectOnCanvas.width * data.realImageToRenderImageScale,
+            height: data.viewPortRectOnCanvas.height * data.realImageToRenderImageScale
+        };
+
+        this.drawImage(EditorModel.image, rectOnImage, EditorModel.viewPortRectOnCanvas);
+    }
+
+    public drawImage(image: HTMLImageElement, rectOnImage: IRect, rectOnCanvas: IRect) {
         if (!!image && !!this.canvas) {
             const ctx = this.canvas.getContext("2d");
-            ctx.drawImage(image, imageRect.x, imageRect.y, imageRect.width, imageRect.height);
+            ctx.drawImage(image, rectOnImage.x, rectOnImage.y, rectOnImage.width, rectOnImage.height,
+                rectOnCanvas.x, rectOnCanvas.y, rectOnCanvas.width, rectOnCanvas.height);
         }
     }
 

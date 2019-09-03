@@ -68,7 +68,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     public mouseUpHandler(data: EditorData): void {
         if (this.isInProgress()) {
             const activeLabelPoint: LabelPoint = EditorSelector.getActivePointLabel();
-            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.viewPortRectOnCanvas);
             const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(pointSnapped, data);
             const imageData = EditorSelector.getActiveImageData();
 
@@ -114,7 +114,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelId) {
                     if (this.isInProgress()) {
-                        const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+                        const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.viewPortRectOnCanvas);
                         const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
                         const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
                         DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);

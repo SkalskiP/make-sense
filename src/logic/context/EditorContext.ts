@@ -46,36 +46,39 @@ export class EditorContext extends BaseContext {
             keyCombo: ["+"],
             action: (event: KeyboardEvent) => {
                 EditorContext.zoomIn();
-                EditorActions.fullRender();
             }
         },
         {
             keyCombo: ["-"],
             action: (event: KeyboardEvent) => {
                 EditorContext.zoomOut();
-                EditorActions.fullRender();
             }
         }
     ];
 
     private static zoomIn(): void {
         const currentZoomPercentage: number = EditorSelector.getCurrentZoomPercentage();
-        const newZoomPercentage: number = Math.min(currentZoomPercentage + Settings.ZOOM_PITCH,
+        const newZoomPercentage: number = Math.min(currentZoomPercentage + Settings.CANVAS_ZOOM_PERCENTAGE_STEP,
             Settings.MAX_ZOOM_PERCENTAGE);
         store.dispatch(updateZoomPercentage(newZoomPercentage));
+        EditorActions.calculateActiveImageCharacteristics();
+        EditorActions.fullRender();
     }
 
     private static zoomOut(): void {
         const currentZoomPercentage: number = EditorSelector.getCurrentZoomPercentage();
-        const newZoomPercentage: number = Math.max(currentZoomPercentage - Settings.ZOOM_PITCH,
+        const newZoomPercentage: number = Math.max(currentZoomPercentage - Settings.CANVAS_ZOOM_PERCENTAGE_STEP,
             Settings.MIN_ZOOM_PERCENTAGE);
         store.dispatch(updateZoomPercentage(newZoomPercentage));
+        EditorActions.calculateActiveImageCharacteristics();
+        EditorActions.fullRender();
     }
 
     private static getPreviousImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();
         const previousImageIndex: number = Math.max(0, currentImageIndex - 1);
         store.dispatch(updateActiveImageIndex(previousImageIndex));
+        store.dispatch(updateZoomPercentage(100));
     }
 
     private static getNextImage(): void {
@@ -83,5 +86,6 @@ export class EditorContext extends BaseContext {
         const imageCount: number = EditorSelector.getImagesData().length;
         const nextImageIndex: number = Math.min(imageCount - 1, currentImageIndex + 1);
         store.dispatch(updateActiveImageIndex(nextImageIndex));
+        store.dispatch(updateZoomPercentage(100));
     }
 }

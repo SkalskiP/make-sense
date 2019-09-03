@@ -8,7 +8,7 @@ import {PopupContext} from "./PopupContext";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 
 export class ContextManager {
-    private static activeCombo: string[] = [];
+    public static activeCombo: string[] = [];
     private static actions: HotKeyAction[] = [];
     private static contextHistory: ContextType[] = [];
 
@@ -47,8 +47,8 @@ export class ContextManager {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);
-            ContextManager.execute(event);
         }
+        ContextManager.execute(event);
     }
 
     private static onUp(event: KeyboardEvent): void {

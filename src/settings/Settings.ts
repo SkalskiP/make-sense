@@ -27,7 +27,8 @@ export class Settings {
     public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
     public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 16;
 
-    public static readonly ZOOM_PITCH: number = 10;
+    public static readonly CANVAS_ZOOM_PERCENTAGE_STEP: number = 20;
+    public static readonly CANVAS_TRANSLATION_PERCENTAGE_STEP: number = 5;
     public static readonly MIN_ZOOM_PERCENTAGE: number = 100;
     public static readonly MAX_ZOOM_PERCENTAGE: number = 300;
 }

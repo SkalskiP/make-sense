@@ -10,8 +10,10 @@ export class EditorModel {
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
     public static image: HTMLImageElement;
-    public static imageRectOnCanvas: IRect;
-    public static imageScale: number; // Image / Canvas
+    public static viewPortRectOnCanvas: IRect;
+    public static viewPortRectOnRenderImage: IRect;
+    public static realImageToViewPortScale: number;
+    public static realImageToRenderImageScale: number;
     public static mousePositionOnCanvas: IPoint;
     public static isLoading: boolean = false;
 }

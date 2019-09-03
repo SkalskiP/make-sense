@@ -10,7 +10,7 @@ import {IRect} from "../interfaces/IRect";
 export class RenderEngineUtil {
 
     public static isMouseOverImage(data: EditorData): boolean {
-        return RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+        return RectUtil.isPointInside(data.viewPortRectOnCanvas, data.mousePositionOnCanvas);
     }
 
     public static isMouseOverCanvas(data: EditorData): boolean {
@@ -22,7 +22,7 @@ export class RenderEngineUtil {
     }
 
     public static transferPointFromImageToCanvas(point: IPoint, data: EditorData): IPoint {
-        return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+        return PointUtil.add(PointUtil.multiply(point, 1/data.activeImageScale), data.viewPortRectOnCanvas);
     }
 
     public static transferPolygonFromCanvasToImage(polygon: IPoint[], data: EditorData): IPoint[] {
@@ -30,15 +30,15 @@ export class RenderEngineUtil {
     }
 
     public static transferPointFromCanvasToImage(point: IPoint, data: EditorData): IPoint {
-        return PointUtil.multiply(PointUtil.subtract(point, data.activeImageRectOnCanvas), data.activeImageScale);
+        return PointUtil.multiply(PointUtil.subtract(point, data.viewPortRectOnCanvas), data.activeImageScale);
     }
 
     public static transferRectFromCanvasToImage(rect: IRect, data: EditorData): IRect {
-        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.activeImageScale), data.viewPortRectOnCanvas);
     }
 
     public static wrapDefaultCursorStyleInCancel(data: EditorData) {
-        if (RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas)) {
+        if (RectUtil.isPointInside(data.viewPortRectOnCanvas, data.mousePositionOnCanvas)) {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
         } else {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CANCEL));

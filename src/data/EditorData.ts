@@ -6,6 +6,9 @@ export interface EditorData {
     mousePositionOnCanvas: IPoint,
     canvasSize: ISize,
     activeImageScale: number,
-    activeImageRectOnCanvas: IRect,
-    event?: Event
+    viewPortRectOnCanvas: IRect,
+    viewPortRectOnRenderImage: IRect,
+    event?: Event,
+    activeKeyCombo: string[],
+    realImageToRenderImageScale: number
 }
