@@ -1,6 +1,6 @@
 import React from 'react';
 import './PopupView.scss';
-import {PopupWindowType} from "../../data/PopupWindowType";
+import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";

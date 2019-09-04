@@ -6,7 +6,7 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {ISize} from "../../../interfaces/ISize";
-import {ContextType} from "../../../data/ContextType";
+import {ContextType} from "../../../data/enums/ContextType";
 import classNames from "classnames";
 
 interface IProps {

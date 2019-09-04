@@ -1,6 +1,6 @@
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {EditorModel} from "../../model/EditorModel";
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 import {EditorData} from "../../data/EditorData";
 import {EditorActions} from "../actions/EditorActions";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";

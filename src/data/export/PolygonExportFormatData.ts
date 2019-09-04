@@ -1,5 +1,5 @@
-import {IExportFormat} from "../interfaces/IExportFormat";
-import {ExportFormatType} from "./ExportFormatType";
+import {IExportFormat} from "../../interfaces/IExportFormat";
+import {ExportFormatType} from "../enums/ExportFormatType";
 
 export const PolygonExportFormatData: IExportFormat[] = [
     {

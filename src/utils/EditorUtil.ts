@@ -1,4 +1,4 @@
-import {CustomCursorStyle} from "../data/CustomCursorStyle";
+import {CustomCursorStyle} from "../data/enums/CustomCursorStyle";
 import classNames from "classnames";
 
 export class EditorUtil {

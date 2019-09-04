@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/ExportFormatType";
+import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {IPoint} from "../../interfaces/IPoint";
 import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../data/VGG/IVGG";
 import {ImageData, LabelPolygon} from "../../store/editor/types";

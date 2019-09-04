@@ -1,7 +1,7 @@
 import {store} from "../../index";
 import {RectUtil} from "../../utils/RectUtil";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
-import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
@@ -20,9 +20,9 @@ import {
 } from "../../store/editor/actionCreators";
 import {LineUtil} from "../../utils/LineUtil";
 import {MouseEventUtil} from "../../utils/MouseEventUtil";
-import {EventType} from "../../data/EventType";
+import {EventType} from "../../data/enums/EventType";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();

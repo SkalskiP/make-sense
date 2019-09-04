@@ -1,10 +1,10 @@
 import {ISize} from "../../interfaces/ISize";
 import {GeneralActionTypes} from "./types";
 import {Action} from "../Actions";
-import {PopupWindowType} from "../../data/PopupWindowType";
+import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
-import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {ContextType} from "../../data/ContextType";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
+import {ContextType} from "../../data/enums/ContextType";
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {

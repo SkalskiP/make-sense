@@ -1,4 +1,4 @@
-export enum AnchorType {
+export enum Direction {
     TOP = "TOP",
     BOTTOM = "BOTTOM",
     LEFT = "LEFT",

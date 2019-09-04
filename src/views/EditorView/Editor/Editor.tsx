@@ -7,18 +7,18 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateImageDataById} from "../../../store/editor/actionCreators";
 import {ImageRepository} from "../../../logic/imageRepository/ImageRepository";
-import {LabelType} from "../../../data/LabelType";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {LabelType} from "../../../data/enums/LabelType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {CanvasUtil} from "../../../utils/CanvasUtil";
-import {CustomCursorStyle} from "../../../data/CustomCursorStyle";
+import {CustomCursorStyle} from "../../../data/enums/CustomCursorStyle";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
-import {EventType} from "../../../data/EventType";
+import {EventType} from "../../../data/enums/EventType";
 import {EditorData} from "../../../data/EditorData";
 import {EditorModel} from "../../../model/EditorModel";
 import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
-import {ContextType} from "../../../data/ContextType";
+import {ContextType} from "../../../data/enums/ContextType";
 
 interface IProps {
     size: ISize;

@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/ExportFormatType";
+import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {ImageData, LabelPoint} from "../../store/editor/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";

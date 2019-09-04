@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from "react-redux";
-import {LabelType} from "../../../../data/LabelType";
+import {LabelType} from "../../../../data/enums/LabelType";
 import {ISize} from "../../../../interfaces/ISize";
 import {AppState} from "../../../../store";
 import {updateActiveImageIndex, updateActiveLabelId} from "../../../../store/editor/actionCreators";

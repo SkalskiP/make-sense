@@ -1,7 +1,7 @@
 import {IRect} from "../../interfaces/IRect";
-import {ProjectType} from "../../data/ProjectType";
+import {ProjectType} from "../../data/enums/ProjectType";
 import {Action} from "../Actions";
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 import {IPoint} from "../../interfaces/IPoint";
 
 export type LabelRect = {

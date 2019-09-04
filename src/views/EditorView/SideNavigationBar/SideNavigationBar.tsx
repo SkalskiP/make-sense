@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import './SideNavigationBar.scss';
-import {Direction} from "../../../data/Direction";
+import {Direction} from "../../../data/enums/Direction";
 
 interface IProps {
     direction: Direction

@@ -1,4 +1,4 @@
-import {LabelType} from "./LabelType";
+import {LabelType} from "../enums/LabelType";
 
 export interface ILabelToolkit {
     labelType: LabelType;

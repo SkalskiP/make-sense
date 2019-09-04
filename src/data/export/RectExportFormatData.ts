@@ -1,5 +1,5 @@
-import {ExportFormatType} from "./ExportFormatType";
-import {IExportFormat} from "../interfaces/IExportFormat";
+import {ExportFormatType} from "../enums/ExportFormatType";
+import {IExportFormat} from "../../interfaces/IExportFormat";
 
 export const RectExportFormatData: IExportFormat[] = [
     {

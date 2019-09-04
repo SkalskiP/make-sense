@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../data/ExportFormatType";
+import {ExportFormatType} from "../data/enums/ExportFormatType";
 
 export interface IExportFormat {
     type: ExportFormatType,

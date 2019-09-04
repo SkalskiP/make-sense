@@ -2,7 +2,7 @@ import React from 'react';
 import './App.scss';
 import EditorView from "./views/EditorView/EditorView";
 import MainView from "./views/MainView/MainView";
-import {ProjectType} from "./data/ProjectType";
+import {ProjectType} from "./data/enums/ProjectType";
 import {AppState} from "./store";
 import {connect} from "react-redux";
 import PopupView from "./views/PopupView/PopupView";

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from "react-redux";
-import {Direction} from "../../../data/Direction";
+import {Direction} from "../../../data/enums/Direction";
 import {ISize} from "../../../interfaces/ISize";
 import {Settings} from "../../../settings/Settings";
 import {AppState} from "../../../store";
@@ -13,7 +13,7 @@ import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 import {ContextManager} from "../../../logic/context/ContextManager";
-import {ContextType} from "../../../data/ContextType";
+import {ContextType} from "../../../data/enums/ContextType";
 
 interface IProps {
     windowSize: ISize;

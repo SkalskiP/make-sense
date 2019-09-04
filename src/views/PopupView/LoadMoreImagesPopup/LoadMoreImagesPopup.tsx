@@ -4,12 +4,12 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {addImageData} from "../../../store/editor/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 import {ImageData} from "../../../store/editor/types";
-import {AcceptedFileType} from "../../../data/AcceptedFileType";
+import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;

@@ -1,4 +1,4 @@
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 import {EditorModel} from "../../model/EditorModel";
 import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
@@ -13,6 +13,7 @@ import React from "react";
 import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
+import {ContextManager} from "../context/ContextManager";
 
 export class EditorActions {
 
@@ -101,6 +102,7 @@ export class EditorActions {
             canvasSize: CanvasUtil.getSize(EditorModel.canvas),
             activeImageScale: EditorModel.imageScale,
             activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
+            activeKeyCombo: ContextManager.getActiveCombo(),
             event: event
         }
     }

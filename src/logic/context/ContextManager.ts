@@ -1,4 +1,4 @@
-import {ContextType} from "../../data/ContextType";
+import {ContextType} from "../../data/enums/ContextType";
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {store} from "../../index";
 import {updateActiveContext} from "../../store/general/actionCreators";
@@ -10,6 +10,10 @@ export class ContextManager {
     private static activeCombo: string[] = [];
     private static actions: HotKeyAction[] = [];
     private static contextHistory: ContextType[] = [];
+
+    public static getActiveCombo(): string[] {
+        return ContextManager.activeCombo;
+    }
 
     public static init(): void {
         window.addEventListener("keydown", ContextManager.onDown);

@@ -1,7 +1,7 @@
-import {ProjectType} from "../../data/ProjectType";
+import {ProjectType} from "../../data/enums/ProjectType";
 import {EditorActionTypes, ImageData} from "./types";
 import {Action} from "../Actions";
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 
 export function updateProjectType(projectType: ProjectType): EditorActionTypes {
     return {

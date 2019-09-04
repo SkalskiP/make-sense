@@ -15,12 +15,12 @@ import {PointUtil} from "../../utils/PointUtil";
 import {RectAnchor} from "../../data/RectAnchor";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
-import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
-import {LabelType} from "../../data/LabelType";
+import {LabelType} from "../../data/enums/LabelType";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();

@@ -1,5 +1,5 @@
 import {HotKeyAction} from "../../data/HotKeyAction";
-import {PopupWindowType} from "../../data/PopupWindowType";
+import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {store} from "../../index";
 import {updateActivePopupType} from "../../store/general/actionCreators";
