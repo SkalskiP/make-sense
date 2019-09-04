@@ -5,6 +5,7 @@ import {updateActiveContext} from "../../store/general/actionCreators";
 import * as _ from "lodash";
 import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -21,6 +22,12 @@ export class ContextManager {
     }
 
     public static switchCtx(context: ContextType): void {
+        const activeCtx: ContextType = GeneralSelector.getActiveContext();
+        ContextManager.contextHistory.push(activeCtx);
+        ContextManager.updateCtx(context);
+    }
+
+    private static updateCtx(context: ContextType): void {
         store.dispatch(updateActiveContext(context));
         switch (context) {
             case ContextType.EDITOR:
@@ -34,8 +41,8 @@ export class ContextManager {
         }
     }
 
-    public static restoreContext(): void {
-        ContextManager.switchCtx(ContextManager.contextHistory.pop());
+    public static restoreCtx(): void {
+        ContextManager.updateCtx(ContextManager.contextHistory.pop());
     }
 
     private static onDown(event: KeyboardEvent): void {

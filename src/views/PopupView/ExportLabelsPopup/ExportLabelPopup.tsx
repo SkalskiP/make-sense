@@ -1,11 +1,8 @@
 import React, {useState} from 'react'
 import './ExportLabelPopup.scss'
-import {ImageData} from "../../../store/editor/types";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {ExportFormatType} from "../../../data/enums/ExportFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 import {LabelType} from "../../../data/enums/LabelType";
@@ -16,13 +13,9 @@ import {PointExportFormatData} from "../../../data/export/PointExportFormatData"
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
 import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
+import {PopupActions} from "../../../logic/actions/PopupActions";
 
-interface IProps {
-    imagesData: ImageData[],
-    updateActivePopupType: (activePopupType: PopupWindowType) => any;
-}
-
-const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType}) => {
+const ExportLabelPopup: React.FC = () => {
     const [exportLabelType, setExportLabelType] = useState(LabelType.RECTANGLE);
     const [exportFormatType, setExportFormatType] = useState(null);
 
@@ -39,11 +32,11 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
                 PolygonLabelsExporter.export(exportFormatType);
                 break;
         }
-        updateActivePopupType(null);
+        PopupActions.close();
     };
 
     const onReject = () => {
-        updateActivePopupType(null);
+        PopupActions.close();
     };
 
     const onSelect = (exportFormatType: ExportFormatType) => {
@@ -135,9 +128,7 @@ const ExportLabelPopup: React.FC<IProps> = ({imagesData, updateActivePopupType})
     );
 };
 
-const mapDispatchToProps = {
-    updateActivePopupType,
-};
+const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
     imagesData: state.editor.imagesData
