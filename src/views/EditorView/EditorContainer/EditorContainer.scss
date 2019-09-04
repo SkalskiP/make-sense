@@ -1,6 +1,9 @@
+@import '../../../settings/Settings';
+
 .EditorContainer {
   align-self: stretch;
-  flex: 1;
+  flex: 0 0 calc(100% -  #{$topNavigationBarHeight});
+  height: calc(100% - #{$topNavigationBarHeight});
 
   display: flex;
   flex-direction: row;
