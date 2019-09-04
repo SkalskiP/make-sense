@@ -1,5 +1,5 @@
 import {LabelType} from "../../data/enums/LabelType";
-import {EditorModel} from "../../model/EditorModel";
+import {EditorModel} from "../../staticModels/EditorModel";
 import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";

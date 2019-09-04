@@ -1,5 +1,5 @@
 import {HotKeyAction} from "../../data/HotKeyAction";
-import {EditorModel} from "../../model/EditorModel";
+import {EditorModel} from "../../staticModels/EditorModel";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorData} from "../../data/EditorData";
 import {EditorActions} from "../actions/EditorActions";
