@@ -8,6 +8,8 @@ import {ImageData} from "../../../../store/editor/types";
 import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import './ImagesList.scss';
+import {ContextManager} from "../../../../logic/context/ContextManager";
+import {ContextType} from "../../../../data/enums/ContextType";
 
 interface IProps {
     activeImageIndex: number;
@@ -79,7 +81,11 @@ class ImagesList extends React.Component<IProps, IState> {
     public render() {
         const { size } = this.state;
         return(
-            <div className="ImagesList" ref={ref => this.imagesListRef = ref}>
+            <div
+                className="ImagesList"
+                ref={ref => this.imagesListRef = ref}
+                onClick={() => ContextManager.switchCtx(ContextType.LEFT_NAVBAR)}
+            >
                 {!!size && <VirtualList
                     size={size}
                     childSize={{width: 150, height: 150}}

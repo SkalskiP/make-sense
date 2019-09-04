@@ -74,7 +74,22 @@ export class EditorActions {
     // GETTERS
     // =================================================================================================================
 
-    public static getImageRect(image: HTMLImageElement): IRect | null {
+    public static getEditorData(event?: Event): EditorData {
+        return {
+            mousePositionOnCanvas: EditorModel.mousePositionOnCanvas,
+            canvasSize: CanvasUtil.getSize(EditorModel.canvas),
+            activeImageScale: EditorModel.imageScale,
+            activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
+            activeKeyCombo: ContextManager.getActiveCombo(),
+            event: event
+        }
+    }
+
+    // =================================================================================================================
+    // CALCULATIONS
+    // =================================================================================================================
+
+    public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
             const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
@@ -89,31 +104,20 @@ export class EditorActions {
         return null;
     };
 
-    public static getImageScale(image: HTMLImageElement): number | null {
+    public static calculateImageScale(image: HTMLImageElement): number | null {
         if (!image || !EditorModel.imageRectOnCanvas)
             return null;
 
         return image.width / EditorModel.imageRectOnCanvas.width;
     }
 
-    public static getEditorData(event?: Event): EditorData {
-        return {
-            mousePositionOnCanvas: EditorModel.mousePositionOnCanvas,
-            canvasSize: CanvasUtil.getSize(EditorModel.canvas),
-            activeImageScale: EditorModel.imageScale,
-            activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
-            activeKeyCombo: ContextManager.getActiveCombo(),
-            event: event
-        }
-    }
-
     // =================================================================================================================
     // HELPERS
     // =================================================================================================================
 
-    public static calculateActiveImageCharacteristics() {
-        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(EditorModel.image);
-        EditorModel.imageScale = EditorActions.getImageScale(EditorModel.image);
+    public static calculateAllCharacteristics() {
+        EditorModel.imageRectOnCanvas = EditorActions.calculateImageRect(EditorModel.image);
+        EditorModel.imageScale = EditorActions.calculateImageScale(EditorModel.image);
     }
 
     public static resizeCanvas = (newCanvasSize: ISize) => {

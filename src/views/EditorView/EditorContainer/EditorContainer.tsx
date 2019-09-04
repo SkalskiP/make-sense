@@ -19,9 +19,10 @@ interface IProps {
     windowSize: ISize;
     activeImageIndex: number;
     imagesData: ImageData[];
+    activeContext: ContextType;
 }
 
-const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, imagesData}) => {
+const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, imagesData, activeContext}) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
 
@@ -38,13 +39,22 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             return null;
     };
 
+    const leftSideBarButtonOnClick = () => {
+        if (!leftTabStatus)
+            ContextManager.switchCtx(ContextType.LEFT_NAVBAR);
+        else if (leftTabStatus && activeContext === ContextType.LEFT_NAVBAR)
+            ContextManager.restoreCtx();
+
+        setLeftTabStatus(!leftTabStatus);
+    };
+
     const leftSideBarCompanionRender = () => {
         return <>
             <VerticalEditorButton
                 label="Images"
                 image={"/ico/files.png"}
                 imageAlt={"images"}
-                onClick={() => setLeftTabStatus(!leftTabStatus)}
+                onClick={leftSideBarButtonOnClick}
                 isActive={leftTabStatus}
             />
         </>
@@ -54,13 +64,22 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
         return <ImagesList/>
     };
 
+    const rightSideBarButtonOnClick = () => {
+        if (!rightTabStatus)
+            ContextManager.switchCtx(ContextType.RIGHT_NAVBAR);
+        else if (rightTabStatus && activeContext === ContextType.RIGHT_NAVBAR)
+            ContextManager.restoreCtx();
+
+        setRightTabStatus(!rightTabStatus);
+    };
+
     const rightSideBarCompanionRender = () => {
         return <>
             <VerticalEditorButton
                 label="Labels"
                 image={"/ico/tags.png"}
                 imageAlt={"labels"}
-                onClick={() => setRightTabStatus(!rightTabStatus)}
+                onClick={rightSideBarButtonOnClick}
                 isActive={rightTabStatus}
             />
         </>
@@ -75,6 +94,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <SideNavigationBar
                 direction={Direction.LEFT}
                 isOpen={leftTabStatus}
+                isWithContext={activeContext === ContextType.LEFT_NAVBAR}
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
             />
@@ -94,6 +114,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <SideNavigationBar
                 direction={Direction.RIGHT}
                 isOpen={rightTabStatus}
+                isWithContext={activeContext === ContextType.RIGHT_NAVBAR}
                 renderCompanion={rightSideBarCompanionRender}
                 renderContent={rightSideBarRender}
             />
@@ -104,7 +125,8 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
 const mapStateToProps = (state: AppState) => ({
     windowSize: state.general.windowSize,
     activeImageIndex: state.editor.activeImageIndex,
-    imagesData: state.editor.imagesData
+    imagesData: state.editor.imagesData,
+    activeContext: state.general.activeContext
 });
 
 export default connect(

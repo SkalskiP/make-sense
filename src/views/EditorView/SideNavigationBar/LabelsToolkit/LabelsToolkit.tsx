@@ -14,6 +14,8 @@ import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
 import PointLabelsList from "../PointLabelsList/PointLabelsList";
 import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
+import {ContextManager} from "../../../../logic/context/ContextManager";
+import {ContextType} from "../../../../data/enums/ContextType";
 
 interface IProps {
     activeImageIndex:number,
@@ -164,6 +166,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             <div
                 className="LabelsToolkit"
                 ref={ref => this.labelsToolkitRef = ref}
+                onClick={() => ContextManager.switchCtx(ContextType.RIGHT_NAVBAR)}
             >
                 {this.state.size && this.renderChildren()}
             </div>

@@ -110,7 +110,7 @@ class Editor extends React.Component<IProps, {}> {
 
     private updateModelAndRender = () => {
         EditorActions.resizeCanvas(this.props.size);
-        EditorActions.calculateActiveImageCharacteristics();
+        EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };
 

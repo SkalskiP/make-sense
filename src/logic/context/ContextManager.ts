@@ -23,8 +23,11 @@ export class ContextManager {
 
     public static switchCtx(context: ContextType): void {
         const activeCtx: ContextType = GeneralSelector.getActiveContext();
-        ContextManager.contextHistory.push(activeCtx);
-        ContextManager.updateCtx(context);
+
+        if (activeCtx !== context) {
+            ContextManager.contextHistory.push(activeCtx);
+            ContextManager.updateCtx(context);
+        }
     }
 
     private static updateCtx(context: ContextType): void {
@@ -47,7 +50,6 @@ export class ContextManager {
 
     private static onDown(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
-        console.log(keyCode);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);
             ContextManager.execute(event);
