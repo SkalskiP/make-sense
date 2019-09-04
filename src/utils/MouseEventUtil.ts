@@ -1,4 +1,4 @@
-import {EventType} from "../data/EventType";
+import {EventType} from "../data/enums/EventType";
 
 export class MouseEventUtil {
     public static getEventType(event: Event): EventType | null {
@@ -11,10 +11,6 @@ export class MouseEventUtil {
                 return EventType.MOUSE_UP;
             case EventType.MOUSE_MOVE:
                 return EventType.MOUSE_MOVE;
-            case EventType.KEY_DOWN:
-                return EventType.KEY_DOWN;
-            case EventType.KEY_UP:
-                return EventType.KEY_UP;
             default:
                 return null;
         }

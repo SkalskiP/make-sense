@@ -1,10 +1,10 @@
 import {ISize} from "../../interfaces/ISize";
 import {GeneralActionTypes} from "./types";
 import {Action} from "../Actions";
-import {PopupWindowType} from "../../data/PopupWindowType";
+import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {MobileDeviceData} from "../../data/MobileDeviceData";
-import {CustomCursorStyle} from "../../data/CustomCursorStyle";
-import {Context} from "../../data/Context";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
+import {ContextType} from "../../data/enums/ContextType";
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
@@ -42,7 +42,7 @@ export function updateCustomCursorStyle(customCursorStyle: CustomCursorStyle): G
     }
 }
 
-export function updateActiveContext(activeContext: Context): GeneralActionTypes {
+export function updateActiveContext(activeContext: ContextType): GeneralActionTypes {
     return {
         type: Action.UPDATE_CONTEXT,
         payload: {

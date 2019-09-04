@@ -1,6 +1,6 @@
 import React from 'react'
 import './ExitProjectPopup.scss'
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {
     updateActiveImageIndex,
@@ -13,7 +13,7 @@ import {
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {ProjectType} from "../../../data/ProjectType";
+import {ProjectType} from "../../../data/enums/ProjectType";
 import {ImageData} from "../../../store/editor/types";
 
 interface IProps {

@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/ExportFormatType";
+import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {ImageData, LabelPoint} from "../../store/editor/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
@@ -34,7 +34,7 @@ export class PointLabelsExporter {
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
-        if (imageData.labelRects.length === 0 || !imageData.loadStatus)
+        if (imageData.labelPoints.length === 0 || !imageData.loadStatus)
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);

@@ -1,4 +1,4 @@
-import {Settings} from "../settings/Settings";
+import {Settings} from "../../settings/Settings";
 
 export interface ISocialMedia {
     displayName:string;

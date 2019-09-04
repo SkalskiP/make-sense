@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";

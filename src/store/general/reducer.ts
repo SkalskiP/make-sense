@@ -1,6 +1,6 @@
 import {GeneralActionTypes, GeneralState} from "./types";
 import {Action} from "../Actions";
-import {CustomCursorStyle} from "../../data/CustomCursorStyle";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 
 const initialState: GeneralState = {
     windowSize: null,

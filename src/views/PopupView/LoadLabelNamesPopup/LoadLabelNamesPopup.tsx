@@ -4,11 +4,11 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
-import {AcceptedFileType} from "../../../data/AcceptedFileType";
+import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;

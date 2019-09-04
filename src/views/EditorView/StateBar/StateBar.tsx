@@ -3,7 +3,7 @@ import './StateBar.scss';
 import {ImageData} from "../../../store/editor/types";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {LabelType} from "../../../data/LabelType";
+import {LabelType} from "../../../data/enums/LabelType";
 
 interface IProps {
     imagesData: ImageData[];

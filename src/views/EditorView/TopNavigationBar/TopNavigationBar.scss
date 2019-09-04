@@ -2,11 +2,12 @@
 
 .TopNavigationBar {
   align-self: stretch;
-  height: $topNavigationBarHeight;
+  min-height: $topNavigationBarHeight;
   background-color: $darkThemeFirstColor;
   box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
 
   display: flex;
+  flex: 0 0 $topNavigationBarHeight;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;

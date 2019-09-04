@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import './GenericYesNoPopup.scss'
 import {TextButton} from "../../Common/TextButton/TextButton";
+import {ContextManager} from "../../../logic/context/ContextManager";
+import {ContextType} from "../../../data/enums/ContextType";
 
 interface IProps {
     title: string;
@@ -28,6 +30,15 @@ export const GenericYesNoPopup: React.FC<IProps> = (
         skipRejectButton,
         disableRejectButton
     }) => {
+    
+    const [status, setMountStatus] = useState(false);
+    useEffect(() => {
+        if (!status) {
+            ContextManager.switchCtx(ContextType.POPUP);
+            setMountStatus(true);
+        }
+    }, [status]);
+
     return (
         <div className="GenericYesNoPopup">
             <div className="Header">

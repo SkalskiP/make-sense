@@ -5,8 +5,8 @@ import {ISize} from "../../interfaces/ISize";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import classNames from 'classnames'
-import {EditorFeatureData, IEditorFeature} from "../../data/EditorFeatureData";
-import {ISocialMedia, SocialMediaData} from "../../data/SocialMediaData";
+import {EditorFeatureData, IEditorFeature} from "../../data/info/EditorFeatureData";
+import {ISocialMedia, SocialMediaData} from "../../data/info/SocialMediaData";
 import {ImageButton} from "../Common/ImageButton/ImageButton";
 
 interface IProps {

@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/ExportFormatType";
+import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {ImageData, LabelRect} from "../../store/editor/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import JSZip from 'jszip';

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from "react-redux";
-import {Direction} from "../../../data/Direction";
+import {Direction} from "../../../data/enums/Direction";
 import {ISize} from "../../../interfaces/ISize";
 import {Settings} from "../../../settings/Settings";
 import {AppState} from "../../../store";
@@ -12,6 +12,8 @@ import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton
 import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
+import {ContextManager} from "../../../logic/context/ContextManager";
+import {ContextType} from "../../../data/enums/ContextType";
 
 interface IProps {
     windowSize: ISize;
@@ -76,7 +78,9 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
             />
-            <div className="EditorWrapper">
+            <div className="EditorWrapper"
+                onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
+            >
                 <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}

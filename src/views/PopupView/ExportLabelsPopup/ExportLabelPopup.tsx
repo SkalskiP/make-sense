@@ -4,17 +4,17 @@ import {ImageData} from "../../../store/editor/types";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
-import {ExportFormatType} from "../../../data/ExportFormatType";
+import {ExportFormatType} from "../../../data/enums/ExportFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
-import {LabelType} from "../../../data/LabelType";
+import {LabelType} from "../../../data/enums/LabelType";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {IExportFormat} from "../../../interfaces/IExportFormat";
-import {RectExportFormatData} from "../../../data/RectExportFormatData";
-import {PointExportFormatData} from "../../../data/PointExportFormatData";
+import {RectExportFormatData} from "../../../data/export/RectExportFormatData";
+import {PointExportFormatData} from "../../../data/export/PointExportFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
-import {PolygonExportFormatData} from "../../../data/PolygonExportFormatData";
+import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
 import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
 
 interface IProps {

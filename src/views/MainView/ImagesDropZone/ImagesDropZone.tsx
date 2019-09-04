@@ -6,11 +6,11 @@ import {ImageData} from "../../../store/editor/types";
 import {connect} from "react-redux";
 import {addImageData, updateActiveImageIndex, updateProjectType} from "../../../store/editor/actionCreators";
 import {AppState} from "../../../store";
-import {ProjectType} from "../../../data/ProjectType";
+import {ProjectType} from "../../../data/enums/ProjectType";
 import {FileUtil} from "../../../utils/FileUtil";
-import {PopupWindowType} from "../../../data/PopupWindowType";
+import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
-import {AcceptedFileType} from "../../../data/AcceptedFileType";
+import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
