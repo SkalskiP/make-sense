@@ -1,3 +1,5 @@
+import {PopupWindowType} from "../data/enums/PopupWindowType";
+
 export class Settings {
     public static readonly GITHUB_URL: string = "https://github.com/SkalskiP";
     public static readonly MEDIUM_URL: string = "https://medium.com/@piotr.skalski92";
@@ -26,4 +28,10 @@ export class Settings {
 
     public static readonly RESIZE_HANDLE_DIMENSION_PX: number = 8;
     public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 16;
+
+    public static readonly CLOSEABLE_POPUPS: PopupWindowType[] = [
+        PopupWindowType.LOAD_IMAGES,
+        PopupWindowType.LOAD_IMAGES,
+        PopupWindowType.LOAD_IMAGES
+    ]
 }
