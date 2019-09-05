@@ -10,8 +10,19 @@ export class EditorModel {
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
     public static image: HTMLImageElement;
+    public static isLoading: boolean = false;
+
+    // =================================================================================================================
+    // OLD MODEL
+    // =================================================================================================================
+
     public static imageRectOnCanvas: IRect;
     public static imageScale: number; // Image / Canvas
     public static mousePositionOnCanvas: IPoint;
-    public static isLoading: boolean = false;
+
+    // =================================================================================================================
+    // NEW MODEL
+    // =================================================================================================================
+
+    public static zoomPercentage: number = 100;
 }

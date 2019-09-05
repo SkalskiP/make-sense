@@ -7,6 +7,7 @@ import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {BaseContext} from "./BaseContext";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {ImageActions} from "../actions/ImageActions";
+import {DisplayActions} from "../actions/DisplayActions";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -39,6 +40,18 @@ export class EditorContext extends BaseContext {
             action: (event: KeyboardEvent) => {
                 ImageActions.getNextImage();
             }
-        }
+        },
+        {
+            keyCombo: ["+"],
+            action: (event: KeyboardEvent) => {
+                DisplayActions.zoomIn();
+            }
+        },
+        {
+            keyCombo: ["-"],
+            action: (event: KeyboardEvent) => {
+                DisplayActions.zoomOut();
+            }
+        },
     ];
 }

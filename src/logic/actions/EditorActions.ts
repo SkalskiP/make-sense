@@ -4,7 +4,6 @@ import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {IRect} from "../../interfaces/IRect";
-import {Settings} from "../../settings/Settings";
 import {RectUtil} from "../../utils/RectUtil";
 import {EditorData} from "../../data/EditorData";
 import {CanvasUtil} from "../../utils/CanvasUtil";
@@ -14,6 +13,7 @@ import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
+import {DisplaySettings} from "../../settings/DisplaySettings";
 
 export class EditorActions {
 
@@ -91,7 +91,7 @@ export class EditorActions {
 
     public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
-            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
+            const canvasPaddingWidth: number = DisplaySettings.CANVAS_MIN_PADDING_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
             const canvasRect: IRect = {
                 x: canvasPaddingWidth,

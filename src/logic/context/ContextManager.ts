@@ -52,8 +52,8 @@ export class ContextManager {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);
-            ContextManager.execute(event);
         }
+        ContextManager.execute(event);
     }
 
     private static onUp(event: KeyboardEvent): void {

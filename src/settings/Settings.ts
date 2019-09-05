@@ -22,7 +22,6 @@ export class Settings {
     public static readonly DARK_THEME_THIRD_COLOR: string = "#4c4c4c";
     public static readonly DARK_THEME_FORTH_COLOR: string = "#252f35";
 
-    public static readonly CANVAS_PADDING_WIDTH_PX: number = 20;
     public static readonly CROSS_HAIR_THICKNESS_PX: number = 1;
     public static readonly CROSS_HAIR_COLOR: string = "#fff";
 
@@ -33,5 +32,5 @@ export class Settings {
         PopupWindowType.LOAD_IMAGES,
         PopupWindowType.LOAD_IMAGES,
         PopupWindowType.LOAD_IMAGES
-    ]
+    ];
 }

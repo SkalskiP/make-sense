@@ -19,6 +19,7 @@ import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
+import Scrollbars from 'react-custom-scrollbars';
 
 interface IProps {
     size: ISize;
@@ -126,12 +127,18 @@ class Editor extends React.Component<IProps, {}> {
     public render() {
         return (
             <div className="Editor">
-                <canvas
-                    className="ImageCanvas"
-                    ref={ref => EditorModel.canvas = ref}
-                    draggable={false}
-                    onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
-                />
+                <Scrollbars>
+                    <div
+                        className="ImageCanvasWrapper"
+                    >
+                        <canvas
+                            className="ImageCanvas"
+                            ref={ref => EditorModel.canvas = ref}
+                            draggable={false}
+                            onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
+                        />
+                    </div>
+                </Scrollbars>
                 <div
                     className="MousePositionIndicator"
                     ref={ref => EditorModel.mousePositionIndicator = ref}
