@@ -1,6 +1,5 @@
 import React from 'react'
 import './ExitProjectPopup.scss'
-import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {
     updateActiveImageIndex,
@@ -10,18 +9,17 @@ import {
     updateLabelNamesList,
     updateProjectType
 } from "../../../store/editor/actionCreators";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ProjectType} from "../../../data/enums/ProjectType";
 import {ImageData} from "../../../store/editor/types";
+import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
     updateProjectType: (projectType: ProjectType) => any;
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     updateLabelNamesList: (labelNames: string[]) => any;
-    updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateImageData: (imageData: ImageData[]) => any;
     updateFirstLabelCreatedFlag: (firstLabelCreatedFlag: boolean) => any;
 }
@@ -30,7 +28,6 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
     const {
         updateActiveLabelNameIndex,
         updateLabelNamesList,
-        updateActivePopupType,
         updateProjectType,
         updateActiveImageIndex,
         updateImageData,
@@ -52,13 +49,13 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
         updateLabelNamesList([]);
         updateProjectType(null);
         updateActiveImageIndex(null);
-        updateActivePopupType(null);
         updateImageData([]);
         updateFirstLabelCreatedFlag(false);
+        PopupActions.close();
     };
 
     const onReject = () => {
-        updateActivePopupType(null);
+        PopupActions.close();
     };
 
     return(
@@ -75,7 +72,6 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
 const mapDispatchToProps = {
     updateActiveLabelNameIndex,
     updateLabelNamesList,
-    updateActivePopupType,
     updateProjectType,
     updateActiveImageIndex,
     updateImageData,

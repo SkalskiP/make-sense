@@ -1,7 +1,8 @@
-import {updateMobileDeviceData, updateWindowSize} from "../../store/general/actionCreators";
+import {updateWindowSize} from "../../store/general/actionCreators";
 import {ContextManager} from "../context/ContextManager";
-import MobileDetect from 'mobile-detect'
 import {store} from "../../index";
+import {PlatformUtil} from "../../utils/PlatformUtil";
+import {PlatformModel} from "../../staticModels/PlatformModel";
 
 export class AppInitializer {
     public static inti():void {
@@ -19,11 +20,10 @@ export class AppInitializer {
     };
 
     private static detectDeviceParams = () => {
-        const mobileDetect = new MobileDetect(window.navigator.userAgent);
-        store.dispatch(updateMobileDeviceData({
-            manufacturer: mobileDetect.mobile(),
-            browser: mobileDetect.userAgent(),
-            os: mobileDetect.os()
-        }))
+        const userAgent: string = window.navigator.userAgent;
+        PlatformModel.mobileDeviceData = PlatformUtil.getMobileDeviceData(userAgent);
+        PlatformModel.isMac = PlatformUtil.isMac(userAgent);
+        PlatformModel.isSafari = PlatformUtil.isSafari(userAgent);
+        PlatformModel.isFirefox = PlatformUtil.isFirefox(userAgent);
     };
 }

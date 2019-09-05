@@ -5,7 +5,6 @@ import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 const initialState: GeneralState = {
     windowSize: null,
     activePopupType: null,
-    mobileDeviceData: null,
     customCursorStyle: CustomCursorStyle.DEFAULT,
     activeContext: null
 };
@@ -25,12 +24,6 @@ export function generalReducer(
             return {
                 ...state,
                 activePopupType: action.payload.activePopupType
-            }
-        }
-        case Action.UPDATE_MOBILE_DEVICE_DATA: {
-            return {
-                ...state,
-                mobileDeviceData: action.payload.mobileDeviceData
             }
         }
         case Action.UPDATE_CUSTOM_CURSOR_STYLE: {

@@ -10,6 +10,12 @@
   align-items: center;
   align-content: flex-start;
 
+  &.with-context {
+    .NavigationBarContentWrapper {
+      background-color: $darkThemeForthColor;
+    }
+  }
+
   .CompanionBar {
     align-self: stretch;
     min-width: $sideNavigationBarCompanionWidth;

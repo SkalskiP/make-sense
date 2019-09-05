@@ -14,7 +14,7 @@ import {CustomCursorStyle} from "../../../data/enums/CustomCursorStyle";
 import {ImageLoadManager} from "../../../logic/imageRepository/ImageLoadManager";
 import {EventType} from "../../../data/enums/EventType";
 import {EditorData} from "../../../data/EditorData";
-import {EditorModel} from "../../../model/EditorModel";
+import {EditorModel} from "../../../staticModels/EditorModel";
 import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
@@ -110,7 +110,7 @@ class Editor extends React.Component<IProps, {}> {
 
     private updateModelAndRender = () => {
         EditorActions.resizeCanvas(this.props.size);
-        EditorActions.calculateActiveImageCharacteristics();
+        EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };
 

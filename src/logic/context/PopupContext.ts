@@ -1,10 +1,9 @@
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {store} from "../../index";
-import {updateActivePopupType} from "../../store/general/actionCreators";
-import {ContextManager} from "./ContextManager";
 import {BaseContext} from "./BaseContext";
+import {PopupActions} from "../actions/PopupActions";
+import {Settings} from "../../settings/Settings";
 
 export class PopupContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -12,9 +11,9 @@ export class PopupContext extends BaseContext {
             keyCombo: ["Escape"],
             action: (event: KeyboardEvent) => {
                 const popupType: PopupWindowType = GeneralSelector.getActivePopupType();
-                if (popupType === PopupWindowType.LOAD_IMAGES || popupType === PopupWindowType.EXIT_PROJECT || popupType === PopupWindowType.EXPORT_LABELS) {
-                    store.dispatch(updateActivePopupType(null));
-                    ContextManager.restoreContext();
+                const canBeClosed: boolean = Settings.CLOSEABLE_POPUPS.includes(popupType);
+                if (canBeClosed) {
+                    PopupActions.close();
                 }
             }
         }

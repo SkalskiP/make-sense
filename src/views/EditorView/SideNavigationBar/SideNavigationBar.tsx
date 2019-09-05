@@ -6,12 +6,13 @@ import {Direction} from "../../../data/enums/Direction";
 interface IProps {
     direction: Direction
     isOpen: boolean;
+    isWithContext?: boolean;
     renderCompanion?: () => any;
     renderContent?: () => any;
 }
 
 export const SideNavigationBar: React.FC<IProps> = (props) => {
-    const {direction, isOpen, renderContent, renderCompanion} = props;
+    const {direction, isOpen, isWithContext, renderContent, renderCompanion} = props;
 
     const getClassName = () => {
         return classNames(
@@ -19,6 +20,7 @@ export const SideNavigationBar: React.FC<IProps> = (props) => {
             {
                 "left": direction === Direction.LEFT,
                 "right": direction === Direction.RIGHT,
+                "with-context": isWithContext,
                 "closed": !isOpen
             }
         );
