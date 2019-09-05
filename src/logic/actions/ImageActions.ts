@@ -5,12 +5,12 @@ import {updateActiveImageIndex} from "../../store/editor/actionCreators";
 export class ImageActions {
     public static getPreviousImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        store.dispatch(updateActiveImageIndex(currentImageIndex - 1));
+        ImageActions.getImageByIndex(currentImageIndex - 1);
     }
 
     public static getNextImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        store.dispatch(updateActiveImageIndex(currentImageIndex + 1));
+        ImageActions.getImageByIndex(currentImageIndex + 1);
     }
 
     public static getImageByIndex(index: number): void {

@@ -7,7 +7,6 @@ import {IRect} from "../../interfaces/IRect";
 import {RectUtil} from "../../utils/RectUtil";
 import {EditorData} from "../../data/EditorData";
 import {CanvasUtil} from "../../utils/CanvasUtil";
-import {ISize} from "../../interfaces/ISize";
 import React from "react";
 import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
@@ -65,7 +64,6 @@ export class EditorActions {
     public static setLoadingStatus(status: boolean) {
         EditorModel.isLoading = status;
     }
-
     public static setActiveImage(image: HTMLImageElement) {
         EditorModel.image = image;
     }
@@ -91,7 +89,7 @@ export class EditorActions {
 
     public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
-            const canvasPaddingWidth: number = DisplaySettings.CANVAS_MIN_PADDING_PX;
+            const canvasPaddingWidth: number = DisplaySettings.CANVAS_MIN_MARGIN_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
             const canvasRect: IRect = {
                 x: canvasPaddingWidth,
@@ -119,13 +117,6 @@ export class EditorActions {
         EditorModel.imageRectOnCanvas = EditorActions.calculateImageRect(EditorModel.image);
         EditorModel.imageScale = EditorActions.calculateImageScale(EditorModel.image);
     }
-
-    public static resizeCanvas = (newCanvasSize: ISize) => {
-        if (!!newCanvasSize && !!EditorModel.canvas) {
-            EditorModel.canvas.width = newCanvasSize.width;
-            EditorModel.canvas.height = newCanvasSize.height;
-        }
-    };
 
     public static updateMousePositionIndicator(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) {
 

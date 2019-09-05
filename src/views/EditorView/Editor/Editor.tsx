@@ -20,6 +20,7 @@ import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
+import {DisplayActions} from "../../../logic/actions/DisplayActions";
 
 interface IProps {
     size: ISize;
@@ -57,7 +58,13 @@ class Editor extends React.Component<IProps, {}> {
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
         prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
-        this.updateModelAndRender()
+        this.updateModelAndRender();
+
+        //todo: To be refactored
+        EditorModel.viewPortSize = DisplayActions.calculateViewPortSize();
+        EditorModel.defaultRenderImageRect = DisplayActions.calculateDefaulRenderImageRect();
+        console.log(EditorModel.viewPortSize);
+        console.log(EditorModel.defaultRenderImageRect);
     }
 
     // =================================================================================================================
@@ -110,7 +117,7 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private updateModelAndRender = () => {
-        EditorActions.resizeCanvas(this.props.size);
+        DisplayActions.resizeCanvas(this.props.size);
         EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };
@@ -126,7 +133,11 @@ class Editor extends React.Component<IProps, {}> {
 
     public render() {
         return (
-            <div className="Editor">
+            <div
+                className="Editor"
+                ref={ref => EditorModel.editor = ref}
+                draggable={false}
+            >
                 <Scrollbars>
                     <div
                         className="ImageCanvasWrapper"
