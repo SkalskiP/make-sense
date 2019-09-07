@@ -89,6 +89,7 @@ export class EditorActions {
     // CALCULATIONS
     // =================================================================================================================
 
+    // todo: to be deleted
     public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
             const canvasPaddingWidth: number = ViewPointSettings.CANVAS_MIN_MARGIN_PX;
@@ -104,6 +105,7 @@ export class EditorActions {
         return null;
     };
 
+    // todo: to be deleted
     public static calculateImageScale(image: HTMLImageElement): number | null {
         if (!image || !EditorModel.imageRectOnCanvas)
             return null;
@@ -115,6 +117,7 @@ export class EditorActions {
     // HELPERS
     // =================================================================================================================
 
+    // todo: to be deleted
     public static calculateAllCharacteristics() {
         EditorModel.imageRectOnCanvas = EditorActions.calculateImageRect(EditorModel.image);
         EditorModel.imageScale = EditorActions.calculateImageScale(EditorModel.image);

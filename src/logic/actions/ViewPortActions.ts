@@ -9,6 +9,8 @@ import {IPoint} from "../../interfaces/IPoint";
 import {PointUtil} from "../../utils/PointUtil";
 import {SizeUtil} from "../../utils/SizeUtil";
 import {EditorActions} from "./EditorActions";
+import {Direction} from "../../data/enums/Direction";
+import {DirectionUtil} from "../../utils/DirectionUtil";
 
 export class ViewPortActions {
     public static calculateViewPortSize(): ISize {
@@ -56,26 +58,81 @@ export class ViewPortActions {
         }
     }
 
-    public static resizeViewPortContent = (newCanvasSize: ISize) => {
+    public static resizeCanvas(newCanvasSize: ISize) {
         if (!!newCanvasSize && !!EditorModel.canvas) {
             EditorModel.canvas.width = newCanvasSize.width;
             EditorModel.canvas.height = newCanvasSize.height;
         }
     };
 
+    public static resizeViewPortContent() {
+        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
+        viewPortContentSize && ViewPortActions.resizeCanvas(viewPortContentSize);
+    }
+
+    public static calculateAbsoluteScrollPosition(relativePosition: IPoint): IPoint {
+        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
+        const viewPortSize = EditorModel.viewPortSize;
+        return {
+            x: relativePosition.x * (viewPortContentSize.width - viewPortSize.width),
+            y: relativePosition.y * (viewPortContentSize.height - viewPortSize.height)
+        };
+    }
+
+    public static getRelativeScrollPosition(): IPoint {
+        if (!!EditorModel.viewPortScrollbars) {
+            const values = EditorModel.viewPortScrollbars.getValues();
+            return {
+                x: values.left,
+                y: values.top
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public static getAbsolutScrollPosition(): IPoint {
+        if (!!EditorModel.viewPortScrollbars) {
+            const values = EditorModel.viewPortScrollbars.getValues();
+            return {
+                x: values.scrollLeft,
+                y: values.scrollTop
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public static setScrollPosition(position: IPoint) {
+        EditorModel.viewPortScrollbars.scrollLeft(position.x);
+        EditorModel.viewPortScrollbars.scrollTop(position.y);
+    }
+
+    public static translateViewPortPosition(direction: Direction) {
+        const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
+        const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
+        const currentScrollPosition = ViewPortActions.getAbsolutScrollPosition();
+        const nextScrollPosition = PointUtil.add(currentScrollPosition, translationVector);
+        ViewPortActions.setScrollPosition(nextScrollPosition);
+        EditorActions.fullRender();
+    }
+
     public static zoomIn() {
         const currentZoomPercentage: number = EditorModel.zoom;
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
+        const nextRelativeScrollPosition = currentZoomPercentage === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
         ViewPortActions.setZoom(currentZoomPercentage + ViewPointSettings.ZOOM_STEP);
-        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
-        viewPortContentSize && ViewPortActions.resizeViewPortContent(viewPortContentSize);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(nextRelativeScrollPosition));
         EditorActions.fullRender();
     }
 
     public static zoomOut() {
         const currentZoomPercentage: number = EditorModel.zoom;
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         ViewPortActions.setZoom(currentZoomPercentage - ViewPointSettings.ZOOM_STEP);
-        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
-        viewPortContentSize && ViewPortActions.resizeViewPortContent(viewPortContentSize);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(currentRelativeScrollPosition));
         EditorActions.fullRender();
     }
 

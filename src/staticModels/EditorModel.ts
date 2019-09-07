@@ -4,12 +4,14 @@ import {IRect} from "../interfaces/IRect";
 import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
 import {ViewPointSettings} from "../settings/ViewPointSettings";
+import Scrollbars from "react-custom-scrollbars";
 
 export class EditorModel {
     public static editor: HTMLDivElement;
     public static canvas: HTMLCanvasElement;
     public static mousePositionIndicator: HTMLDivElement;
     public static cursor: HTMLDivElement;
+    public static viewPortScrollbars: Scrollbars;
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
     public static image: HTMLImageElement;

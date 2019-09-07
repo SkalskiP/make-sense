@@ -8,6 +8,7 @@ import {BaseContext} from "./BaseContext";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {ImageActions} from "../actions/ImageActions";
 import {ViewPortActions} from "../actions/ViewPortActions";
+import {Direction} from "../../data/enums/Direction";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -53,5 +54,33 @@ export class EditorContext extends BaseContext {
                 ViewPortActions.zoomOut();
             }
         },
+        {
+            keyCombo: ["ArrowRight"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.RIGHT);
+            }
+        },
+        {
+            keyCombo: ["ArrowLeft"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.LEFT);
+            }
+        },
+        {
+            keyCombo: ["ArrowUp"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.BOTTOM);
+            }
+        },
+        {
+            keyCombo: ["ArrowDown"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.TOP);
+            }
+        }
     ];
 }

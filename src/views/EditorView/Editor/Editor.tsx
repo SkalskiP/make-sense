@@ -46,6 +46,7 @@ class Editor extends React.Component<IProps, {}> {
         ContextManager.switchCtx(ContextType.EDITOR);
         EditorActions.mountRenderEngines(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
+        ViewPortActions.resizeCanvas(this.props.size);
     }
 
     public componentWillUnmount(): void {
@@ -114,8 +115,7 @@ class Editor extends React.Component<IProps, {}> {
         //todo: To be refactored
         EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
         EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaultViewPortImageRect();
-
-        ViewPortActions.resizeViewPortContent(this.props.size);
+        ViewPortActions.resizeViewPortContent();
         EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };
@@ -136,9 +136,11 @@ class Editor extends React.Component<IProps, {}> {
                 ref={ref => EditorModel.editor = ref}
                 draggable={false}
             >
-                <Scrollbars>
+                <Scrollbars
+                    ref={ref => EditorModel.viewPortScrollbars = ref}
+                >
                     <div
-                        className="ImageCanvasWrapper"
+                        className="ViewPortContent"
                     >
                         <canvas
                             className="ImageCanvas"
