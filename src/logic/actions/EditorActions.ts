@@ -13,6 +13,10 @@ import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
 import {ViewPointSettings} from "../../settings/ViewPointSettings";
+import {PointUtil} from "../../utils/PointUtil";
+import {ViewPortActions} from "./ViewPortActions";
+import {ISize} from "../../interfaces/ISize";
+import {ImageUtil} from "../../utils/ImageUtil";
 
 export class EditorActions {
 
@@ -124,41 +128,39 @@ export class EditorActions {
     }
 
     public static updateMousePositionIndicator(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) {
-
-        if (!EditorModel.imageRectOnCanvas || !EditorModel.canvas) {
+        if (!EditorModel.image || !EditorModel.canvas) {
             EditorModel.mousePositionIndicator.style.display = "none";
             EditorModel.cursor.style.display = "none";
             return;
         }
 
-        const mousePositionOnCanvas: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
-        const canvasRect: IRect = {x: 0, y: 0, ...CanvasUtil.getSize(EditorModel.canvas)};
-        const isOverCanvas: boolean = RectUtil.isPointInside(canvasRect, mousePositionOnCanvas);
+        const mousePositionOverViewPortContent: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
+        const viewPortContentScrollPosition: IPoint = ViewPortActions.getAbsoluteScrollPosition();
+        const viewPortContentImageRect: IRect = ViewPortActions.calculateViewPortContentImageRect();
+        const mousePositionOverViewPort: IPoint = PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentScrollPosition);
+        const isMouseOverImage: boolean = RectUtil.isPointInside(viewPortContentImageRect, mousePositionOverViewPortContent);
 
-        if (!isOverCanvas) {
-            EditorModel.mousePositionIndicator.style.display = "none";
+        if (!!mousePositionOverViewPort) {
+            EditorModel.cursor.style.left = mousePositionOverViewPort.x + "px";
+            EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
+            EditorModel.cursor.style.display = "block";
+        } else {
             EditorModel.cursor.style.display = "none";
-            return;
         }
 
-        const isOverImage: boolean = RectUtil.isPointInside(EditorModel.imageRectOnCanvas, mousePositionOnCanvas);
-
-        if (isOverImage) {
-            const scale = EditorModel.imageScale;
-            const x: number = Math.round((mousePositionOnCanvas.x - EditorModel.imageRectOnCanvas.x) * scale);
-            const y: number = Math.round((mousePositionOnCanvas.y - EditorModel.imageRectOnCanvas.y) * scale);
-            const text: string = "x: " + x + ", y: " + y;
+        if (isMouseOverImage) {
+            const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
+            const scale: number = imageSize.width / viewPortContentImageRect.width;
+            const mousePositionOverImage: IPoint = PointUtil.multiply(
+                PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentImageRect), scale);
+            const text: string = "x: " + Math.round(mousePositionOverImage.x) + ", y: " + Math.round(mousePositionOverImage.y);
 
             EditorModel.mousePositionIndicator.innerHTML = text;
-            EditorModel.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 15) + "px";
-            EditorModel.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 15) + "px";
+            EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + "px";
+            EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + "px";
             EditorModel.mousePositionIndicator.style.display = "block";
         } else {
             EditorModel.mousePositionIndicator.style.display = "none";
         }
-
-        EditorModel.cursor.style.left = mousePositionOnCanvas.x + "px";
-        EditorModel.cursor.style.top = mousePositionOnCanvas.y + "px";
-        EditorModel.cursor.style.display = "block";
     };
 }

@@ -7,6 +7,15 @@
 
   .ViewPortContent {
     position: relative;
+
+    .track-horizontal {
+      cursor: none;
+    }
+
+    .track-vertical {
+      cursor: none;
+    }
+
     .ImageCanvas {
       position: absolute;
       top: 0;

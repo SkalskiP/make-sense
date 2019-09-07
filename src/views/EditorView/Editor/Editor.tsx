@@ -138,6 +138,10 @@ class Editor extends React.Component<IProps, {}> {
             >
                 <Scrollbars
                     ref={ref => EditorModel.viewPortScrollbars = ref}
+                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                    renderTrackVertical={props => <div {...props} className="track-vertical"/>}
+                    // renderThumbHorizontal={props => <div {...props} className="thumb-horizontal"/>}
+                    // renderThumbVertical={props => <div {...props} className="thumb-vertical"/>}
                 >
                     <div
                         className="ViewPortContent"

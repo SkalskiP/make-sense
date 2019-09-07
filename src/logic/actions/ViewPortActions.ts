@@ -37,8 +37,13 @@ export class ViewPortActions {
     }
 
     public static calculateViewPortContentSize(): ISize {
-        if (!!EditorModel.viewPortSize) {
-            return SizeUtil.scale(EditorModel.viewPortSize, EditorModel.zoom);
+        if (!!EditorModel.viewPortSize && !!EditorModel.image) {
+            const defaultViewPortImageRect: IRect = ViewPortActions.calculateDefaultViewPortImageRect();
+            const scaledImageSize: ISize = SizeUtil.scale(defaultViewPortImageRect, EditorModel.zoom);
+            return {
+                width: scaledImageSize.width + 2 * defaultViewPortImageRect.x,
+                height: scaledImageSize.height + 2 * defaultViewPortImageRect.y
+            }
         } else {
             return null;
         }
@@ -91,7 +96,7 @@ export class ViewPortActions {
         }
     }
 
-    public static getAbsolutScrollPosition(): IPoint {
+    public static getAbsoluteScrollPosition(): IPoint {
         if (!!EditorModel.viewPortScrollbars) {
             const values = EditorModel.viewPortScrollbars.getValues();
             return {
@@ -111,7 +116,7 @@ export class ViewPortActions {
     public static translateViewPortPosition(direction: Direction) {
         const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
         const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
-        const currentScrollPosition = ViewPortActions.getAbsolutScrollPosition();
+        const currentScrollPosition = ViewPortActions.getAbsoluteScrollPosition();
         const nextScrollPosition = PointUtil.add(currentScrollPosition, translationVector);
         ViewPortActions.setScrollPosition(nextScrollPosition);
         EditorActions.fullRender();
