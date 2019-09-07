@@ -45,10 +45,10 @@ export class RectRenderEngine extends BaseRenderEngine {
         const isMouseOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
-            const rectUnderMouse: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+            const rectUnderMouse: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent);
             if (!!rectUnderMouse) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(rectUnderMouse.rect, data.activeImageScale);
-                const anchorUnderMouse: RectAnchor = this.getAnchorUnderMouseByRect(rect, data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+                const anchorUnderMouse: RectAnchor = this.getAnchorUnderMouseByRect(rect, data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
                 if (!!anchorUnderMouse) {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
@@ -56,18 +56,18 @@ export class RectRenderEngine extends BaseRenderEngine {
                     if (!!EditorSelector.getHighlightedLabelId())
                         store.dispatch(updateActiveLabelId(EditorSelector.getHighlightedLabelId()));
                     else
-                        this.startRectCreation(data.mousePositionOnCanvas);
+                        this.startRectCreation(data.mousePositionOnViewPortContent);
                 }
             } else if (isMouseOverImage) {
 
-                this.startRectCreation(data.mousePositionOnCanvas);
+                this.startRectCreation(data.mousePositionOnViewPortContent);
             }
         }
     };
 
     public mouseUpHandler = (data: EditorData) => {
         if (!!data.activeImageRectOnCanvas) {
-            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
 
             if (!!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, mousePositionSnapped)) {
 
@@ -111,10 +111,10 @@ export class RectRenderEngine extends BaseRenderEngine {
     };
 
     public mouseMoveHandler = (data: EditorData) => {
-        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnCanvas) {
+        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnViewPortContent) {
             const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
             if (isOverImage && !this.startResizeRectAnchor) {
-                const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+                const labelRect: LabelRect = this.getRectUnderMouse(data.activeImageScale, data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent);
                 if (!!labelRect) {
                     if (EditorSelector.getHighlightedLabelId() !== labelRect.id) {
                         store.dispatch(updateHighlightedLabelId(labelRect.id))
@@ -138,9 +138,9 @@ export class RectRenderEngine extends BaseRenderEngine {
 
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                labelRect.id === activeLabelId ? this.drawActiveRect(labelRect, data.mousePositionOnCanvas, data.activeImageRectOnCanvas, data.activeImageScale) : this.drawInactiveRect(labelRect, data);
+                labelRect.id === activeLabelId ? this.drawActiveRect(labelRect, data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas, data.activeImageScale) : this.drawInactiveRect(labelRect, data);
             });
-            this.drawCurrentlyCreatedRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+            this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
             this.updateCursorStyle(data);
         }
     }
@@ -192,14 +192,14 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private updateCursorStyle(data: EditorData) {
-        if (!!this.canvas && !!data.mousePositionOnCanvas) {
-            const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data.activeImageScale, data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+        if (!!this.canvas && !!data.mousePositionOnViewPortContent) {
+            const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data.activeImageScale, data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
             if (!!rectAnchorUnderMouse || !!this.startResizeRectAnchor) {
                 store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 return;
             }
             if (RenderEngineUtil.isMouseOverCanvas(data)) {
-                if (!RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas) && !!this.startCreateRectPoint)
+                if (!RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent) && !!this.startCreateRectPoint)
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 else
                     RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);

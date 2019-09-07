@@ -7,6 +7,8 @@ import {ImageUtil} from "../../utils/ImageUtil";
 import {RectUtil} from "../../utils/RectUtil";
 import {IPoint} from "../../interfaces/IPoint";
 import {PointUtil} from "../../utils/PointUtil";
+import {SizeUtil} from "../../utils/SizeUtil";
+import {EditorActions} from "./EditorActions";
 
 export class ViewPortActions {
     public static calculateViewPortSize(): ISize {
@@ -20,7 +22,7 @@ export class ViewPortActions {
         }
     }
 
-    public static calculateDefaulRenderImageRect(): IRect {
+    public static calculateDefaultViewPortImageRect(): IRect {
         if (!!EditorModel.viewPortSize && !!EditorModel.image) {
             const minMargin: IPoint = {x: ViewPointSettings.CANVAS_MIN_MARGIN_PX, y: ViewPointSettings.CANVAS_MIN_MARGIN_PX};
             const realImageRect: IRect = {x: 0, y: 0, ...ImageUtil.getSize(EditorModel.image)};
@@ -32,7 +34,29 @@ export class ViewPortActions {
         }
     }
 
-    public static resizeCanvas = (newCanvasSize: ISize) => {
+    public static calculateViewPortContentSize(): ISize {
+        if (!!EditorModel.viewPortSize) {
+            return SizeUtil.scale(EditorModel.viewPortSize, EditorModel.zoom);
+        } else {
+            return null;
+        }
+    }
+
+    public static calculateViewPortContentImageRect(): IRect {
+        if (!!EditorModel.viewPortSize && !!EditorModel.image) {
+            const defaultViewPortImageRect: IRect = ViewPortActions.calculateDefaultViewPortImageRect();
+            const viewPortContentSize: ISize = ViewPortActions.calculateViewPortContentSize();
+            return {
+                ...defaultViewPortImageRect,
+                width: viewPortContentSize.width - 2 * defaultViewPortImageRect.x,
+                height: viewPortContentSize.height - 2 * defaultViewPortImageRect.y
+            }
+        } else {
+            return null;
+        }
+    }
+
+    public static resizeViewPortContent = (newCanvasSize: ISize) => {
         if (!!newCanvasSize && !!EditorModel.canvas) {
             EditorModel.canvas.width = newCanvasSize.width;
             EditorModel.canvas.height = newCanvasSize.height;
@@ -40,22 +64,28 @@ export class ViewPortActions {
     };
 
     public static zoomIn() {
-        const currentZoomPercentage: number = EditorModel.zoomPercentage;
-        ViewPortActions.setZoomPercentage(currentZoomPercentage + ViewPointSettings.ZOOM_PERCENTAGE_STEP);
+        const currentZoomPercentage: number = EditorModel.zoom;
+        ViewPortActions.setZoom(currentZoomPercentage + ViewPointSettings.ZOOM_STEP);
+        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
+        viewPortContentSize && ViewPortActions.resizeViewPortContent(viewPortContentSize);
+        EditorActions.fullRender();
     }
 
     public static zoomOut() {
-        const currentZoomPercentage: number = EditorModel.zoomPercentage;
-        ViewPortActions.setZoomPercentage(currentZoomPercentage - ViewPointSettings.ZOOM_PERCENTAGE_STEP);
+        const currentZoomPercentage: number = EditorModel.zoom;
+        ViewPortActions.setZoom(currentZoomPercentage - ViewPointSettings.ZOOM_STEP);
+        const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
+        viewPortContentSize && ViewPortActions.resizeViewPortContent(viewPortContentSize);
+        EditorActions.fullRender();
     }
 
-    public static setZoomPercentage(value: number) {
-        const currentZoomPercentage: number = EditorModel.zoomPercentage;
+    public static setZoom(value: number) {
+        const currentZoom: number = EditorModel.zoom;
         const isNewValueValid: boolean = NumberUtil.isValueInRange(
-            value, ViewPointSettings.MIN_ZOOM_PERCENTAGE, ViewPointSettings.MAX_ZOOM_PERCENTAGE);
+            value, ViewPointSettings.MIN_ZOOM, ViewPointSettings.MAX_ZOOM);
 
-        if (isNewValueValid && value !== currentZoomPercentage) {
-            EditorModel.zoomPercentage = value;
+        if (isNewValueValid && value !== currentZoom) {
+            EditorModel.zoom = value;
         }
     }
 }

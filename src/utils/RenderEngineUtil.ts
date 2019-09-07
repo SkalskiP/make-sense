@@ -10,11 +10,11 @@ import {IRect} from "../interfaces/IRect";
 export class RenderEngineUtil {
 
     public static isMouseOverImage(data: EditorData): boolean {
-        return RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas);
+        return RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent);
     }
 
     public static isMouseOverCanvas(data: EditorData): boolean {
-        return RectUtil.isPointInside({x: 0, y: 0, ...data.canvasSize}, data.mousePositionOnCanvas);
+        return RectUtil.isPointInside({x: 0, y: 0, ...data.viewPortContentSize}, data.mousePositionOnViewPortContent);
     }
 
     public static transferPolygonFromImageToCanvas(polygon: IPoint[], data: EditorData): IPoint[] {
@@ -38,7 +38,7 @@ export class RenderEngineUtil {
     }
 
     public static wrapDefaultCursorStyleInCancel(data: EditorData) {
-        if (RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnCanvas)) {
+        if (RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent)) {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
         } else {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CANCEL));

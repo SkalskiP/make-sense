@@ -1,6 +1,7 @@
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {store} from "../../index";
-import {updateActiveImageIndex} from "../../store/editor/actionCreators";
+import {updateActiveImageIndex, updateActiveLabelId} from "../../store/editor/actionCreators";
+import {ViewPortActions} from "./ViewPortActions";
 
 export class ImageActions {
     public static getPreviousImage(): void {
@@ -16,9 +17,12 @@ export class ImageActions {
     public static getImageByIndex(index: number): void {
         const imageCount: number = EditorSelector.getImagesData().length;
 
-        if (index < 0 || index > imageCount - 1)
+        if (index < 0 || index > imageCount - 1) {
             return;
-        else
+        } else {
+            ViewPortActions.setZoom(1);
             store.dispatch(updateActiveImageIndex(index));
+            store.dispatch(updateActiveLabelId(null));
+        }
     }
 }

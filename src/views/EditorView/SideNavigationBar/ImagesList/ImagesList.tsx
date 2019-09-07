@@ -3,19 +3,17 @@ import {connect} from "react-redux";
 import {LabelType} from "../../../../data/enums/LabelType";
 import {ISize} from "../../../../interfaces/ISize";
 import {AppState} from "../../../../store";
-import {updateActiveImageIndex, updateActiveLabelId} from "../../../../store/editor/actionCreators";
 import {ImageData} from "../../../../store/editor/types";
 import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import './ImagesList.scss';
 import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
+import {ImageActions} from "../../../../logic/actions/ImageActions";
 
 interface IProps {
     activeImageIndex: number;
     imagesData: ImageData[];
-    updateActiveImageIndex: (activeImageIndex: number) => any;
-    updateActiveLabelId: (activeLabelId: string) => any;
     activeLabelType: LabelType;
 }
 
@@ -57,8 +55,7 @@ class ImagesList extends React.Component<IProps, IState> {
     };
 
     private onClickHandler = (index: number) => {
-        this.props.updateActiveImageIndex(index);
-        this.props.updateActiveLabelId(null);
+        ImageActions.getImageByIndex(index)
     };
 
     private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
@@ -98,10 +95,7 @@ class ImagesList extends React.Component<IProps, IState> {
     }
 }
 
-const mapDispatchToProps = {
-    updateActiveImageIndex,
-    updateActiveLabelId
-};
+const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.editor.activeImageIndex,

@@ -59,12 +59,6 @@ class Editor extends React.Component<IProps, {}> {
         prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
         this.updateModelAndRender();
-
-        //todo: To be refactored
-        EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
-        EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaulRenderImageRect();
-        console.log(EditorModel.viewPortSize);
-        console.log(EditorModel.defaultRenderImageRect);
     }
 
     // =================================================================================================================
@@ -117,7 +111,11 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private updateModelAndRender = () => {
-        ViewPortActions.resizeCanvas(this.props.size);
+        //todo: To be refactored
+        EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
+        EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaultViewPortImageRect();
+
+        ViewPortActions.resizeViewPortContent(this.props.size);
         EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };

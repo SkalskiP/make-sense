@@ -44,22 +44,22 @@ export class PointRenderEngine extends BaseRenderEngine {
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
 
         if (isMouseOverCanvas) {
-            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnCanvas, data);
+            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
             if (!!labelPoint) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToCanvas(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
-                if (RectUtil.isPointInside(handleRect, data.mousePositionOnCanvas)) {
+                if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateActiveLabelId(labelPoint.id));
                     this.transformInProgress = true;
                     return;
                 } else {
                     store.dispatch(updateActiveLabelId(null));
-                    const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(data.mousePositionOnCanvas, data);
+                    const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(data.mousePositionOnViewPortContent, data);
                     this.addPointLabel(pointOnImage);
                 }
             } else if (isMouseOverImage) {
-                const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(data.mousePositionOnCanvas, data);
+                const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(data.mousePositionOnViewPortContent, data);
                 this.addPointLabel(pointOnImage);
             }
         }
@@ -68,7 +68,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     public mouseUpHandler(data: EditorData): void {
         if (this.isInProgress()) {
             const activeLabelPoint: LabelPoint = EditorSelector.getActivePointLabel();
-            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
             const pointOnImage: IPoint = RenderEngineUtil.transferPointFromCanvasToImage(pointSnapped, data);
             const imageData = EditorSelector.getActiveImageData();
 
@@ -89,7 +89,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     public mouseMoveHandler(data: EditorData): void {
         const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         if (isOverImage) {
-            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnCanvas, data);
+            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
             if (!!labelPoint) {
                 if (EditorSelector.getHighlightedLabelId() !== labelPoint.id) {
                     store.dispatch(updateHighlightedLabelId(labelPoint.id))
@@ -114,7 +114,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelId) {
                     if (this.isInProgress()) {
-                        const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnCanvas, data.activeImageRectOnCanvas);
+                        const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
                         const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
                         const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
                         DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
@@ -138,13 +138,13 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private updateCursorStyle(data: EditorData) {
-        if (!!this.canvas && !!data.mousePositionOnCanvas) {
-            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnCanvas, data);
+        if (!!this.canvas && !!data.mousePositionOnViewPortContent) {
+            const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
             if (!!labelPoint) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToCanvas(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
-                if (RectUtil.isPointInside(handleRect, data.mousePositionOnCanvas)) {
+                if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     return;
                 }
@@ -153,7 +153,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                 return;
             }
 
-            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnCanvas)) {
+            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnViewPortContent)) {
                 RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                 this.canvas.style.cursor = "none";
             } else {

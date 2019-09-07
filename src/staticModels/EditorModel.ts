@@ -3,6 +3,7 @@ import {BaseRenderEngine} from "../logic/render/BaseRenderEngine";
 import {IRect} from "../interfaces/IRect";
 import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
+import {ViewPointSettings} from "../settings/ViewPointSettings";
 
 export class EditorModel {
     public static editor: HTMLDivElement;
@@ -13,6 +14,8 @@ export class EditorModel {
     public static supportRenderingEngine: BaseRenderEngine;
     public static image: HTMLImageElement;
     public static isLoading: boolean = false;
+
+    // todo: The goal is to remove all fields of the old model from EditorModel.
 
     // =================================================================================================================
     // OLD MODEL
@@ -26,7 +29,7 @@ export class EditorModel {
     // NEW MODEL
     // =================================================================================================================
 
-    public static zoomPercentage: number = 100;
+    public static zoom: number = ViewPointSettings.MIN_ZOOM;
     public static viewPortSize: ISize;
 
     // x and y describe the dimension of the margin that remains constant regardless of the scale of the image

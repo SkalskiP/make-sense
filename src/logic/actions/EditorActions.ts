@@ -52,7 +52,6 @@ export class EditorActions {
 
     public static fullRender() {
         DrawUtil.clearCanvas(EditorModel.canvas);
-        EditorModel.primaryRenderingEngine.drawImage(EditorModel.image, EditorModel.imageRectOnCanvas);
         EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
     }
@@ -74,12 +73,15 @@ export class EditorActions {
 
     public static getEditorData(event?: Event): EditorData {
         return {
-            mousePositionOnCanvas: EditorModel.mousePositionOnCanvas,
-            canvasSize: CanvasUtil.getSize(EditorModel.canvas),
+            mousePositionOnViewPortContent: EditorModel.mousePositionOnCanvas,
+            viewPortContentSize: CanvasUtil.getSize(EditorModel.canvas),
             activeImageScale: EditorModel.imageScale,
             activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
             activeKeyCombo: ContextManager.getActiveCombo(),
-            event: event
+            event: event,
+            zoom: EditorModel.zoom,
+            viewPortSize: EditorModel.viewPortSize,
+            defaultRenderImageRect: EditorModel.defaultRenderImageRect
         }
     }
 
