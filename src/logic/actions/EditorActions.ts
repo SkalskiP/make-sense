@@ -12,7 +12,7 @@ import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
-import {DisplaySettings} from "../../settings/DisplaySettings";
+import {ViewPointSettings} from "../../settings/ViewPointSettings";
 
 export class EditorActions {
 
@@ -89,7 +89,7 @@ export class EditorActions {
 
     public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
-            const canvasPaddingWidth: number = DisplaySettings.CANVAS_MIN_MARGIN_PX;
+            const canvasPaddingWidth: number = ViewPointSettings.CANVAS_MIN_MARGIN_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
             const canvasRect: IRect = {
                 x: canvasPaddingWidth,

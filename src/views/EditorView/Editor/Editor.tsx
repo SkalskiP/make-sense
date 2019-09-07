@@ -20,7 +20,7 @@ import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
-import {DisplayActions} from "../../../logic/actions/DisplayActions";
+import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 
 interface IProps {
     size: ISize;
@@ -61,8 +61,8 @@ class Editor extends React.Component<IProps, {}> {
         this.updateModelAndRender();
 
         //todo: To be refactored
-        EditorModel.viewPortSize = DisplayActions.calculateViewPortSize();
-        EditorModel.defaultRenderImageRect = DisplayActions.calculateDefaulRenderImageRect();
+        EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
+        EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaulRenderImageRect();
         console.log(EditorModel.viewPortSize);
         console.log(EditorModel.defaultRenderImageRect);
     }
@@ -117,7 +117,7 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private updateModelAndRender = () => {
-        DisplayActions.resizeCanvas(this.props.size);
+        ViewPortActions.resizeCanvas(this.props.size);
         EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };

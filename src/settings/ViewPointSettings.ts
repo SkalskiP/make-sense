@@ -1,4 +1,4 @@
-export class DisplaySettings {
+export class ViewPointSettings {
     public static readonly CANVAS_MIN_MARGIN_PX: number = 20;
     public static readonly MIN_ZOOM_PERCENTAGE: number = 100;
     public static readonly MAX_ZOOM_PERCENTAGE: number = 400;
