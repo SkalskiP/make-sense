@@ -92,13 +92,13 @@ export class EditorActions {
     // todo: to be deleted
     public static calculateImageRect(image: HTMLImageElement): IRect | null {
         if (!!image) {
-            const canvasPaddingWidth: number = ViewPointSettings.CANVAS_MIN_MARGIN_PX;
+            const canvasMarginWidth: number = ViewPointSettings.CANVAS_MIN_MARGIN_PX;
             const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
             const canvasRect: IRect = {
-                x: canvasPaddingWidth,
-                y: canvasPaddingWidth,
-                width: EditorModel.canvas.width - 2 * canvasPaddingWidth,
-                height: EditorModel.canvas.height - 2 * canvasPaddingWidth
+                x: canvasMarginWidth,
+                y: canvasMarginWidth,
+                width: EditorModel.canvas.width - 2 * canvasMarginWidth,
+                height: EditorModel.canvas.height - 2 * canvasMarginWidth
             };
             return RectUtil.fitInsideRectWithRatio(canvasRect, RectUtil.getRatio(imageRect));
         }
