@@ -38,7 +38,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                     key={key}
                     isPassword={false}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
-                    label={"Inset label"}
+                    label={"Insert label"}
                 />
                 <ImageButton
                     image={"ico/trash.png"}
