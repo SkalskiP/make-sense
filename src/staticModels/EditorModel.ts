@@ -16,6 +16,7 @@ export class EditorModel {
     public static supportRenderingEngine: BaseRenderEngine;
     public static image: HTMLImageElement;
     public static isLoading: boolean = false;
+    public static isTransformationInProgress = false;
 
     // todo: The goal is to remove all fields of the old model from EditorModel.
 

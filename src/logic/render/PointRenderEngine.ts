@@ -20,6 +20,8 @@ import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {LabelType} from "../../data/enums/LabelType";
+import {EditorActions} from "../actions/EditorActions";
+import {EditorModel} from "../../staticModels/EditorModel";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -27,8 +29,6 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
     // STATE
     // =================================================================================================================
-
-    private transformInProgress: boolean = false;
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
@@ -51,7 +51,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
                 if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateActiveLabelId(labelPoint.id));
-                    this.transformInProgress = true;
+                    EditorActions.setTransformationInProgress(true);
                     return;
                 } else {
                     store.dispatch(updateActiveLabelId(null));
@@ -83,7 +83,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             });
             store.dispatch(updateImageDataById(imageData.id, imageData));
         }
-        this.transformInProgress = false;
+        EditorActions.setTransformationInProgress(false);
     }
 
     public mouseMoveHandler(data: EditorData): void {
@@ -107,6 +107,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
+        console.log(data.mousePositionOnViewPortContent);
         const activeLabelId: string = EditorSelector.getActiveLabelId();
         const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();
@@ -167,7 +168,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public isInProgress(): boolean {
-        return this.transformInProgress;
+        return EditorModel.isTransformationInProgress;
     }
 
     private getLabelPointUnderMouse(mousePosition: IPoint, data: EditorData): LabelPoint {

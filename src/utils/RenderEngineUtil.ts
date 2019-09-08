@@ -20,7 +20,7 @@ export class RenderEngineUtil {
         return RectUtil.isPointInside({x: 0, y: 0, ...data.viewPortContentSize}, data.mousePositionOnViewPortContent);
     }
 
-    public static transferPolygonFromImageToCanvas(polygon: IPoint[], data: EditorData): IPoint[] {
+    public static transferPolygonFromImageToViewPortContent(polygon: IPoint[], data: EditorData): IPoint[] {
         return polygon.map((point: IPoint) => RenderEngineUtil.transferPointFromImageToViewPortContent(point, data));
     }
 
@@ -29,7 +29,7 @@ export class RenderEngineUtil {
         return PointUtil.add(PointUtil.multiply(point, 1/scale), data.viewPortContentImageRect);
     }
 
-    public static transferPolygonFromCanvasToImage(polygon: IPoint[], data: EditorData): IPoint[] {
+    public static transferPolygonFromViewPortContentToImage(polygon: IPoint[], data: EditorData): IPoint[] {
         return polygon.map((point: IPoint) => RenderEngineUtil.transferPointFromViewPortContentToImage(point, data));
     }
 

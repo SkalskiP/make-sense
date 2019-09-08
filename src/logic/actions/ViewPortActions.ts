@@ -123,6 +123,8 @@ export class ViewPortActions {
     }
 
     public static zoomIn() {
+        if (EditorModel.isTransformationInProgress) return;
+
         const currentZoomPercentage: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         const nextRelativeScrollPosition = currentZoomPercentage === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
@@ -133,6 +135,8 @@ export class ViewPortActions {
     }
 
     public static zoomOut() {
+        if (EditorModel.isTransformationInProgress) return;
+
         const currentZoomPercentage: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         ViewPortActions.setZoom(currentZoomPercentage - ViewPointSettings.ZOOM_STEP);

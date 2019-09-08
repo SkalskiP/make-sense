@@ -71,6 +71,10 @@ export class EditorActions {
         EditorModel.image = image;
     }
 
+    public static setTransformationInProgress(status: boolean) {
+        EditorModel.isTransformationInProgress = status;
+    }
+
     // =================================================================================================================
     // GETTERS
     // =================================================================================================================
