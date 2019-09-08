@@ -24,4 +24,6 @@ export interface EditorData {
     zoom: number,
     viewPortSize: ISize,
     defaultRenderImageRect: IRect,
+    realImageSize: ISize,
+    viewPortContentImageRect: IRect
 }

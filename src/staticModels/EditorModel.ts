@@ -37,5 +37,4 @@ export class EditorModel {
     // x and y describe the dimension of the margin that remains constant regardless of the scale of the image
     // width and height describes the render image size for 100% scale
     public static defaultRenderImageRect: IRect;
-    public static scrollPosition: IPoint = {x: 0.5, y: 0.5};
 }

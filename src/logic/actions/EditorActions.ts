@@ -85,7 +85,9 @@ export class EditorActions {
             event: event,
             zoom: EditorModel.zoom,
             viewPortSize: EditorModel.viewPortSize,
-            defaultRenderImageRect: EditorModel.defaultRenderImageRect
+            defaultRenderImageRect: EditorModel.defaultRenderImageRect,
+            viewPortContentImageRect: ViewPortActions.calculateViewPortContentImageRect(),
+            realImageSize: ImageUtil.getSize(EditorModel.image)
         }
     }
 

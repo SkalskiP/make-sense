@@ -79,7 +79,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     const anchorIndex: number = polygonUnderMouse.vertices.reduce(
                         (indexUnderMouse: number, anchor: IPoint, index: number) => {
                         if (indexUnderMouse === null) {
-                            const anchorOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToCanvas(anchor, data);
+                            const anchorOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(anchor, data);
                             if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, anchorOnCanvas)) {
                                 return index;
                             }
@@ -203,7 +203,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         if (!!activeLabelPolygon && this.isResizeInProgress()) {
             const snappedMousePosition: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
             const polygonOnCanvas: IPoint[] = activeLabelPolygon.vertices.map((point: IPoint, index: number) => {
-                return index === this.resizeAnchorIndex ? snappedMousePosition : RenderEngineUtil.transferPointFromImageToCanvas(point, data);
+                return index === this.resizeAnchorIndex ? snappedMousePosition : RenderEngineUtil.transferPointFromImageToViewPortContent(point, data);
             });
             this.drawPolygon(polygonOnCanvas, true);
         }
@@ -325,7 +325,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         } else {
                             const snappedMousePosition: IPoint =
                                 RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
-                            return RenderEngineUtil.transferPointFromCanvasToImage(snappedMousePosition, data);
+                            return RenderEngineUtil.transferPointFromViewPortContentToImage(snappedMousePosition, data);
                         }
                     })
                 }
@@ -348,7 +348,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = EditorSelector.getActiveImageData();
         const activeLabel: LabelPolygon = EditorSelector.getActivePolygonLabel();
         const newAnchorPositionOnImage: IPoint =
-            RenderEngineUtil.transferPointFromCanvasToImage(this.suggestedAnchorPositionOnCanvas, data);
+            RenderEngineUtil.transferPointFromViewPortContentToImage(this.suggestedAnchorPositionOnCanvas, data);
         const insert = (arr, index, newItem) => [...arr.slice(0, index), newItem, ...arr.slice(index)];
 
         const newImageData: ImageData = {
