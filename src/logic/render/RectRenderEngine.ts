@@ -69,6 +69,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     public mouseUpHandler = (data: EditorData) => {
         if (!!data.viewPortContentImageRect) {
             const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
+            const activeLabelRect: LabelRect = EditorSelector.getActiveRectLabel();
 
             if (!!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, mousePositionSnapped)) {
 
@@ -81,8 +82,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 this.addRectLabel(RenderEngineUtil.transferRectFromImageToViewPortContent(rect, data));
             }
 
-            if (!!this.startResizeRectAnchor) {
-                const activeLabelRect: LabelRect = EditorSelector.getActiveRectLabel();
+            if (!!this.startResizeRectAnchor && !!activeLabelRect) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(activeLabelRect.rect, data);
                 const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position,
                     data.viewPortContentImageRect);

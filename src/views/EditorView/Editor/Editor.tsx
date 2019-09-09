@@ -112,9 +112,8 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private updateModelAndRender = () => {
-        //todo: To be refactored
-        EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
-        EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaultViewPortImageRect();
+        ViewPortActions.updateViewPortSize();
+        ViewPortActions.updateDefaultViewPortImageRect();
         ViewPortActions.resizeViewPortContent();
         EditorActions.fullRender();
     };

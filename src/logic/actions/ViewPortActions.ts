@@ -13,9 +13,9 @@ import {Direction} from "../../data/enums/Direction";
 import {DirectionUtil} from "../../utils/DirectionUtil";
 
 export class ViewPortActions {
-    public static calculateViewPortSize(): ISize {
+    public static updateViewPortSize() {
         if (!!EditorModel.editor) {
-            return {
+            EditorModel.viewPortSize = {
                 width: EditorModel.editor.offsetWidth,
                 height: EditorModel.editor.offsetHeight
             }
@@ -24,13 +24,13 @@ export class ViewPortActions {
         }
     }
 
-    public static calculateDefaultViewPortImageRect(): IRect {
+    public static updateDefaultViewPortImageRect() {
         if (!!EditorModel.viewPortSize && !!EditorModel.image) {
             const minMargin: IPoint = {x: ViewPointSettings.CANVAS_MIN_MARGIN_PX, y: ViewPointSettings.CANVAS_MIN_MARGIN_PX};
             const realImageRect: IRect = {x: 0, y: 0, ...ImageUtil.getSize(EditorModel.image)};
             const viewPortWithMarginRect: IRect = {x: 0, y: 0, ...EditorModel.viewPortSize};
             const viewPortWithoutMarginRect: IRect = RectUtil.expand(viewPortWithMarginRect, PointUtil.multiply(minMargin, -1));
-            return RectUtil.fitInsideRectWithRatio(viewPortWithoutMarginRect, RectUtil.getRatio(realImageRect));
+            EditorModel.defaultRenderImageRect = RectUtil.fitInsideRectWithRatio(viewPortWithoutMarginRect, RectUtil.getRatio(realImageRect));
         } else {
             return null;
         }
@@ -38,8 +38,8 @@ export class ViewPortActions {
 
     public static calculateViewPortContentSize(): ISize {
         if (!!EditorModel.viewPortSize && !!EditorModel.image) {
-            const defaultViewPortImageRect: IRect = ViewPortActions.calculateDefaultViewPortImageRect();
-            const scaledImageSize: ISize = SizeUtil.scale(defaultViewPortImageRect, EditorModel.zoom);
+            const defaultViewPortImageRect: IRect = EditorModel.defaultRenderImageRect;
+            const scaledImageSize: ISize = SizeUtil.scale(EditorModel.defaultRenderImageRect, EditorModel.zoom);
             return {
                 width: scaledImageSize.width + 2 * defaultViewPortImageRect.x,
                 height: scaledImageSize.height + 2 * defaultViewPortImageRect.y
@@ -51,7 +51,7 @@ export class ViewPortActions {
 
     public static calculateViewPortContentImageRect(): IRect {
         if (!!EditorModel.viewPortSize && !!EditorModel.image) {
-            const defaultViewPortImageRect: IRect = ViewPortActions.calculateDefaultViewPortImageRect();
+            const defaultViewPortImageRect: IRect = EditorModel.defaultRenderImageRect;
             const viewPortContentSize: ISize = ViewPortActions.calculateViewPortContentSize();
             return {
                 ...defaultViewPortImageRect,

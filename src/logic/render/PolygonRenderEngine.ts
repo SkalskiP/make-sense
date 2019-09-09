@@ -91,12 +91,10 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     if (anchorIndex !== null) {
                         this.startExistingLabelResize(data, polygonUnderMouse.id, anchorIndex);
                     } else {
+                        store.dispatch(updateActiveLabelId(polygonUnderMouse.id));
                         const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnViewPortContent, this.suggestedAnchorPositionOnCanvas);
                         if (isMouseOverNewAnchor) {
-                            store.dispatch(updateActiveLabelId(polygonUnderMouse.id));
                             this.addSuggestedAnchorToPolygonLabel(data);
-                        } else {
-                            this.updateActivelyCreatedLabel(data);
                         }
                     }
                 } else {
