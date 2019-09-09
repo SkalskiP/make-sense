@@ -30,7 +30,7 @@ export class Settings {
 
     public static readonly CLOSEABLE_POPUPS: PopupWindowType[] = [
         PopupWindowType.LOAD_IMAGES,
-        PopupWindowType.LOAD_IMAGES,
-        PopupWindowType.LOAD_IMAGES
+        PopupWindowType.EXPORT_LABELS,
+        PopupWindowType.EXIT_PROJECT
     ];
 }
