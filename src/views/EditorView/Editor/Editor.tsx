@@ -116,13 +116,12 @@ class Editor extends React.Component<IProps, {}> {
         EditorModel.viewPortSize = ViewPortActions.calculateViewPortSize();
         EditorModel.defaultRenderImageRect = ViewPortActions.calculateDefaultViewPortImageRect();
         ViewPortActions.resizeViewPortContent();
-        EditorActions.calculateAllCharacteristics();
         EditorActions.fullRender();
     };
 
     private update = (event: MouseEvent) => {
         const editorData: EditorData = EditorActions.getEditorData(event);
-        EditorModel.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
+        EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         EditorModel.primaryRenderingEngine.update(editorData);
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);

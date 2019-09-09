@@ -112,7 +112,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     public mouseMoveHandler(data: EditorData): void {
-        if (!!data.activeImageRectOnCanvas && !!data.mousePositionOnViewPortContent) {
+        if (!!data.viewPortContentImageRect && !!data.mousePositionOnViewPortContent) {
             const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
             if (isOverImage && !this.isCreationInProgress()) {
                 const labelPolygon: LabelPolygon = this.getPolygonUnderMouse(data);
@@ -202,7 +202,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private drawActivelyResizeLabel(data: EditorData) {
         const activeLabelPolygon: LabelPolygon = EditorSelector.getActivePolygonLabel();
         if (!!activeLabelPolygon && this.isResizeInProgress()) {
-            const snappedMousePosition: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
+            const snappedMousePosition: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             const polygonOnCanvas: IPoint[] = activeLabelPolygon.vertices.map((point: IPoint, index: number) => {
                 return index === this.resizeAnchorIndex ? snappedMousePosition : RenderEngineUtil.transferPointFromImageToViewPortContent(point, data);
             });
@@ -256,10 +256,10 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private updateActivelyCreatedLabel(data: EditorData) {
         if (this.isCreationInProgress()) {
-            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
+            const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             this.activePath.push(mousePositionSnapped);
         } else {
-            const isMouseOverImage: boolean = RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent);
+            const isMouseOverImage: boolean = RectUtil.isPointInside(data.viewPortContentImageRect, data.mousePositionOnViewPortContent);
             if (isMouseOverImage) {
                 EditorActions.setTransformationInProgress(true);
                 this.activePath.push(data.mousePositionOnViewPortContent);
@@ -330,7 +330,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                             return value;
                         } else {
                             const snappedMousePosition: IPoint =
-                                RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
+                                RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
                             return RenderEngineUtil.transferPointFromViewPortContentToImage(snappedMousePosition, data);
                         }
                     })

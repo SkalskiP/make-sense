@@ -17,21 +17,7 @@ export class EditorModel {
     public static image: HTMLImageElement;
     public static isLoading: boolean = false;
     public static isTransformationInProgress = false;
-
-    // todo: The goal is to remove all fields of the old model from EditorModel.
-
-    // =================================================================================================================
-    // OLD MODEL
-    // =================================================================================================================
-
-    public static imageRectOnCanvas: IRect;
-    public static imageScale: number; // Image / Canvas
-    public static mousePositionOnCanvas: IPoint;
-
-    // =================================================================================================================
-    // NEW MODEL
-    // =================================================================================================================
-
+    public static mousePositionOnViewPortContent: IPoint;
     public static zoom: number = ViewPointSettings.MIN_ZOOM;
     public static viewPortSize: ISize;
 

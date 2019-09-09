@@ -68,7 +68,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     public mouseUpHandler(data: EditorData): void {
         if (this.isInProgress()) {
             const activeLabelPoint: LabelPoint = EditorSelector.getActivePointLabel();
-            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.activeImageRectOnCanvas);
+            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             const pointOnImage: IPoint = RenderEngineUtil.transferPointFromViewPortContentToImage(pointSnapped, data);
             const imageData = EditorSelector.getActiveImageData();
 
@@ -107,7 +107,6 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
-        console.log(data.mousePositionOnViewPortContent);
         const activeLabelId: string = EditorSelector.getActiveLabelId();
         const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
         const imageData: ImageData = EditorSelector.getActiveImageData();

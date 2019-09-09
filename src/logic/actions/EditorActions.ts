@@ -12,7 +12,6 @@ import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
-import {ViewPointSettings} from "../../settings/ViewPointSettings";
 import {PointUtil} from "../../utils/PointUtil";
 import {ViewPortActions} from "./ViewPortActions";
 import {ISize} from "../../interfaces/ISize";
@@ -81,10 +80,8 @@ export class EditorActions {
 
     public static getEditorData(event?: Event): EditorData {
         return {
-            mousePositionOnViewPortContent: EditorModel.mousePositionOnCanvas,
+            mousePositionOnViewPortContent: EditorModel.mousePositionOnViewPortContent,
             viewPortContentSize: CanvasUtil.getSize(EditorModel.canvas),
-            activeImageScale: EditorModel.imageScale,
-            activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
             activeKeyCombo: ContextManager.getActiveCombo(),
             event: event,
             zoom: EditorModel.zoom,
@@ -96,42 +93,8 @@ export class EditorActions {
     }
 
     // =================================================================================================================
-    // CALCULATIONS
-    // =================================================================================================================
-
-    // todo: to be deleted
-    public static calculateImageRect(image: HTMLImageElement): IRect | null {
-        if (!!image) {
-            const canvasMarginWidth: number = ViewPointSettings.CANVAS_MIN_MARGIN_PX;
-            const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
-            const canvasRect: IRect = {
-                x: canvasMarginWidth,
-                y: canvasMarginWidth,
-                width: EditorModel.canvas.width - 2 * canvasMarginWidth,
-                height: EditorModel.canvas.height - 2 * canvasMarginWidth
-            };
-            return RectUtil.fitInsideRectWithRatio(canvasRect, RectUtil.getRatio(imageRect));
-        }
-        return null;
-    };
-
-    // todo: to be deleted
-    public static calculateImageScale(image: HTMLImageElement): number | null {
-        if (!image || !EditorModel.imageRectOnCanvas)
-            return null;
-
-        return image.width / EditorModel.imageRectOnCanvas.width;
-    }
-
-    // =================================================================================================================
     // HELPERS
     // =================================================================================================================
-
-    // todo: to be deleted
-    public static calculateAllCharacteristics() {
-        EditorModel.imageRectOnCanvas = EditorActions.calculateImageRect(EditorModel.image);
-        EditorModel.imageScale = EditorActions.calculateImageScale(EditorModel.image);
-    }
 
     public static updateMousePositionIndicator(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) {
         if (!EditorModel.image || !EditorModel.canvas) {
@@ -151,22 +114,23 @@ export class EditorActions {
             EditorModel.cursor.style.left = mousePositionOverViewPort.x + "px";
             EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
             EditorModel.cursor.style.display = "block";
+
+            if (isMouseOverImage) {
+                const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
+                const scale: number = imageSize.width / viewPortContentImageRect.width;
+                const mousePositionOverImage: IPoint = PointUtil.multiply(
+                    PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentImageRect), scale);
+                const text: string = "x: " + Math.round(mousePositionOverImage.x) + ", y: " + Math.round(mousePositionOverImage.y);
+
+                EditorModel.mousePositionIndicator.innerHTML = text;
+                EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + "px";
+                EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + "px";
+                EditorModel.mousePositionIndicator.style.display = "block";
+            } else {
+                EditorModel.mousePositionIndicator.style.display = "none";
+            }
         } else {
             EditorModel.cursor.style.display = "none";
-        }
-
-        if (isMouseOverImage) {
-            const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
-            const scale: number = imageSize.width / viewPortContentImageRect.width;
-            const mousePositionOverImage: IPoint = PointUtil.multiply(
-                PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentImageRect), scale);
-            const text: string = "x: " + Math.round(mousePositionOverImage.x) + ", y: " + Math.round(mousePositionOverImage.y);
-
-            EditorModel.mousePositionIndicator.innerHTML = text;
-            EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + "px";
-            EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + "px";
-            EditorModel.mousePositionIndicator.style.display = "block";
-        } else {
             EditorModel.mousePositionIndicator.style.display = "none";
         }
     };

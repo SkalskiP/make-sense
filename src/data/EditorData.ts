@@ -7,20 +7,6 @@ export interface EditorData {
     mousePositionOnViewPortContent: IPoint,
     activeKeyCombo: string[],
     event?: Event
-
-    // todo: The goal is to remove all fields of the old model from EditorData.
-
-    // =================================================================================================================
-    // OLD MODEL
-    // =================================================================================================================
-
-    activeImageScale: number,
-    activeImageRectOnCanvas: IRect,
-
-    // =================================================================================================================
-    // NEW MODEL
-    // =================================================================================================================
-
     zoom: number,
     viewPortSize: ISize,
     defaultRenderImageRect: IRect,

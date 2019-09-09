@@ -13,7 +13,7 @@ export class RenderEngineUtil {
     }
 
     public static isMouseOverImage(data: EditorData): boolean {
-        return RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent);
+        return RectUtil.isPointInside(data.viewPortContentImageRect, data.mousePositionOnViewPortContent);
     }
 
     public static isMouseOverCanvas(data: EditorData): boolean {
@@ -38,12 +38,23 @@ export class RenderEngineUtil {
         return PointUtil.multiply(PointUtil.subtract(point, data.viewPortContentImageRect), scale);
     }
 
-    public static transferRectFromCanvasToImage(rect: IRect, data: EditorData): IRect {
-        return RectUtil.translate(RectUtil.scaleRect(rect, 1/data.activeImageScale), data.activeImageRectOnCanvas);
+    public static transferRectFromViewPortContentToImage(rect: IRect, data: EditorData): IRect {
+        const scale = RenderEngineUtil.calculateImageScale(data);
+        return RectUtil.translate(RectUtil.scaleRect(rect, 1/scale), data.viewPortContentImageRect);
+    }
+
+    public static transferRectFromImageToViewPortContent(rect: IRect, data: EditorData): IRect {
+        const scale = RenderEngineUtil.calculateImageScale(data);
+        const translation: IPoint = {
+            x: - data.viewPortContentImageRect.x,
+            y: - data.viewPortContentImageRect.y
+        };
+
+        return RectUtil.scaleRect(RectUtil.translate(rect, translation), scale);
     }
 
     public static wrapDefaultCursorStyleInCancel(data: EditorData) {
-        if (RectUtil.isPointInside(data.activeImageRectOnCanvas, data.mousePositionOnViewPortContent)) {
+        if (RectUtil.isPointInside(data.viewPortContentImageRect, data.mousePositionOnViewPortContent)) {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.DEFAULT));
         } else {
             store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CANCEL));
