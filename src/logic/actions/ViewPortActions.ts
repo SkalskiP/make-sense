@@ -19,8 +19,6 @@ export class ViewPortActions {
                 width: EditorModel.editor.offsetWidth,
                 height: EditorModel.editor.offsetHeight
             }
-        } else {
-            return null;
         }
     }
 
@@ -31,8 +29,6 @@ export class ViewPortActions {
             const viewPortWithMarginRect: IRect = {x: 0, y: 0, ...EditorModel.viewPortSize};
             const viewPortWithoutMarginRect: IRect = RectUtil.expand(viewPortWithMarginRect, PointUtil.multiply(minMargin, -1));
             EditorModel.defaultRenderImageRect = RectUtil.fitInsideRectWithRatio(viewPortWithoutMarginRect, RectUtil.getRatio(realImageRect));
-        } else {
-            return null;
         }
     }
 
@@ -127,10 +123,10 @@ export class ViewPortActions {
     public static zoomIn() {
         if (EditorModel.isTransformationInProgress) return;
 
-        const currentZoomPercentage: number = EditorModel.zoom;
+        const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
-        const nextRelativeScrollPosition = currentZoomPercentage === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
-        ViewPortActions.setZoom(currentZoomPercentage + ViewPointSettings.ZOOM_STEP);
+        const nextRelativeScrollPosition = currentZoom === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
+        ViewPortActions.setZoom(currentZoom + ViewPointSettings.ZOOM_STEP);
         ViewPortActions.resizeViewPortContent();
         ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(nextRelativeScrollPosition));
         EditorActions.fullRender();
@@ -139,9 +135,9 @@ export class ViewPortActions {
     public static zoomOut() {
         if (EditorModel.isTransformationInProgress) return;
 
-        const currentZoomPercentage: number = EditorModel.zoom;
+        const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
-        ViewPortActions.setZoom(currentZoomPercentage - ViewPointSettings.ZOOM_STEP);
+        ViewPortActions.setZoom(currentZoom - ViewPointSettings.ZOOM_STEP);
         ViewPortActions.resizeViewPortContent();
         ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(currentRelativeScrollPosition));
         EditorActions.fullRender();
