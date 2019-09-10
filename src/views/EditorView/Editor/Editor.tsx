@@ -19,6 +19,8 @@ import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorUtil} from "../../../utils/EditorUtil";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
+import Scrollbars from 'react-custom-scrollbars';
+import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 
 interface IProps {
     size: ISize;
@@ -44,6 +46,7 @@ class Editor extends React.Component<IProps, {}> {
         ContextManager.switchCtx(ContextType.EDITOR);
         EditorActions.mountRenderEngines(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
+        ViewPortActions.resizeCanvas(this.props.size);
     }
 
     public componentWillUnmount(): void {
@@ -56,7 +59,7 @@ class Editor extends React.Component<IProps, {}> {
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
         prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
 
-        this.updateModelAndRender()
+        this.updateModelAndRender();
     }
 
     // =================================================================================================================
@@ -109,14 +112,15 @@ class Editor extends React.Component<IProps, {}> {
     // =================================================================================================================
 
     private updateModelAndRender = () => {
-        EditorActions.resizeCanvas(this.props.size);
-        EditorActions.calculateAllCharacteristics();
+        ViewPortActions.updateViewPortSize();
+        ViewPortActions.updateDefaultViewPortImageRect();
+        ViewPortActions.resizeViewPortContent();
         EditorActions.fullRender();
     };
 
     private update = (event: MouseEvent) => {
         const editorData: EditorData = EditorActions.getEditorData(event);
-        EditorModel.mousePositionOnCanvas = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
+        EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         EditorModel.primaryRenderingEngine.update(editorData);
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
@@ -125,13 +129,29 @@ class Editor extends React.Component<IProps, {}> {
 
     public render() {
         return (
-            <div className="Editor">
-                <canvas
-                    className="ImageCanvas"
-                    ref={ref => EditorModel.canvas = ref}
-                    draggable={false}
-                    onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
-                />
+            <div
+                className="Editor"
+                ref={ref => EditorModel.editor = ref}
+                draggable={false}
+            >
+                <Scrollbars
+                    ref={ref => EditorModel.viewPortScrollbars = ref}
+                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                    renderTrackVertical={props => <div {...props} className="track-vertical"/>}
+                    // renderThumbHorizontal={props => <div {...props} className="thumb-horizontal"/>}
+                    // renderThumbVertical={props => <div {...props} className="thumb-vertical"/>}
+                >
+                    <div
+                        className="ViewPortContent"
+                    >
+                        <canvas
+                            className="ImageCanvas"
+                            ref={ref => EditorModel.canvas = ref}
+                            draggable={false}
+                            onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
+                        />
+                    </div>
+                </Scrollbars>
                 <div
                     className="MousePositionIndicator"
                     ref={ref => EditorModel.mousePositionIndicator = ref}

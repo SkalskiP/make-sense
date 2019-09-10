@@ -33,7 +33,9 @@ const App: React.FC<IProps> = ({projectType, windowSize}) => {
     };
 
       return (
-        <div className="App">
+        <div className="App"
+            draggable={false}
+        >
             {selectRoute()}
             <PopupView/>
         </div>

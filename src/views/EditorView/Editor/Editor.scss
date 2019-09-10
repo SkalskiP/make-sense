@@ -5,14 +5,27 @@
   flex: 1;
   position: relative;
 
-  .ImageCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: none;
+  .ViewPortContent {
+    position: relative;
 
-    &:hover {
+    .track-horizontal {
       cursor: none;
+    }
+
+    .track-vertical {
+      cursor: none;
+    }
+
+    .ImageCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: none;
+      user-select: none;
+
+      &:hover {
+        cursor: none;
+      }
     }
   }
 
@@ -30,7 +43,7 @@
   }
 
   .Cursor {
-    position: relative;
+    position: absolute;
     width: 6px;
     height: 6px;
     transition: width 0.05s ease-out, height 0.05s ease-out, background-color 0.05s ease-in;

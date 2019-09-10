@@ -3,10 +3,13 @@ import {IRect} from "../interfaces/IRect";
 import {ISize} from "../interfaces/ISize";
 
 export interface EditorData {
-    mousePositionOnCanvas: IPoint,
-    canvasSize: ISize,
-    activeImageScale: number,
-    activeImageRectOnCanvas: IRect,
+    viewPortContentSize: ISize,
+    mousePositionOnViewPortContent: IPoint,
     activeKeyCombo: string[],
     event?: Event
+    zoom: number,
+    viewPortSize: ISize,
+    defaultRenderImageRect: IRect,
+    realImageSize: ISize,
+    viewPortContentImageRect: IRect
 }

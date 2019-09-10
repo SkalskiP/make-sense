@@ -1,24 +1,31 @@
 import {EditorSelector} from "../../store/selectors/EditorSelector";
 import {store} from "../../index";
-import {updateActiveImageIndex} from "../../store/editor/actionCreators";
+import {updateActiveImageIndex, updateActiveLabelId} from "../../store/editor/actionCreators";
+import {ViewPortActions} from "./ViewPortActions";
+import {EditorModel} from "../../staticModels/EditorModel";
 
 export class ImageActions {
     public static getPreviousImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        store.dispatch(updateActiveImageIndex(currentImageIndex - 1));
+        ImageActions.getImageByIndex(currentImageIndex - 1);
     }
 
     public static getNextImage(): void {
         const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        store.dispatch(updateActiveImageIndex(currentImageIndex + 1));
+        ImageActions.getImageByIndex(currentImageIndex + 1);
     }
 
     public static getImageByIndex(index: number): void {
+        if (EditorModel.isTransformationInProgress) return;
+
         const imageCount: number = EditorSelector.getImagesData().length;
 
-        if (index < 0 || index > imageCount - 1)
+        if (index < 0 || index > imageCount - 1) {
             return;
-        else
+        } else {
+            ViewPortActions.setZoom(1);
             store.dispatch(updateActiveImageIndex(index));
+            store.dispatch(updateActiveLabelId(null));
+        }
     }
 }
