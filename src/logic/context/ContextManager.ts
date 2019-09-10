@@ -6,6 +6,7 @@ import * as _ from "lodash";
 import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {EventType} from "../../data/enums/EventType";
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -17,8 +18,9 @@ export class ContextManager {
     }
 
     public static init(): void {
-        window.addEventListener("keydown", ContextManager.onDown);
-        window.addEventListener("keyup", ContextManager.onUp);
+        window.addEventListener(EventType.KEY_DOWN, ContextManager.onDown);
+        window.addEventListener(EventType.KEY_UP, ContextManager.onUp);
+        window.addEventListener(EventType.FOCUS, ContextManager.onFocus);
     }
 
     public static switchCtx(context: ContextType): void {
@@ -59,6 +61,10 @@ export class ContextManager {
     private static onUp(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         ContextManager.removeFromCombo(keyCode);
+    }
+
+    public static onFocus() {
+        ContextManager.activeCombo = [];
     }
 
     private static execute(event: KeyboardEvent): void {

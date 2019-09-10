@@ -21,6 +21,7 @@ import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
+import {PlatformModel} from "../../../staticModels/PlatformModel";
 
 interface IProps {
     size: ISize;
@@ -70,12 +71,14 @@ class Editor extends React.Component<IProps, {}> {
         window.addEventListener(EventType.MOUSE_MOVE, this.update);
         window.addEventListener(EventType.MOUSE_UP, this.update);
         EditorModel.canvas.addEventListener(EventType.MOUSE_DOWN, this.update);
+        EditorModel.canvas.addEventListener(EventType.MOUSE_WHEEL, this.handleZoom);
     }
 
     private unmountEventListeners() {
         window.removeEventListener(EventType.MOUSE_MOVE, this.update);
         window.removeEventListener(EventType.MOUSE_UP, this.update);
         EditorModel.canvas.removeEventListener(EventType.MOUSE_DOWN, this.update);
+        EditorModel.canvas.removeEventListener(EventType.MOUSE_WHEEL, this.handleZoom);
     }
 
     // =================================================================================================================
@@ -125,6 +128,18 @@ class Editor extends React.Component<IProps, {}> {
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
         EditorActions.fullRender();
+    };
+
+    private handleZoom = (event: MouseWheelEvent) => {
+        if (event.ctrlKey || (PlatformModel.isMac && event.metaKey)) {
+            const scrollSign: number = Math.sign(event.deltaY);
+            if ((PlatformModel.isMac && scrollSign === -1) || (!PlatformModel.isMac && scrollSign === 1)) {
+                ViewPortActions.zoomOut();
+            }
+            else if ((PlatformModel.isMac && scrollSign === 1) || (!PlatformModel.isMac && scrollSign === -1)) {
+                ViewPortActions.zoomIn();
+            }
+        }
     };
 
     public render() {
