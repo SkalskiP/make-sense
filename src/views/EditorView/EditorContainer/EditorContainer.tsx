@@ -14,6 +14,7 @@ import Editor from "../Editor/Editor";
 import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
+import ToolBox from "../ToolBox/ToolBox";
 
 interface IProps {
     windowSize: ISize;
@@ -101,10 +102,15 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <div className="EditorWrapper"
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
             >
-                <Editor
-                    size={calculateEditorSize()}
-                    imageData={imagesData[activeImageIndex]}
-                />
+                <div
+                    className="EditorNToolBox"
+                >
+                    <ToolBox/>
+                    <Editor
+                        size={calculateEditorSize()}
+                        imageData={imagesData[activeImageIndex]}
+                    />
+                </div>
                 <BottomNavigationBar
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
