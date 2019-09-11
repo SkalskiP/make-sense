@@ -31,6 +31,7 @@ interface IProps {
     activePopupType: PopupWindowType;
     activeLabelId: string;
     customCursorStyle: CustomCursorStyle;
+    imageDragMode: boolean;
 }
 
 class Editor extends React.Component<IProps, {}> {
@@ -45,7 +46,7 @@ class Editor extends React.Component<IProps, {}> {
         const {imageData, activeLabelType} = this.props;
 
         ContextManager.switchCtx(ContextType.EDITOR);
-        EditorActions.mountRenderEngines(activeLabelType);
+        EditorActions.mountRenderEnginesAndHelpers(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
         ViewPortActions.resizeCanvas(this.props.size);
     }
@@ -125,7 +126,13 @@ class Editor extends React.Component<IProps, {}> {
         const editorData: EditorData = EditorActions.getEditorData(event);
         EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         EditorModel.primaryRenderingEngine.update(editorData);
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+
+        if (this.props.imageDragMode) {
+            EditorModel.viewPortHelper.update(editorData);
+        } else {
+            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+        }
+
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
         EditorActions.fullRender();
     };
@@ -196,7 +203,8 @@ const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.editor.activeLabelType,
     activePopupType: state.general.activePopupType,
     activeLabelId: state.editor.activeLabelId,
-    customCursorStyle: state.general.customCursorStyle
+    customCursorStyle: state.general.customCursorStyle,
+    imageDragMode: state.general.imageDragMode
 });
 
 export default connect(

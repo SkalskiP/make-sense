@@ -8,16 +8,17 @@ import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import ToolBoxTab from "./ToolBoxTab/ToolBoxTab";
 import {ToolBoxTabData} from "../../../data/ToolBoxTabData";
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
-import {EditorActions} from "../../../logic/actions/EditorActions";
-import {EditorModel} from "../../../staticModels/EditorModel";
 import {ISize} from "../../../interfaces/ISize";
+import {updateImageDragModeStatus} from "../../../store/general/actionCreators";
 
 interface IProps {
     activeContext: ContextType;
     size: ISize;
+    updateImageDragModeStatus: (imageDragMode: boolean) => any;
+    imageDragMode: boolean;
 }
 
-const ToolBox: React.FC<IProps> = ({activeContext}) => {
+const ToolBox: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, imageDragMode}) => {
 
     const zoomTabContentData: ToolBoxTabData[] = [
         {
@@ -43,7 +44,7 @@ const ToolBox: React.FC<IProps> = ({activeContext}) => {
     ];
 
     const imageDragOnClick = () => {
-        EditorActions.setImageDragModeStatus(!EditorModel.isImageDragModeActive)
+        updateImageDragModeStatus(!imageDragMode);
     };
 
     const getClassName = () => {
@@ -71,15 +72,18 @@ const ToolBox: React.FC<IProps> = ({activeContext}) => {
             buttonSize={{width: 40, height:40}}
             padding={20}
             onClick={imageDragOnClick}
-            isActive={EditorModel.isImageDragModeActive}
+            isActive={imageDragMode}
         />
     </div>
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    updateImageDragModeStatus
+};
 
 const mapStateToProps = (state: AppState) => ({
-    activeContext: state.general.activeContext
+    activeContext: state.general.activeContext,
+    imageDragMode: state.general.imageDragMode
 });
 
 export default connect(

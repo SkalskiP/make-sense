@@ -9,6 +9,7 @@ export type GeneralState = {
     activePopupType: PopupWindowType;
     customCursorStyle: CustomCursorStyle;
     preventCustomCursor: boolean;
+    imageDragMode: boolean;
     activeContext: ContextType;
 }
 
@@ -47,8 +48,16 @@ interface UpdatePreventCustomCursorStatus {
     }
 }
 
+interface UpdateImageDragModeStatus {
+    type: typeof Action.UPDATE_IMAGE_DRAG_MODE_STATUS;
+    payload: {
+        imageDragMode: boolean;
+    }
+}
+
 export type GeneralActionTypes = UpdateWindowSize
     | UpdateActivePopupType
     | UpdateCustomCursorStyle
     | UpdateActiveContext
     | UpdatePreventCustomCursorStatus
+    | UpdateImageDragModeStatus

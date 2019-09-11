@@ -17,6 +17,7 @@ import {ViewPortActions} from "./ViewPortActions";
 import {ISize} from "../../interfaces/ISize";
 import {ImageUtil} from "../../utils/ImageUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {ViewPortHelper} from "../helpers/ViewPortHelper";
 
 export class EditorActions {
 
@@ -45,7 +46,8 @@ export class EditorActions {
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     };
 
-    public static mountRenderEngines(activeLabelType: LabelType) {
+    public static mountRenderEnginesAndHelpers(activeLabelType: LabelType) {
+        EditorModel.viewPortHelper = new ViewPortHelper();
         EditorModel.primaryRenderingEngine = new PrimaryEditorRenderEngine(EditorModel.canvas);
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     }
@@ -57,7 +59,9 @@ export class EditorActions {
     public static fullRender() {
         DrawUtil.clearCanvas(EditorModel.canvas);
         EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
+        if (EditorModel.supportRenderingEngine && !GeneralSelector.getImageDragModeStatus()) {
+            EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
+        }
     }
 
     // =================================================================================================================
@@ -73,10 +77,6 @@ export class EditorActions {
 
     public static setViewPortActionsDisabledStatus(status: boolean) {
         EditorModel.viewPortActionsDisabled = status;
-    }
-
-    public static setImageDragModeStatus(status: boolean) {
-        EditorModel.isImageDragModeActive = status;
     }
 
     // =================================================================================================================

@@ -5,6 +5,7 @@ import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
 import {ViewPointSettings} from "../settings/ViewPointSettings";
 import Scrollbars from "react-custom-scrollbars";
+import {ViewPortHelper} from "../logic/helpers/ViewPortHelper";
 
 export class EditorModel {
     public static editor: HTMLDivElement;
@@ -17,9 +18,10 @@ export class EditorModel {
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
 
+    public static viewPortHelper: ViewPortHelper;
+
     public static isLoading: boolean = false;
     public static viewPortActionsDisabled: boolean = false;
-    public static isImageDragModeActive: boolean = false;
     public static mousePositionOnViewPortContent: IPoint;
     public static zoom: number = ViewPointSettings.MIN_ZOOM;
     public static viewPortSize: ISize;

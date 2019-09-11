@@ -14,4 +14,8 @@ export class GeneralSelector {
     public static getPreventCustomCursorStatus(): boolean {
         return store.getState().general.preventCustomCursor;
     }
+
+    public static getImageDragModeStatus(): boolean {
+        return store.getState().general.imageDragMode;
+    }
 }

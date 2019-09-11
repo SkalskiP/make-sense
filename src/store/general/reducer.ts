@@ -7,7 +7,8 @@ const initialState: GeneralState = {
     activePopupType: null,
     customCursorStyle: CustomCursorStyle.DEFAULT,
     activeContext: null,
-    preventCustomCursor: false
+    preventCustomCursor: false,
+    imageDragMode: false
 };
 
 export function generalReducer(
@@ -43,6 +44,12 @@ export function generalReducer(
             return {
                 ...state,
                 preventCustomCursor: action.payload.preventCustomCursor
+            }
+        }
+        case Action.UPDATE_IMAGE_DRAG_MODE_STATUS: {
+            return {
+                ...state,
+                imageDragMode: action.payload.imageDragMode
             }
         }
         default:

@@ -49,3 +49,12 @@ export function updatePreventCustomCursorStatus(preventCustomCursor: boolean): G
         },
     };
 }
+
+export function updateImageDragModeStatus(imageDragMode: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_IMAGE_DRAG_MODE_STATUS,
+        payload: {
+            imageDragMode,
+        },
+    };
+}
