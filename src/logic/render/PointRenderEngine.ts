@@ -51,7 +51,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
                 if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateActiveLabelId(labelPoint.id));
-                    EditorActions.setTransformationInProgress(true);
+                    EditorActions.setViewPortActionsDisabledStatus(true);
                     return;
                 } else {
                     store.dispatch(updateActiveLabelId(null));
@@ -83,7 +83,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             });
             store.dispatch(updateImageDataById(imageData.id, imageData));
         }
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
     public mouseMoveHandler(data: EditorData): void {
@@ -167,7 +167,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public isInProgress(): boolean {
-        return EditorModel.isTransformationInProgress;
+        return EditorModel.viewPortActionsDisabled;
     }
 
     private getLabelPointUnderMouse(mousePosition: IPoint, data: EditorData): LabelPoint {

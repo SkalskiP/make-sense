@@ -181,7 +181,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 externalClassName={"trash"}
                                 image={"ico/trash.png"}
                                 imageAlt={"remove_rect"}
-                                size={{width: 30, height: 30}}
+                                buttonSize={{width: 30, height: 30}}
                                 onClick={() => onDelete(id)}
                             />
                         </div>

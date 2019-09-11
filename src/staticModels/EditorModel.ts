@@ -12,11 +12,13 @@ export class EditorModel {
     public static mousePositionIndicator: HTMLDivElement;
     public static cursor: HTMLDivElement;
     public static viewPortScrollbars: Scrollbars;
+    public static image: HTMLImageElement;
+
     public static primaryRenderingEngine: PrimaryEditorRenderEngine;
     public static supportRenderingEngine: BaseRenderEngine;
-    public static image: HTMLImageElement;
+
     public static isLoading: boolean = false;
-    public static isTransformationInProgress = false;
+    public static viewPortActionsDisabled: boolean = false;
     public static mousePositionOnViewPortContent: IPoint;
     public static zoom: number = ViewPointSettings.MIN_ZOOM;
     public static viewPortSize: ISize;

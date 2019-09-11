@@ -110,7 +110,7 @@ export class ViewPortActions {
     }
 
     public static translateViewPortPosition(direction: Direction) {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
         const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
@@ -121,7 +121,7 @@ export class ViewPortActions {
     }
 
     public static zoomIn() {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
@@ -133,7 +133,7 @@ export class ViewPortActions {
     }
 
     public static zoomOut() {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();

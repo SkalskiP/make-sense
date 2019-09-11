@@ -1,0 +1,15 @@
+@import '../../../../settings/Settings';
+
+.ToolBoxTabContent {
+  position: fixed;
+  z-index: 1000;
+  background-color: $darkThemeSecondColor;
+  border-radius: 3px;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+}

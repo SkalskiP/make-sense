@@ -6,7 +6,8 @@ const initialState: GeneralState = {
     windowSize: null,
     activePopupType: null,
     customCursorStyle: CustomCursorStyle.DEFAULT,
-    activeContext: null
+    activeContext: null,
+    preventCustomCursor: false
 };
 
 export function generalReducer(
@@ -36,6 +37,12 @@ export function generalReducer(
             return {
                 ...state,
                 activeContext: action.payload.activeContext
+            }
+        }
+        case Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS: {
+            return {
+                ...state,
+                preventCustomCursor: action.payload.preventCustomCursor
             }
         }
         default:

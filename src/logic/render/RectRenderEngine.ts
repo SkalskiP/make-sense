@@ -293,17 +293,17 @@ export class RectRenderEngine extends BaseRenderEngine {
     private startRectCreation(mousePosition: IPoint) {
         this.startCreateRectPoint = mousePosition;
         store.dispatch(updateActiveLabelId(null));
-        EditorActions.setTransformationInProgress(true);
+        EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
     private startRectResize(activatedAnchor: RectAnchor) {
         this.startResizeRectAnchor = activatedAnchor;
-        EditorActions.setTransformationInProgress(true);
+        EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
     private endRectTransformation() {
         this.startCreateRectPoint = null;
         this.startResizeRectAnchor = null;
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 }

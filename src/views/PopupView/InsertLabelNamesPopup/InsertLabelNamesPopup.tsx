@@ -43,7 +43,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                 <ImageButton
                     image={"ico/trash.png"}
                     imageAlt={"remove_label"}
-                    size={{width: 30, height: 30}}
+                    buttonSize={{width: 30, height: 30}}
                     onClick={() => deleteHandle(key)}
                 />
             </div>
@@ -76,7 +76,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                 <ImageButton
                     image={"ico/plus.png"}
                     imageAlt={"plus"}
-                    size={{width: 40, height: 40}}
+                    buttonSize={{width: 40, height: 40}}
                     padding={25}
                     onClick={addHandle}
                 />

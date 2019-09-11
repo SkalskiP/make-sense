@@ -5,12 +5,36 @@ import {ContextType} from "../../../data/enums/ContextType";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
+import ToolBoxTab from "./ToolBoxTab/ToolBoxTab";
+import {ToolBoxTabData} from "../../../data/ToolBoxTabData";
+import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 
 interface IProps {
     activeContext: ContextType;
 }
 
 const ToolBox: React.FC<IProps> = ({activeContext}) => {
+
+    const zoomTabContentData: ToolBoxTabData[] = [
+        {
+            image: "ico/zoom-in.png",
+            imageAlt: "zoom-in",
+            onClick: () => ViewPortActions.zoomIn()
+        },
+        {
+            image: "ico/zoom-out.png",
+            imageAlt: "zoom-out",
+            onClick: () => ViewPortActions.zoomOut()
+        },
+        {
+            image: "ico/zoom-fit.png",
+            imageAlt: "zoom-fit"
+        },
+        {
+            image: "ico/zoom-max.png",
+            imageAlt: "zoom-max"
+        }
+    ]
 
     const getClassName = () => {
         return classNames(
@@ -24,17 +48,17 @@ const ToolBox: React.FC<IProps> = ({activeContext}) => {
     return <div
         className={getClassName()}
     >
-        <ImageButton
-            image={"ico/zoom-in.png"}
-            imageAlt={"zoom-in"}
-            size={{width: 40, height: 40}}
-            padding={20}
-            onClick={() => {}}
+        <ToolBoxTab
+            coverData={{
+                image: "ico/zoom-in.png",
+                imageAlt: "zoom-in"
+            }}
+            contentData={zoomTabContentData}
         />
         <ImageButton
             image={"ico/hand.png"}
             imageAlt={"hand"}
-            size={{width: 40, height:40}}
+            buttonSize={{width: 40, height:40}}
             padding={20}
             onClick={() => {}}
         />

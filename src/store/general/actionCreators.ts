@@ -40,3 +40,12 @@ export function updateActiveContext(activeContext: ContextType): GeneralActionTy
         },
     };
 }
+
+export function updatePreventCustomCursorStatus(preventCustomCursor: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS,
+        payload: {
+            preventCustomCursor,
+        },
+    };
+}

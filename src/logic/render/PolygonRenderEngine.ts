@@ -259,7 +259,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         } else {
             const isMouseOverImage: boolean = RectUtil.isPointInside(data.viewPortContentImageRect, data.mousePositionOnViewPortContent);
             if (isMouseOverImage) {
-                EditorActions.setTransformationInProgress(true);
+                EditorActions.setViewPortActionsDisabledStatus(true);
                 this.activePath.push(data.mousePositionOnViewPortContent);
                 store.dispatch(updateActiveLabelId(null));
             }
@@ -268,12 +268,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public cancelLabelCreation() {
         this.activePath = [];
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
     private finishLabelCreation() {
         this.activePath = [];
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
     public addLabelAndFinishCreation(data: EditorData) {
@@ -305,13 +305,13 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private startExistingLabelResize(data: EditorData, labelId: string, anchorIndex: number) {
         store.dispatch(updateActiveLabelId(labelId));
         this.resizeAnchorIndex = anchorIndex;
-        EditorActions.setTransformationInProgress(true);
+        EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
     private endExistingLabelResize(data: EditorData) {
         this.applyResizeToPolygonLabel(data);
         this.resizeAnchorIndex = null;
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
     private applyResizeToPolygonLabel(data: EditorData) {

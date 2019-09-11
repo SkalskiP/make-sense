@@ -8,6 +8,7 @@ export type GeneralState = {
     windowSize: ISize;
     activePopupType: PopupWindowType;
     customCursorStyle: CustomCursorStyle;
+    preventCustomCursor: boolean;
     activeContext: ContextType;
 }
 
@@ -39,7 +40,15 @@ interface UpdateActiveContext {
     }
 }
 
+interface UpdatePreventCustomCursorStatus {
+    type: typeof Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS;
+    payload: {
+        preventCustomCursor: boolean;
+    }
+}
+
 export type GeneralActionTypes = UpdateWindowSize
     | UpdateActivePopupType
     | UpdateCustomCursorStyle
     | UpdateActiveContext
+    | UpdatePreventCustomCursorStatus
