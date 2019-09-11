@@ -10,7 +10,8 @@ export class AppInitializer {
         AppInitializer.handleResize();
         AppInitializer.detectDeviceParams();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);
-        window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.handleGenericZoom);
+        window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.disableGenericScrollZoom);
+        window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableGenericKeybordZoom);
         ContextManager.init();
     }
 
@@ -21,7 +22,15 @@ export class AppInitializer {
         }));
     };
 
-    private static handleGenericZoom = (event: MouseEvent) => {
+    public static disableGenericKeybordZoom = (event: KeyboardEvent) => {
+        if (["+", "-"].includes(event.key)) {
+            if (event.ctrlKey || (PlatformModel.isMac && event.metaKey)) {
+                event.preventDefault();
+            }
+        }
+    };
+
+    private static disableGenericScrollZoom = (event: MouseEvent) => {
         if (event.ctrlKey || (PlatformModel.isMac && event.metaKey)) {
             event.preventDefault();
         }

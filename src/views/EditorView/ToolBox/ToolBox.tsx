@@ -10,9 +10,11 @@ import {ToolBoxTabData} from "../../../data/ToolBoxTabData";
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {EditorActions} from "../../../logic/actions/EditorActions";
 import {EditorModel} from "../../../staticModels/EditorModel";
+import {ISize} from "../../../interfaces/ISize";
 
 interface IProps {
     activeContext: ContextType;
+    size: ISize;
 }
 
 const ToolBox: React.FC<IProps> = ({activeContext}) => {

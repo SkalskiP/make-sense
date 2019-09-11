@@ -21,6 +21,7 @@ interface IState {
 
 class ToolBoxTab extends React.Component<IProps, IState> {
     private coverButton;
+    private contentWrapper: HTMLDivElement;
 
     constructor(props) {
         super(props);
@@ -28,6 +29,12 @@ class ToolBoxTab extends React.Component<IProps, IState> {
         this.state = {
             isOpened: false,
         }
+    }
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<IState>, snapshot?: any): void {
+        if (!this.state.isOpened) return null;
+
+        const coverClientRect: ClientRect | DOMRect = this.coverButton.getBoundingClientRect();
+        this.contentWrapper.style.left = (coverClientRect.left + coverClientRect.width + 10) + "px";
     }
 
     private onCoverClickHandler = () => {
@@ -60,8 +67,10 @@ class ToolBoxTab extends React.Component<IProps, IState> {
             left: coverClientRect.left + coverClientRect.width + 10,
             height: coverClientRect.height
         };
+
         return <div
             className={this.getClassName()}
+            ref={ref => this.contentWrapper = ref}
             style={style}
             onMouseEnter={this.onContentMouseEnter}
             onMouseLeave={this.onContentMouseLeave}

@@ -105,7 +105,9 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
                 <div
                     className="EditorNToolBox"
                 >
-                    <ToolBox/>
+                    <ToolBox
+                        size={calculateEditorSize()}
+                    />
                     <Editor
                         size={calculateEditorSize()}
                         imageData={imagesData[activeImageIndex]}
