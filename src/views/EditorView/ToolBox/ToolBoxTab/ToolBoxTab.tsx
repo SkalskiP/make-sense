@@ -5,11 +5,14 @@ import './ToolBoxTab.scss';
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {updatePreventCustomCursorStatus} from "../../../../store/general/actionCreators";
+import classNames from "classnames";
+import {ContextType} from "../../../../data/enums/ContextType";
 
 interface IProps {
     coverData: ToolBoxTabData;
     contentData?: ToolBoxTabData[];
     updatePreventCustomCursorStatus: (preventCustomCursor: boolean) => any;
+    activeContext: ContextType;
 }
 
 interface IState {
@@ -39,6 +42,15 @@ class ToolBoxTab extends React.Component<IProps, IState> {
         this.props.updatePreventCustomCursorStatus(false);
     };
 
+    private getClassName = () => {
+        return classNames(
+            "ToolBoxTabContent",
+            {
+                "with-context": this.props.activeContext === ContextType.EDITOR
+            }
+        );
+    };
+
     private getContent = () => {
         if (!this.state.isOpened) return null;
 
@@ -49,7 +61,7 @@ class ToolBoxTab extends React.Component<IProps, IState> {
             height: coverClientRect.height
         };
         return <div
-            className="ToolBoxTabContent"
+            className={this.getClassName()}
             style={style}
             onMouseEnter={this.onContentMouseEnter}
             onMouseLeave={this.onContentMouseLeave}
@@ -76,6 +88,7 @@ class ToolBoxTab extends React.Component<IProps, IState> {
                 imageAlt={this.props.coverData.imageAlt}
                 ref={ref => this.coverButton = ref}
                 onClick={this.onCoverClickHandler}
+                isActive={this.state.isOpened}
             />
             {this.getContent()}
         </>
@@ -86,7 +99,9 @@ const mapDispatchToProps = {
     updatePreventCustomCursorStatus
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    activeContext: state.general.activeContext
+});
 
 export default connect(
     mapStateToProps,

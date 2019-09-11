@@ -19,6 +19,7 @@ export class EditorModel {
 
     public static isLoading: boolean = false;
     public static viewPortActionsDisabled: boolean = false;
+    public static isImageDragModeActive: boolean = false;
     public static mousePositionOnViewPortContent: IPoint;
     public static zoom: number = ViewPointSettings.MIN_ZOOM;
     public static viewPortSize: ISize;

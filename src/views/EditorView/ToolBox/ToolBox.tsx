@@ -8,6 +8,8 @@ import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import ToolBoxTab from "./ToolBoxTab/ToolBoxTab";
 import {ToolBoxTabData} from "../../../data/ToolBoxTabData";
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
+import {EditorActions} from "../../../logic/actions/EditorActions";
+import {EditorModel} from "../../../staticModels/EditorModel";
 
 interface IProps {
     activeContext: ContextType;
@@ -28,13 +30,19 @@ const ToolBox: React.FC<IProps> = ({activeContext}) => {
         },
         {
             image: "ico/zoom-fit.png",
-            imageAlt: "zoom-fit"
+            imageAlt: "zoom-fit",
+            onClick: () => ViewPortActions.setDefaultZoom()
         },
         {
             image: "ico/zoom-max.png",
-            imageAlt: "zoom-max"
+            imageAlt: "zoom-max",
+            onClick: () => ViewPortActions.setOneForOneZoom()
         }
-    ]
+    ];
+
+    const imageDragOnClick = () => {
+        EditorActions.setImageDragModeStatus(!EditorModel.isImageDragModeActive)
+    };
 
     const getClassName = () => {
         return classNames(
@@ -60,7 +68,8 @@ const ToolBox: React.FC<IProps> = ({activeContext}) => {
             imageAlt={"hand"}
             buttonSize={{width: 40, height:40}}
             padding={20}
-            onClick={() => {}}
+            onClick={imageDragOnClick}
+            isActive={EditorModel.isImageDragModeActive}
         />
     </div>
 };

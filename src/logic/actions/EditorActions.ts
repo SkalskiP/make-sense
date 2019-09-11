@@ -75,6 +75,10 @@ export class EditorActions {
         EditorModel.viewPortActionsDisabled = status;
     }
 
+    public static setImageDragModeStatus(status: boolean) {
+        EditorModel.isImageDragModeActive = status;
+    }
+
     // =================================================================================================================
     // GETTERS
     // =================================================================================================================

@@ -3,8 +3,8 @@
 .ToolBoxTabContent {
   position: fixed;
   z-index: 1000;
-  background-color: $darkThemeSecondColor;
   border-radius: 3px;
+  background-color: $darkThemeSecondColor;
 
   display: flex;
   flex-direction: row;
@@ -12,4 +12,8 @@
   justify-content: flex-start;
   align-items: center;
   align-content: flex-start;
+
+  &.with-context {
+    background-color: $darkThemeForthColor;
+  }
 }

@@ -143,6 +143,25 @@ export class ViewPortActions {
         EditorActions.fullRender();
     }
 
+    public static setDefaultZoom() {
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
+        ViewPortActions.setZoom(ViewPointSettings.MIN_ZOOM);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(currentRelativeScrollPosition));
+        EditorActions.fullRender();
+    }
+
+    public static setOneForOneZoom() {
+        const currentZoom: number = EditorModel.zoom;
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
+        const nextRelativeScrollPosition = currentZoom === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
+        const nextZoom: number = EditorModel.image.width / EditorModel.defaultRenderImageRect.width
+        ViewPortActions.setZoom(nextZoom);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(nextRelativeScrollPosition));
+        EditorActions.fullRender();
+    }
+
     public static setZoom(value: number) {
         const currentZoom: number = EditorModel.zoom;
         const isNewValueValid: boolean = NumberUtil.isValueInRange(
