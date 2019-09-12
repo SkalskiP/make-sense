@@ -59,9 +59,7 @@ export class EditorActions {
     public static fullRender() {
         DrawUtil.clearCanvas(EditorModel.canvas);
         EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
-        if (EditorModel.supportRenderingEngine && !GeneralSelector.getImageDragModeStatus()) {
-            EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
-        }
+        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
     }
 
     // =================================================================================================================

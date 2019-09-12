@@ -5,11 +5,11 @@ import {ContextType} from "../../../data/enums/ContextType";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
-import ToolBoxTab from "./ToolBoxTab/ToolBoxTab";
-import {ToolBoxTabData} from "../../../data/ToolBoxTabData";
+import {ImageButtonDropDownData} from "../../../data/ImageButtonDropDownData";
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {ISize} from "../../../interfaces/ISize";
 import {updateImageDragModeStatus} from "../../../store/general/actionCreators";
+import ImageButtonDropDown from "./ImageButtonDropDown/ImageButtonDropDown";
 
 interface IProps {
     activeContext: ContextType;
@@ -20,7 +20,7 @@ interface IProps {
 
 const ToolBox: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, imageDragMode}) => {
 
-    const zoomTabContentData: ToolBoxTabData[] = [
+    const zoomDropDownContentData: ImageButtonDropDownData[] = [
         {
             image: "ico/zoom-in.png",
             imageAlt: "zoom-in",
@@ -59,12 +59,12 @@ const ToolBox: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, im
     return <div
         className={getClassName()}
     >
-        <ToolBoxTab
+        <ImageButtonDropDown
             coverData={{
                 image: "ico/zoom-in.png",
                 imageAlt: "zoom-in"
             }}
-            contentData={zoomTabContentData}
+            contentData={zoomDropDownContentData}
         />
         <ImageButton
             image={"ico/hand.png"}

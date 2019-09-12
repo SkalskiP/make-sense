@@ -1,7 +1,7 @@
 import React from "react";
-import {ToolBoxTabData} from "../../../../data/ToolBoxTabData";
+import {ImageButtonDropDownData} from "../../../../data/ImageButtonDropDownData";
 import {ImageButton} from "../../../Common/ImageButton/ImageButton";
-import './ToolBoxTab.scss';
+import './ImageButtonDropDown.scss';
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {updatePreventCustomCursorStatus} from "../../../../store/general/actionCreators";
@@ -9,8 +9,8 @@ import classNames from "classnames";
 import {ContextType} from "../../../../data/enums/ContextType";
 
 interface IProps {
-    coverData: ToolBoxTabData;
-    contentData?: ToolBoxTabData[];
+    coverData: ImageButtonDropDownData;
+    contentData?: ImageButtonDropDownData[];
     updatePreventCustomCursorStatus: (preventCustomCursor: boolean) => any;
     activeContext: ContextType;
 }
@@ -19,7 +19,7 @@ interface IState {
     isOpened: boolean;
 }
 
-class ToolBoxTab extends React.Component<IProps, IState> {
+class ImageButtonDropDown extends React.Component<IProps, IState> {
     private coverButton;
     private contentWrapper: HTMLDivElement;
 
@@ -51,7 +51,7 @@ class ToolBoxTab extends React.Component<IProps, IState> {
 
     private getClassName = () => {
         return classNames(
-            "ToolBoxTabContent",
+            "ImageButtonDropDownContent",
             {
                 "with-context": this.props.activeContext === ContextType.EDITOR
             }
@@ -75,7 +75,7 @@ class ToolBoxTab extends React.Component<IProps, IState> {
             onMouseEnter={this.onContentMouseEnter}
             onMouseLeave={this.onContentMouseLeave}
         >
-            {this.props.contentData.map((data: ToolBoxTabData, index: number) => {
+            {this.props.contentData.map((data: ImageButtonDropDownData, index: number) => {
                 return <ImageButton
                     buttonSize={{width: 36, height: 36}}
                     padding={16}
@@ -115,4 +115,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(ToolBoxTab);
+)(ImageButtonDropDown);
