@@ -16,6 +16,7 @@ import PointLabelsList from "../PointLabelsList/PointLabelsList";
 import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
 import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
+import {EventType} from "../../../../data/enums/EventType";
 
 interface IProps {
     activeImageIndex:number,
@@ -60,11 +61,11 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
         this.updateToolkitSize();
-        window.addEventListener("resize", this.updateToolkitSize);
+        window.addEventListener(EventType.RESIZE, this.updateToolkitSize);
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener("resize", this.updateToolkitSize);
+        window.removeEventListener(EventType.RESIZE, this.updateToolkitSize);
     }
 
     private updateToolkitSize = () => {

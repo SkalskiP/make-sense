@@ -55,7 +55,7 @@ const MainView: React.FC = () => {
             >
                 <div>
                     <ImageButton
-                        size={size}
+                        buttonSize={size}
                         image={data.imageSrc}
                         imageAlt={data.imageAlt}
                         href={data.href}

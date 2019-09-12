@@ -10,6 +10,7 @@ import './ImagesList.scss';
 import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
 import {ImageActions} from "../../../../logic/actions/ImageActions";
+import {EventType} from "../../../../data/enums/EventType";
 
 interface IProps {
     activeImageIndex: number;
@@ -34,11 +35,11 @@ class ImagesList extends React.Component<IProps, IState> {
 
     public componentDidMount(): void {
         this.updateListSize();
-        window.addEventListener("resize", this.updateListSize);
+        window.addEventListener(EventType.RESIZE, this.updateListSize);
     }
 
     public componentWillUnmount(): void {
-        window.removeEventListener("resize", this.updateListSize);
+        window.removeEventListener(EventType.RESIZE, this.updateListSize);
     }
 
     private updateListSize = () => {

@@ -22,6 +22,7 @@ import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -189,7 +190,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private updateCursorStyle(data: EditorData) {
-        if (!!this.canvas && !!data.mousePositionOnViewPortContent) {
+        if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
             const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data);
             if (!!rectAnchorUnderMouse || !!this.startResizeRectAnchor) {
                 store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
@@ -293,17 +294,17 @@ export class RectRenderEngine extends BaseRenderEngine {
     private startRectCreation(mousePosition: IPoint) {
         this.startCreateRectPoint = mousePosition;
         store.dispatch(updateActiveLabelId(null));
-        EditorActions.setTransformationInProgress(true);
+        EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
     private startRectResize(activatedAnchor: RectAnchor) {
         this.startResizeRectAnchor = activatedAnchor;
-        EditorActions.setTransformationInProgress(true);
+        EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
     private endRectTransformation() {
         this.startCreateRectPoint = null;
         this.startResizeRectAnchor = null;
-        EditorActions.setTransformationInProgress(false);
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 }

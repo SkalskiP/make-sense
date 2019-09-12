@@ -110,7 +110,7 @@ export class ViewPortActions {
     }
 
     public static translateViewPortPosition(direction: Direction) {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
         const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
@@ -121,7 +121,7 @@ export class ViewPortActions {
     }
 
     public static zoomIn() {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
@@ -133,13 +133,32 @@ export class ViewPortActions {
     }
 
     public static zoomOut() {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const currentZoom: number = EditorModel.zoom;
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         ViewPortActions.setZoom(currentZoom - ViewPointSettings.ZOOM_STEP);
         ViewPortActions.resizeViewPortContent();
         ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(currentRelativeScrollPosition));
+        EditorActions.fullRender();
+    }
+
+    public static setDefaultZoom() {
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
+        ViewPortActions.setZoom(ViewPointSettings.MIN_ZOOM);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(currentRelativeScrollPosition));
+        EditorActions.fullRender();
+    }
+
+    public static setOneForOneZoom() {
+        const currentZoom: number = EditorModel.zoom;
+        const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
+        const nextRelativeScrollPosition = currentZoom === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
+        const nextZoom: number = EditorModel.image.width / EditorModel.defaultRenderImageRect.width
+        ViewPortActions.setZoom(nextZoom);
+        ViewPortActions.resizeViewPortContent();
+        ViewPortActions.setScrollPosition(ViewPortActions.calculateAbsoluteScrollPosition(nextRelativeScrollPosition));
         EditorActions.fullRender();
     }
 

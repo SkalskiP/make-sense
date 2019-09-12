@@ -40,3 +40,21 @@ export function updateActiveContext(activeContext: ContextType): GeneralActionTy
         },
     };
 }
+
+export function updatePreventCustomCursorStatus(preventCustomCursor: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS,
+        payload: {
+            preventCustomCursor,
+        },
+    };
+}
+
+export function updateImageDragModeStatus(imageDragMode: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_IMAGE_DRAG_MODE_STATUS,
+        payload: {
+            imageDragMode,
+        },
+    };
+}

@@ -10,4 +10,12 @@ export class GeneralSelector {
     public static getActiveContext(): ContextType {
         return store.getState().general.activeContext;
     }
+
+    public static getPreventCustomCursorStatus(): boolean {
+        return store.getState().general.preventCustomCursor;
+    }
+
+    public static getImageDragModeStatus(): boolean {
+        return store.getState().general.imageDragMode;
+    }
 }

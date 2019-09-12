@@ -21,7 +21,6 @@
       top: 0;
       left: 0;
       cursor: none;
-      user-select: none;
 
       &:hover {
         cursor: none;
@@ -71,7 +70,7 @@
       background-color: transparent;
     }
 
-    &.move, &.add, &.resize, &.close, &.cancel {
+    &.move, &.add, &.resize, &.close, &.cancel, &.grab {
       > img {
         display: block;
       }

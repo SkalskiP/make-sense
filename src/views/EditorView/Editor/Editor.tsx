@@ -21,6 +21,7 @@ import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
+import {PlatformModel} from "../../../staticModels/PlatformModel";
 
 interface IProps {
     size: ISize;
@@ -30,6 +31,7 @@ interface IProps {
     activePopupType: PopupWindowType;
     activeLabelId: string;
     customCursorStyle: CustomCursorStyle;
+    imageDragMode: boolean;
 }
 
 class Editor extends React.Component<IProps, {}> {
@@ -44,7 +46,7 @@ class Editor extends React.Component<IProps, {}> {
         const {imageData, activeLabelType} = this.props;
 
         ContextManager.switchCtx(ContextType.EDITOR);
-        EditorActions.mountRenderEngines(activeLabelType);
+        EditorActions.mountRenderEnginesAndHelpers(activeLabelType);
         ImageLoadManager.addAndRun(this.loadImage(imageData));
         ViewPortActions.resizeCanvas(this.props.size);
     }
@@ -70,12 +72,14 @@ class Editor extends React.Component<IProps, {}> {
         window.addEventListener(EventType.MOUSE_MOVE, this.update);
         window.addEventListener(EventType.MOUSE_UP, this.update);
         EditorModel.canvas.addEventListener(EventType.MOUSE_DOWN, this.update);
+        EditorModel.canvas.addEventListener(EventType.MOUSE_WHEEL, this.handleZoom);
     }
 
     private unmountEventListeners() {
         window.removeEventListener(EventType.MOUSE_MOVE, this.update);
         window.removeEventListener(EventType.MOUSE_UP, this.update);
         EditorModel.canvas.removeEventListener(EventType.MOUSE_DOWN, this.update);
+        EditorModel.canvas.removeEventListener(EventType.MOUSE_WHEEL, this.handleZoom);
     }
 
     // =================================================================================================================
@@ -122,9 +126,27 @@ class Editor extends React.Component<IProps, {}> {
         const editorData: EditorData = EditorActions.getEditorData(event);
         EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         EditorModel.primaryRenderingEngine.update(editorData);
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+
+        if (this.props.imageDragMode) {
+            EditorModel.viewPortHelper.update(editorData);
+        } else {
+            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.update(editorData);
+        }
+
         !this.props.activePopupType && EditorActions.updateMousePositionIndicator(event);
         EditorActions.fullRender();
+    };
+
+    private handleZoom = (event: MouseWheelEvent) => {
+        if (event.ctrlKey || (PlatformModel.isMac && event.metaKey)) {
+            const scrollSign: number = Math.sign(event.deltaY);
+            if ((PlatformModel.isMac && scrollSign === -1) || (!PlatformModel.isMac && scrollSign === 1)) {
+                ViewPortActions.zoomOut();
+            }
+            else if ((PlatformModel.isMac && scrollSign === 1) || (!PlatformModel.isMac && scrollSign === -1)) {
+                ViewPortActions.zoomIn();
+            }
+        }
     };
 
     public render() {
@@ -181,7 +203,8 @@ const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.editor.activeLabelType,
     activePopupType: state.general.activePopupType,
     activeLabelId: state.editor.activeLabelId,
-    customCursorStyle: state.general.customCursorStyle
+    customCursorStyle: state.general.customCursorStyle,
+    imageDragMode: state.general.imageDragMode
 });
 
 export default connect(

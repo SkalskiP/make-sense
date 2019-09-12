@@ -16,6 +16,8 @@ import {PointUtil} from "../../utils/PointUtil";
 import {ViewPortActions} from "./ViewPortActions";
 import {ISize} from "../../interfaces/ISize";
 import {ImageUtil} from "../../utils/ImageUtil";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {ViewPortHelper} from "../helpers/ViewPortHelper";
 
 export class EditorActions {
 
@@ -44,7 +46,8 @@ export class EditorActions {
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     };
 
-    public static mountRenderEngines(activeLabelType: LabelType) {
+    public static mountRenderEnginesAndHelpers(activeLabelType: LabelType) {
+        EditorModel.viewPortHelper = new ViewPortHelper();
         EditorModel.primaryRenderingEngine = new PrimaryEditorRenderEngine(EditorModel.canvas);
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     }
@@ -70,8 +73,8 @@ export class EditorActions {
         EditorModel.image = image;
     }
 
-    public static setTransformationInProgress(status: boolean) {
-        EditorModel.isTransformationInProgress = status;
+    public static setViewPortActionsDisabledStatus(status: boolean) {
+        EditorModel.viewPortActionsDisabled = status;
     }
 
     // =================================================================================================================
@@ -110,7 +113,7 @@ export class EditorActions {
         const isMouseOverImage: boolean = RectUtil.isPointInside(viewPortContentImageRect, mousePositionOverViewPortContent);
         const isMouseOverViewPort: boolean = RectUtil.isPointInside({x: 0, y: 0, ...EditorModel.viewPortSize}, mousePositionOverViewPort);
 
-        if (isMouseOverViewPort) {
+        if (isMouseOverViewPort && !GeneralSelector.getPreventCustomCursorStatus()) {
             EditorModel.cursor.style.left = mousePositionOverViewPort.x + "px";
             EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
             EditorModel.cursor.style.display = "block";

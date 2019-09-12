@@ -70,7 +70,7 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                     <ImageButton
                         image={"img/github-logo.png"}
                         imageAlt={"github-logo.png"}
-                        size={{width: 30, height: 30}}
+                        buttonSize={{width: 30, height: 30}}
                         href={Settings.GITHUB_URL}
                     />
                 </div>

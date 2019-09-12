@@ -16,7 +16,7 @@ export class ImageActions {
     }
 
     public static getImageByIndex(index: number): void {
-        if (EditorModel.isTransformationInProgress) return;
+        if (EditorModel.viewPortActionsDisabled) return;
 
         const imageCount: number = EditorSelector.getImagesData().length;
 

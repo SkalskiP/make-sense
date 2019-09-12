@@ -7,9 +7,10 @@ export class Settings {
 
     public static readonly TOP_NAVIGATION_BAR_HEIGHT_PX: number = 35;
     public static readonly BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 45 + 1;
-    public static readonly SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX: number = 20 + 1;
+    public static readonly SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX: number = 23 + 1;
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX: number = Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 300 + 1;
     public static readonly TOOLKIT_TAB_HEIGHT_PX: number = 40;
+    public static readonly TOOLBOX_PANEL_WIDTH_PX: number = 50 + 1;
 
     public static readonly EDITOR_MIN_WIDTH: number = 900;
     public static readonly EDITOR_MIN_HEIGHT: number = 500;
@@ -20,7 +21,7 @@ export class Settings {
     public static readonly DARK_THEME_FIRST_COLOR: string = "#171717";
     public static readonly DARK_THEME_SECOND_COLOR: string = "#282828";
     public static readonly DARK_THEME_THIRD_COLOR: string = "#4c4c4c";
-    public static readonly DARK_THEME_FORTH_COLOR: string = "#252f35";
+    public static readonly DARK_THEME_FORTH_COLOR: string = "#262c2f";
 
     public static readonly CROSS_HAIR_THICKNESS_PX: number = 1;
     public static readonly CROSS_HAIR_COLOR: string = "#fff";

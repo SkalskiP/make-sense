@@ -72,7 +72,7 @@ const ExportLabelPopup: React.FC = () => {
                 <ImageButton
                     image={"ico/rectangle.png"}
                     imageAlt={"rectangle"}
-                    size={{width: 40, height: 40}}
+                    buttonSize={{width: 40, height: 40}}
                     padding={20}
                     onClick={() => {
                         setExportLabelType(LabelType.RECTANGLE);
@@ -83,7 +83,7 @@ const ExportLabelPopup: React.FC = () => {
                 <ImageButton
                     image={"ico/point.png"}
                     imageAlt={"point"}
-                    size={{width: 40, height:40}}
+                    buttonSize={{width: 40, height:40}}
                     padding={20}
                     onClick={() => {
                         setExportLabelType(LabelType.POINT);
@@ -94,7 +94,7 @@ const ExportLabelPopup: React.FC = () => {
                 <ImageButton
                     image={"ico/polygon.png"}
                     imageAlt={"polygon"}
-                    size={{width: 40, height:40}}
+                    buttonSize={{width: 40, height:40}}
                     padding={20}
                     onClick={() => {
                         setExportLabelType(LabelType.POLYGON);
