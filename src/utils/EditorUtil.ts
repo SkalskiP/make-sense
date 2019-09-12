@@ -15,7 +15,7 @@ export class EditorUtil {
             case CustomCursorStyle.CANCEL:
                 return "ico/cancel.png";
             case CustomCursorStyle.GRAB:
-                return "ico/hand.png";
+                return "ico/hand-fill.png";
             default:
                 return null;
         }
