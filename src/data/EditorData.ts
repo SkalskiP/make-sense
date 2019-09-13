@@ -11,5 +11,6 @@ export interface EditorData {
     viewPortSize: ISize,
     defaultRenderImageRect: IRect,
     realImageSize: ISize,
-    viewPortContentImageRect: IRect
+    viewPortContentImageRect: IRect,
+    absoluteViewPortContentScrollPosition: IPoint
 }
