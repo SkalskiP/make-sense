@@ -5,6 +5,7 @@ export enum EventType {
     MOUSE_MOVE = "mousemove",
     MOUSE_WHEEL = "wheel",
     KEY_DOWN = "keydown",
+    KEY_PRESS = "keypress",
     KEY_UP = "keyup",
     FOCUS = "focus"
 }

@@ -29,8 +29,17 @@ export class EditorSelector {
         if (activeImageIndex === null)
             return null;
 
+        return EditorSelector.getImageDataByIndex(activeImageIndex);
+    }
+
+    public static getImageDataByIndex(index: number): ImageData {
         const imagesData: ImageData[] = EditorSelector.getImagesData();
-        return imagesData[activeImageIndex];
+        return imagesData[index];
+    }
+
+    public static getImageDataById(id: string): ImageData {
+        const imagesData: ImageData[] = EditorSelector.getImagesData();
+        return _.find(imagesData, {id: id});
     }
 
     public static getActiveLabelId(): string | null {

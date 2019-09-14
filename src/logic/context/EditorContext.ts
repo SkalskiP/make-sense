@@ -5,10 +5,11 @@ import {EditorData} from "../../data/EditorData";
 import {EditorActions} from "../actions/EditorActions";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {BaseContext} from "./BaseContext";
-import {PlatformModel} from "../../staticModels/PlatformModel";
 import {ImageActions} from "../actions/ImageActions";
 import {ViewPortActions} from "../actions/ViewPortActions";
 import {Direction} from "../../data/enums/Direction";
+import {PlatformUtil} from "../../utils/PlatformUtil";
+import {LabelActions} from "../actions/LabelActions";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -31,25 +32,25 @@ export class EditorContext extends BaseContext {
             }
         },
         {
-            keyCombo: PlatformModel.isMac ? ["Meta", "ArrowLeft"] : ["Control", "ArrowLeft"],
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "ArrowLeft"] : ["Control", "ArrowLeft"],
             action: (event: KeyboardEvent) => {
                 ImageActions.getPreviousImage()
             }
         },
         {
-            keyCombo: PlatformModel.isMac ? ["Meta", "ArrowRight"] : ["Control", "ArrowRight"],
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "ArrowRight"] : ["Control", "ArrowRight"],
             action: (event: KeyboardEvent) => {
                 ImageActions.getNextImage();
             }
         },
         {
-            keyCombo: ["+"],
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "+"] : ["Control", "+"],
             action: (event: KeyboardEvent) => {
                 ViewPortActions.zoomIn();
             }
         },
         {
-            keyCombo: ["-"],
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "-"] : ["Control", "-"],
             action: (event: KeyboardEvent) => {
                 ViewPortActions.zoomOut();
             }
@@ -80,6 +81,12 @@ export class EditorContext extends BaseContext {
             action: (event: KeyboardEvent) => {
                 event.preventDefault();
                 ViewPortActions.translateViewPortPosition(Direction.TOP);
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Backspace"] : ["Delete"],
+            action: (event: KeyboardEvent) => {
+                LabelActions.deleteActiveLabel();
             }
         }
     ];
