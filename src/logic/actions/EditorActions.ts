@@ -18,6 +18,7 @@ import {ISize} from "../../interfaces/ISize";
 import {ImageUtil} from "../../utils/ImageUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {ViewPortHelper} from "../helpers/ViewPortHelper";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 
 export class EditorActions {
 
@@ -91,7 +92,8 @@ export class EditorActions {
             viewPortSize: EditorModel.viewPortSize,
             defaultRenderImageRect: EditorModel.defaultRenderImageRect,
             viewPortContentImageRect: ViewPortActions.calculateViewPortContentImageRect(),
-            realImageSize: ImageUtil.getSize(EditorModel.image)
+            realImageSize: ImageUtil.getSize(EditorModel.image),
+            absoluteViewPortContentScrollPosition: ViewPortActions.getAbsoluteScrollPosition()
         }
     }
 
@@ -118,7 +120,7 @@ export class EditorActions {
             EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
             EditorModel.cursor.style.display = "block";
 
-            if (isMouseOverImage) {
+            if (isMouseOverImage && ![CustomCursorStyle.GRAB, CustomCursorStyle.GRABBING].includes(GeneralSelector.getCustomCursorStyle())) {
                 const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
                 const scale: number = imageSize.width / viewPortContentImageRect.width;
                 const mousePositionOverImage: IPoint = PointUtil.multiply(
