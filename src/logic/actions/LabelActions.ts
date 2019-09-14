@@ -3,6 +3,7 @@ import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/editor
 import * as _ from "lodash";
 import {store} from "../../index";
 import {updateImageDataById} from "../../store/editor/actionCreators";
+import {LabelType} from "../../data/enums/LabelType";
 
 export class LabelActions {
     public static deleteActiveLabel() {
@@ -12,9 +13,17 @@ export class LabelActions {
     }
 
     public static deleteImageLabelById(imageId: string, labelId: string) {
-        LabelActions.deleteRectLabelById(imageId, labelId);
-        LabelActions.deletePointLabelById(imageId, labelId);
-        LabelActions.deletePolygonLabelById(imageId, labelId);
+        switch (EditorSelector.getActiveLabelType()) {
+            case LabelType.POINT:
+                LabelActions.deletePointLabelById(imageId, labelId);
+                break;
+            case LabelType.RECTANGLE:
+                LabelActions.deleteRectLabelById(imageId, labelId);
+                break;
+            case LabelType.POLYGON:
+                LabelActions.deletePolygonLabelById(imageId, labelId);
+                break;
+        }
     }
 
     public static deleteRectLabelById(imageId: string, labelRectId: string) {
@@ -36,7 +45,7 @@ export class LabelActions {
                 return currentLabel.id !== labelPointId;
             })
         };
-        updateImageDataById(imageData.id, newImageData);
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 
     public static deletePolygonLabelById(imageId: string, labelPolygonId: string) {
@@ -47,6 +56,6 @@ export class LabelActions {
                 return currentLabel.id !== labelPolygonId;
             })
         };
-        updateImageDataById(imageData.id, newImageData);
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 }
