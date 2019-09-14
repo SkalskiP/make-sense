@@ -53,8 +53,25 @@ npm install
 # serve with hot reload at localhost:3000
 npm start
 ```
+To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v11.x.x` versions are required. More information about this problem is available in the [#16][4].
 
-Some Windows 10 users may also have problems with running applications locally. The problems can be solved by adding additional dependencies to the project, through a command: `npm install normalize.css --save`. More information about this problem is available in the [#16][4].
+## Supported Keyboard Shortcuts
+
+| Functionality                      | Context  | Windows / Linux | Mac  |
+|:-----------------------------------|:--------:|:---------------:|:----:|
+| Polygon autocomplete               | Editor   | <kbd>Enter</kbd> | <kbd>Enter</kbd> |
+| Cancel polygon drawing             | Editor   | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
+| Delete currently selected label    | Editor   | <kbd>Delete</kbd> | <kbd>Backspace</kbd> |
+| Load previous image                | Editor   | <kbd>⌥</kbd> + <kbd>Left</kbd> | <kbd>Ctrl</kbd> + <kbd>Left</kbd> |
+| Load next image                    | Editor   | <kbd>⌥</kbd> + <kbd>Right</kbd> | <kbd>Ctrl</kbd> + <kbd>Right</kbd> |
+| Zoom in                            | Editor   | <kbd>⌥</kbd> + <kbd>+</kbd> | <kbd>Ctrl</kbd> + <kbd>+</kbd> |
+| Zoom out                           | Editor   | <kbd>⌥</kbd> + <kbd>-</kbd> | <kbd>Ctrl</kbd> + <kbd>-</kbd> |
+| Move image                         | Editor   | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> |
+| Exit popup                         | Popup    | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
+
+
+
+
 
 ## Supported Output Formats
 
@@ -227,7 +244,9 @@ Our application is being actively developed. If you have an idea for a new funct
 - [X] Export rect labels in Pascal VOC XML format
 - [X] Labelling objects using polygons 
 - [X] Export polygon labels in VGG JSON format
-- [ ] Optimization of the process of loading photos from disk - queuing 
+- [X] Optimization of the process of loading photos from disk - queuing 
+- [X] Image zoom and pan
+- [X] Keyboard shortcuts to improve productivity 
 - [ ] Labelling objects using lines
 - [ ] Autofill in label selection dropdown
 - [ ] Export labels in COCO JSON format
@@ -235,7 +254,6 @@ Our application is being actively developed. If you have an idea for a new funct
 - [ ] Separate tab with settings
 - [ ] Support basic image operations like crop and resize
 - [ ] Converting video to image frames
-- [ ] Keyboard shortcuts to improve productivity 
 - [ ] Automatic detection of objects in a photo - all you have to do is to label them
 - [ ] OCR labelling
 - [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
