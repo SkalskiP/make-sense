@@ -1,15 +1,15 @@
 import {ISize} from "../../interfaces/ISize";
 import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {MobileDeviceData} from "../../data/MobileDeviceData";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {ContextType} from "../../data/enums/ContextType";
 
 export type GeneralState = {
     windowSize: ISize;
-    mobileDeviceData: MobileDeviceData;
     activePopupType: PopupWindowType;
     customCursorStyle: CustomCursorStyle;
+    preventCustomCursor: boolean;
+    imageDragMode: boolean;
     activeContext: ContextType;
 }
 
@@ -27,13 +27,6 @@ interface UpdateActivePopupType {
     }
 }
 
-interface UpdateMobileDeviceData {
-    type: typeof Action.UPDATE_MOBILE_DEVICE_DATA;
-    payload: {
-        mobileDeviceData: MobileDeviceData;
-    }
-}
-
 interface UpdateCustomCursorStyle {
     type: typeof Action.UPDATE_CUSTOM_CURSOR_STYLE;
     payload: {
@@ -48,8 +41,23 @@ interface UpdateActiveContext {
     }
 }
 
+interface UpdatePreventCustomCursorStatus {
+    type: typeof Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS;
+    payload: {
+        preventCustomCursor: boolean;
+    }
+}
+
+interface UpdateImageDragModeStatus {
+    type: typeof Action.UPDATE_IMAGE_DRAG_MODE_STATUS;
+    payload: {
+        imageDragMode: boolean;
+    }
+}
+
 export type GeneralActionTypes = UpdateWindowSize
     | UpdateActivePopupType
-    | UpdateMobileDeviceData
     | UpdateCustomCursorStyle
     | UpdateActiveContext
+    | UpdatePreventCustomCursorStatus
+    | UpdateImageDragModeStatus

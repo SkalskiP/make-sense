@@ -2,9 +2,10 @@ import * as React from 'react';
 import {ISize} from "../../../interfaces/ISize";
 import './ImageButton.scss';
 import classNames from "classnames";
+import {LegacyRef} from "react";
 
-interface Props {
-    size:ISize,
+export interface ImageButtonProps extends React.HTMLProps<HTMLDivElement> {
+    buttonSize:ISize,
     padding?:number;
     image:string,
     imageAlt:string,
@@ -16,8 +17,8 @@ interface Props {
     externalClassName?:string;
 }
 
-export const ImageButton = (props:Props) => {
-    const {size, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
+export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: LegacyRef<HTMLDivElement>) => {
+    const {buttonSize, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
     const imagePadding:number = !!padding ? padding : 10;
 
     const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -27,13 +28,13 @@ export const ImageButton = (props:Props) => {
 
     const buttonStyle:React.CSSProperties = {
         ...style,
-        width: size.width,
-        height: size.height
+        width: buttonSize.width,
+        height: buttonSize.height
     };
 
     const imageStyle:React.CSSProperties = {
-        maxWidth: size.width - imagePadding,
-        maxHeight: size.height - imagePadding
+        maxWidth: buttonSize.width - imagePadding,
+        maxHeight: buttonSize.height - imagePadding
     };
 
     const getClassName = () => {
@@ -48,7 +49,12 @@ export const ImageButton = (props:Props) => {
     };
     
     return(
-        <div className={getClassName()} style={buttonStyle} onClick={onClickHandler}>
+        <div
+            className={getClassName()}
+            style={buttonStyle}
+            onClick={onClickHandler}
+            ref={ref}
+        >
             {!!href && <a href={href} style={imageStyle} target="_blank" rel="noopener noreferrer">
                 <img
                     draggable={false}
@@ -65,4 +71,4 @@ export const ImageButton = (props:Props) => {
             />}
         </div>
     );
-};
+});

@@ -1,6 +1,8 @@
 import {IRect} from "../../interfaces/IRect";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {EditorData} from "../../data/EditorData";
+import {EditorModel} from "../../staticModels/EditorModel";
+import {ViewPortActions} from "../actions/ViewPortActions";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
 
@@ -20,7 +22,9 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // RENDERING
     // =================================================================================================================
 
-    public render(data: EditorData): void {}
+    public render(data: EditorData): void {
+        EditorModel.primaryRenderingEngine.drawImage(EditorModel.image, ViewPortActions.calculateViewPortContentImageRect());
+    }
 
     public drawImage(image: HTMLImageElement, imageRect: IRect) {
         if (!!image && !!this.canvas) {

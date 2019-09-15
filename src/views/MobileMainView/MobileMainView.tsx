@@ -54,7 +54,7 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         return SocialMediaData.map((data:ISocialMedia, index: number) => {
             return <ImageButton
                 key={index}
-                size={size}
+                buttonSize={size}
                 image={data.imageSrc}
                 imageAlt={data.imageAlt}
                 href={data.href}

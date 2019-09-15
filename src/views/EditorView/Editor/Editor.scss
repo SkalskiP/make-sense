@@ -5,14 +5,26 @@
   flex: 1;
   position: relative;
 
-  .ImageCanvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    cursor: none;
+  .ViewPortContent {
+    position: relative;
 
-    &:hover {
+    .track-horizontal {
       cursor: none;
+    }
+
+    .track-vertical {
+      cursor: none;
+    }
+
+    .ImageCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      cursor: none;
+
+      &:hover {
+        cursor: none;
+      }
     }
   }
 
@@ -30,7 +42,7 @@
   }
 
   .Cursor {
-    position: relative;
+    position: absolute;
     width: 6px;
     height: 6px;
     transition: width 0.05s ease-out, height 0.05s ease-out, background-color 0.05s ease-in;
@@ -58,7 +70,14 @@
       background-color: transparent;
     }
 
-    &.move, &.add, &.resize, &.close, &.cancel {
+    &.grabbing {
+      width: 18px;
+      height: 18px;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 2px solid transparent;
+    }
+
+    &.move, &.add, &.resize, &.close, &.cancel, &.grab, &.grabbing {
       > img {
         display: block;
       }

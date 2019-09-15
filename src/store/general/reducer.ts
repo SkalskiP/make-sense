@@ -5,9 +5,10 @@ import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 const initialState: GeneralState = {
     windowSize: null,
     activePopupType: null,
-    mobileDeviceData: null,
     customCursorStyle: CustomCursorStyle.DEFAULT,
-    activeContext: null
+    activeContext: null,
+    preventCustomCursor: false,
+    imageDragMode: false
 };
 
 export function generalReducer(
@@ -27,12 +28,6 @@ export function generalReducer(
                 activePopupType: action.payload.activePopupType
             }
         }
-        case Action.UPDATE_MOBILE_DEVICE_DATA: {
-            return {
-                ...state,
-                mobileDeviceData: action.payload.mobileDeviceData
-            }
-        }
         case Action.UPDATE_CUSTOM_CURSOR_STYLE: {
             return {
                 ...state,
@@ -43,6 +38,18 @@ export function generalReducer(
             return {
                 ...state,
                 activeContext: action.payload.activeContext
+            }
+        }
+        case Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS: {
+            return {
+                ...state,
+                preventCustomCursor: action.payload.preventCustomCursor
+            }
+        }
+        case Action.UPDATE_IMAGE_DRAG_MODE_STATUS: {
+            return {
+                ...state,
+                imageDragMode: action.payload.imageDragMode
             }
         }
         default:

@@ -9,6 +9,7 @@ import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
+import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
@@ -43,7 +44,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, upda
         if (labelsList.length > 0) {
             updateActiveLabelNameIndex(0);
             updateLabelNamesList(labelsList);
-            updateActivePopupType(null);
+            PopupActions.close();
         }
     };
 

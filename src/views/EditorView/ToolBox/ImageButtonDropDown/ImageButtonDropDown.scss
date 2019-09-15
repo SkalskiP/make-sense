@@ -1,0 +1,19 @@
+@import '../../../../settings/Settings';
+
+.ImageButtonDropDownContent {
+  position: fixed;
+  z-index: 1000;
+  border-radius: 3px;
+  background-color: $darkThemeSecondColor;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  &.with-context {
+    background-color: $darkThemeForthColor;
+  }
+}

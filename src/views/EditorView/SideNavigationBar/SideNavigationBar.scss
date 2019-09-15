@@ -10,6 +10,12 @@
   align-items: center;
   align-content: flex-start;
 
+  &.with-context {
+    .NavigationBarContentWrapper {
+      background-color: $darkThemeForthColor;
+    }
+  }
+
   .CompanionBar {
     align-self: stretch;
     min-width: $sideNavigationBarCompanionWidth;
@@ -40,6 +46,10 @@
 
     .CompanionBar {
       border-right: solid 1px $darkThemeFirstColor;
+
+      .VerticalEditorButton {
+        transform: rotate(-90deg) translateY(-2px);
+      }
     }
   }
 
@@ -49,6 +59,10 @@
 
     .CompanionBar {
       border-left: solid 1px $darkThemeFirstColor;
+
+      .VerticalEditorButton {
+        transform: rotate(-90deg) translateY(-1px);
+      }
     }
   }
 

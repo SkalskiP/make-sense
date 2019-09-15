@@ -1,6 +1,7 @@
 import {store} from "../..";
 import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../editor/types";
 import _ from "lodash";
+import {LabelType} from "../../data/enums/LabelType";
 
 export class EditorSelector {
     public static getProjectName(): string {
@@ -13,6 +14,10 @@ export class EditorSelector {
 
     public static getActiveLabelNameIndex(): number {
         return store.getState().editor.activeLabelNameIndex;
+    }
+
+    public static getActiveLabelType(): LabelType {
+        return store.getState().editor.activeLabelType;
     }
 
     public static getImagesData(): ImageData[] {
@@ -29,8 +34,17 @@ export class EditorSelector {
         if (activeImageIndex === null)
             return null;
 
+        return EditorSelector.getImageDataByIndex(activeImageIndex);
+    }
+
+    public static getImageDataByIndex(index: number): ImageData {
         const imagesData: ImageData[] = EditorSelector.getImagesData();
-        return imagesData[activeImageIndex];
+        return imagesData[index];
+    }
+
+    public static getImageDataById(id: string): ImageData {
+        const imagesData: ImageData[] = EditorSelector.getImagesData();
+        return _.find(imagesData, {id: id});
     }
 
     public static getActiveLabelId(): string | null {

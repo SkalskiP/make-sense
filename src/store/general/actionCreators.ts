@@ -2,7 +2,6 @@ import {ISize} from "../../interfaces/ISize";
 import {GeneralActionTypes} from "./types";
 import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {MobileDeviceData} from "../../data/MobileDeviceData";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {ContextType} from "../../data/enums/ContextType";
 
@@ -24,15 +23,6 @@ export function updateActivePopupType(activePopupType: PopupWindowType): General
     }
 }
 
-export function updateMobileDeviceData(mobileDeviceData: MobileDeviceData): GeneralActionTypes {
-    return {
-        type: Action.UPDATE_MOBILE_DEVICE_DATA,
-        payload: {
-            mobileDeviceData,
-        }
-    }
-}
-
 export function updateCustomCursorStyle(customCursorStyle: CustomCursorStyle): GeneralActionTypes {
     return {
         type: Action.UPDATE_CUSTOM_CURSOR_STYLE,
@@ -47,6 +37,24 @@ export function updateActiveContext(activeContext: ContextType): GeneralActionTy
         type: Action.UPDATE_CONTEXT,
         payload: {
             activeContext,
+        },
+    };
+}
+
+export function updatePreventCustomCursorStatus(preventCustomCursor: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS,
+        payload: {
+            preventCustomCursor,
+        },
+    };
+}
+
+export function updateImageDragModeStatus(imageDragMode: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_IMAGE_DRAG_MODE_STATUS,
+        payload: {
+            imageDragMode,
         },
     };
 }

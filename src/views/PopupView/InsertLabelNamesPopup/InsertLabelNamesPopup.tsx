@@ -10,6 +10,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import uuidv1 from 'uuid/v1';
+import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
@@ -37,12 +38,12 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                     key={key}
                     isPassword={false}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
-                    label={"Inset label"}
+                    label={"Insert label"}
                 />
                 <ImageButton
                     image={"ico/trash.png"}
                     imageAlt={"remove_label"}
-                    size={{width: 30, height: 30}}
+                    buttonSize={{width: 30, height: 30}}
                     onClick={() => deleteHandle(key)}
                 />
             </div>
@@ -55,8 +56,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
 
     const onAccept = () => {
         const labelNamesList: string[] = extractLabelNamesList();
-        updateLabelNamesList(labelNamesList);
-        updateActivePopupType(null);
+        if (labelNamesList.length > 0) {
+            updateLabelNamesList(labelNamesList);
+            PopupActions.close();
+        }
     };
 
     const extractLabelNamesList = (): string[] => {
@@ -73,7 +76,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
                 <ImageButton
                     image={"ico/plus.png"}
                     imageAlt={"plus"}
-                    size={{width: 40, height: 40}}
+                    buttonSize={{width: 40, height: 40}}
                     padding={25}
                     onClick={addHandle}
                 />

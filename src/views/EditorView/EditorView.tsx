@@ -23,7 +23,10 @@ const EditorView: React.FC<IProps> = ({activePopupType}) => {
     };
 
     return (
-        <div className={getClassName()}>
+        <div
+            className={getClassName()}
+            draggable={false}
+        >
             <TopNavigationBar/>
             <EditorContainer/>
         </div>

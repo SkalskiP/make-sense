@@ -1,13 +1,15 @@
 import {HotKeyAction} from "../../data/HotKeyAction";
-import {EditorModel} from "../../model/EditorModel";
+import {EditorModel} from "../../staticModels/EditorModel";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorData} from "../../data/EditorData";
 import {EditorActions} from "../actions/EditorActions";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
-import {EditorSelector} from "../../store/selectors/EditorSelector";
-import {store} from "../../index";
-import {updateActiveImageIndex} from "../../store/editor/actionCreators";
 import {BaseContext} from "./BaseContext";
+import {ImageActions} from "../actions/ImageActions";
+import {ViewPortActions} from "../actions/ViewPortActions";
+import {Direction} from "../../data/enums/Direction";
+import {PlatformUtil} from "../../utils/PlatformUtil";
+import {LabelActions} from "../actions/LabelActions";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -30,29 +32,62 @@ export class EditorContext extends BaseContext {
             }
         },
         {
-            keyCombo: ["ArrowLeft"],
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "ArrowLeft"] : ["Control", "ArrowLeft"],
             action: (event: KeyboardEvent) => {
-                EditorContext.getPreviousImage();
+                ImageActions.getPreviousImage()
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "ArrowRight"] : ["Control", "ArrowRight"],
+            action: (event: KeyboardEvent) => {
+                ImageActions.getNextImage();
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "+"] : ["Control", "+"],
+            action: (event: KeyboardEvent) => {
+                ViewPortActions.zoomIn();
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "-"] : ["Control", "-"],
+            action: (event: KeyboardEvent) => {
+                ViewPortActions.zoomOut();
             }
         },
         {
             keyCombo: ["ArrowRight"],
             action: (event: KeyboardEvent) => {
-                EditorContext.getNextImage();
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.RIGHT);
+            }
+        },
+        {
+            keyCombo: ["ArrowLeft"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.LEFT);
+            }
+        },
+        {
+            keyCombo: ["ArrowUp"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.BOTTOM);
+            }
+        },
+        {
+            keyCombo: ["ArrowDown"],
+            action: (event: KeyboardEvent) => {
+                event.preventDefault();
+                ViewPortActions.translateViewPortPosition(Direction.TOP);
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Backspace"] : ["Delete"],
+            action: (event: KeyboardEvent) => {
+                LabelActions.deleteActiveLabel();
             }
         }
     ];
-
-    private static getPreviousImage(): void {
-        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        const previousImageIndex: number = Math.max(0, currentImageIndex - 1);
-        store.dispatch(updateActiveImageIndex(previousImageIndex));
-    }
-
-    private static getNextImage(): void {
-        const currentImageIndex: number = EditorSelector.getActiveImageIndex();
-        const imageCount: number = EditorSelector.getImagesData().length;
-        const nextImageIndex: number = Math.min(imageCount - 1, currentImageIndex + 1);
-        store.dispatch(updateActiveImageIndex(nextImageIndex));
-    }
 }

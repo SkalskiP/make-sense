@@ -10,9 +10,9 @@ import {
 } from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import * as _ from "lodash";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
+import {LabelActions} from "../../../../logic/actions/LabelActions";
 
 interface IProps {
     size: ISize;
@@ -38,13 +38,7 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
     };
 
     const deletePolygonLabelById = (labelPolygonId: string) => {
-        const newImageData = {
-            ...imageData,
-            labelPolygons: _.filter(imageData.labelPolygons, (currentLabel: LabelPolygon) => {
-                return currentLabel.id !== labelPolygonId;
-            })
-        };
-        updateImageDataById(imageData.id, newImageData);
+        LabelActions.deletePolygonLabelById(imageData.id, labelPolygonId);
     };
 
     const updatePolygonLabel = (labelPolygonId: string, labelNameIndex: number) => {

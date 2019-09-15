@@ -5,6 +5,8 @@ import {updateActiveContext} from "../../store/general/actionCreators";
 import * as _ from "lodash";
 import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {EventType} from "../../data/enums/EventType";
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -16,11 +18,21 @@ export class ContextManager {
     }
 
     public static init(): void {
-        window.addEventListener("keydown", ContextManager.onDown);
-        window.addEventListener("keyup", ContextManager.onUp);
+        window.addEventListener(EventType.KEY_DOWN, ContextManager.onDown);
+        window.addEventListener(EventType.KEY_UP, ContextManager.onUp);
+        window.addEventListener(EventType.FOCUS, ContextManager.onFocus);
     }
 
     public static switchCtx(context: ContextType): void {
+        const activeCtx: ContextType = GeneralSelector.getActiveContext();
+
+        if (activeCtx !== context) {
+            ContextManager.contextHistory.push(activeCtx);
+            ContextManager.updateCtx(context);
+        }
+    }
+
+    private static updateCtx(context: ContextType): void {
         store.dispatch(updateActiveContext(context));
         switch (context) {
             case ContextType.EDITOR:
@@ -34,21 +46,25 @@ export class ContextManager {
         }
     }
 
-    public static restoreContext(): void {
-        ContextManager.switchCtx(ContextManager.contextHistory.pop());
+    public static restoreCtx(): void {
+        ContextManager.updateCtx(ContextManager.contextHistory.pop());
     }
 
     private static onDown(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         if (!ContextManager.isInCombo(keyCode)) {
             ContextManager.addToCombo(keyCode);
-            ContextManager.execute(event);
         }
+        ContextManager.execute(event);
     }
 
     private static onUp(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         ContextManager.removeFromCombo(keyCode);
+    }
+
+    public static onFocus() {
+        ContextManager.activeCombo = [];
     }
 
     private static execute(event: KeyboardEvent): void {

@@ -6,21 +6,20 @@ import {ProjectType} from "./data/enums/ProjectType";
 import {AppState} from "./store";
 import {connect} from "react-redux";
 import PopupView from "./views/PopupView/PopupView";
-import {MobileDeviceData} from "./data/MobileDeviceData";
 import MobileMainView from "./views/MobileMainView/MobileMainView";
 import {ISize} from "./interfaces/ISize";
 import {Settings} from "./settings/Settings";
 import {SizeItUpView} from "./views/SizeItUpView/SizeItUpView";
+import {PlatformModel} from "./staticModels/PlatformModel";
 
 interface IProps {
     projectType: ProjectType;
-    mobileDeviceData: MobileDeviceData;
     windowSize: ISize;
 }
 
-const App: React.FC<IProps> = ({projectType, mobileDeviceData, windowSize}) => {
+const App: React.FC<IProps> = ({projectType, windowSize}) => {
     const selectRoute = () => {
-        if (!!mobileDeviceData.manufacturer && !!mobileDeviceData.os)
+        if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
         if (!projectType)
             return <MainView/>;
@@ -34,7 +33,9 @@ const App: React.FC<IProps> = ({projectType, mobileDeviceData, windowSize}) => {
     };
 
       return (
-        <div className="App">
+        <div className="App"
+            draggable={false}
+        >
             {selectRoute()}
             <PopupView/>
         </div>
@@ -43,7 +44,6 @@ const App: React.FC<IProps> = ({projectType, mobileDeviceData, windowSize}) => {
 
 const mapStateToProps = (state: AppState) => ({
     projectType: state.editor.projectType,
-    mobileDeviceData: state.general.mobileDeviceData,
     windowSize: state.general.windowSize
 });
 

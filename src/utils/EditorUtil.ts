@@ -14,6 +14,10 @@ export class EditorUtil {
                 return "ico/move.png";
             case CustomCursorStyle.CANCEL:
                 return "ico/cancel.png";
+            case CustomCursorStyle.GRAB:
+                return "ico/hand-fill.png";
+            case CustomCursorStyle.GRABBING:
+                return "ico/hand-fill-grab.png";
             default:
                 return null;
         }
@@ -27,6 +31,8 @@ export class EditorUtil {
                 "resize": cursorStyle === CustomCursorStyle.RESIZE,
                 "close": cursorStyle === CustomCursorStyle.CLOSE,
                 "cancel": cursorStyle === CustomCursorStyle.CANCEL,
+                "grab": cursorStyle === CustomCursorStyle.GRAB,
+                "grabbing": cursorStyle === CustomCursorStyle.GRABBING
             }
         );
     };

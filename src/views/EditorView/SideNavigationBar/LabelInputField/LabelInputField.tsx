@@ -10,6 +10,7 @@ import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
 import Scrollbars from 'react-custom-scrollbars';
+import {EventType} from "../../../../data/enums/EventType";
 
 interface IProps {
     size: ISize;
@@ -63,7 +64,7 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     private openDropdown = () => {
         this.setState({isOpen: true});
-        window.addEventListener("mousedown", this.closeDropdown);
+        window.addEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
     };
 
     private closeDropdown = (event: MouseEvent) => {
@@ -78,7 +79,7 @@ class LabelInputField extends React.Component<IProps, IState> {
 
         if (!RectUtil.isPointInside(dropDownRect, mousePosition)) {
             this.setState({isOpen: false});
-            window.removeEventListener("mousedown", this.closeDropdown)
+            window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown)
         }
     };
 
@@ -100,7 +101,7 @@ class LabelInputField extends React.Component<IProps, IState> {
     private getDropdownOptions = () => {
         const onClick = (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             this.setState({isOpen: false});
-            window.removeEventListener("mousedown", this.closeDropdown);
+            window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
             this.props.onSelectLabel(this.props.id, index);
             this.props.updateHighlightedLabelId(null);
             this.props.updateActiveLabelId(this.props.id);
@@ -180,7 +181,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 externalClassName={"trash"}
                                 image={"ico/trash.png"}
                                 imageAlt={"remove_rect"}
-                                size={{width: 30, height: 30}}
+                                buttonSize={{width: 30, height: 30}}
                                 onClick={() => onDelete(id)}
                             />
                         </div>

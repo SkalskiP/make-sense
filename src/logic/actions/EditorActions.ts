@@ -1,19 +1,24 @@
 import {LabelType} from "../../data/enums/LabelType";
-import {EditorModel} from "../../model/EditorModel";
+import {EditorModel} from "../../staticModels/EditorModel";
 import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
 import {IRect} from "../../interfaces/IRect";
-import {Settings} from "../../settings/Settings";
 import {RectUtil} from "../../utils/RectUtil";
 import {EditorData} from "../../data/EditorData";
 import {CanvasUtil} from "../../utils/CanvasUtil";
-import {ISize} from "../../interfaces/ISize";
 import React from "react";
 import {IPoint} from "../../interfaces/IPoint";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
 import {ContextManager} from "../context/ContextManager";
+import {PointUtil} from "../../utils/PointUtil";
+import {ViewPortActions} from "./ViewPortActions";
+import {ISize} from "../../interfaces/ISize";
+import {ImageUtil} from "../../utils/ImageUtil";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {ViewPortHelper} from "../helpers/ViewPortHelper";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 
 export class EditorActions {
 
@@ -42,7 +47,8 @@ export class EditorActions {
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     };
 
-    public static mountRenderEngines(activeLabelType: LabelType) {
+    public static mountRenderEnginesAndHelpers(activeLabelType: LabelType) {
+        EditorModel.viewPortHelper = new ViewPortHelper();
         EditorModel.primaryRenderingEngine = new PrimaryEditorRenderEngine(EditorModel.canvas);
         EditorActions.mountSupportRenderingEngine(activeLabelType);
     }
@@ -53,7 +59,6 @@ export class EditorActions {
 
     public static fullRender() {
         DrawUtil.clearCanvas(EditorModel.canvas);
-        EditorModel.primaryRenderingEngine.drawImage(EditorModel.image, EditorModel.imageRectOnCanvas);
         EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
         EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
     }
@@ -65,45 +70,30 @@ export class EditorActions {
     public static setLoadingStatus(status: boolean) {
         EditorModel.isLoading = status;
     }
-
     public static setActiveImage(image: HTMLImageElement) {
         EditorModel.image = image;
+    }
+
+    public static setViewPortActionsDisabledStatus(status: boolean) {
+        EditorModel.viewPortActionsDisabled = status;
     }
 
     // =================================================================================================================
     // GETTERS
     // =================================================================================================================
 
-    public static getImageRect(image: HTMLImageElement): IRect | null {
-        if (!!image) {
-            const canvasPaddingWidth: number = Settings.CANVAS_PADDING_WIDTH_PX;
-            const imageRect: IRect = { x: 0, y: 0, width: image.width, height: image.height};
-            const canvasRect: IRect = {
-                x: canvasPaddingWidth,
-                y: canvasPaddingWidth,
-                width: EditorModel.canvas.width - 2 * canvasPaddingWidth,
-                height: EditorModel.canvas.height - 2 * canvasPaddingWidth
-            };
-            return RectUtil.fitInsideRectWithRatio(canvasRect, RectUtil.getRatio(imageRect));
-        }
-        return null;
-    };
-
-    public static getImageScale(image: HTMLImageElement): number | null {
-        if (!image || !EditorModel.imageRectOnCanvas)
-            return null;
-
-        return image.width / EditorModel.imageRectOnCanvas.width;
-    }
-
     public static getEditorData(event?: Event): EditorData {
         return {
-            mousePositionOnCanvas: EditorModel.mousePositionOnCanvas,
-            canvasSize: CanvasUtil.getSize(EditorModel.canvas),
-            activeImageScale: EditorModel.imageScale,
-            activeImageRectOnCanvas: EditorModel.imageRectOnCanvas,
+            mousePositionOnViewPortContent: EditorModel.mousePositionOnViewPortContent,
+            viewPortContentSize: CanvasUtil.getSize(EditorModel.canvas),
             activeKeyCombo: ContextManager.getActiveCombo(),
-            event: event
+            event: event,
+            zoom: EditorModel.zoom,
+            viewPortSize: EditorModel.viewPortSize,
+            defaultRenderImageRect: EditorModel.defaultRenderImageRect,
+            viewPortContentImageRect: ViewPortActions.calculateViewPortContentImageRect(),
+            realImageSize: ImageUtil.getSize(EditorModel.image),
+            absoluteViewPortContentScrollPosition: ViewPortActions.getAbsoluteScrollPosition()
         }
     }
 
@@ -111,54 +101,42 @@ export class EditorActions {
     // HELPERS
     // =================================================================================================================
 
-    public static calculateActiveImageCharacteristics() {
-        EditorModel.imageRectOnCanvas = EditorActions.getImageRect(EditorModel.image);
-        EditorModel.imageScale = EditorActions.getImageScale(EditorModel.image);
-    }
-
-    public static resizeCanvas = (newCanvasSize: ISize) => {
-        if (!!newCanvasSize && !!EditorModel.canvas) {
-            EditorModel.canvas.width = newCanvasSize.width;
-            EditorModel.canvas.height = newCanvasSize.height;
-        }
-    };
-
     public static updateMousePositionIndicator(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) {
-
-        if (!EditorModel.imageRectOnCanvas || !EditorModel.canvas) {
+        if (!EditorModel.image || !EditorModel.canvas) {
             EditorModel.mousePositionIndicator.style.display = "none";
             EditorModel.cursor.style.display = "none";
             return;
         }
 
-        const mousePositionOnCanvas: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
-        const canvasRect: IRect = {x: 0, y: 0, ...CanvasUtil.getSize(EditorModel.canvas)};
-        const isOverCanvas: boolean = RectUtil.isPointInside(canvasRect, mousePositionOnCanvas);
+        const mousePositionOverViewPortContent: IPoint = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
+        const viewPortContentScrollPosition: IPoint = ViewPortActions.getAbsoluteScrollPosition();
+        const viewPortContentImageRect: IRect = ViewPortActions.calculateViewPortContentImageRect();
+        const mousePositionOverViewPort: IPoint = PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentScrollPosition);
+        const isMouseOverImage: boolean = RectUtil.isPointInside(viewPortContentImageRect, mousePositionOverViewPortContent);
+        const isMouseOverViewPort: boolean = RectUtil.isPointInside({x: 0, y: 0, ...EditorModel.viewPortSize}, mousePositionOverViewPort);
 
-        if (!isOverCanvas) {
-            EditorModel.mousePositionIndicator.style.display = "none";
-            EditorModel.cursor.style.display = "none";
-            return;
-        }
+        if (isMouseOverViewPort && !GeneralSelector.getPreventCustomCursorStatus()) {
+            EditorModel.cursor.style.left = mousePositionOverViewPort.x + "px";
+            EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
+            EditorModel.cursor.style.display = "block";
 
-        const isOverImage: boolean = RectUtil.isPointInside(EditorModel.imageRectOnCanvas, mousePositionOnCanvas);
+            if (isMouseOverImage && ![CustomCursorStyle.GRAB, CustomCursorStyle.GRABBING].includes(GeneralSelector.getCustomCursorStyle())) {
+                const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
+                const scale: number = imageSize.width / viewPortContentImageRect.width;
+                const mousePositionOverImage: IPoint = PointUtil.multiply(
+                    PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentImageRect), scale);
+                const text: string = "x: " + Math.round(mousePositionOverImage.x) + ", y: " + Math.round(mousePositionOverImage.y);
 
-        if (isOverImage) {
-            const scale = EditorModel.imageScale;
-            const x: number = Math.round((mousePositionOnCanvas.x - EditorModel.imageRectOnCanvas.x) * scale);
-            const y: number = Math.round((mousePositionOnCanvas.y - EditorModel.imageRectOnCanvas.y) * scale);
-            const text: string = "x: " + x + ", y: " + y;
-
-            EditorModel.mousePositionIndicator.innerHTML = text;
-            EditorModel.mousePositionIndicator.style.left = (mousePositionOnCanvas.x + 15) + "px";
-            EditorModel.mousePositionIndicator.style.top = (mousePositionOnCanvas.y + 15) + "px";
-            EditorModel.mousePositionIndicator.style.display = "block";
+                EditorModel.mousePositionIndicator.innerHTML = text;
+                EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + "px";
+                EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + "px";
+                EditorModel.mousePositionIndicator.style.display = "block";
+            } else {
+                EditorModel.mousePositionIndicator.style.display = "none";
+            }
         } else {
+            EditorModel.cursor.style.display = "none";
             EditorModel.mousePositionIndicator.style.display = "none";
         }
-
-        EditorModel.cursor.style.left = mousePositionOnCanvas.x + "px";
-        EditorModel.cursor.style.top = mousePositionOnCanvas.y + "px";
-        EditorModel.cursor.style.display = "block";
     };
 }

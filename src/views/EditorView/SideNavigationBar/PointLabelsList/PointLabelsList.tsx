@@ -10,9 +10,9 @@ import {
 } from "../../../../store/editor/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import * as _ from "lodash";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
+import {LabelActions} from "../../../../logic/actions/LabelActions";
 
 interface IProps {
     size: ISize;
@@ -38,13 +38,7 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
     };
 
     const deletePointLabelById = (labelPointId: string) => {
-        const newImageData = {
-            ...imageData,
-            labelPoints: _.filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
-                return currentLabel.id !== labelPointId;
-            })
-        };
-        updateImageDataById(imageData.id, newImageData);
+        LabelActions.deletePointLabelById(imageData.id, labelPointId);
     };
 
     const updatePointLabel = (labelPointId: string, labelNameIndex: number) => {
