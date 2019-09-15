@@ -57,8 +57,8 @@ To ensure proper functionality of the application locally, an npm `6.x.x` and no
 
 ## Supported Keyboard Shortcuts
 
-| Functionality                      | Context  | Windows / Linux | Mac  |
-|:-----------------------------------|:--------:|:---------------:|:----:|
+| Functionality                      | Context  | Mac | Windows / Linux  |
+|:-----------------------------------|:--------:|:---:|:----------------:|
 | Polygon autocomplete               | Editor   | <kbd>Enter</kbd> | <kbd>Enter</kbd> |
 | Cancel polygon drawing             | Editor   | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
 | Delete currently selected label    | Editor   | <kbd>Delete</kbd> | <kbd>Backspace</kbd> |
@@ -258,6 +258,10 @@ Our application is being actively developed. If you have an idea for a new funct
 - [ ] OCR labelling
 - [ ] Integration with external storage - Amazon S3, Google Drive, Dropbox
 - [ ] Copy annotations from previous image into the next one
+
+## Contribution
+
+Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pull requests](https://github.com/SkalskiP/make-sense/pulls).  
 
 ## Citation
 
