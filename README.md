@@ -20,22 +20,8 @@ Andrew Ng
 
 ## Sneak Peek
 
-### Bounding boxes
-
 <p align="center"> 
-    <img width="1000" src=".//examples/bbox-demo.gif" alt="bbox">
-</p>
-
-### Points
-
-<p align="center"> 
-    <img width="1000" src=".//examples/points-demo.gif" alt="points">
-</p>
-
-### Polygons
-
-<p align="center"> 
-    <img width="1000" src=".//examples/polygon-demo.gif" alt="polygon">
+    <img width="1000" src=".//examples/alfa-demo.gif" alt="bbox">
 </p>
 
 ## Set Up the Project Locally
@@ -68,10 +54,6 @@ To ensure proper functionality of the application locally, an npm `6.x.x` and no
 | Zoom out                           | Editor   | <kbd>⌥</kbd> + <kbd>-</kbd> | <kbd>Ctrl</kbd> + <kbd>-</kbd> |
 | Move image                         | Editor   | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> |
 | Exit popup                         | Popup    | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
-
-
-
-
 
 ## Supported Output Formats
 
