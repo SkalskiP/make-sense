@@ -95,6 +95,17 @@ Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pu
 }
 ```
 
+## Citation
+
+```
+@MISC{make-sense,
+   author = {Piotr Skalski},
+   title = {{Make Sense}},
+   howpublished = "\url{https://github.com/SkalskiP/make-sense/}",
+   year = {2019},
+}
+```
+
 ## License
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
