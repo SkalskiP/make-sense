@@ -22,6 +22,7 @@ import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {PlatformModel} from "../../../staticModels/PlatformModel";
+import {ObjectDetectionActions} from "../../../logic/actions/ObjectDetectionActions";
 
 interface IProps {
     size: ISize;
@@ -89,6 +90,7 @@ class Editor extends React.Component<IProps, {}> {
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
             EditorActions.setActiveImage(ImageRepository.getById(imageData.id));
+            ObjectDetectionActions.detectRects(imageData.id, ImageRepository.getById(imageData.id));
             this.updateModelAndRender()
         }
         else {
@@ -105,6 +107,7 @@ class Editor extends React.Component<IProps, {}> {
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
         EditorActions.setActiveImage(image);
+        ObjectDetectionActions.detectRects(imageData.id, image);
         EditorActions.setLoadingStatus(false);
         this.updateModelAndRender()
     };

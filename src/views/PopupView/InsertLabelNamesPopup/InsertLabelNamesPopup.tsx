@@ -10,7 +10,6 @@ import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import uuidv1 from 'uuid/v1';
-import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
@@ -58,7 +57,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
         const labelNamesList: string[] = extractLabelNamesList();
         if (labelNamesList.length > 0) {
             updateLabelNamesList(labelNamesList);
-            PopupActions.close();
+            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };
 
