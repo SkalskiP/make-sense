@@ -1,5 +1,4 @@
 import {IRect} from "../../interfaces/IRect";
-import {ProjectType} from "../../data/enums/ProjectType";
 import {Action} from "../Actions";
 import {LabelType} from "../../data/enums/LabelType";
 import {IPoint} from "../../interfaces/IPoint";
@@ -29,33 +28,18 @@ export type ImageData = {
     labelRects: LabelRect[];
     labelPoints: LabelPoint[];
     labelPolygons: LabelPolygon[];
+    isVisitedByObjectDetector: boolean;
 }
 
-export type EditorState = {
+export type LabelsState = {
     activeImageIndex: number;
     activeLabelNameIndex: number;
     activeLabelType: LabelType;
     activeLabelId: string;
     highlightedLabelId: string;
-    projectType: ProjectType;
-    projectName: string,
     imagesData: ImageData[];
     labelNames: string[];
     firstLabelCreatedFlag: boolean;
-}
-
-interface UpdateProjectType {
-    type: typeof Action.UPDATE_PROJECT_TYPE;
-    payload: {
-        projectType: ProjectType;
-    }
-}
-
-interface UpdateProjectName {
-    type: typeof Action.UPDATE_PROJECT_NAME;
-    payload: {
-        projectName: string;
-    }
 }
 
 interface UpdateActiveImageIndex {
@@ -129,9 +113,7 @@ interface UpdateFirstLabelCreatedFlag {
     }
 }
 
-export type EditorActionTypes = UpdateProjectType
-    | UpdateProjectName
-    | UpdateActiveImageIndex
+export type LabelsActionTypes = UpdateActiveImageIndex
     | UpdateActiveLabelNameIndex
     | UpdateActiveLabelType
     | UpdateImageDataById

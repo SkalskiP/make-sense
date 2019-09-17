@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {LabelType} from "../../../../data/enums/LabelType";
 import {ISize} from "../../../../interfaces/ISize";
 import {AppState} from "../../../../store";
-import {ImageData} from "../../../../store/editor/types";
+import {ImageData} from "../../../../store/labels/types";
 import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import './ImagesList.scss';
@@ -99,9 +99,9 @@ class ImagesList extends React.Component<IProps, IState> {
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    activeImageIndex: state.editor.activeImageIndex,
-    imagesData: state.editor.imagesData,
-    activeLabelType: state.editor.activeLabelType
+    activeImageIndex: state.labels.activeImageIndex,
+    imagesData: state.labels.imagesData,
+    activeLabelType: state.labels.activeLabelType
 });
 
 export default connect(

@@ -8,7 +8,11 @@ const initialState: GeneralState = {
     customCursorStyle: CustomCursorStyle.DEFAULT,
     activeContext: null,
     preventCustomCursor: false,
-    imageDragMode: false
+    imageDragMode: false,
+    projectData: {
+        type: null,
+        name: "my-project-name",
+    }
 };
 
 export function generalReducer(
@@ -50,6 +54,12 @@ export function generalReducer(
             return {
                 ...state,
                 imageDragMode: action.payload.imageDragMode
+            }
+        }
+        case Action.UPDATE_PROJECT_DATA: {
+            return {
+                ...state,
+                projectData: action.payload.projectData
             }
         }
         default:

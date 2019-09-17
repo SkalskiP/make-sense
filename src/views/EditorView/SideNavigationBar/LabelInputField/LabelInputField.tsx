@@ -8,7 +8,7 @@ import {IPoint} from "../../../../interfaces/IPoint";
 import {RectUtil} from "../../../../utils/RectUtil";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/editor/actionCreators";
+import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/labels/actionCreators";
 import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from "../../../../data/enums/EventType";
 

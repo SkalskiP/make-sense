@@ -1,13 +1,13 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelRect} from "../../../../store/editor/types";
+import {ImageData, LabelRect} from "../../../../store/labels/types";
 import './RectLabelsList.scss';
 import {
     updateActiveLabelId,
     updateActiveLabelNameIndex,
     updateImageDataById
-} from "../../../../store/editor/actionCreators";
+} from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
@@ -113,10 +113,10 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelIndex: state.editor.activeLabelNameIndex,
-    activeLabelId: state.editor.activeLabelId,
-    highlightedLabelId: state.editor.highlightedLabelId,
-    labelNames : state.editor.labelNames
+    activeLabelIndex: state.labels.activeLabelNameIndex,
+    activeLabelId: state.labels.activeLabelId,
+    highlightedLabelId: state.labels.highlightedLabelId,
+    labelNames : state.labels.labelNames
 });
 
 export default connect(

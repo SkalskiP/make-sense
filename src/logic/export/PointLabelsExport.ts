@@ -1,8 +1,8 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {ImageData, LabelPoint} from "../../store/editor/types";
+import {ImageData, LabelPoint} from "../../store/labels/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
-import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 
 export class PointLabelsExporter {
@@ -17,7 +17,7 @@ export class PointLabelsExporter {
     }
 
     private static exportAsCSV(): void {
-        const content: string = EditorSelector.getImagesData()
+        const content: string = LabelsSelector.getImagesData()
             .map((imageData: ImageData) => {
                 return PointLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
             .filter((imageLabelData: string) => {
@@ -38,7 +38,7 @@ export class PointLabelsExporter {
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        const labelNamesList: string[] = EditorSelector.getLabelNames();
+        const labelNamesList: string[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
             const labelFields = [
                 labelNamesList[labelPoint.labelIndex],

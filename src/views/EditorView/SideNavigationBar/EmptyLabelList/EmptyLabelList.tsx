@@ -36,7 +36,7 @@ const EmptyLabelList: React.FC<IProps> = ({firstLabelCreatedFlag, labelBefore, l
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    firstLabelCreatedFlag: state.editor.firstLabelCreatedFlag
+    firstLabelCreatedFlag: state.labels.firstLabelCreatedFlag
 });
 
 export default connect(

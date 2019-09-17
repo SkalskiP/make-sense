@@ -2,31 +2,36 @@ import React from "react";
 import './ImagesDropZone.scss';
 import {useDropzone} from "react-dropzone";
 import {TextButton} from "../../Common/TextButton/TextButton";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {connect} from "react-redux";
-import {addImageData, updateActiveImageIndex, updateProjectType} from "../../../store/editor/actionCreators";
+import {addImageData, updateActiveImageIndex} from "../../../store/labels/actionCreators";
 import {AppState} from "../../../store";
 import {ProjectType} from "../../../data/enums/ProjectType";
 import {FileUtil} from "../../../utils/FileUtil";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
+import {updateActivePopupType, updateProjectData} from "../../../store/general/actionCreators";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
+import {ProjectData} from "../../../store/general/types";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
     addImageData: (imageData: ImageData[]) => any;
-    updateProjectType: (projectType: ProjectType) => any;
+    updateProjectData: (projectData: ProjectData) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    projectData: ProjectData;
 }
 
-const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData, updateProjectType, updateActivePopupType}) => {
+const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData, updateProjectData, updateActivePopupType, projectData}) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.IMAGE
     });
 
     const startEditor = (projectType: ProjectType) => {
         if (acceptedFiles.length > 0) {
-            updateProjectType(projectType);
+            updateProjectData({
+                ...projectData,
+                type: projectType
+            });
             updateActiveImageIndex(0);
             addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
             updateActivePopupType(PopupWindowType.INSERT_LABEL_NAMES);
@@ -92,11 +97,13 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
 const mapDispatchToProps = {
     updateActiveImageIndex,
     addImageData,
-    updateProjectType,
+    updateProjectData,
     updateActivePopupType
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    projectData: state.general.projectData
+});
 
 export default connect(
     mapStateToProps,

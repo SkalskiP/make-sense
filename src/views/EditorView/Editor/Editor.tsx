@@ -1,11 +1,11 @@
 import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateImageDataById} from "../../../store/editor/actionCreators";
+import {updateImageDataById} from "../../../store/labels/actionCreators";
 import {ImageRepository} from "../../../logic/imageRepository/ImageRepository";
 import {LabelType} from "../../../data/enums/LabelType";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
@@ -203,9 +203,9 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.editor.activeLabelType,
+    activeLabelType: state.labels.activeLabelType,
     activePopupType: state.general.activePopupType,
-    activeLabelId: state.editor.activeLabelId,
+    activeLabelId: state.labels.activeLabelId,
     customCursorStyle: state.general.customCursorStyle,
     imageDragMode: state.general.imageDragMode
 });

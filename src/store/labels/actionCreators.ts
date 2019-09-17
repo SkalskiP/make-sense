@@ -1,27 +1,8 @@
-import {ProjectType} from "../../data/enums/ProjectType";
-import {EditorActionTypes, ImageData} from "./types";
+import {LabelsActionTypes, ImageData} from "./types";
 import {Action} from "../Actions";
 import {LabelType} from "../../data/enums/LabelType";
 
-export function updateProjectType(projectType: ProjectType): EditorActionTypes {
-    return {
-        type: Action.UPDATE_PROJECT_TYPE,
-        payload: {
-            projectType,
-        },
-    };
-}
-
-export function updateProjectName(projectName: string): EditorActionTypes {
-    return {
-        type: Action.UPDATE_PROJECT_NAME,
-        payload: {
-            projectName,
-        },
-    };
-}
-
-export function updateActiveImageIndex(activeImageIndex: number): EditorActionTypes {
+export function updateActiveImageIndex(activeImageIndex: number): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_IMAGE_INDEX,
         payload: {
@@ -30,7 +11,7 @@ export function updateActiveImageIndex(activeImageIndex: number): EditorActionTy
     };
 }
 
-export function updateActiveLabelNameIndex(activeLabelNameIndex: number): EditorActionTypes {
+export function updateActiveLabelNameIndex(activeLabelNameIndex: number): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_NAME_INDEX,
         payload: {
@@ -39,7 +20,7 @@ export function updateActiveLabelNameIndex(activeLabelNameIndex: number): Editor
     };
 }
 
-export function updateActiveLabelId(activeLabelId: string): EditorActionTypes {
+export function updateActiveLabelId(activeLabelId: string): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_ID,
         payload: {
@@ -48,7 +29,7 @@ export function updateActiveLabelId(activeLabelId: string): EditorActionTypes {
     };
 }
 
-export function updateHighlightedLabelId(highlightedLabelId: string): EditorActionTypes {
+export function updateHighlightedLabelId(highlightedLabelId: string): LabelsActionTypes {
     return {
         type: Action.UPDATE_HIGHLIGHTED_LABEL_ID,
         payload: {
@@ -57,7 +38,7 @@ export function updateHighlightedLabelId(highlightedLabelId: string): EditorActi
     };
 }
 
-export function updateActiveLabelType(activeLabelType: LabelType): EditorActionTypes {
+export function updateActiveLabelType(activeLabelType: LabelType): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_TYPE,
         payload: {
@@ -66,7 +47,7 @@ export function updateActiveLabelType(activeLabelType: LabelType): EditorActionT
     };
 }
 
-export function updateImageDataById(id: string, newImageData: ImageData): EditorActionTypes {
+export function updateImageDataById(id: string, newImageData: ImageData): LabelsActionTypes {
     return {
         type: Action.UPDATE_IMAGE_DATA_BY_ID,
         payload: {
@@ -76,7 +57,7 @@ export function updateImageDataById(id: string, newImageData: ImageData): Editor
     };
 }
 
-export function addImageData(imageData: ImageData[]): EditorActionTypes {
+export function addImageData(imageData: ImageData[]): LabelsActionTypes {
     return {
         type: Action.ADD_IMAGES_DATA,
         payload: {
@@ -85,7 +66,7 @@ export function addImageData(imageData: ImageData[]): EditorActionTypes {
     };
 }
 
-export function updateImageData(imageData: ImageData[]): EditorActionTypes {
+export function updateImageData(imageData: ImageData[]): LabelsActionTypes {
     return {
         type: Action.UPDATE_IMAGES_DATA,
         payload: {

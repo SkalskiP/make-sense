@@ -1,36 +1,22 @@
-import {EditorActionTypes, EditorState, ImageData} from "./types";
+import {LabelsActionTypes, LabelsState, ImageData} from "./types";
 import {Action} from "../Actions";
 
-const initialState: EditorState = {
+const initialState: LabelsState = {
     activeImageIndex: null,
     activeLabelNameIndex: null,
     activeLabelType: null,
     activeLabelId: null,
     highlightedLabelId: null,
-    projectType: null,
-    projectName: "my-project-name",
     imagesData: [],
     labelNames: [],
     firstLabelCreatedFlag: false
 };
 
-export function editorReducer(
+export function labelsReducer(
     state = initialState,
-    action: EditorActionTypes
-): EditorState {
+    action: LabelsActionTypes
+): LabelsState {
     switch (action.type) {
-        case Action.UPDATE_PROJECT_TYPE: {
-            return {
-                ...state,
-                projectType: action.payload.projectType
-            }
-        }
-        case Action.UPDATE_PROJECT_NAME: {
-            return {
-                ...state,
-                projectName: action.payload.projectName
-            }
-        }
         case Action.UPDATE_ACTIVE_IMAGE_INDEX: {
             return {
                 ...state,

@@ -1,9 +1,9 @@
 import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {ImageData, LabelRect} from "../../store/editor/types";
-import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {ImageData, LabelRect} from "../../store/labels/types";
+import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import uuidv1 from 'uuid/v1';
 import {store} from "../../index";
-import {updateImageDataById} from "../../store/editor/actionCreators";
+import {updateImageDataById} from "../../store/labels/actionCreators";
 import {ObjectDetector} from "../../ai/ObjectDetector";
 
 export class ObjectDetectionActions {
@@ -16,7 +16,7 @@ export class ObjectDetectionActions {
 
     public static savePredictions(imageId: string, predictions: DetectedObject[]) {
         console.log("ObjectDetectionActions.savePredictions")
-        const imageData: ImageData = EditorSelector.getImageDataById(imageId);
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const predictedLabels: LabelRect[] = ObjectDetectionActions.mapPredictionsToRectLabels(predictions);
         const nextImageData: ImageData = {
             ...imageData,
