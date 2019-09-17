@@ -2,11 +2,14 @@ import {IRect} from "../../interfaces/IRect";
 import {Action} from "../Actions";
 import {LabelType} from "../../data/enums/LabelType";
 import {IPoint} from "../../interfaces/IPoint";
+import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export type LabelRect = {
     id: string;
     labelIndex: number;
     rect: IRect;
+    isCreatedByAI: boolean;
+    status: LabelStatus;
 }
 
 export type LabelPoint = {

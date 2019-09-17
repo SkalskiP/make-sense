@@ -23,6 +23,7 @@ import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -227,7 +228,9 @@ export class RectRenderEngine extends BaseRenderEngine {
         const labelRect: LabelRect = {
             id: uuidv1(),
             labelIndex: activeLabelIndex,
-            rect
+            rect,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED
         };
         imageData.labelRects.push(labelRect);
         store.dispatch(updateImageDataById(imageData.id, imageData));

@@ -8,13 +8,14 @@ import {AIActions} from "../logic/actions/AIActions";
 export class ObjectDetector {
     private static model: ObjectDetection;
 
-    public static loadModel() {
+    public static loadModel(callback?: () => any) {
         cocoSsd
             .load()
             .then((model: ObjectDetection) => {
                 ObjectDetector.model = model;
                 store.dispatch(updateObjectDetectorStatus(true));
                 AIActions.detectRectsForActiveImage();
+                callback && callback();
                 console.log(model);
                 console.log("loaded")
             })
@@ -24,7 +25,7 @@ export class ObjectDetector {
             })
     }
 
-    public static predict(image: HTMLImageElement, callback: (predictions: DetectedObject[]) => any) {
+    public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
         console.log("ObjectDetector.predict")
         if (!ObjectDetector.model) return;
 
@@ -32,7 +33,7 @@ export class ObjectDetector {
             .detect(image)
             .then((predictions: DetectedObject[]) => {
                 console.log(predictions);
-                callback(predictions)
+                callback && callback(predictions)
             })
             .catch((error) => {
                 // TODO

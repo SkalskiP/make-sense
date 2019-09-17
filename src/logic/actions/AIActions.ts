@@ -6,6 +6,7 @@ import {store} from "../../index";
 import {updateImageDataById} from "../../store/labels/actionCreators";
 import {ObjectDetector} from "../../ai/ObjectDetector";
 import {ImageRepository} from "../imageRepository/ImageRepository";
+import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export class AIActions {
     public static detectRectsForActiveImage(): void {
@@ -45,7 +46,9 @@ export class AIActions {
                     y: prediction.bbox[1],
                     width: prediction.bbox[2],
                     height: prediction.bbox[3],
-                }
+                },
+                isCreatedByAI: true,
+                status: LabelStatus.UNDECIDED
             }
         })
     }
