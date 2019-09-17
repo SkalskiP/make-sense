@@ -161,7 +161,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                             {isChecked && <img
                                 className="CheckBox"
                                 draggable={false}
-                                src={"ico/checkbox-checked-color.png"}
+                                src={"ico/ok.png"}
                                 alt={"checkbox"}
                             />}
                         </div>,

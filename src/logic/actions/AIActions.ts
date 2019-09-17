@@ -5,22 +5,32 @@ import uuidv1 from 'uuid/v1';
 import {store} from "../../index";
 import {updateImageDataById} from "../../store/labels/actionCreators";
 import {ObjectDetector} from "../../ai/ObjectDetector";
+import {ImageRepository} from "../imageRepository/ImageRepository";
 
-export class ObjectDetectionActions {
-    public static detectRects(imageId: string, image: HTMLImageElement) {
-        console.log("ObjectDetectionActions.detectRects")
+export class AIActions {
+    public static detectRectsForActiveImage(): void {
+        const activeImageData: ImageData = LabelsSelector.getActiveImageData();
+        AIActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
+    }
+
+    public static detectRects(imageId: string, image: HTMLImageElement): void {
+        console.log("AIActions.detectRects");
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector)
+            return;
+
         ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            ObjectDetectionActions.savePredictions(imageId, predictions);
+            AIActions.savePredictions(imageId, predictions);
         })
     }
 
     public static savePredictions(imageId: string, predictions: DetectedObject[]) {
-        console.log("ObjectDetectionActions.savePredictions")
+        console.log("AIActions.savePredictions");
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = ObjectDetectionActions.mapPredictionsToRectLabels(predictions);
+        const predictedLabels: LabelRect[] = AIActions.mapPredictionsToRectLabels(predictions);
         const nextImageData: ImageData = {
             ...imageData,
-            labelRects: imageData.labelRects.concat(predictedLabels)
+            labelRects: imageData.labelRects.concat(predictedLabels),
+            isVisitedByObjectDetector: true
         };
         store.dispatch(updateImageDataById(imageData.id, nextImageData));
     }
