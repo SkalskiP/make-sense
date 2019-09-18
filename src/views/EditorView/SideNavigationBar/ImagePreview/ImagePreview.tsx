@@ -6,7 +6,6 @@ import {ImageLoadManager} from "../../../../logic/imageRepository/ImageLoadManag
 import {IRect} from "../../../../interfaces/IRect";
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
-import {Settings} from "../../../../settings/Settings";
 import {AppState} from "../../../../store";
 import {updateImageDataById} from "../../../../store/labels/actionCreators";
 import {ImageData} from "../../../../store/labels/types";
