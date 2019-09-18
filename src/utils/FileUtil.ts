@@ -1,5 +1,5 @@
 import uuidv1 from 'uuid/v1';
-import {ImageData} from "../store/editor/types";
+import {ImageData} from "../store/labels/types";
 
 export class FileUtil {
     public static mapFileDataToImageData(fileData: File): ImageData {
@@ -9,11 +9,12 @@ export class FileUtil {
             loadStatus: false,
             labelRects: [],
             labelPoints: [],
-            labelPolygons: []
+            labelPolygons: [],
+            isVisitedByObjectDetector: false
         }
     }
 
-    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): Promise<void> {
+    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
 		return new Promise((resolve, reject) => {
 			const url = URL.createObjectURL(fileData);
             const image = new Image();

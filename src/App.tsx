@@ -43,7 +43,7 @@ const App: React.FC<IProps> = ({projectType, windowSize}) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectType: state.editor.projectType,
+    projectType: state.general.projectData.type,
     windowSize: state.general.windowSize
 });
 

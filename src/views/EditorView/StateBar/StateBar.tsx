@@ -1,6 +1,6 @@
 import React from 'react';
 import './StateBar.scss';
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {LabelType} from "../../../data/enums/LabelType";
@@ -50,8 +50,8 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    imagesData: state.editor.imagesData,
-    activeLabelType: state.editor.activeLabelType
+    imagesData: state.labels.imagesData,
+    activeLabelType: state.labels.activeLabelType
 });
 
 export default connect(

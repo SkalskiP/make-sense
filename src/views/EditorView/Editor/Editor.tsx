@@ -1,11 +1,11 @@
 import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateImageDataById} from "../../../store/editor/actionCreators";
+import {updateImageDataById} from "../../../store/labels/actionCreators";
 import {ImageRepository} from "../../../logic/imageRepository/ImageRepository";
 import {LabelType} from "../../../data/enums/LabelType";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
@@ -22,6 +22,7 @@ import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {PlatformModel} from "../../../staticModels/PlatformModel";
+import {AIActions} from "../../../logic/actions/AIActions";
 
 interface IProps {
     size: ISize;
@@ -89,6 +90,7 @@ class Editor extends React.Component<IProps, {}> {
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
             EditorActions.setActiveImage(ImageRepository.getById(imageData.id));
+            AIActions.detectRects(imageData.id, ImageRepository.getById(imageData.id));
             this.updateModelAndRender()
         }
         else {
@@ -105,6 +107,7 @@ class Editor extends React.Component<IProps, {}> {
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
         EditorActions.setActiveImage(image);
+        AIActions.detectRects(imageData.id, image);
         EditorActions.setLoadingStatus(false);
         this.updateModelAndRender()
     };
@@ -200,9 +203,9 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.editor.activeLabelType,
+    activeLabelType: state.labels.activeLabelType,
     activePopupType: state.general.activePopupType,
-    activeLabelId: state.editor.activeLabelId,
+    activeLabelId: state.labels.activeLabelId,
     customCursorStyle: state.general.customCursorStyle,
     imageDragMode: state.general.imageDragMode
 });

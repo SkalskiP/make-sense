@@ -3,6 +3,12 @@ import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {ContextType} from "../../data/enums/ContextType";
+import {ProjectType} from "../../data/enums/ProjectType";
+
+export type ProjectData = {
+    type: ProjectType;
+    name: string,
+}
 
 export type GeneralState = {
     windowSize: ISize;
@@ -11,6 +17,14 @@ export type GeneralState = {
     preventCustomCursor: boolean;
     imageDragMode: boolean;
     activeContext: ContextType;
+    projectData: ProjectData;
+}
+
+interface UpdateProjectData {
+    type: typeof Action.UPDATE_PROJECT_DATA;
+    payload: {
+        projectData: ProjectData;
+    }
 }
 
 interface UpdateWindowSize {
@@ -55,7 +69,8 @@ interface UpdateImageDragModeStatus {
     }
 }
 
-export type GeneralActionTypes = UpdateWindowSize
+export type GeneralActionTypes = UpdateProjectData
+    | UpdateWindowSize
     | UpdateActivePopupType
     | UpdateCustomCursorStyle
     | UpdateActiveContext

@@ -1,7 +1,7 @@
 import React from "react";
 import './LabelsToolkit.scss';
-import {ImageData} from "../../../../store/editor/types";
-import {updateActiveLabelId, updateActiveLabelType, updateImageDataById} from "../../../../store/editor/actionCreators";
+import {ImageData} from "../../../../store/labels/types";
+import {updateActiveLabelId, updateActiveLabelType, updateImageDataById} from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
 import {LabelType} from "../../../../data/enums/LabelType";
@@ -182,10 +182,10 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeImageIndex: state.editor.activeImageIndex,
-    activeLabelType: state.editor.activeLabelType,
-    imagesData: state.editor.imagesData,
-    projectType: state.editor.projectType,
+    activeImageIndex: state.labels.activeImageIndex,
+    activeLabelType: state.labels.activeLabelType,
+    imagesData: state.labels.imagesData,
+    projectType: state.general.projectData.type,
 });
 
 export default connect(

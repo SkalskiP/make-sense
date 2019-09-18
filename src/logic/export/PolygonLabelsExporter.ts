@@ -1,8 +1,8 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {IPoint} from "../../interfaces/IPoint";
 import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../data/VGG/IVGG";
-import {ImageData, LabelPolygon} from "../../store/editor/types";
-import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {ImageData, LabelPolygon} from "../../store/labels/types";
+import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 
@@ -18,8 +18,8 @@ export class PolygonLabelsExporter {
     }
 
     private static exportAsVGGJson(): void {
-        const imagesData: ImageData[] = EditorSelector.getImagesData();
-        const labelNames: string[] = EditorSelector.getLabelNames();
+        const imagesData: ImageData[] = LabelsSelector.getImagesData();
+        const labelNames: string[] = LabelsSelector.getLabelNames();
         const content: string = JSON.stringify(PolygonLabelsExporter.mapImagesDataToVGGObject(imagesData, labelNames));
         const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
         try {

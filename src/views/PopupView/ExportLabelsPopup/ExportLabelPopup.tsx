@@ -131,7 +131,7 @@ const ExportLabelPopup: React.FC = () => {
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    imagesData: state.editor.imagesData
+    imagesData: state.labels.imagesData
 });
 
 export default connect(

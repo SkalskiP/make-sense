@@ -5,19 +5,19 @@ import {UnderlineTextButton} from "../../Common/UnderlineTextButton/UnderlineTex
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
+import {updateActivePopupType, updateProjectData} from "../../../store/general/actionCreators";
 import TextInput from "../../Common/TextInput/TextInput";
-import {updateProjectName} from "../../../store/editor/actionCreators";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {Settings} from "../../../settings/Settings";
+import {ProjectData} from "../../../store/general/types";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
-    updateProjectName: (projectName: string) => any;
-    projectName: string;
+    updateProjectData: (projectData: ProjectData) => any;
+    projectData: ProjectData;
 }
 
-const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjectName, projectName}) => {
+const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjectData, projectData}) => {
     const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         event.target.setSelectionRange(0, event.target.value.length);
     };
@@ -26,7 +26,11 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
         const value = event.target.value
             .toLowerCase()
             .replace(' ', '-');
-        updateProjectName(value)
+
+        updateProjectData({
+            ...projectData,
+            name: value
+        })
     };
 
     return (
@@ -51,7 +55,7 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                     <TextInput
                         key={"ProjectName"}
                         isPassword={false}
-                        value={projectName}
+                        value={projectData.name}
                         onChange={onChange}
                         onFocus={onFocus}
                     />
@@ -81,11 +85,11 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
 
 const mapDispatchToProps = {
     updateActivePopupType,
-    updateProjectName
+    updateProjectData
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectName: state.editor.projectName
+    projectData: state.general.projectData
 });
 
 export default connect(

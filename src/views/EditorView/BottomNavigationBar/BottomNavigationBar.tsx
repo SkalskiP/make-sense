@@ -1,6 +1,6 @@
 import React from 'react';
 import './BottomNavigationBar.scss';
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
@@ -62,7 +62,7 @@ const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    activeImageIndex: state.editor.activeImageIndex,
+    activeImageIndex: state.labels.activeImageIndex,
     activeContext: state.general.activeContext
 });
 
