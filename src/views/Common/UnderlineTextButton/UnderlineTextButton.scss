@@ -17,11 +17,13 @@
 
   &:hover,
   &.active {
-    color: $secondaryColor;
+    color: $secondaryColor; // fallback if new css variables are not supported by browser
+    color: var(--leading-color);
   }
 
   &.over::before {
-    background: $secondaryColor;
+    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+    background-color: var(--leading-color);
     width: 100%;
     position: absolute;
     top: 0;
@@ -32,7 +34,8 @@
   }
 
   &.under::after {
-    background: $secondaryColor;
+    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+    background-color: var(--leading-color);
     width: 100%;
     position: absolute;
     bottom: 0;

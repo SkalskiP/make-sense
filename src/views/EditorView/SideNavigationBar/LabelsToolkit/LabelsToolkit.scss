@@ -16,7 +16,6 @@
     position: relative;
     align-self: stretch;
     box-sizing: border-box;
-    //border-bottom: solid 1px $darkThemeSecondColor;
     padding: 0 25px;
     color: white;
     font-size: 14px;
@@ -74,7 +73,8 @@
       background-color: rgba(0, 0, 0, 0.05);
       .Marker {
         transform: translate(5px);
-        background-color: $secondaryColor;
+        background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+        background-color: var(--leading-color);
       }
 
       .Arrow {
@@ -96,28 +96,6 @@
     justify-content: center;
     align-items: center;
     align-content: center;
-
-    //&:not(.active) {
-    //  animation-duration: 0.6s;
-    //  animation-name: cssAnimationHide;
-    //  animation-fill-mode: forwards;
-    //}
   }
 }
-
-//@keyframes cssAnimationHide {
-//  0%   {
-//    opacity: 1;
-//    height: 0;
-//  }
-//  20%  {
-//    opacity: 0;
-//    //width: 400px;
-//  }
-//  100% {
-//    opacity: 0;
-//    //width: 0;
-//    overflow: hidden;
-//  }
-//}
 

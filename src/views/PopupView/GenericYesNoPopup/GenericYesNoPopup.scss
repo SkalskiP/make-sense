@@ -60,13 +60,16 @@
 
     .TextButton {
       margin-left: 20px;
-      box-shadow: $secondaryColor 0 0 0 2px inset;
-      background-color: $secondaryColor;
+      box-shadow: $secondaryColor 0 0 0 2px inset; // fallback if new css variables are not supported by browser
+      box-shadow: var(--leading-color) 0 0 0 2px inset;
+      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+      background-color: var(--leading-color);
       color: white;
 
       &:hover {
         background-color: transparent;
-        color: $secondaryColor;
+        color: $secondaryColor; // fallback if new css variables are not supported by browser
+        color: var(--leading-color);
       }
 
       &.disabled {

@@ -36,7 +36,8 @@
       max-height: 20px;
       bottom: -10px;
       left: -10px;
-      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
     }
   }
 
@@ -53,7 +54,8 @@
     }
     .Background {
       transform: translate(2px, -2px);
-      background-color: $secondaryColor;
+      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+      background-color: var(--leading-color);
     }
   }
 

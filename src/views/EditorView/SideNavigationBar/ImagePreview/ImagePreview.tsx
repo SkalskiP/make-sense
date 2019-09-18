@@ -13,6 +13,7 @@ import {ImageData} from "../../../../store/labels/types";
 import {FileUtil} from "../../../../utils/FileUtil";
 import {RectUtil} from "../../../../utils/RectUtil";
 import './ImagePreview.scss';
+import {CSSHelper} from "../../../../logic/helpers/CSSHelper";
 
 interface IProps {
     imageData: ImageData;
@@ -174,7 +175,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                     <ClipLoader
                         sizeUnit={"px"}
                         size={30}
-                        color={Settings.SECONDARY_COLOR}
+                        color={CSSHelper.getLeadingColor()}
                         loading={true}
                     />}
             </div>)

@@ -31,8 +31,8 @@ export const EditorFeatureData: IEditorFeature[] = [
         imageAlt: "file",
     },
     {
-        displayText: "Support basic image operations like crop and resize",
-        imageSrc: "img/crop.png",
-        imageAlt: "crop",
+        displayText: "Use AI to make your work more productive",
+        imageSrc: "img/robot.png",
+        imageAlt: "robot",
     },
 ];

@@ -4,15 +4,17 @@ import {store} from "../../index";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {EventType} from "../../data/enums/EventType";
+import {CSSHelper} from "../helpers/CSSHelper";
 
 export class AppInitializer {
     public static inti():void {
+        CSSHelper.initVariables();
         AppInitializer.handleResize();
         AppInitializer.detectDeviceParams();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);
         window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.disableGenericScrollZoom);
-        window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableGenericKeyBordZoom);
-        window.addEventListener(EventType.KEY_PRESS, AppInitializer.disableGenericKeyBordZoom);
+        window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableUnwantedKeyBoardBehaviour);
+        window.addEventListener(EventType.KEY_PRESS, AppInitializer.disableUnwantedKeyBoardBehaviour);
         ContextManager.init();
     }
 
@@ -23,7 +25,7 @@ export class AppInitializer {
         }));
     };
 
-    public static disableGenericKeyBordZoom = (event: KeyboardEvent) => {
+    private static disableUnwantedKeyBoardBehaviour = (event: KeyboardEvent) => {
         if (PlatformModel.isMac && event.metaKey) {
             event.preventDefault();
         }
