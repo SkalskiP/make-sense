@@ -14,8 +14,8 @@
 
   .done {
     align-self: stretch;
-    //width: 30%;
-    background-color: $secondaryColor;
+    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+    background-color: var(--leading-color);
     transition: width 0.4s ease-out;
   }
 }

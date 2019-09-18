@@ -55,7 +55,8 @@
       }
 
       &:not(.disabled):hover {
-        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(1000%);
+        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+        filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
       }
     }
 
@@ -72,10 +73,12 @@
 
         &:focus {
           outline: none;
-          color: $secondaryColor;
+          color: $secondaryColor; // fallback if new css variables are not supported by browser
+          color: var(--leading-color);
 
           ~ .Bar {
-            background-color: $secondaryColor;
+            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+            background-color: var(--leading-color);
           }
         }
       }
