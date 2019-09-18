@@ -1,0 +1,10 @@
+@import '../../../settings/Settings';
+
+.LabelControlPanel {
+  position: absolute;
+  background-color: $darkThemeSecondColor;
+  border-radius: 3px;
+  width: 100px;
+  height: 30px;
+  transform: translate(-15px, -15px);
+}
