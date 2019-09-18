@@ -4,11 +4,9 @@ import {store} from "../../index";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {EventType} from "../../data/enums/EventType";
-import {CSSHelper} from "../helpers/CSSHelper";
 
 export class AppInitializer {
     public static inti():void {
-        CSSHelper.initVariables();
         AppInitializer.handleResize();
         AppInitializer.detectDeviceParams();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);

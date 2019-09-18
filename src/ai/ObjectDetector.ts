@@ -4,7 +4,6 @@ import {DetectedObject} from "@tensorflow-models/coco-ssd";
 import {store} from "../index";
 import {updateObjectDetectorStatus} from "../store/ai/actionCreators";
 import {AIActions} from "../logic/actions/AIActions";
-import {CSSHelper} from "../logic/helpers/CSSHelper";
 
 export class ObjectDetector {
     private static model: ObjectDetection;
@@ -14,7 +13,6 @@ export class ObjectDetector {
             .load()
             .then((model: ObjectDetection) => {
                 ObjectDetector.model = model;
-                CSSHelper.updateVariables();
                 store.dispatch(updateObjectDetectorStatus(true));
                 AIActions.detectRectsForActiveImage();
                 callback && callback();
