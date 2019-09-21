@@ -1,19 +1,19 @@
-import {EditorSelector} from "../../store/selectors/EditorSelector";
-import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/editor/types";
+import {LabelsSelector} from "../../store/selectors/LabelsSelector";
+import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
 import * as _ from "lodash";
 import {store} from "../../index";
-import {updateImageDataById} from "../../store/editor/actionCreators";
+import {updateImageDataById} from "../../store/labels/actionCreators";
 import {LabelType} from "../../data/enums/LabelType";
 
 export class LabelActions {
     public static deleteActiveLabel() {
-        const activeImageData: ImageData = EditorSelector.getActiveImageData();
-        const activeLabelId: string = EditorSelector.getActiveLabelId();
+        const activeImageData: ImageData = LabelsSelector.getActiveImageData();
+        const activeLabelId: string = LabelsSelector.getActiveLabelId();
         LabelActions.deleteImageLabelById(activeImageData.id, activeLabelId);
     }
 
     public static deleteImageLabelById(imageId: string, labelId: string) {
-        switch (EditorSelector.getActiveLabelType()) {
+        switch (LabelsSelector.getActiveLabelType()) {
             case LabelType.POINT:
                 LabelActions.deletePointLabelById(imageId, labelId);
                 break;
@@ -27,7 +27,7 @@ export class LabelActions {
     }
 
     public static deleteRectLabelById(imageId: string, labelRectId: string) {
-        const imageData: ImageData = EditorSelector.getImageDataById(imageId);
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
             labelRects: _.filter(imageData.labelRects, (currentLabel: LabelRect) => {
@@ -38,7 +38,7 @@ export class LabelActions {
     }
 
     public static deletePointLabelById(imageId: string, labelPointId: string) {
-        const imageData: ImageData = EditorSelector.getImageDataById(imageId);
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
             labelPoints: _.filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
@@ -49,7 +49,7 @@ export class LabelActions {
     }
 
     public static deletePolygonLabelById(imageId: string, labelPolygonId: string) {
-        const imageData: ImageData = EditorSelector.getImageDataById(imageId);
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
             labelPolygons: _.filter(imageData.labelPolygons, (currentLabel: LabelPolygon) => {

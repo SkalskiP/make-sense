@@ -30,10 +30,12 @@
   }
 
   &:hover {
-    background-color: $secondaryColor;
+    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+    background-color: var(--leading-color);
   }
 
   &.active {
-    background-color: $secondaryColor;
+    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+    background-color: var(--leading-color);
   }
 }

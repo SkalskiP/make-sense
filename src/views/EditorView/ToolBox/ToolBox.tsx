@@ -10,8 +10,8 @@ import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {ISize} from "../../../interfaces/ISize";
 import {updateImageDragModeStatus} from "../../../store/general/actionCreators";
 import ImageButtonDropDown from "./ImageButtonDropDown/ImageButtonDropDown";
-import {EditorModel} from "../../../staticModels/EditorModel";
 import {ViewPointSettings} from "../../../settings/ViewPointSettings";
+import {GeneralSelector} from "../../../store/selectors/GeneralSelector";
 
 interface IProps {
     activeContext: ContextType;
@@ -46,7 +46,10 @@ const ToolBox: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, im
     ];
 
     const imageDragOnClick = () => {
-        if (EditorModel.zoom !== ViewPointSettings.MIN_ZOOM) {
+        if (imageDragMode) {
+            updateImageDragModeStatus(!imageDragMode);
+        }
+        else if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
             updateImageDragModeStatus(!imageDragMode);
         }
     };

@@ -45,7 +45,8 @@ input {
     ~label {
       top: 0;
       font: 700 $width/25;
-      color: $secondaryColor;
+      color: $secondaryColor; // fallback if new css variables are not supported by browser
+      color: var(--leading-color);
     }
 
     ~ .Bar {
@@ -70,4 +71,7 @@ input {
   position: relative;
 }
 
-::selection {background: rgba($secondaryColor, .3);}
+::selection {
+  background: rgba($secondaryColor, .3);
+  background: rgba(var(--leading-color), .3);
+}

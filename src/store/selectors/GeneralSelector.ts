@@ -2,6 +2,7 @@ import {store} from "../..";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {ContextType} from "../../data/enums/ContextType";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
+import {ProjectType} from "../../data/enums/ProjectType";
 
 export class GeneralSelector {
     public static getActivePopupType(): PopupWindowType {
@@ -22,5 +23,17 @@ export class GeneralSelector {
 
     public static getCustomCursorStyle(): CustomCursorStyle {
         return store.getState().general.customCursorStyle;
+    }
+
+    public static getProjectName(): string {
+        return store.getState().general.projectData.name;
+    }
+
+    public static getProjectType(): ProjectType {
+        return store.getState().general.projectData.type;
+    }
+
+    public static getZoom(): number {
+        return store.getState().general.zoom;
     }
 }

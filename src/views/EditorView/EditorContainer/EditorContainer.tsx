@@ -4,7 +4,7 @@ import {Direction} from "../../../data/enums/Direction";
 import {ISize} from "../../../interfaces/ISize";
 import {Settings} from "../../../settings/Settings";
 import {AppState} from "../../../store";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import ImagesList from "../SideNavigationBar/ImagesList/ImagesList";
 import LabelsToolkit from "../SideNavigationBar/LabelsToolkit/LabelsToolkit";
 import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
@@ -132,8 +132,8 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
 
 const mapStateToProps = (state: AppState) => ({
     windowSize: state.general.windowSize,
-    activeImageIndex: state.editor.activeImageIndex,
-    imagesData: state.editor.imagesData,
+    activeImageIndex: state.labels.activeImageIndex,
+    imagesData: state.labels.imagesData,
     activeContext: state.general.activeContext
 });
 

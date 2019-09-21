@@ -1,8 +1,11 @@
 @import './settings/_Settings';
 
-//.App {
-//  height: 100vh;
-//  width: 100vw;
-//  margin: 0;
-//  padding: 0;
-//}
+.App {
+	--leading-color: #{$secondaryColor};
+	--hue-value: 172deg;
+}
+
+.App.AI {
+	--leading-color: #{$primaryColor};
+	--hue-value: 120deg;
+}

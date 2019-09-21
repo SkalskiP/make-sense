@@ -1,5 +1,5 @@
 import {ISize} from "../../interfaces/ISize";
-import {GeneralActionTypes} from "./types";
+import {GeneralActionTypes, ProjectData} from "./types";
 import {Action} from "../Actions";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
@@ -55,6 +55,24 @@ export function updateImageDragModeStatus(imageDragMode: boolean): GeneralAction
         type: Action.UPDATE_IMAGE_DRAG_MODE_STATUS,
         payload: {
             imageDragMode,
+        },
+    };
+}
+
+export function updateProjectData(projectData: ProjectData): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_PROJECT_DATA,
+        payload: {
+            projectData,
+        },
+    };
+}
+
+export function updateZoom(zoom: number): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_ZOOM,
+        payload: {
+            zoom,
         },
     };
 }

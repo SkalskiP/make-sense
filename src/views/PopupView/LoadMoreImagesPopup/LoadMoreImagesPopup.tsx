@@ -2,11 +2,11 @@ import React from 'react'
 import './LoadMoreImagesPopup.scss'
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {addImageData} from "../../../store/editor/actionCreators";
+import {addImageData} from "../../../store/labels/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {PopupActions} from "../../../logic/actions/PopupActions";
 

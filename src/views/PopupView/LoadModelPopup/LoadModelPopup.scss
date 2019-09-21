@@ -1,0 +1,38 @@
+@import '../../../settings/Settings';
+
+.LoadModelPopupContent {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding-top: 30px;
+  flex: 1;
+
+  .Message {
+    align-self: stretch;
+    color: white;
+    font-size: 15px;
+    padding: 0 40px 30px 40px;
+  }
+
+  .Companion {
+    align-self: stretch;
+    padding-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 150px;
+
+    > img {
+      filter: brightness(0) invert(1);
+      max-width: 60px;
+      max-height: 60px;
+      user-select: none;
+    }
+  }
+}

@@ -11,13 +11,15 @@ import {ISize} from "./interfaces/ISize";
 import {Settings} from "./settings/Settings";
 import {SizeItUpView} from "./views/SizeItUpView/SizeItUpView";
 import {PlatformModel} from "./staticModels/PlatformModel";
+import classNames from "classnames";
 
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
+    AIMode: boolean;
 }
 
-const App: React.FC<IProps> = ({projectType, windowSize}) => {
+const App: React.FC<IProps> = ({projectType, windowSize, AIMode}) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
@@ -33,7 +35,7 @@ const App: React.FC<IProps> = ({projectType, windowSize}) => {
     };
 
       return (
-        <div className="App"
+        <div className={classNames("App", {"AI": AIMode})}
             draggable={false}
         >
             {selectRoute()}
@@ -43,8 +45,9 @@ const App: React.FC<IProps> = ({projectType, windowSize}) => {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectType: state.editor.projectType,
-    windowSize: state.general.windowSize
+    projectType: state.general.projectData.type,
+    windowSize: state.general.windowSize,
+    AIMode: state.ai.isObjectDetectorLoaded
 });
 
 export default connect(

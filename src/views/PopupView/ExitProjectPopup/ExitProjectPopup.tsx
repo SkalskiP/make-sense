@@ -6,32 +6,32 @@ import {
     updateActiveLabelNameIndex,
     updateFirstLabelCreatedFlag,
     updateImageData,
-    updateLabelNamesList,
-    updateProjectType
-} from "../../../store/editor/actionCreators";
+    updateLabelNamesList
+} from "../../../store/labels/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {ProjectType} from "../../../data/enums/ProjectType";
-import {ImageData} from "../../../store/editor/types";
+import {ImageData} from "../../../store/labels/types";
 import {PopupActions} from "../../../logic/actions/PopupActions";
+import {ProjectData} from "../../../store/general/types";
+import {updateProjectData} from "../../../store/general/actionCreators";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
-    updateProjectType: (projectType: ProjectType) => any;
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     updateLabelNamesList: (labelNames: string[]) => any;
     updateImageData: (imageData: ImageData[]) => any;
     updateFirstLabelCreatedFlag: (firstLabelCreatedFlag: boolean) => any;
+    updateProjectData: (projectData: ProjectData) => any;
 }
 
 const ExitProjectPopup: React.FC<IProps> = (props) => {
     const {
         updateActiveLabelNameIndex,
         updateLabelNamesList,
-        updateProjectType,
         updateActiveImageIndex,
         updateImageData,
-        updateFirstLabelCreatedFlag
+        updateFirstLabelCreatedFlag,
+        updateProjectData
     } = props;
 
     const renderContent = () => {
@@ -47,7 +47,7 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
     const onAccept = () => {
         updateActiveLabelNameIndex(null);
         updateLabelNamesList([]);
-        updateProjectType(null);
+        updateProjectData({type: null, name: "my-project-name"});
         updateActiveImageIndex(null);
         updateImageData([]);
         updateFirstLabelCreatedFlag(false);
@@ -72,7 +72,7 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
 const mapDispatchToProps = {
     updateActiveLabelNameIndex,
     updateLabelNamesList,
-    updateProjectType,
+    updateProjectData,
     updateActiveImageIndex,
     updateImageData,
     updateFirstLabelCreatedFlag

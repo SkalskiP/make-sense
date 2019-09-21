@@ -2,14 +2,13 @@ import React, {useState} from 'react'
 import './LoadLabelNamesPopup.scss'
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/editor/actionCreators";
+import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/labels/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
-import {PopupActions} from "../../../logic/actions/PopupActions";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
@@ -44,7 +43,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, upda
         if (labelsList.length > 0) {
             updateActiveLabelNameIndex(0);
             updateLabelNamesList(labelsList);
-            PopupActions.close();
+            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };
 

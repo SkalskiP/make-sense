@@ -6,13 +6,13 @@ import {ImageLoadManager} from "../../../../logic/imageRepository/ImageLoadManag
 import {IRect} from "../../../../interfaces/IRect";
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
-import {Settings} from "../../../../settings/Settings";
 import {AppState} from "../../../../store";
-import {updateImageDataById} from "../../../../store/editor/actionCreators";
-import {ImageData} from "../../../../store/editor/types";
+import {updateImageDataById} from "../../../../store/labels/actionCreators";
+import {ImageData} from "../../../../store/labels/types";
 import {FileUtil} from "../../../../utils/FileUtil";
 import {RectUtil} from "../../../../utils/RectUtil";
 import './ImagePreview.scss';
+import {CSSHelper} from "../../../../logic/helpers/CSSHelper";
 
 interface IProps {
     imageData: ImageData;
@@ -161,7 +161,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                             {isChecked && <img
                                 className="CheckBox"
                                 draggable={false}
-                                src={"ico/checkbox-checked-color.png"}
+                                src={"ico/ok.png"}
                                 alt={"checkbox"}
                             />}
                         </div>,
@@ -174,7 +174,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                     <ClipLoader
                         sizeUnit={"px"}
                         size={30}
-                        color={Settings.SECONDARY_COLOR}
+                        color={CSSHelper.getLeadingColor()}
                         loading={true}
                     />}
             </div>)

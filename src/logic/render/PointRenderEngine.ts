@@ -3,19 +3,19 @@ import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
-import {ImageData, LabelPoint} from "../../store/editor/types";
+import {ImageData, LabelPoint} from "../../store/labels/types";
 import uuidv1 from 'uuid/v1';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
-} from "../../store/editor/actionCreators";
+} from "../../store/labels/actionCreators";
 import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {EditorSelector} from "../../store/selectors/EditorSelector";
+import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {EditorData} from "../../data/EditorData";
 import {BaseRenderEngine} from "./BaseRenderEngine";
 import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
@@ -68,10 +68,10 @@ export class PointRenderEngine extends BaseRenderEngine {
 
     public mouseUpHandler(data: EditorData): void {
         if (this.isInProgress()) {
-            const activeLabelPoint: LabelPoint = EditorSelector.getActivePointLabel();
+            const activeLabelPoint: LabelPoint = LabelsSelector.getActivePointLabel();
             const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             const pointOnImage: IPoint = RenderEngineUtil.transferPointFromViewPortContentToImage(pointSnapped, data);
-            const imageData = EditorSelector.getActiveImageData();
+            const imageData = LabelsSelector.getActiveImageData();
 
             imageData.labelPoints = imageData.labelPoints.map((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelPoint.id) {
@@ -92,11 +92,11 @@ export class PointRenderEngine extends BaseRenderEngine {
         if (isOverImage) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
             if (!!labelPoint) {
-                if (EditorSelector.getHighlightedLabelId() !== labelPoint.id) {
+                if (LabelsSelector.getHighlightedLabelId() !== labelPoint.id) {
                     store.dispatch(updateHighlightedLabelId(labelPoint.id))
                 }
             } else {
-                if (EditorSelector.getHighlightedLabelId() !== null) {
+                if (LabelsSelector.getHighlightedLabelId() !== null) {
                     store.dispatch(updateHighlightedLabelId(null))
                 }
             }
@@ -108,9 +108,9 @@ export class PointRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
-        const activeLabelId: string = EditorSelector.getActiveLabelId();
-        const highlightedLabelId: string = EditorSelector.getHighlightedLabelId();
-        const imageData: ImageData = EditorSelector.getActiveImageData();
+        const activeLabelId: string = LabelsSelector.getActiveLabelId();
+        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
+        const imageData: ImageData = LabelsSelector.getActiveImageData();
         if (imageData) {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
                 if (labelPoint.id === activeLabelId) {
@@ -172,7 +172,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private getLabelPointUnderMouse(mousePosition: IPoint, data: EditorData): LabelPoint {
-        const labelPoints: LabelPoint[] = EditorSelector.getActiveImageData().labelPoints;
+        const labelPoints: LabelPoint[] = LabelsSelector.getActiveImageData().labelPoints;
         for (let i = 0; i < labelPoints.length; i++) {
             const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoints[i].point, data);
             const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointOnCanvas, this.config.anchorHoverSize);
@@ -184,8 +184,8 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private addPointLabel = (point: IPoint) => {
-        const activeLabelIndex = EditorSelector.getActiveLabelNameIndex();
-        const imageData: ImageData = EditorSelector.getActiveImageData();
+        const activeLabelIndex = LabelsSelector.getActiveLabelNameIndex();
+        const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
             id: uuidv1(),
             labelIndex: activeLabelIndex,
