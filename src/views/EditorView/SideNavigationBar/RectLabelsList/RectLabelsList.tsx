@@ -13,6 +13,7 @@ import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
+import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -48,7 +49,8 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
                 if (labelRect.id === labelRectId) {
                     return {
                         ...labelRect,
-                        labelIndex: labelNameIndex
+                        labelIndex: labelNameIndex,
+                        status: LabelStatus.ACCEPTED
                     }
                 } else {
                     return labelRect

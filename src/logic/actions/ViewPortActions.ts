@@ -11,6 +11,9 @@ import {SizeUtil} from "../../utils/SizeUtil";
 import {EditorActions} from "./EditorActions";
 import {Direction} from "../../data/enums/Direction";
 import {DirectionUtil} from "../../utils/DirectionUtil";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {store} from "../../index";
+import {updateZoom} from "../../store/general/actionCreators";
 
 export class ViewPortActions {
     public static updateViewPortSize() {
@@ -35,7 +38,7 @@ export class ViewPortActions {
     public static calculateViewPortContentSize(): ISize {
         if (!!EditorModel.viewPortSize && !!EditorModel.image) {
             const defaultViewPortImageRect: IRect = EditorModel.defaultRenderImageRect;
-            const scaledImageSize: ISize = SizeUtil.scale(EditorModel.defaultRenderImageRect, EditorModel.zoom);
+            const scaledImageSize: ISize = SizeUtil.scale(EditorModel.defaultRenderImageRect, GeneralSelector.getZoom());
             return {
                 width: scaledImageSize.width + 2 * defaultViewPortImageRect.x,
                 height: scaledImageSize.height + 2 * defaultViewPortImageRect.y
@@ -123,7 +126,7 @@ export class ViewPortActions {
     public static zoomIn() {
         if (EditorModel.viewPortActionsDisabled) return;
 
-        const currentZoom: number = EditorModel.zoom;
+        const currentZoom: number = GeneralSelector.getZoom();
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         const nextRelativeScrollPosition = currentZoom === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
         ViewPortActions.setZoom(currentZoom + ViewPointSettings.ZOOM_STEP);
@@ -135,7 +138,7 @@ export class ViewPortActions {
     public static zoomOut() {
         if (EditorModel.viewPortActionsDisabled) return;
 
-        const currentZoom: number = EditorModel.zoom;
+        const currentZoom: number = GeneralSelector.getZoom();
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         ViewPortActions.setZoom(currentZoom - ViewPointSettings.ZOOM_STEP);
         ViewPortActions.resizeViewPortContent();
@@ -152,7 +155,7 @@ export class ViewPortActions {
     }
 
     public static setOneForOneZoom() {
-        const currentZoom: number = EditorModel.zoom;
+        const currentZoom: number = GeneralSelector.getZoom();
         const currentRelativeScrollPosition: IPoint = ViewPortActions.getRelativeScrollPosition();
         const nextRelativeScrollPosition = currentZoom === 1 ? {x: 0.5, y: 0.5} : currentRelativeScrollPosition;
         const nextZoom: number = EditorModel.image.width / EditorModel.defaultRenderImageRect.width
@@ -163,12 +166,12 @@ export class ViewPortActions {
     }
 
     public static setZoom(value: number) {
-        const currentZoom: number = EditorModel.zoom;
+        const currentZoom: number = GeneralSelector.getZoom();
         const isNewValueValid: boolean = NumberUtil.isValueInRange(
             value, ViewPointSettings.MIN_ZOOM, ViewPointSettings.MAX_ZOOM);
 
         if (isNewValueValid && value !== currentZoom) {
-            EditorModel.zoom = value;
+            store.dispatch(updateZoom(value));
         }
     }
 }

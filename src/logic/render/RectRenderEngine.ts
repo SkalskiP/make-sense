@@ -52,7 +52,7 @@ export class RectRenderEngine extends BaseRenderEngine {
             if (!!rectUnderMouse) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(rectUnderMouse.rect, data);
                 const anchorUnderMouse: RectAnchor = this.getAnchorUnderMouseByRect(rect, data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
-                if (!!anchorUnderMouse) {
+                if (!!anchorUnderMouse && rectUnderMouse.status === LabelStatus.ACCEPTED) {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
@@ -137,7 +137,9 @@ export class RectRenderEngine extends BaseRenderEngine {
 
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                labelRect.id === activeLabelId ? this.drawActiveRect(labelRect, data) : this.drawInactiveRect(labelRect, data);
+                const displayAsActive: boolean =
+                    labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId;
+                displayAsActive ? this.drawActiveRect(labelRect, data) : this.drawInactiveRect(labelRect, data);
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             this.updateCursorStyle(data);
@@ -161,7 +163,8 @@ export class RectRenderEngine extends BaseRenderEngine {
     private drawInactiveRect(labelRect: LabelRect, data: EditorData) {
         const rectOnImage: IRect = RenderEngineUtil.transferRectFromViewPortContentToImage(labelRect.rect, data);
         const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
-        this.renderRect(rectOnImage, labelRect.id === highlightedLabelId);
+        const displayAsActive: boolean = labelRect.status === LabelStatus.ACCEPTED && labelRect.id === highlightedLabelId;
+        this.renderRect(rectOnImage, displayAsActive);
     }
 
     private drawActiveRect(labelRect: LabelRect, data: EditorData) {
@@ -192,10 +195,13 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
-            const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data);
-            if (!!rectAnchorUnderMouse || !!this.startResizeRectAnchor) {
-                store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
-                return;
+            const rectUnderMouse: LabelRect = this.getRectUnderMouse(data);
+            if (!!rectUnderMouse) {
+                const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data);
+                if ((!!rectAnchorUnderMouse && rectUnderMouse.status === LabelStatus.ACCEPTED) || !!this.startResizeRectAnchor) {
+                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
+                    return;
+                }
             }
             if (RenderEngineUtil.isMouseOverCanvas(data)) {
                 if (!RenderEngineUtil.isMouseOverImage(data) && !!this.startCreateRectPoint)

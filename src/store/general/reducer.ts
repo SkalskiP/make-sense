@@ -1,6 +1,7 @@
 import {GeneralActionTypes, GeneralState} from "./types";
 import {Action} from "../Actions";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
+import {ViewPointSettings} from "../../settings/ViewPointSettings";
 
 const initialState: GeneralState = {
     windowSize: null,
@@ -12,7 +13,8 @@ const initialState: GeneralState = {
     projectData: {
         type: null,
         name: "my-project-name",
-    }
+    },
+    zoom: ViewPointSettings.MIN_ZOOM
 };
 
 export function generalReducer(
@@ -60,6 +62,12 @@ export function generalReducer(
             return {
                 ...state,
                 projectData: action.payload.projectData
+            }
+        }
+        case Action.UPDATE_ZOOM: {
+            return {
+                ...state,
+                zoom: action.payload.zoom
             }
         }
         default:

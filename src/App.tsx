@@ -16,7 +16,7 @@ import classNames from "classnames";
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    AIMode: boolean
+    AIMode: boolean;
 }
 
 const App: React.FC<IProps> = ({projectType, windowSize, AIMode}) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
-import {ImageData} from "../../../store/labels/types";
+import {ImageData, LabelRect} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -23,6 +23,10 @@ import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {PlatformModel} from "../../../staticModels/PlatformModel";
 import {AIActions} from "../../../logic/actions/AIActions";
+import LabelControlPanel from "../LabelControlPanel/LabelControlPanel";
+import {IPoint} from "../../../interfaces/IPoint";
+import {RenderEngineUtil} from "../../../utils/RenderEngineUtil";
+import {LabelStatus} from "../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -33,6 +37,7 @@ interface IProps {
     activeLabelId: string;
     customCursorStyle: CustomCursorStyle;
     imageDragMode: boolean;
+    zoom: number;
 }
 
 class Editor extends React.Component<IProps, {}> {
@@ -152,6 +157,25 @@ class Editor extends React.Component<IProps, {}> {
         }
     };
 
+    private getOptionsPanels = () => {
+        if (this.props.activeLabelType !== LabelType.RECTANGLE)
+            return null;
+
+        const editorData: EditorData = EditorActions.getEditorData();
+        return this.props.imageData.labelRects
+            .filter((labelRect: LabelRect) => labelRect.isCreatedByAI && labelRect.status !== LabelStatus.ACCEPTED)
+            .map((labelRect: LabelRect) => {
+                const positionOnImage: IPoint = {x: labelRect.rect.x, y: labelRect.rect.y};
+                const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
+                return <LabelControlPanel
+                    position={positionOnViewPort}
+                    labelData={labelRect}
+                    imageData={this.props.imageData}
+                    key={labelRect.id}
+                />
+            })
+    };
+
     public render() {
         return (
             <div
@@ -175,6 +199,7 @@ class Editor extends React.Component<IProps, {}> {
                             draggable={false}
                             onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
                         />
+                        {this.getOptionsPanels()}
                     </div>
                 </Scrollbars>
                 <div
@@ -207,7 +232,8 @@ const mapStateToProps = (state: AppState) => ({
     activePopupType: state.general.activePopupType,
     activeLabelId: state.labels.activeLabelId,
     customCursorStyle: state.general.customCursorStyle,
-    imageDragMode: state.general.imageDragMode
+    imageDragMode: state.general.imageDragMode,
+    zoom: state.general.zoom
 });
 
 export default connect(
