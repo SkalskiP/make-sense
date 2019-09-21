@@ -171,6 +171,7 @@ class Editor extends React.Component<IProps, {}> {
                     position={positionOnViewPort}
                     labelData={labelRect}
                     imageData={this.props.imageData}
+                    key={labelRect.id}
                 />
             })
     };
