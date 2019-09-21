@@ -26,7 +26,7 @@ import {AIActions} from "../../../logic/actions/AIActions";
 import LabelControlPanel from "../LabelControlPanel/LabelControlPanel";
 import {IPoint} from "../../../interfaces/IPoint";
 import {RenderEngineUtil} from "../../../utils/RenderEngineUtil";
-import {PointUtil} from "../../../utils/PointUtil";
+import {LabelStatus} from "../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -162,12 +162,14 @@ class Editor extends React.Component<IProps, {}> {
 
         const editorData: EditorData = EditorActions.getEditorData();
         return this.props.imageData.labelRects
-            .filter((labelRect: LabelRect) => labelRect.isCreatedByAI)
+            .filter((labelRect: LabelRect) => labelRect.isCreatedByAI && labelRect.status !== LabelStatus.ACCEPTED)
             .map((labelRect: LabelRect) => {
                 const positionOnImage: IPoint = {x: labelRect.rect.x, y: labelRect.rect.y};
-                const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData)
+                const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
                 return <LabelControlPanel
                     position={positionOnViewPort}
+                    labelData={labelRect}
+                    imageData={this.props.imageData}
                 />
             })
     };
