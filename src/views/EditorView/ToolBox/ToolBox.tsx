@@ -46,7 +46,10 @@ const ToolBox: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, im
     ];
 
     const imageDragOnClick = () => {
-        if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
+        if (imageDragMode) {
+            updateImageDragModeStatus(!imageDragMode);
+        }
+        else if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
             updateImageDragModeStatus(!imageDragMode);
         }
     };

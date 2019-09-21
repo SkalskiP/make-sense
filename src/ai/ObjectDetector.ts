@@ -16,8 +16,6 @@ export class ObjectDetector {
                 store.dispatch(updateObjectDetectorStatus(true));
                 AIActions.detectRectsForActiveImage();
                 callback && callback();
-                console.log(model);
-                console.log("loaded")
             })
             .catch((error) => {
                 // TODO
@@ -26,13 +24,11 @@ export class ObjectDetector {
     }
 
     public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
-        console.log("ObjectDetector.predict")
         if (!ObjectDetector.model) return;
 
         ObjectDetector.model
             .detect(image)
             .then((predictions: DetectedObject[]) => {
-                console.log(predictions);
                 callback && callback(predictions)
             })
             .catch((error) => {

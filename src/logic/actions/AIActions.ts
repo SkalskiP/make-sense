@@ -15,7 +15,6 @@ export class AIActions {
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
-        console.log("AIActions.detectRects");
         if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector)
             return;
 
@@ -25,7 +24,6 @@ export class AIActions {
     }
 
     public static savePredictions(imageId: string, predictions: DetectedObject[]) {
-        console.log("AIActions.savePredictions");
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const predictedLabels: LabelRect[] = AIActions.mapPredictionsToRectLabels(predictions);
         const nextImageData: ImageData = {
