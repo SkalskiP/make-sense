@@ -18,6 +18,7 @@ export type GeneralState = {
     imageDragMode: boolean;
     activeContext: ContextType;
     projectData: ProjectData;
+    zoom: number;
 }
 
 interface UpdateProjectData {
@@ -69,6 +70,13 @@ interface UpdateImageDragModeStatus {
     }
 }
 
+interface UpdateZoom {
+    type: typeof Action.UPDATE_ZOOM,
+    payload: {
+        zoom: number;
+    }
+}
+
 export type GeneralActionTypes = UpdateProjectData
     | UpdateWindowSize
     | UpdateActivePopupType
@@ -76,3 +84,4 @@ export type GeneralActionTypes = UpdateProjectData
     | UpdateActiveContext
     | UpdatePreventCustomCursorStatus
     | UpdateImageDragModeStatus
+    | UpdateZoom

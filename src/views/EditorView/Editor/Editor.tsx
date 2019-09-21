@@ -37,6 +37,7 @@ interface IProps {
     activeLabelId: string;
     customCursorStyle: CustomCursorStyle;
     imageDragMode: boolean;
+    zoom: number;
 }
 
 class Editor extends React.Component<IProps, {}> {
@@ -230,7 +231,8 @@ const mapStateToProps = (state: AppState) => ({
     activePopupType: state.general.activePopupType,
     activeLabelId: state.labels.activeLabelId,
     customCursorStyle: state.general.customCursorStyle,
-    imageDragMode: state.general.imageDragMode
+    imageDragMode: state.general.imageDragMode,
+    zoom: state.general.zoom
 });
 
 export default connect(

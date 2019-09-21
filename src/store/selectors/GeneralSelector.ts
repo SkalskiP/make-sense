@@ -32,4 +32,8 @@ export class GeneralSelector {
     public static getProjectType(): ProjectType {
         return store.getState().general.projectData.type;
     }
+
+    public static getZoom(): number {
+        return store.getState().general.zoom;
+    }
 }

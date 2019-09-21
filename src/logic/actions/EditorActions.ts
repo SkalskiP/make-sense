@@ -88,7 +88,7 @@ export class EditorActions {
             viewPortContentSize: CanvasUtil.getSize(EditorModel.canvas),
             activeKeyCombo: ContextManager.getActiveCombo(),
             event: event,
-            zoom: EditorModel.zoom,
+            zoom: GeneralSelector.getZoom(),
             viewPortSize: EditorModel.viewPortSize,
             defaultRenderImageRect: EditorModel.defaultRenderImageRect,
             viewPortContentImageRect: ViewPortActions.calculateViewPortContentImageRect(),
