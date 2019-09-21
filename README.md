@@ -21,7 +21,15 @@ Andrew Ng
 ## Sneak Peek
 
 <p align="center"> 
-    <img width="1000" src=".//examples/alfa-demo.gif" alt="bbox">
+    <img width="1000" src=".//examples/alfa-demo.gif" alt="alfa-demo">
+</p>
+
+## Advanced AI functionalities
+
+[makesense.ai][1] strives to significantly reduce the time we have to spend on labeling photos. To achieve this, we are going to use many different AI models that will be able to give you recommendations as well as automate repetitive and tedious activities. The first step on this journey is to use a [SSD model][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bboxes on photos and - in future versions of the application - will also suggest a label. We also plan to add, among other things, models that classify photos, detect characteristic features of faces, whole faces, and also human pose. The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
+
+<p align="center"> 
+    <img width="1000" src=".//examples/ai-demo.gif" alt="ai-demo">
 </p>
 
 ## Set Up the Project Locally
@@ -108,3 +116,6 @@ Copyright (c) 2019-present, Piotr Skalski
 [5]: https://gitter.im/make-sense-ai/community?utm_source=share-link&utm_medium=link&utm_campaign=share-link
 [6]: https://github.com/SkalskiP/make-sense/wiki/Road-Map
 [7]: https://github.com/SkalskiP/make-sense/wiki/Supported-Output-Formats
+[8]: https://arxiv.org/abs/1512.02325
+[9]: http://cocodataset.org
+[10]: https://www.tensorflow.org/js
