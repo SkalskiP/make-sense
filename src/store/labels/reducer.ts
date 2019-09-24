@@ -3,13 +3,17 @@ import {Action} from "../Actions";
 
 const initialState: LabelsState = {
     activeImageIndex: null,
+    // todo: to be removed
     activeLabelNameIndex: null,
+    activeLabelNameId: null,
     activeLabelType: null,
     activeLabelId: null,
     highlightedLabelId: null,
     imagesData: [],
+    // todo: to be removed
     labelNames: [],
-    firstLabelCreatedFlag: false
+    firstLabelCreatedFlag: false,
+    labels: []
 };
 
 export function labelsReducer(
@@ -23,10 +27,17 @@ export function labelsReducer(
                 activeImageIndex: action.payload.activeImageIndex
             }
         }
+        // todo: to be removed
         case Action.UPDATE_ACTIVE_LABEL_NAME_INDEX: {
             return {
                 ...state,
                 activeLabelNameIndex: action.payload.activeLabelNameIndex
+            }
+        }
+        case Action.UPDATE_ACTIVE_LABEL_NAME_ID: {
+            return {
+                ...state,
+                activeLabelNameId: action.payload.activeLabelNameId
             }
         }
         case Action.UPDATE_ACTIVE_LABEL_ID: {
@@ -67,10 +78,17 @@ export function labelsReducer(
                 imagesData: action.payload.imageData
             }
         }
+        // todo: to be removed
         case Action.UPDATE_LABEL_NAMES_LIST: {
             return {
                 ...state,
                 labelNames: action.payload.labelNames
+            }
+        }
+        case Action.UPDATE_LABEL_NAMES: {
+            return {
+                ...state,
+                labels: action.payload.labels
             }
         }
         case Action.UPDATE_FIRST_LABEL_CREATED_FLAG: {

@@ -39,6 +39,7 @@ export class AIActions {
             return {
                 id: uuidv1(),
                 labelIndex: null,
+                labelId: null,
                 rect: {
                     x: prediction.bbox[0],
                     y: prediction.bbox[1],

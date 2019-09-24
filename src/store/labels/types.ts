@@ -6,7 +6,9 @@ import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export type LabelRect = {
     id: string;
+    // todo: to be removed
     labelIndex: number;
+    labelId: string;
     rect: IRect;
     isCreatedByAI: boolean;
     status: LabelStatus;
@@ -14,14 +16,23 @@ export type LabelRect = {
 
 export type LabelPoint = {
     id: string;
+    // todo: to be removed
     labelIndex: number;
+    labelId: string;
     point: IPoint;
 }
 
 export type LabelPolygon = {
     id: string;
+    // todo: to be removed
     labelIndex: number;
+    labelId: string;
     vertices: IPoint[];
+}
+
+export type LabelName = {
+    name: string;
+    id: string;
 }
 
 export type ImageData = {
@@ -36,13 +47,17 @@ export type ImageData = {
 
 export type LabelsState = {
     activeImageIndex: number;
+    // todo: to be removed
     activeLabelNameIndex: number;
+    activeLabelNameId: string;
     activeLabelType: LabelType;
     activeLabelId: string;
     highlightedLabelId: string;
     imagesData: ImageData[];
+    // todo: to be removed
     labelNames: string[];
     firstLabelCreatedFlag: boolean;
+    labels: LabelName[];
 }
 
 interface UpdateActiveImageIndex {
@@ -52,10 +67,18 @@ interface UpdateActiveImageIndex {
     }
 }
 
+// todo: to be removed
 interface UpdateActiveLabelNameIndex {
     type: typeof Action.UPDATE_ACTIVE_LABEL_NAME_INDEX;
     payload: {
         activeLabelNameIndex: number;
+    }
+}
+
+interface UpdateActiveLabelNameId {
+    type: typeof Action.UPDATE_ACTIVE_LABEL_NAME_ID;
+    payload: {
+        activeLabelNameId: string;
     }
 }
 
@@ -102,10 +125,18 @@ interface UpdateImageData {
     }
 }
 
+// todo: to be removed
 interface UpdateLabelNamesList {
     type: typeof Action.UPDATE_LABEL_NAMES_LIST;
     payload: {
         labelNames: string[];
+    }
+}
+
+interface UpdateLabelNames {
+    type: typeof Action.UPDATE_LABEL_NAMES;
+    payload: {
+        labels: LabelName[];
     }
 }
 
@@ -117,12 +148,16 @@ interface UpdateFirstLabelCreatedFlag {
 }
 
 export type LabelsActionTypes = UpdateActiveImageIndex
+    // todo: to be removed
     | UpdateActiveLabelNameIndex
+    | UpdateActiveLabelNameId
     | UpdateActiveLabelType
     | UpdateImageDataById
     | AddImageData
     | UpdateImageData
+    // todo: to be removed
     | UpdateLabelNamesList
+    | UpdateLabelNames
     | UpdateActiveLabelId
     | UpdateHighlightedLabelId
     | UpdateFirstLabelCreatedFlag
