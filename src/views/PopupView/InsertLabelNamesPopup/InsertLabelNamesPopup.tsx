@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/labels/actionCreators";
+import {updateActiveLabelNameIndex, updateLabelNames, updateLabelNamesList} from "../../../store/labels/actionCreators";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -10,14 +10,16 @@ import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import uuidv1 from 'uuid/v1';
+import {LabelName} from "../../../store/labels/types";
 
 interface IProps {
     updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
     updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    updateLabelNames: (labels: LabelName[]) => any;
 }
 
-const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType}) => {
+const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType, updateLabelNames}) => {
     const [labelNames, setLabelNames] = useState({});
 
     const addHandle = () => {
@@ -125,6 +127,7 @@ const mapDispatchToProps = {
     updateActiveLabelNameIndex,
     updateLabelNamesList,
     updateActivePopupType,
+    updateLabelNames
 };
 
 const mapStateToProps = (state: AppState) => ({});
