@@ -184,13 +184,10 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private addPointLabel = (point: IPoint) => {
-        // todo: to be removed
-        const activeLabelIndex = LabelsSelector.getActiveLabelNameIndex();
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
             id: uuidv1(),
-            labelIndex: activeLabelIndex,
             labelId: activeLabelId,
             point
         };

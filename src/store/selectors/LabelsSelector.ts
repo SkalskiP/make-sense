@@ -4,19 +4,8 @@ import _ from "lodash";
 import {LabelType} from "../../data/enums/LabelType";
 
 export class LabelsSelector {
-    // todo: to be removed
-    public static getLabelNames(): string[] {
-        return store.getState().labels.labelNames;
-    }
-
-    // todo: _ to be removed
-    public static getLabelNames_(): LabelName[] {
+    public static getLabelNames(): LabelName[] {
         return store.getState().labels.labels;
-    }
-
-    // todo: to be removed
-    public static getActiveLabelNameIndex(): number {
-        return store.getState().labels.activeLabelNameIndex;
     }
 
     public static getActiveLabelNameId(): string {

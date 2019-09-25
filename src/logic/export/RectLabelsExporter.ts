@@ -1,5 +1,5 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {ImageData, LabelRect} from "../../store/labels/types";
+import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
@@ -7,6 +7,7 @@ import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import * as _ from "lodash";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -57,10 +58,11 @@ export class RectLabelsExporter {
         if (imageData.labelRects.length === 0 || !imageData.loadStatus)
             return null;
 
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelFields = [
-                labelRect.labelIndex + "",
+                _.findIndex(labelNames, {id: labelRect.labelId}) + "",
                 ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6) + "",
                 ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6) + "",
                 (labelRect.rect.width / image.width).toFixed(6) + "",
@@ -101,11 +103,11 @@ export class RectLabelsExporter {
         if (imageData.labelRects.length === 0 || !imageData.loadStatus)
             return null;
 
-        const labelNamesList: string[] = LabelsSelector.getLabelNames();
+        const labelNamesList: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelFields = [
                 `\t<object>`,
-                `\t\t<name>${labelNamesList[labelRect.labelIndex]}</name>`,
+                `\t\t<name>${_.findLast(labelNamesList, {id: labelRect.labelId})}</name>`,
                 `\t\t<pose>Unspecified</pose>`,
                 `\t\t<truncated>Unspecified</truncated>`,
                 `\t\t<difficult>Unspecified</difficult>`,
@@ -171,10 +173,11 @@ export class RectLabelsExporter {
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        const labelNamesList: string[] = LabelsSelector.getLabelNames();
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
+            const labelName: LabelName = _.findLast(labelNames, labelRect.labelId);
             const labelFields = [
-                labelNamesList[labelRect.labelIndex],
+                labelName.name,
                 Math.round(labelRect.rect.x) + "",
                 Math.round(labelRect.rect.y) + "",
                 Math.round(labelRect.rect.width) + "",

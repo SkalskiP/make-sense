@@ -19,7 +19,6 @@ interface IProps {
     size: ISize;
     imageData: ImageData;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
-    activeLabelIndex: number;
     activeLabelId: string;
     highlightedLabelId: string;
     updateActiveLabelNameId: (activeLabelId: string) => any;
@@ -115,7 +114,6 @@ const mapDispatchToProps = {
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelIndex: state.labels.activeLabelNameIndex,
     activeLabelId: state.labels.activeLabelId,
     highlightedLabelId: state.labels.highlightedLabelId,
     labelNames : state.labels.labels

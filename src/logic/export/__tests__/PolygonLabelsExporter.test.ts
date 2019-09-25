@@ -1,7 +1,7 @@
 import {IPoint} from "../../../interfaces/IPoint";
 import {PolygonLabelsExporter} from "../PolygonLabelsExporter";
 import {VGGPolygon, VGGRegionsData} from "../../../data/VGG/IVGG";
-import {ImageData} from "../../../store/labels/types";
+import {ImageData, LabelName} from "../../../store/labels/types";
 
 describe('PolygonLabelsExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {
@@ -34,7 +34,8 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
             labelPoints: [],
             labelRects: [],
             labelPolygons: [],
-            fileData: {} as File
+            fileData: {} as File,
+            isVisitedByObjectDetector: true
         };
         expect(PolygonLabelsExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
     });
@@ -48,7 +49,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
             labelPolygons: [
                 {
                     id: "1",
-                    labelIndex: 0,
+                    labelId: "label_1",
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -58,7 +59,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 },
                 {
                     id: "2",
-                    labelIndex: 1,
+                    labelId: "label_2",
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -68,12 +69,19 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                     ]
                 }
             ],
-            fileData: {} as File
+            fileData: {} as File,
+            isVisitedByObjectDetector: true
         };
 
-        const givenLabelNames: string[] = [
-            "banana",
-            "kiwi"
+        const givenLabelNames: LabelName[] = [
+            {
+                id: "label_1",
+                name: "banana"
+            },
+            {
+                id: "label_2",
+                name: "kiwi"
+            }
         ];
 
         const expectedVGGRegionData: VGGRegionsData = {
@@ -110,7 +118,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
             labelPolygons: [
                 {
                     id: "1",
-                    labelIndex: 0,
+                    labelId: "label_1",
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -120,7 +128,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 },
                 {
                     id: "2",
-                    labelIndex: null,
+                    labelId: null,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -130,12 +138,19 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                     ]
                 }
             ],
-            fileData: {} as File
+            fileData: {} as File,
+            isVisitedByObjectDetector: true
         };
 
-        const givenLabelNames: string[] = [
-            "banana",
-            "kiwi"
+        const givenLabelNames: LabelName[] = [
+            {
+                id: "label_1",
+                name: "banana"
+            },
+            {
+                id: "label_2",
+                name: "kiwi"
+            }
         ];
 
         const expectedVGGRegionData: VGGRegionsData = {

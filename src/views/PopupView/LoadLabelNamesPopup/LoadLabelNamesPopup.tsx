@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './LoadLabelNamesPopup.scss'
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {updateActiveLabelNameIndex, updateLabelNamesList, updateLabelNames} from "../../../store/labels/actionCreators";
+import {updateLabelNames} from "../../../store/labels/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
@@ -13,13 +13,11 @@ import {LabelName} from "../../../store/labels/types";
 import {LabelUtil} from "../../../utils/LabelUtil";
 
 interface IProps {
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateLabels: (labels: LabelName[]) => any;
 }
 
-const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType, updateLabels}) => {
+const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLabels}) => {
     const [labelsList, setLabelsList] = useState([]);
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
 
@@ -44,9 +42,6 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, upda
 
     const onAccept = () => {
         if (labelsList.length > 0) {
-            updateActiveLabelNameIndex(0);
-            // todo: to be removed
-            updateLabelNamesList(labelsList);
             updateLabels(labelsList.map((name: string) => LabelUtil.mapNamesToLabelNames(name)));
             updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
@@ -127,8 +122,6 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, upda
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelNameIndex,
-    updateLabelNamesList,
     updateActivePopupType,
     updateLabels: updateLabelNames
 };

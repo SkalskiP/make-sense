@@ -11,16 +11,6 @@ export function updateActiveImageIndex(activeImageIndex: number): LabelsActionTy
     };
 }
 
-// todo: to be removed
-export function updateActiveLabelNameIndex(activeLabelNameIndex: number): LabelsActionTypes {
-    return {
-        type: Action.UPDATE_ACTIVE_LABEL_NAME_INDEX,
-        payload: {
-            activeLabelNameIndex,
-        },
-    };
-}
-
 export function updateActiveLabelNameId(activeLabelNameId: string): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_NAME_ID,
@@ -83,16 +73,6 @@ export function updateImageData(imageData: ImageData[]): LabelsActionTypes {
             imageData,
         },
     };
-}
-
-// todo: to be removed
-export function updateLabelNamesList(labelNames: string[]) {
-    return {
-        type: Action.UPDATE_LABEL_NAMES_LIST,
-        payload: {
-            labelNames
-        }
-    }
 }
 
 export function updateLabelNames(labels: LabelName[]) {

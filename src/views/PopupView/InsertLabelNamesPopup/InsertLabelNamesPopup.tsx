@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActiveLabelNameIndex, updateLabelNames, updateLabelNamesList} from "../../../store/labels/actionCreators";
+import {updateLabelNames} from "../../../store/labels/actionCreators";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -16,15 +16,13 @@ import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {LabelActions} from "../../../logic/actions/LabelActions";
 
 interface IProps {
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateLabelNames: (labels: LabelName[]) => any;
     isUpdate: boolean;
 }
 
-const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType, updateLabelNames, isUpdate}) => {
-    const initialLabels = LabelUtil.convertLabelNamesListToMap(LabelsSelector.getLabelNames_());
+const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLabelNames, isUpdate}) => {
+    const initialLabels = LabelUtil.convertLabelNamesListToMap(LabelsSelector.getLabelNames());
     const [labelNames, setLabelNames] = useState(initialLabels);
 
     const addHandle = () => {
@@ -64,7 +62,6 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
     const onCreateAccept = () => {
         const labelNamesList: string[] = extractLabelNamesList();
         if (labelNamesList.length > 0) {
-            updateLabelNamesList(labelNamesList);
             updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
             updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
@@ -73,10 +70,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
     const onUpdateAccept = () => {
         const labelNamesList: string[] = extractLabelNamesList();
         const updatedLabelNamesList: LabelName[] = LabelUtil.convertMapToLabelNamesList(labelNames);
-        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames_(), updatedLabelNamesList);
+        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), updatedLabelNamesList);
         LabelActions.removeLabelNames(missingIds);
         if (labelNamesList.length > 0) {
-            updateLabelNamesList(labelNamesList);
             updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
             updateActivePopupType(null);
         }
@@ -152,8 +148,6 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelNameIndex,
-    updateLabelNamesList,
     updateActivePopupType,
     updateLabelNames
 };
