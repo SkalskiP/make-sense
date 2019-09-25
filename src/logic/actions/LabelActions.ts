@@ -2,7 +2,7 @@ import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
 import * as _ from "lodash";
 import {store} from "../../index";
-import {updateImageDataById} from "../../store/labels/actionCreators";
+import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
 import {LabelType} from "../../data/enums/LabelType";
 
 export class LabelActions {
@@ -57,5 +57,49 @@ export class LabelActions {
             })
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));
+    }
+
+    public static removeLabelNames(labelNamesIds: string[]) {
+        const imagesData: ImageData[] = LabelsSelector.getImagesData();
+        const newImagesData: ImageData[] = imagesData.map((imageData: ImageData) => {
+            return LabelActions.removeLabelNamesFromImageData(imageData, labelNamesIds);
+        });
+        store.dispatch(updateImageData(newImagesData))
+    }
+
+    private static removeLabelNamesFromImageData(imageData: ImageData, labelNamesIds: string[]): ImageData {
+        return {
+            ...imageData,
+            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
+                if (labelNamesIds.includes(labelRect.id)) {
+                    return {
+                        ...labelRect,
+                        id: null
+                    }
+                } else {
+                    return labelRect
+                }
+            }),
+            labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
+                if (labelNamesIds.includes(labelPoint.id)) {
+                    return {
+                        ...labelPoint,
+                        id: null
+                    }
+                } else {
+                    return labelPoint
+                }
+            }),
+            labelPolygons: imageData.labelPolygons.map((labelPolygon: LabelPolygon) => {
+                if (labelNamesIds.includes(labelPolygon.id)) {
+                    return {
+                        ...labelPolygon,
+                        id: null
+                    }
+                } else {
+                    return labelPolygon
+                }
+            })
+        }
     }
 }

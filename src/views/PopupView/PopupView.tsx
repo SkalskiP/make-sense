@@ -23,7 +23,13 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
             case PopupWindowType.EXPORT_LABELS:
                 return <ExportLabelPopup/>;
             case PopupWindowType.INSERT_LABEL_NAMES:
-                return <InsertLabelNamesPopup/>;
+                return <InsertLabelNamesPopup
+                    isUpdate={false}
+                />;
+            case PopupWindowType.UPDATE_LABEL_NAMES:
+                return <InsertLabelNamesPopup
+                    isUpdate={true}
+                />;
             case PopupWindowType.EXIT_PROJECT:
                 return <ExitProjectPopup/>;
             case PopupWindowType.LOAD_IMAGES:
