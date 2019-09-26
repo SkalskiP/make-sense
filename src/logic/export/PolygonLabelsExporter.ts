@@ -63,13 +63,15 @@ export class PolygonLabelsExporter {
         if (!validLabels.length) return null;
 
         return validLabels.reduce((data: VGGRegionsData, label: LabelPolygon, index: number) => {
-            const labelName: LabelName = _.findLast(labelNames, label.labelId);
-            data[`${index}`] = {
-                shape_attributes: PolygonLabelsExporter.mapPolygonToVGG(label.vertices),
-                region_attributes: {
-                    label: labelName.name
-                }
-            };
+            const labelName: LabelName = _.findLast(labelNames, {id: label.labelId});
+            if (!!labelName) {
+                data[`${index}`] = {
+                    shape_attributes: PolygonLabelsExporter.mapPolygonToVGG(label.vertices),
+                    region_attributes: {
+                        label: labelName.name
+                    }
+                };
+            }
             return data;
         }, {})
     }

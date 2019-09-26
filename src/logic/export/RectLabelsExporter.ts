@@ -105,9 +105,10 @@ export class RectLabelsExporter {
 
         const labelNamesList: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelFields = [
+            const labelName: LabelName = _.findLast(labelNamesList, {id: labelRect.labelId});
+            const labelFields = !!labelName ? [
                 `\t<object>`,
-                `\t\t<name>${_.findLast(labelNamesList, {id: labelRect.labelId})}</name>`,
+                `\t\t<name>${labelName.name}</name>`,
                 `\t\t<pose>Unspecified</pose>`,
                 `\t\t<truncated>Unspecified</truncated>`,
                 `\t\t<difficult>Unspecified</difficult>`,
@@ -118,7 +119,7 @@ export class RectLabelsExporter {
                 `\t\t\t<ymax>${Math.round(labelRect.rect.y + labelRect.rect.height)}</ymax>`,
                 `\t\t</bndbox>`,
                 `\t</object>`
-            ];
+            ] : [];
             return labelFields.join("\n")
         });
         return labelRectsString.join("\n");
@@ -175,8 +176,8 @@ export class RectLabelsExporter {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelName: LabelName = _.findLast(labelNames, labelRect.labelId);
-            const labelFields = [
+            const labelName: LabelName = _.findLast(labelNames, {id: labelRect.labelId});
+            const labelFields = !!labelName ? [
                 labelName.name,
                 Math.round(labelRect.rect.x) + "",
                 Math.round(labelRect.rect.y) + "",
@@ -185,7 +186,7 @@ export class RectLabelsExporter {
                 imageData.fileData.name,
                 image.width + "",
                 image.height + ""
-            ];
+            ] : [];
             return labelFields.join(",")
         });
         return labelRectsString.join("\n");

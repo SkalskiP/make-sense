@@ -41,14 +41,15 @@ export class PointLabelsExporter {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
-            const labelFields = [
-                _.findLast(labelNames, {id: labelPoint.labelId}),
+            const labelName: LabelName = _.findLast(labelNames, {id: labelPoint.labelId});
+            const labelFields = !!labelName ? [
+                labelName.name,
                 Math.round(labelPoint.point.x) + "",
                 Math.round(labelPoint.point.y) + "",
                 imageData.fileData.name,
                 image.width + "",
                 image.height + ""
-            ];
+            ] : [];
             return labelFields.join(",")
         });
         return labelRectsString.join("\n");
