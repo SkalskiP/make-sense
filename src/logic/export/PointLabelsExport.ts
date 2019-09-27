@@ -4,7 +4,7 @@ import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ExporterUtil} from "../../utils/ExporterUtil";
-import * as _ from "lodash";
+import {findLast} from "lodash";
 
 export class PointLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -41,7 +41,7 @@ export class PointLabelsExporter {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
-            const labelName: LabelName = _.findLast(labelNames, {id: labelPoint.labelId});
+            const labelName: LabelName = findLast(labelNames, {id: labelPoint.labelId});
             const labelFields = !!labelName ? [
                 labelName.name,
                 Math.round(labelPoint.point.x) + "",

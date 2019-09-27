@@ -13,7 +13,7 @@ import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
-import * as _ from "lodash";
+import {findLast} from "lodash";
 
 interface IProps {
     size: ISize;
@@ -74,7 +74,7 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
                 id={labelPoint.id}
                 key={labelPoint.id}
                 onDelete={deletePointLabelById}
-                value={labelPoint.labelId !== null ? _.findLast(labelNames, {id: labelPoint.labelId}) : null}
+                value={labelPoint.labelId !== null ? findLast(labelNames, {id: labelPoint.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updatePointLabel}
             />

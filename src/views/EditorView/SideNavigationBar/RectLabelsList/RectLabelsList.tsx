@@ -13,7 +13,7 @@ import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
 import {LabelStatus} from "../../../../data/enums/LabelStatus";
-import * as _ from "lodash";
+import {findLast} from "lodash";
 
 interface IProps {
     size: ISize;
@@ -76,7 +76,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
                 id={labelRect.id}
                 key={labelRect.id}
                 onDelete={deleteRectLabelById}
-                value={labelRect.labelId !== null ? _.findLast(labelNames, {id: labelRect.labelId}) : null}
+                value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updateRectLabel}
             />

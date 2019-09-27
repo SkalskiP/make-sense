@@ -1,6 +1,6 @@
 import {LabelName} from "../store/labels/types";
 import uuidv1 from 'uuid/v1';
-import * as _ from "lodash";
+import {find} from "lodash";
 
 export class LabelUtil {
     public static mapNamesToLabelNames(name: string): LabelName {
@@ -32,7 +32,7 @@ export class LabelUtil {
 
     public static labelNamesIdsDiff(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
         return oldLabelNames.reduce((missingIds: string[], labelName: LabelName) => {
-            if (!_.find(newLabelNames, { 'id': labelName.id })) {
+            if (!find(newLabelNames, { 'id': labelName.id })) {
                 missingIds.push(labelName.id);
             }
             return missingIds

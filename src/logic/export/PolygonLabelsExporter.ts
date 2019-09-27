@@ -5,7 +5,7 @@ import {ImageData, LabelName, LabelPolygon} from "../../store/labels/types";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
-import * as _ from "lodash";
+import {findLast} from "lodash";
 
 export class PolygonLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -63,9 +63,9 @@ export class PolygonLabelsExporter {
         if (!validLabels.length) return null;
 
         return validLabels.reduce((data: VGGRegionsData, label: LabelPolygon, index: number) => {
-            const labelName: LabelName = _.findLast(labelNames, {id: label.labelId});
+            const labelName: LabelName = findLast(labelNames, {id: label.labelId});
             if (!!labelName) {
-                data[`${index}`] = {
+                data[index.toString()] = {
                     shape_attributes: PolygonLabelsExporter.mapPolygonToVGG(label.vertices),
                     region_attributes: {
                         label: labelName.name

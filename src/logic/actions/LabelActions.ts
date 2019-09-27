@@ -1,6 +1,6 @@
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
-import * as _ from "lodash";
+import {filter} from "lodash";
 import {store} from "../../index";
 import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
 import {LabelType} from "../../data/enums/LabelType";
@@ -30,7 +30,7 @@ export class LabelActions {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
-            labelRects: _.filter(imageData.labelRects, (currentLabel: LabelRect) => {
+            labelRects: filter(imageData.labelRects, (currentLabel: LabelRect) => {
                 return currentLabel.id !== labelRectId;
             })
         };
@@ -41,7 +41,7 @@ export class LabelActions {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
-            labelPoints: _.filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
+            labelPoints: filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
                 return currentLabel.id !== labelPointId;
             })
         };
@@ -52,7 +52,7 @@ export class LabelActions {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
-            labelPolygons: _.filter(imageData.labelPolygons, (currentLabel: LabelPolygon) => {
+            labelPolygons: filter(imageData.labelPolygons, (currentLabel: LabelPolygon) => {
                 return currentLabel.id !== labelPolygonId;
             })
         };

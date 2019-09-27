@@ -13,7 +13,7 @@ import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
-import * as _ from "lodash";
+import {findLast} from "lodash";
 
 interface IProps {
     size: ISize;
@@ -74,7 +74,7 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
                 id={labelPolygon.id}
                 key={labelPolygon.id}
                 onDelete={deletePolygonLabelById}
-                value={labelPolygon.labelId !== null ? _.findLast(labelNames, {id: labelPolygon.labelId}) : null}
+                value={labelPolygon.labelId !== null ? findLast(labelNames, {id: labelPolygon.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updatePolygonLabel}
             />

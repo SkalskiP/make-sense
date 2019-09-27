@@ -7,7 +7,7 @@ import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import * as _ from "lodash";
+import {findIndex, findLast} from "lodash";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -62,7 +62,7 @@ export class RectLabelsExporter {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelFields = [
-                _.findIndex(labelNames, {id: labelRect.labelId}) + "",
+                findIndex(labelNames, {id: labelRect.labelId}).toString(),
                 ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6) + "",
                 ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6) + "",
                 (labelRect.rect.width / image.width).toFixed(6) + "",
@@ -105,7 +105,7 @@ export class RectLabelsExporter {
 
         const labelNamesList: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelName: LabelName = _.findLast(labelNamesList, {id: labelRect.labelId});
+            const labelName: LabelName = findLast(labelNamesList, {id: labelRect.labelId});
             const labelFields = !!labelName ? [
                 `\t<object>`,
                 `\t\t<name>${labelName.name}</name>`,
@@ -176,7 +176,7 @@ export class RectLabelsExporter {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelName: LabelName = _.findLast(labelNames, {id: labelRect.labelId});
+            const labelName: LabelName = findLast(labelNames, {id: labelRect.labelId});
             const labelFields = !!labelName ? [
                 labelName.name,
                 Math.round(labelRect.rect.x) + "",
