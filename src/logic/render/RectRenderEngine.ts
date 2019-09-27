@@ -229,11 +229,11 @@ export class RectRenderEngine extends BaseRenderEngine {
     }
 
     private addRectLabel = (rect: IRect) => {
-        const activeLabelIndex = LabelsSelector.getActiveLabelNameIndex();
+        const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelRect: LabelRect = {
             id: uuidv1(),
-            labelIndex: activeLabelIndex,
+            labelId: activeLabelId,
             rect,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED

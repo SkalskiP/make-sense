@@ -11,16 +11,17 @@ import {connect} from "react-redux";
 import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/labels/actionCreators";
 import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from "../../../../data/enums/EventType";
+import {LabelName} from "../../../../store/labels/types";
 
 interface IProps {
     size: ISize;
     isActive: boolean;
     isHighlighted: boolean;
     id: string;
-    value: string;
-    options: string[];
+    value: LabelName;
+    options: LabelName[];
     onDelete: (id: string) => any;
-    onSelectLabel: (labelRectId: string, labelNameIndex: number) => any;
+    onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
     updateActiveLabelId: (highlightedLabelId: string) => any;
 }
@@ -99,23 +100,23 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     private getDropdownOptions = () => {
-        const onClick = (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const onClick = (id: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             this.setState({isOpen: false});
             window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
-            this.props.onSelectLabel(this.props.id, index);
+            this.props.onSelectLabel(this.props.id, id);
             this.props.updateHighlightedLabelId(null);
             this.props.updateActiveLabelId(this.props.id);
             event.stopPropagation();
         };
 
-        return this.props.options.map((option: string, index: number) => {
+        return this.props.options.map((option: LabelName) => {
             return <div
                 className="DropdownOption"
-                key={option}
+                key={option.id}
                 style={{height: this.dropdownOptionHeight}}
-                onClick={(event) => onClick(index, event)}
+                onClick={(event) => onClick(option.id, event)}
             >
-                {option}
+                {option.name}
             </div>
         })
     };
@@ -134,7 +135,6 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     public render() {
         const {size, id, value, onDelete} = this.props;
-
         return(
             <div
                 className={this.getClassName()}
@@ -161,7 +161,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                  ref={ref => this.dropdownLabel = ref}
                                  onClick={this.openDropdown}
                             >
-                                {value ? value : "Select label"}
+                                {value ? value.name : "Select label"}
                             </div>
                             {this.state.isOpen && <div
                                 className="Dropdown"

@@ -1,11 +1,11 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelPoint} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelPoint} from "../../../../store/labels/types";
 import './PointLabelsList.scss';
 import {
     updateActiveLabelId,
-    updateActiveLabelNameIndex,
+    updateActiveLabelNameId,
     updateImageDataById
 } from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
@@ -13,20 +13,20 @@ import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
+import {findLast} from "lodash";
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
-    activeLabelIndex: number;
     activeLabelId: string;
     highlightedLabelId: string;
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    labelNames: string[];
+    updateActiveLabelNameId: (activeLabelId: string) => any;
+    labelNames: LabelName[];
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
+const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameId, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -41,21 +41,21 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
         LabelActions.deletePointLabelById(imageData.id, labelPointId);
     };
 
-    const updatePointLabel = (labelPointId: string, labelNameIndex: number) => {
+    const updatePointLabel = (labelPointId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
             labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
                 if (labelPoint.id === labelPointId) {
                     return {
                         ...labelPoint,
-                        labelIndex: labelNameIndex
+                        labelId: labelNameId
                     }
                 }
                 return labelPoint
             })
         };
         updateImageDataById(imageData.id, newImageData);
-        updateActiveLabelNameIndex(labelNameIndex);
+        updateActiveLabelNameId(labelNameId);
     };
 
     const onClickHandler = () => {
@@ -74,7 +74,7 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
                 id={labelPoint.id}
                 key={labelPoint.id}
                 onDelete={deletePointLabelById}
-                value={labelPoint.labelIndex !== null ? labelNames[labelPoint.labelIndex] : null}
+                value={labelPoint.labelId !== null ? findLast(labelNames, {id: labelPoint.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updatePointLabel}
             />
@@ -107,15 +107,14 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
 
 const mapDispatchToProps = {
     updateImageDataById,
-    updateActiveLabelNameIndex,
+    updateActiveLabelNameId,
     updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelIndex: state.labels.activeLabelNameIndex,
     activeLabelId: state.labels.activeLabelId,
     highlightedLabelId: state.labels.highlightedLabelId,
-    labelNames : state.labels.labelNames
+    labelNames : state.labels.labels
 });
 
 export default connect(

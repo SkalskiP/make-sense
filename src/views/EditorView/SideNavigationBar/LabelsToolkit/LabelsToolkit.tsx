@@ -8,7 +8,7 @@ import {LabelType} from "../../../../data/enums/LabelType";
 import {ProjectType} from "../../../../data/enums/ProjectType";
 import {ISize} from "../../../../interfaces/ISize";
 import classNames from "classnames";
-import * as _ from "lodash";
+import {find} from "lodash";
 import {ILabelToolkit, LabelToolkitData} from "../../../../data/info/LabelToolkitData";
 import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
@@ -92,7 +92,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
         const {activeImageIndex, imagesData} = this.props;
         return this.tabs.reduce((children, labelType: LabelType, index: number) => {
             const isActive: boolean = labelType === activeLabelType;
-            const tabData: ILabelToolkit = _.find(LabelToolkitData, {labelType});
+            const tabData: ILabelToolkit = find(LabelToolkitData, {labelType});
             const activeTabContentHeight: number = size.height - this.tabs.length * Settings.TOOLKIT_TAB_HEIGHT_PX;
             const getClassName = (baseClass: string) => classNames(
                 baseClass,

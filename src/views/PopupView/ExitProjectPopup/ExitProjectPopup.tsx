@@ -3,22 +3,22 @@ import './ExitProjectPopup.scss'
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {
     updateActiveImageIndex,
-    updateActiveLabelNameIndex,
+    updateActiveLabelNameId,
     updateFirstLabelCreatedFlag,
     updateImageData,
-    updateLabelNamesList
+    updateLabelNames
 } from "../../../store/labels/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
-import {ImageData} from "../../../store/labels/types";
+import {ImageData, LabelName} from "../../../store/labels/types";
 import {PopupActions} from "../../../logic/actions/PopupActions";
 import {ProjectData} from "../../../store/general/types";
 import {updateProjectData} from "../../../store/general/actionCreators";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    updateLabelNamesList: (labelNames: string[]) => any;
+    updateActiveLabelNameId: (activeLabelId: string) => any;
+    updateLabelNames: (labelNames: LabelName[]) => any;
     updateImageData: (imageData: ImageData[]) => any;
     updateFirstLabelCreatedFlag: (firstLabelCreatedFlag: boolean) => any;
     updateProjectData: (projectData: ProjectData) => any;
@@ -26,8 +26,8 @@ interface IProps {
 
 const ExitProjectPopup: React.FC<IProps> = (props) => {
     const {
-        updateActiveLabelNameIndex,
-        updateLabelNamesList,
+        updateActiveLabelNameId,
+        updateLabelNames,
         updateActiveImageIndex,
         updateImageData,
         updateFirstLabelCreatedFlag,
@@ -45,8 +45,8 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
     };
 
     const onAccept = () => {
-        updateActiveLabelNameIndex(null);
-        updateLabelNamesList([]);
+        updateActiveLabelNameId(null);
+        updateLabelNames([]);
         updateProjectData({type: null, name: "my-project-name"});
         updateActiveImageIndex(null);
         updateImageData([]);
@@ -70,8 +70,8 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelNameIndex,
-    updateLabelNamesList,
+    updateActiveLabelNameId,
+    updateLabelNames,
     updateProjectData,
     updateActiveImageIndex,
     updateImageData,

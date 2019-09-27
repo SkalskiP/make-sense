@@ -2,7 +2,7 @@ import {ContextType} from "../../data/enums/ContextType";
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {store} from "../../index";
 import {updateActiveContext} from "../../store/general/actionCreators";
-import * as _ from "lodash";
+import {xor, isEmpty} from "lodash";
 import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
@@ -96,6 +96,6 @@ export class ContextManager {
     }
 
     private static matchCombo(combo1: string[], combo2: string[]): boolean {
-        return _.isEmpty(_.xor(combo1, combo2))
+        return isEmpty(xor(combo1, combo2))
     }
 }

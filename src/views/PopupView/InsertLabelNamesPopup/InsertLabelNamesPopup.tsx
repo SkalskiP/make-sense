@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActiveLabelNameIndex, updateLabelNamesList} from "../../../store/labels/actionCreators";
+import {updateLabelNames} from "../../../store/labels/actionCreators";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -10,15 +10,20 @@ import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import uuidv1 from 'uuid/v1';
+import {LabelName} from "../../../store/labels/types";
+import {LabelUtil} from "../../../utils/LabelUtil";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
+import {LabelActions} from "../../../logic/actions/LabelActions";
 
 interface IProps {
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    updateLabelNamesList: (labelNames: string[]) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    updateLabelNames: (labels: LabelName[]) => any;
+    isUpdate: boolean;
 }
 
-const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, updateLabelNamesList, updateActivePopupType}) => {
-    const [labelNames, setLabelNames] = useState({});
+const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLabelNames, isUpdate}) => {
+    const initialLabels = LabelUtil.convertLabelNamesListToMap(LabelsSelector.getLabelNames());
+    const [labelNames, setLabelNames] = useState(initialLabels);
 
     const addHandle = () => {
         const newLabelNames = {...labelNames, [uuidv1()]: ""};
@@ -35,6 +40,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
         return <div className="LabelEntry" key={key}>
                 <TextInput
                     key={key}
+                    value={labelNames[key]}
                     isPassword={false}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
                     label={"Insert label"}
@@ -53,20 +59,36 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
         setLabelNames(newLabelNames);
     };
 
-    const onAccept = () => {
+    const onCreateAccept = () => {
         const labelNamesList: string[] = extractLabelNamesList();
         if (labelNamesList.length > 0) {
-            updateLabelNamesList(labelNamesList);
+            updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
             updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };
 
-    const extractLabelNamesList = (): string[] => {
-        return Object.values(labelNames).filter((value => !!value)) as string[];
+    const onUpdateAccept = () => {
+        const labelNamesList: string[] = extractLabelNamesList();
+        const updatedLabelNamesList: LabelName[] = LabelUtil.convertMapToLabelNamesList(labelNames);
+        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), updatedLabelNamesList);
+        LabelActions.removeLabelNames(missingIds);
+        if (labelNamesList.length > 0) {
+            updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
+            updateActivePopupType(null);
+        }
     };
 
-    const onReject = () => {
+    const onCreateReject = () => {
         updateActivePopupType(PopupWindowType.LOAD_LABEL_NAMES);
+    };
+
+    const onUpdateReject = () => {
+        updateActivePopupType(null);
+    };
+
+
+    const extractLabelNamesList = (): string[] => {
+        return Object.values(labelNames).filter((value => !!value)) as string[];
     };
 
     const renderContent = () => {
@@ -82,8 +104,12 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
             </div>
             <div className="RightContainer">
                 <div className="Message">
-                    Before you start, please create a list of labels you would like to use in your project. Use the + button to add a new empty
-                    text field.
+                    {
+                        isUpdate ?
+                        "You can now edit the label names you use to describe the objects in the photos. " :
+                        "Before you start, please create a list of labels you would like to use in your project. "
+                    }
+                    Use the + button to add a new empty text field.
                 </div>
                 <div className="LabelsContainer">
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
@@ -111,20 +137,19 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActiveLabelNameIndex, up
 
     return(
         <GenericYesNoPopup
-            title={"Create label names list"}
+            title={isUpdate ? "Edit label names list" : "Create label names list"}
             renderContent={renderContent}
-            acceptLabel={"Start project"}
-            onAccept={onAccept}
+            acceptLabel={isUpdate ? "Accept" : "Start project"}
+            onAccept={isUpdate ? onUpdateAccept : onCreateAccept}
             disableAcceptButton={extractLabelNamesList().length === 0}
-            rejectLabel={"Load labels list"}
-            onReject={onReject}
+            rejectLabel={isUpdate ? "Cancel" : "Load labels list"}
+            onReject={isUpdate ? onUpdateReject : onCreateReject}
         />)
 };
 
 const mapDispatchToProps = {
-    updateActiveLabelNameIndex,
-    updateLabelNamesList,
     updateActivePopupType,
+    updateLabelNames
 };
 
 const mapStateToProps = (state: AppState) => ({});
