@@ -26,8 +26,11 @@ export class AIActions {
         ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
             const suggestedLabelNames = AIActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
-            store.dispatch(updateSuggestedLabelList(AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames)));
-            store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+            if (newlySuggestedNames.length > 0) {
+                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+            }
             AIActions.savePredictions(imageId, predictions);
         })
     }
