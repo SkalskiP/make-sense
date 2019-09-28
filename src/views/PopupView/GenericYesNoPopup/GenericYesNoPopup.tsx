@@ -7,12 +7,12 @@ import {ContextType} from "../../../data/enums/ContextType";
 interface IProps {
     title: string;
     renderContent: () => any;
-    acceptLabel: string;
-    onAccept: () => any;
+    acceptLabel?: string;
+    onAccept?: () => any;
     skipAcceptButton?: boolean;
     disableAcceptButton?: boolean;
-    rejectLabel: string;
-    onReject: () => any;
+    rejectLabel?: string;
+    onReject?: () => any;
     skipRejectButton?: boolean;
     disableRejectButton?: boolean;
 }

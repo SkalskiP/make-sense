@@ -1,5 +1,5 @@
 import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {ImageData, LabelRect} from "../../store/labels/types";
+import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import uuidv1 from 'uuid/v1';
 import {store} from "../../index";
@@ -7,6 +7,11 @@ import {updateImageDataById} from "../../store/labels/actionCreators";
 import {ObjectDetector} from "../../ai/ObjectDetector";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelStatus} from "../../data/enums/LabelStatus";
+import {findLast} from "lodash";
+import {updateSuggestedLabelList} from "../../store/ai/actionCreators";
+import {PopupWindowType} from "../../data/enums/PopupWindowType";
+import {updateActivePopupType} from "../../store/general/actionCreators";
+import {AISelector} from "../../store/selectors/AISelector";
 
 export class AIActions {
     public static detectRectsForActiveImage(): void {
@@ -19,6 +24,13 @@ export class AIActions {
             return;
 
         ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+            const suggestedLabelNames = AIActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+            const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
+            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+            if (newlySuggestedNames.length > 0) {
+                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+            }
             AIActions.savePredictions(imageId, predictions);
         })
     }
@@ -34,7 +46,7 @@ export class AIActions {
         store.dispatch(updateImageDataById(imageData.id, nextImageData));
     }
 
-    public static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
+    private static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
         return predictions.map((prediction: DetectedObject) => {
             return {
                 id: uuidv1(),
@@ -50,5 +62,23 @@ export class AIActions {
                 status: LabelStatus.UNDECIDED
             }
         })
+    }
+
+    public static extractNewSuggestedLabelNames(labels: LabelName[], predictions: DetectedObject[]): string[] {
+        return predictions.reduce((acc: string[], prediction: DetectedObject) => {
+            if (!acc.includes(prediction.class) && !findLast(labels, {name: prediction.class})) {
+                acc.push(prediction.class)
+            }
+            return acc;
+        }, [])
+    }
+
+    public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
+        return suggestedLabels.reduce((acc: string[], label: string) => {
+            if (!rejectedLabels.includes(label)) {
+                acc.push(label)
+            }
+            return acc;
+        }, [])
     }
 }

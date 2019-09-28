@@ -9,6 +9,7 @@ import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
 import {LoadModelPopup} from "./LoadModelPopup/LoadModelPopup";
+import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -36,6 +37,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <LoadMoreImagesPopup/>;
             case PopupWindowType.LOAD_AI_MODEL:
                 return <LoadModelPopup/>;
+            case PopupWindowType.SUGGEST_LABEL_NAMES:
+                return <SuggestLabelNamesPopup/>;
             default:
                 return null;
         }
