@@ -1,8 +1,8 @@
 @import '../../../settings/Settings';
 
-.BottomNavigationBar {
+.EditorBottomNavigationBar {
   align-self: stretch;
-  height: $bottomNavigationBarHeight;
+  height: $editorBottomNavigationBarHeight;
   border-top: solid 1px $darkThemeFirstColor;
   background-color: $darkThemeSecondColor;
   user-select: none;

@@ -11,10 +11,10 @@ import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
 import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
 import './EditorContainer.scss';
 import Editor from "../Editor/Editor";
-import BottomNavigationBar from "../BottomNavigationBar/BottomNavigationBar";
 import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
-import ToolBox from "../ToolBox/ToolBox";
+import EditorBottomNavigationBar from "../EditorBottomNavigationBar/EditorBottomNavigationBar";
+import EditorTopNavigationBar from "../EditorTopNavigationBar/EditorTopNavigationBar";
 
 interface IProps {
     windowSize: ISize;
@@ -33,7 +33,8 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             const rightTabWidth = rightTabStatus ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
             return {
                 width: windowSize.width - leftTabWidth - rightTabWidth,
-                height: windowSize.height - Settings.TOP_NAVIGATION_BAR_HEIGHT_PX - Settings.BOTTOM_NAVIGATION_BAR_HEIGHT_PX,
+                height: windowSize.height - Settings.TOP_NAVIGATION_BAR_HEIGHT_PX
+                    - Settings.EDITOR_BOTTOM_NAVIGATION_BAR_HEIGHT_PX - Settings.EDITOR_TOP_NAVIGATION_BAR_HEIGHT_PX,
             }
         }
         else
@@ -102,18 +103,12 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <div className="EditorWrapper"
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
             >
-                <div
-                    className="EditorNToolBox"
-                >
-                    <ToolBox
-                        size={calculateEditorSize()}
-                    />
-                    <Editor
-                        size={calculateEditorSize()}
-                        imageData={imagesData[activeImageIndex]}
-                    />
-                </div>
-                <BottomNavigationBar
+                <EditorTopNavigationBar/>
+                <Editor
+                    size={calculateEditorSize()}
+                    imageData={imagesData[activeImageIndex]}
+                />
+                <EditorBottomNavigationBar
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
                     totalImageCount={imagesData.length}

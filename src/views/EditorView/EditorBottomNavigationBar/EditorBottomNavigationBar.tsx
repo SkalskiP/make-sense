@@ -1,5 +1,5 @@
 import React from 'react';
-import './BottomNavigationBar.scss';
+import './EditorBottomNavigationBar.scss';
 import {ImageData} from "../../../store/labels/types";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -17,7 +17,7 @@ interface IProps {
     activeContext: ContextType;
 }
 
-const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, activeContext}) => {
+const EditorBottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount, activeImageIndex, activeContext}) => {
     const minWidth:number = 400;
 
     const getImageCounter = () => {
@@ -26,7 +26,7 @@ const BottomNavigationBar: React.FC<IProps> = ({size, imageData, totalImageCount
 
     const getClassName = () => {
         return classNames(
-            "BottomNavigationBar",
+            "EditorBottomNavigationBar",
             {
                 "with-context": activeContext === ContextType.EDITOR
             }
@@ -69,4 +69,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(BottomNavigationBar);
+)(EditorBottomNavigationBar);
