@@ -12,6 +12,9 @@ import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/l
 import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from "../../../../data/enums/EventType";
 import {LabelName} from "../../../../store/labels/types";
+import {LabelsSelector} from "../../../../store/selectors/LabelsSelector";
+import {PopupWindowType} from "../../../../data/enums/PopupWindowType";
+import {updateActivePopupType} from "../../../../store/general/actionCreators";
 
 interface IProps {
     size: ISize;
@@ -24,6 +27,7 @@ interface IProps {
     onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
     updateActiveLabelId: (highlightedLabelId: string) => any;
+    updateActivePopupType: (activePopupType: PopupWindowType) => any;
 }
 
 interface IState {
@@ -64,8 +68,12 @@ class LabelInputField extends React.Component<IProps, IState> {
     }
 
     private openDropdown = () => {
-        this.setState({isOpen: true});
-        window.addEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
+        if (LabelsSelector.getLabelNames().length === 0) {
+            this.props.updateActivePopupType(PopupWindowType.UPDATE_LABEL_NAMES);
+        } else {
+            this.setState({isOpen: true});
+            window.addEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
+        }
     };
 
     private closeDropdown = (event: MouseEvent) => {
@@ -194,7 +202,8 @@ class LabelInputField extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = {
     updateHighlightedLabelId,
-    updateActiveLabelId
+    updateActiveLabelId,
+    updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({});

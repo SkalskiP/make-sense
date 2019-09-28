@@ -64,7 +64,8 @@
       box-shadow: var(--leading-color) 0 0 0 2px inset;
       background-color: $secondaryColor; // fallback if new css variables are not supported by browser
       background-color: var(--leading-color);
-      color: white;
+      color: white; // fallback if new css variables are not supported by browser
+      color: var(--button-text-color);
 
       &:hover {
         background-color: transparent;

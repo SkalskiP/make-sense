@@ -196,14 +196,12 @@ export class RectRenderEngine extends BaseRenderEngine {
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
             const rectUnderMouse: LabelRect = this.getRectUnderMouse(data);
-            if (!!rectUnderMouse) {
-                const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data);
-                if ((!!rectAnchorUnderMouse && rectUnderMouse.status === LabelStatus.ACCEPTED) || !!this.startResizeRectAnchor) {
-                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
-                    return;
-                }
+            const rectAnchorUnderMouse: RectAnchor = this.getAnchorUnderMouse(data);
+            if ((!!rectAnchorUnderMouse && rectUnderMouse && rectUnderMouse.status === LabelStatus.ACCEPTED) || !!this.startResizeRectAnchor) {
+                store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
+                return;
             }
-            if (RenderEngineUtil.isMouseOverCanvas(data)) {
+            else if (RenderEngineUtil.isMouseOverCanvas(data)) {
                 if (!RenderEngineUtil.isMouseOverImage(data) && !!this.startCreateRectPoint)
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 else

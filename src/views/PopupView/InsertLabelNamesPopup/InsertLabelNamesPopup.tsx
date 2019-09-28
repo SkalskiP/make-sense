@@ -63,8 +63,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateL
         const labelNamesList: string[] = extractLabelNamesList();
         if (labelNamesList.length > 0) {
             updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
-            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
+        updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
     };
 
     const onUpdateAccept = () => {
@@ -107,7 +107,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateL
                     {
                         isUpdate ?
                         "You can now edit the label names you use to describe the objects in the photos. " :
-                        "Before you start, please create a list of labels you would like to use in your project. "
+                        "Before you start, you can create a list of labels you would like to use in your project. " +
+                            "You can also load labels list from a file or create it along the way."
                     }
                     Use the + button to add a new empty text field.
                 </div>
@@ -141,8 +142,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateL
             renderContent={renderContent}
             acceptLabel={isUpdate ? "Accept" : "Start project"}
             onAccept={isUpdate ? onUpdateAccept : onCreateAccept}
-            disableAcceptButton={extractLabelNamesList().length === 0}
-            rejectLabel={isUpdate ? "Cancel" : "Load labels list"}
+            rejectLabel={isUpdate ? "Cancel" : "Load labels from file"}
             onReject={isUpdate ? onUpdateReject : onCreateReject}
         />)
 };
