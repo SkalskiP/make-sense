@@ -9,14 +9,19 @@ import {GeneralSelector} from "../../../store/selectors/GeneralSelector";
 import {ViewPointSettings} from "../../../settings/ViewPointSettings";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
+import {LabelType} from "../../../data/enums/LabelType";
+import {AISelector} from "../../../store/selectors/AISelector";
+import {AIActions} from "../../../logic/actions/AIActions";
 
 interface IProps {
     activeContext: ContextType;
     updateImageDragModeStatus: (imageDragMode: boolean) => any;
     imageDragMode: boolean;
+    activeLabelType: LabelType;
 }
 
-const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, imageDragMode}) => {
+const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, imageDragMode, activeLabelType}) => {
 
     const getClassName = () => {
         return classNames(
@@ -78,6 +83,22 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
                     isActive={imageDragMode}
                 />
             </div>
+            {activeLabelType === LabelType.RECTANGLE && AISelector.isAIModelLoaded() && <div className="ButtonWrapper">
+                <ImageButton
+                    image={"ico/accept-all.png"}
+                    imageAlt={"accept-all"}
+                    buttonSize={{width: 30, height: 30}}
+                    padding={10}
+                    onClick={() => AIActions.acceptAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
+                />
+                <ImageButton
+                    image={"ico/reject-all.png"}
+                    imageAlt={"reject-all"}
+                    buttonSize={{width: 30, height: 30}}
+                    padding={10}
+                    onClick={() => AIActions.rejectAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
+                />
+            </div>}
         </div>
     )
 };
@@ -88,7 +109,8 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: AppState) => ({
     activeContext: state.general.activeContext,
-    imageDragMode: state.general.imageDragMode
+    imageDragMode: state.general.imageDragMode,
+    activeLabelType: state.labels.activeLabelType
 });
 
 export default connect(

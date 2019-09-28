@@ -82,4 +82,27 @@ export class AIActions {
             return acc;
         }, [])
     }
+
+    public static acceptAllSuggestedRectLabels(imageData: ImageData) {
+        const newImageData: ImageData = {
+            ...imageData,
+            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
+                const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelRect.suggestedLabel});
+                return {
+                    ...labelRect,
+                    status: LabelStatus.ACCEPTED,
+                    labelId: !!labelName ? labelName.id : labelRect.labelId
+                }
+            })
+        };
+        store.dispatch(updateImageDataById(newImageData.id, newImageData));
+    }
+
+    public static rejectAllSuggestedRectLabels(imageData: ImageData) {
+        const newImageData: ImageData = {
+            ...imageData,
+            labelRects: imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
+        };
+        store.dispatch(updateImageDataById(newImageData.id, newImageData));
+    }
 }
