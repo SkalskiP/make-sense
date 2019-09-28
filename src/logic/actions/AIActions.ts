@@ -59,7 +59,8 @@ export class AIActions {
                     height: prediction.bbox[3],
                 },
                 isCreatedByAI: true,
-                status: LabelStatus.UNDECIDED
+                status: LabelStatus.UNDECIDED,
+                suggestedLabel: prediction.class
             }
         })
     }

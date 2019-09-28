@@ -122,7 +122,6 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     };
 
     const getOptions = () => {
-        console.log(labelNames);
         return labelNames.map((entry: SelectableName, index: number) => {
             return <div
                 className="OptionsItem"

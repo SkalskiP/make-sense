@@ -44,6 +44,17 @@
     }
   }
 
+  .SuggestedLabel {
+    align-self: stretch;
+
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    padding: 0 10px 0 15px;
+    color: white;
+  }
+
   $randomNumber: random(5);
 
   &.is-active {

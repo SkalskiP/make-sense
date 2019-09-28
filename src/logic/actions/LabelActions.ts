@@ -1,5 +1,5 @@
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
+import {ImageData, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
 import {filter} from "lodash";
 import {store} from "../../index";
 import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
@@ -101,5 +101,12 @@ export class LabelActions {
                 }
             })
         }
+    }
+
+    public static labelExistInLabelNames(label: string): boolean {
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
+        return labelNames
+            .map((label: LabelName) => label.name)
+            .includes(label)
     }
 }
