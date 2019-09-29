@@ -27,6 +27,7 @@ import LabelControlPanel from "../LabelControlPanel/LabelControlPanel";
 import {IPoint} from "../../../interfaces/IPoint";
 import {RenderEngineUtil} from "../../../utils/RenderEngineUtil";
 import {LabelStatus} from "../../../data/enums/LabelStatus";
+import {isEqual} from "lodash";
 
 interface IProps {
     size: ISize;
@@ -40,7 +41,21 @@ interface IProps {
     zoom: number;
 }
 
-class Editor extends React.Component<IProps, {}> {
+interface IState {
+    viewPortSize: ISize
+}
+
+class Editor extends React.Component<IProps, IState> {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            viewPortSize: {
+                width: 0,
+                height: 0
+            },
+        };
+    }
 
     // =================================================================================================================
     // LIFE CYCLE
@@ -176,6 +191,16 @@ class Editor extends React.Component<IProps, {}> {
             })
     };
 
+    private onScrollbarsUpdate = (scrollbarContent)=>{
+        let newViewPortContentSize = {
+            width: scrollbarContent.scrollWidth,
+            height: scrollbarContent.scrollHeight
+        };
+        if(!isEqual(newViewPortContentSize, this.state.viewPortSize)) {
+            this.setState({viewPortSize: newViewPortContentSize})
+        }
+    };
+
     public render() {
         return (
             <div
@@ -187,6 +212,7 @@ class Editor extends React.Component<IProps, {}> {
                     ref={ref => EditorModel.viewPortScrollbars = ref}
                     renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
                     renderTrackVertical={props => <div {...props} className="track-vertical"/>}
+                    onUpdate={this.onScrollbarsUpdate}
                 >
                     <div
                         className="ViewPortContent"
