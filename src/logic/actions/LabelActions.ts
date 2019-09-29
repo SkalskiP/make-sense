@@ -103,7 +103,7 @@ export class LabelActions {
         }
     }
 
-    public static labelExistInLabelNames(label: string): boolean {
+    public static labelExistsInLabelNames(label: string): boolean {
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         return labelNames
             .map((label: LabelName) => label.name)

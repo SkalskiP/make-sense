@@ -13,6 +13,9 @@ import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AISelector} from "../../../store/selectors/AISelector";
 import {AIActions} from "../../../logic/actions/AIActions";
+import Fade from "@material-ui/core/Fade";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {Tooltip} from "@material-ui/core";
 
 interface IProps {
     activeContext: ContextType;
@@ -41,63 +44,87 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
         }
     };
 
+    const DarkTooltip = withStyles(theme => ({
+        tooltip: {
+            backgroundColor: "#171717",
+            color: "#ffffff",
+            boxShadow: theme.shadows[1],
+            fontSize: 11,
+            maxWidth: 120
+        },
+    }))(Tooltip);
+
+    const attachTooltip = (element: JSX.Element, message: string): JSX.Element => {
+        return <DarkTooltip
+            disableFocusListener
+            title={message}
+            TransitionComponent={Fade}
+            TransitionProps={{ timeout: 500 }}
+            placement="bottom"
+        >
+            <div>
+                {element}
+            </div>
+        </DarkTooltip>
+    };
+
     return (
         <div className={getClassName()}>
             <div className="ButtonWrapper">
-                <ImageButton
+                {attachTooltip(<ImageButton
                     image={"ico/zoom-in.png"}
                     imageAlt={"zoom-in"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => ViewPortActions.zoomIn()}
-                />
-                <ImageButton
+                />, "Zoom in")}
+                {attachTooltip(<ImageButton
                     image={"ico/zoom-out.png"}
                     imageAlt={"zoom-out"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => ViewPortActions.zoomOut()}
-                />
-                <ImageButton
+                />, "Zoom out")}
+                {attachTooltip(<ImageButton
                     image={"ico/zoom-fit.png"}
                     imageAlt={"zoom-fit"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => ViewPortActions.setDefaultZoom()}
-                />
-                <ImageButton
+                />, "Fit image")}
+                {attachTooltip(<ImageButton
                     image={"ico/zoom-max.png"}
                     imageAlt={"zoom-max"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => ViewPortActions.setOneForOneZoom()}
-                />
+                />, "Max zoom")}
             </div>
             <div className="ButtonWrapper">
-                <ImageButton
+                {attachTooltip(<ImageButton
                     image={"ico/hand.png"}
                     imageAlt={"hand"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={imageDragOnClick}
                     isActive={imageDragMode}
-                />
+                />, "Drag image")}
             </div>
             {activeLabelType === LabelType.RECTANGLE && AISelector.isAIModelLoaded() && <div className="ButtonWrapper">
-                <ImageButton
+                {attachTooltip(<ImageButton
                     image={"ico/accept-all.png"}
                     imageAlt={"accept-all"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => AIActions.acceptAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
-                />
-                <ImageButton
+                />, "Accept all suggested labels")}
+                {attachTooltip(<ImageButton
                     image={"ico/reject-all.png"}
                     imageAlt={"reject-all"}
                     buttonSize={{width: 30, height: 30}}
                     padding={10}
                     onClick={() => AIActions.rejectAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
-                />
+                />, "Reject all suggested labels")}
             </div>}
         </div>
     )

@@ -95,7 +95,7 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
                 padding={15}
                 onClick={onReject}
             />
-            {labelData.suggestedLabel && LabelActions.labelExistInLabelNames(labelData.suggestedLabel) ?
+            {labelData.suggestedLabel && LabelActions.labelExistsInLabelNames(labelData.suggestedLabel) ?
                 <div className="SuggestedLabel">
                     {labelData.suggestedLabel}
                 </div> :
