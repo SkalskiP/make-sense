@@ -42,7 +42,6 @@ export class AIActions {
 
     public static acceptAllSuggestedLabels(imageData: ImageData) {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
-        console.log("AIActions.acceptAllSuggestedLabels");
         switch (activeLabelType) {
             case LabelType.RECTANGLE:
                 AIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);

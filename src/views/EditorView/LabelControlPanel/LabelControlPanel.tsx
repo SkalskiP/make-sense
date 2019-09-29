@@ -70,7 +70,7 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
     };
 
     const onReject = () => {
-        LabelActions.deleteRectLabelById(imageData.id, labelData.id);
+        LabelActions.deleteImageLabelById(imageData.id, labelData.id);
         updatePreventCustomCursorStatus(false);
     };
 

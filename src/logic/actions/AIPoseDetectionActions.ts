@@ -13,6 +13,7 @@ import {AIActions} from "./AIActions";
 import {updateSuggestedLabelList} from "../../store/ai/actionCreators";
 import {updateActivePopupType} from "../../store/general/actionCreators";
 import {PopupWindowType} from "../../data/enums/PopupWindowType";
+import {NumberUtil} from "../../utils/NumberUtil";
 
 export class AIPoseDetectionActions {
     public static detectPoseForActiveImage(): void {
@@ -32,13 +33,16 @@ export class AIPoseDetectionActions {
                 store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
                 store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
             }
-            AIPoseDetectionActions.savePosePredictions(imageId, poses);
+            AIPoseDetectionActions.savePosePredictions(imageId, poses, image);
         })
     }
 
-    public static savePosePredictions(imageId: string, predictions: Pose[]) {
+    public static savePosePredictions(imageId: string, predictions: Pose[], image: HTMLImageElement) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelPoint[] = AIPoseDetectionActions.mapPredictionsToPointLabels(predictions);
+        const predictedLabels: LabelPoint[] = AIPoseDetectionActions
+            .mapPredictionsToPointLabels(predictions)
+            .filter((labelPoint: LabelPoint) => NumberUtil.isValueInRange(labelPoint.point.x, 0, image.width))
+            .filter((labelPoint: LabelPoint) => NumberUtil.isValueInRange(labelPoint.point.y, 0, image.height))
         const nextImageData: ImageData = {
             ...imageData,
             labelPoints: imageData.labelPoints.concat(predictedLabels),
@@ -87,7 +91,6 @@ export class AIPoseDetectionActions {
     }
 
     public static acceptAllSuggestedPointLabels(imageData: ImageData) {
-        console.log("AIPoseDetectionActions.acceptAllSuggestedPointLabels");
         const newImageData: ImageData = {
             ...imageData,
             labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
