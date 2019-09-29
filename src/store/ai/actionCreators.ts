@@ -28,6 +28,15 @@ export function updateObjectDetectorStatus(isObjectDetectorLoaded: boolean): AIA
     }
 }
 
+export function updatePoseDetectorStatus(isPoseDetectorLoaded: boolean): AIActionTypes {
+    return {
+        type: Action.UPDATE_POSE_DETECTOR_STATUS,
+        payload: {
+            isPoseDetectorLoaded,
+        }
+    }
+}
+
 export function updateDisabledAIFlag(isAIDisabled: boolean): AIActionTypes {
     return {
         type: Action.UPDATE_DISABLED_AI_FLAG,

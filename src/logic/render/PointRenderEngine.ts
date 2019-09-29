@@ -23,6 +23,7 @@ import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {EditorModel} from "../../staticModels/EditorModel";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -189,7 +190,10 @@ export class PointRenderEngine extends BaseRenderEngine {
         const labelPoint: LabelPoint = {
             id: uuidv1(),
             labelId: activeLabelId,
-            point
+            point,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
         };
         imageData.labelPoints.push(labelPoint);
         store.dispatch(updateImageDataById(imageData.id, imageData));

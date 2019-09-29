@@ -5,13 +5,17 @@ import {ObjectDetector} from "../../../ai/ObjectDetector";
 import './LoadModelPopup.scss'
 import {Settings} from "../../../settings/Settings";
 import {ClipLoader} from "react-spinners";
+import {PoseDetector} from "../../../ai/PoseDetector";
 
 export const LoadModelPopup: React.FC = () => {
     const [modelIsLoadingStatus, setModelIsLoadingStatus] = useState(false);
 
     const onAccept = () => {
         setModelIsLoadingStatus(true);
-        ObjectDetector.loadModel(() => {
+        // ObjectDetector.loadModel(() => {
+        //     PopupActions.close();
+        // });
+        PoseDetector.loadModel(() => {
             PopupActions.close();
         });
     };

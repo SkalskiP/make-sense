@@ -1,7 +1,7 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelPoint} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelPoint, LabelRect} from "../../../../store/labels/types";
 import './PointLabelsList.scss';
 import {
     updateActiveLabelId,
@@ -14,6 +14,7 @@ import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
 import {findLast} from "lodash";
+import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -63,7 +64,9 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
     };
 
     const getChildren = () => {
-        return imageData.labelPoints.map((labelPoint: LabelPoint) => {
+        return imageData.labelPoints
+            .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
+            .map((labelPoint: LabelPoint) => {
             return <LabelInputField
                 size={{
                     width: size.width,

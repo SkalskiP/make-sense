@@ -1,8 +1,8 @@
 import {LabelName} from "../../../store/labels/types";
 import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {AIActions} from "../AIActions";
+import {AIObjectDetectionActions} from "../AIObjectDetectionActions";
 
-describe('AIActions extractNewSuggestedLabelNames method', () => {
+describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => {
     const mockLabelNames: LabelName[] = [
         {
             id: "id_1",
@@ -40,7 +40,7 @@ describe('AIActions extractNewSuggestedLabelNames method', () => {
         ];
 
         // WHEN
-        const suggestedLabels: string[] = AIActions.extractNewSuggestedLabelNames(labelNames, predictions);
+        const suggestedLabels: string[] = AIObjectDetectionActions.extractNewSuggestedLabelNames(labelNames, predictions);
 
         // THEN
         expect(suggestedLabels.toString()).toBe(["label_4", "label_5"].toString());
@@ -63,14 +63,14 @@ describe('AIActions extractNewSuggestedLabelNames method', () => {
         ];
 
         // WHEN
-        const suggestedLabels: string[] = AIActions.extractNewSuggestedLabelNames(labelNames, predictions);
+        const suggestedLabels: string[] = AIObjectDetectionActions.extractNewSuggestedLabelNames(labelNames, predictions);
 
         // THEN
         expect(suggestedLabels.toString()).toBe([].toString());
     });
 });
 
-describe('AIActions excludeRejectedLabelNames method', () => {
+describe('AIObjectDetectionActions excludeRejectedLabelNames method', () => {
     it('should return list with correct values', () => {
         // GIVEN
         const suggestedLabels: string[] = [
@@ -87,7 +87,7 @@ describe('AIActions excludeRejectedLabelNames method', () => {
         ];
 
         // WHEN
-        const excludedLabels: string[] = AIActions.excludeRejectedLabelNames(suggestedLabels, rejectedLabels);
+        const excludedLabels: string[] = AIObjectDetectionActions.excludeRejectedLabelNames(suggestedLabels, rejectedLabels);
 
         // THEN
         const expectedLabels: string[] = [

@@ -1,7 +1,7 @@
 import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
-import {ImageData, LabelRect} from "../../../store/labels/types";
+import {ImageData, LabelPoint, LabelRect} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -22,12 +22,12 @@ import {ContextType} from "../../../data/enums/ContextType";
 import Scrollbars from 'react-custom-scrollbars';
 import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {PlatformModel} from "../../../staticModels/PlatformModel";
-import {AIActions} from "../../../logic/actions/AIActions";
 import LabelControlPanel from "../LabelControlPanel/LabelControlPanel";
 import {IPoint} from "../../../interfaces/IPoint";
 import {RenderEngineUtil} from "../../../utils/RenderEngineUtil";
 import {LabelStatus} from "../../../data/enums/LabelStatus";
 import {isEqual} from "lodash";
+import {AIActions} from "../../../logic/actions/AIActions";
 
 interface IProps {
     size: ISize;
@@ -80,7 +80,11 @@ class Editor extends React.Component<IProps, IState> {
         const {imageData, activeLabelType} = this.props;
 
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
-        prevProps.activeLabelType !== activeLabelType && EditorActions.swapSupportRenderingEngine(activeLabelType);
+
+        if (prevProps.activeLabelType !== activeLabelType) {
+            EditorActions.swapSupportRenderingEngine(activeLabelType);
+            AIActions.detect(imageData.id, ImageRepository.getById(imageData.id));
+        }
 
         this.updateModelAndRender();
     }
@@ -110,7 +114,7 @@ class Editor extends React.Component<IProps, IState> {
     private loadImage = async (imageData: ImageData): Promise<any> => {
         if (imageData.loadStatus) {
             EditorActions.setActiveImage(ImageRepository.getById(imageData.id));
-            AIActions.detectRects(imageData.id, ImageRepository.getById(imageData.id));
+            AIActions.detect(imageData.id, ImageRepository.getById(imageData.id));
             this.updateModelAndRender()
         }
         else {
@@ -127,7 +131,7 @@ class Editor extends React.Component<IProps, IState> {
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.store(imageData.id, image);
         EditorActions.setActiveImage(image);
-        AIActions.detectRects(imageData.id, image);
+        AIActions.detect(imageData.id, image);
         EditorActions.setLoadingStatus(false);
         this.updateModelAndRender()
     };
@@ -173,22 +177,36 @@ class Editor extends React.Component<IProps, IState> {
     };
 
     private getOptionsPanels = () => {
-        if (this.props.activeLabelType !== LabelType.RECTANGLE)
-            return null;
-
         const editorData: EditorData = EditorActions.getEditorData();
-        return this.props.imageData.labelRects
-            .filter((labelRect: LabelRect) => labelRect.isCreatedByAI && labelRect.status !== LabelStatus.ACCEPTED)
-            .map((labelRect: LabelRect) => {
-                const positionOnImage: IPoint = {x: labelRect.rect.x, y: labelRect.rect.y};
-                const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
-                return <LabelControlPanel
-                    position={positionOnViewPort}
-                    labelData={labelRect}
-                    imageData={this.props.imageData}
-                    key={labelRect.id}
-                />
-            })
+        if (this.props.activeLabelType === LabelType.RECTANGLE) {
+            return this.props.imageData.labelRects
+                .filter((labelRect: LabelRect) => labelRect.isCreatedByAI && labelRect.status !== LabelStatus.ACCEPTED)
+                .map((labelRect: LabelRect) => {
+                    const positionOnImage: IPoint = {x: labelRect.rect.x, y: labelRect.rect.y};
+                    const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
+                    return <LabelControlPanel
+                        position={positionOnViewPort}
+                        labelData={labelRect}
+                        imageData={this.props.imageData}
+                        key={labelRect.id}
+                    />
+                })
+        }
+        else if (this.props.activeLabelType === LabelType.POINT) {
+            return this.props.imageData.labelPoints
+                .filter((labelPoint: LabelPoint) => labelPoint.isCreatedByAI && labelPoint.status !== LabelStatus.ACCEPTED)
+                .map((labelPoint: LabelPoint) => {
+                    const positionOnImage: IPoint = {x: labelPoint.point.x, y: labelPoint.point.y};
+                    const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
+                    return <LabelControlPanel
+                        position={positionOnViewPort}
+                        labelData={labelPoint}
+                        imageData={this.props.imageData}
+                        key={labelPoint.id}
+                    />
+                })
+        }
+        else return null;
     };
 
     private onScrollbarsUpdate = (scrollbarContent)=>{

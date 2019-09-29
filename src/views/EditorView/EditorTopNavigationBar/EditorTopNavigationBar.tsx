@@ -12,11 +12,11 @@ import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AISelector} from "../../../store/selectors/AISelector";
-import {AIActions} from "../../../logic/actions/AIActions";
 import Fade from "@material-ui/core/Fade";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {Tooltip} from "@material-ui/core";
 import {ISize} from "../../../interfaces/ISize";
+import {AIActions} from "../../../logic/actions/AIActions";
 
 interface IProps {
     activeContext: ContextType;
@@ -113,20 +113,21 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
                     isActive={imageDragMode}
                 />, "Drag image")}
             </div>
-            {activeLabelType === LabelType.RECTANGLE && AISelector.isAIModelLoaded() && <div className="ButtonWrapper">
+            {((activeLabelType === LabelType.RECTANGLE && AISelector.isAIObjectDetectorModelLoaded()) ||
+                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
                 {attachTooltip(<ImageButton
                     image={"ico/accept-all.png"}
                     imageAlt={"accept-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
-                    onClick={() => AIActions.acceptAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
+                    onClick={() => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())}
                 />, "Accept all suggested labels")}
                 {attachTooltip(<ImageButton
                     image={"ico/reject-all.png"}
                     imageAlt={"reject-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
-                    onClick={() => AIActions.rejectAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
+                    onClick={() => AIActions.rejectAllSuggestedLabels(LabelsSelector.getActiveImageData())}
                 />, "Reject all suggested labels")}
             </div>}
         </div>

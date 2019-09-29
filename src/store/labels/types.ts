@@ -9,6 +9,7 @@ export type LabelRect = {
     id: string;
     labelId: string;
     rect: IRect;
+
     // AI
     isCreatedByAI: boolean;
     status: LabelStatus;
@@ -16,9 +17,15 @@ export type LabelRect = {
 }
 
 export type LabelPoint = {
+    // GENERAL
     id: string;
     labelId: string;
     point: IPoint;
+
+    // AI
+    isCreatedByAI: boolean;
+    status: LabelStatus;
+    suggestedLabel: string;
 }
 
 export type LabelPolygon = {
@@ -39,7 +46,12 @@ export type ImageData = {
     labelRects: LabelRect[];
     labelPoints: LabelPoint[];
     labelPolygons: LabelPolygon[];
+
+    // SSD
     isVisitedByObjectDetector: boolean;
+
+    // POSE NET
+    isVisitedByPoseDetector: boolean;
 }
 
 export type LabelsState = {
