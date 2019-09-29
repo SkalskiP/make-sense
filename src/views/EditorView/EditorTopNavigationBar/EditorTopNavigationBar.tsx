@@ -16,6 +16,7 @@ import {AIActions} from "../../../logic/actions/AIActions";
 import Fade from "@material-ui/core/Fade";
 import withStyles from "@material-ui/core/styles/withStyles";
 import {Tooltip} from "@material-ui/core";
+import {ISize} from "../../../interfaces/ISize";
 
 interface IProps {
     activeContext: ContextType;
@@ -25,6 +26,8 @@ interface IProps {
 }
 
 const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDragModeStatus, imageDragMode, activeLabelType}) => {
+    const buttonSize: ISize = {width: 30, height: 30};
+    const buttonPadding: number = 10;
 
     const getClassName = () => {
         return classNames(
@@ -74,29 +77,29 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
                 {attachTooltip(<ImageButton
                     image={"ico/zoom-in.png"}
                     imageAlt={"zoom-in"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => ViewPortActions.zoomIn()}
                 />, "Zoom in")}
                 {attachTooltip(<ImageButton
                     image={"ico/zoom-out.png"}
                     imageAlt={"zoom-out"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => ViewPortActions.zoomOut()}
                 />, "Zoom out")}
                 {attachTooltip(<ImageButton
                     image={"ico/zoom-fit.png"}
                     imageAlt={"zoom-fit"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => ViewPortActions.setDefaultZoom()}
                 />, "Fit image")}
                 {attachTooltip(<ImageButton
                     image={"ico/zoom-max.png"}
                     imageAlt={"zoom-max"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => ViewPortActions.setOneForOneZoom()}
                 />, "Max zoom")}
             </div>
@@ -104,8 +107,8 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
                 {attachTooltip(<ImageButton
                     image={"ico/hand.png"}
                     imageAlt={"hand"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={imageDragOnClick}
                     isActive={imageDragMode}
                 />, "Drag image")}
@@ -114,15 +117,15 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
                 {attachTooltip(<ImageButton
                     image={"ico/accept-all.png"}
                     imageAlt={"accept-all"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => AIActions.acceptAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
                 />, "Accept all suggested labels")}
                 {attachTooltip(<ImageButton
                     image={"ico/reject-all.png"}
                     imageAlt={"reject-all"}
-                    buttonSize={{width: 30, height: 30}}
-                    padding={10}
+                    buttonSize={buttonSize}
+                    padding={buttonPadding}
                     onClick={() => AIActions.rejectAllSuggestedRectLabels(LabelsSelector.getActiveImageData())}
                 />, "Reject all suggested labels")}
             </div>}
