@@ -3,7 +3,6 @@ import {PopupActions} from "../../../logic/actions/PopupActions";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {ObjectDetector} from "../../../ai/ObjectDetector";
 import './LoadModelPopup.scss'
-import {Settings} from "../../../settings/Settings";
 import {ClipLoader} from "react-spinners";
 import {AIModel} from "../../../data/enums/AIModel";
 import {PoseDetector} from "../../../ai/PoseDetector";
