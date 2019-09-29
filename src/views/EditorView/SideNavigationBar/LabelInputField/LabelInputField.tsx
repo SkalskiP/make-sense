@@ -176,7 +176,9 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 style={this.getDropdownStyle()}
                                 ref={ref => this.dropdown = ref}
                             >
-                                <Scrollbars>
+                                <Scrollbars
+                                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                                >
                                     <div>
                                         {this.getDropdownOptions()}
                                     </div>

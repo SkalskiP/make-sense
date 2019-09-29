@@ -4,7 +4,8 @@ import Scrollbars from 'react-custom-scrollbars';
 import {ImageData, LabelName, LabelRect} from "../../../../store/labels/types";
 import './RectLabelsList.scss';
 import {
-    updateActiveLabelId, updateActiveLabelNameId,
+    updateActiveLabelId,
+    updateActiveLabelNameId,
     updateImageDataById
 } from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
@@ -44,7 +45,8 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
     const updateRectLabel = (labelRectId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
-            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
+            labelRects: imageData.labelRects
+                .map((labelRect: LabelRect) => {
                 if (labelRect.id === labelRectId) {
                     return {
                         ...labelRect,
@@ -65,7 +67,9 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
     };
 
     const getChildren = () => {
-        return imageData.labelRects.map((labelRect: LabelRect) => {
+        return imageData.labelRects
+            .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
+            .map((labelRect: LabelRect) => {
             return <LabelInputField
                 size={{
                     width: size.width,

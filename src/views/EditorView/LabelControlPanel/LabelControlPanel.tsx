@@ -5,12 +5,14 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {IPoint} from "../../../interfaces/IPoint";
 import classNames from "classnames";
-import {LabelRect} from "../../../store/labels/types";
+import {LabelName, LabelRect} from "../../../store/labels/types";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {LabelActions} from "../../../logic/actions/LabelActions";
 import {ImageData} from "../../../store/labels/types";
 import {LabelStatus} from "../../../data/enums/LabelStatus";
 import {updateImageDataById} from "../../../store/labels/actionCreators";
+import {findLast} from "lodash";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 
 interface IProps {
     position: IPoint;
@@ -40,9 +42,11 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
             ...imageData,
             labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
                 if (labelRect.id === labelData.id) {
+                    const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelRect.suggestedLabel});
                     return {
                         ...labelRect,
-                        status: LabelStatus.ACCEPTED
+                        status: LabelStatus.ACCEPTED,
+                        labelId: !!labelName ? labelName.id : labelRect.labelId
                     }
                 } else {
                     return labelRect
@@ -91,6 +95,12 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
                 padding={15}
                 onClick={onReject}
             />
+            {labelData.suggestedLabel && LabelActions.labelExistsInLabelNames(labelData.suggestedLabel) ?
+                <div className="SuggestedLabel">
+                    {labelData.suggestedLabel}
+                </div> :
+                null
+            }
         </>}
     </div>
 };

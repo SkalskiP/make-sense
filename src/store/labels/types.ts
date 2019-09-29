@@ -5,11 +5,14 @@ import {IPoint} from "../../interfaces/IPoint";
 import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export type LabelRect = {
+    // GENERAL
     id: string;
     labelId: string;
     rect: IRect;
+    // AI
     isCreatedByAI: boolean;
     status: LabelStatus;
+    suggestedLabel: string;
 }
 
 export type LabelPoint = {
