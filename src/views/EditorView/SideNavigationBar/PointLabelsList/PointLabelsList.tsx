@@ -1,7 +1,7 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelPoint, LabelRect} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelPoint} from "../../../../store/labels/types";
 import './PointLabelsList.scss';
 import {
     updateActiveLabelId,

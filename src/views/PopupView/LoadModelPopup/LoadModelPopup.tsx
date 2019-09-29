@@ -8,7 +8,6 @@ import {ClipLoader} from "react-spinners";
 import {AIModel} from "../../../data/enums/AIModel";
 import {PoseDetector} from "../../../ai/PoseDetector";
 import {findLast} from "lodash";
-import {IExportFormat} from "../../../interfaces/IExportFormat";
 
 interface SelectableModel {
     model: AIModel,

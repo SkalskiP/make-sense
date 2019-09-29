@@ -12,9 +12,6 @@ import {ViewPortActions} from "../../../logic/actions/ViewPortActions";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AISelector} from "../../../store/selectors/AISelector";
-import Fade from "@material-ui/core/Fade";
-import withStyles from "@material-ui/core/styles/withStyles";
-import {Tooltip} from "@material-ui/core";
 import {ISize} from "../../../interfaces/ISize";
 import {AIActions} from "../../../logic/actions/AIActions";
 
