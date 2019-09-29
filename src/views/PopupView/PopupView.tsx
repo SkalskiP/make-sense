@@ -10,6 +10,8 @@ import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
 import {LoadModelPopup} from "./LoadModelPopup/LoadModelPopup";
 import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
+import {CSSHelper} from "../../logic/helpers/CSSHelper";
+import {ClipLoader} from "react-spinners";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -39,6 +41,13 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <LoadModelPopup/>;
             case PopupWindowType.SUGGEST_LABEL_NAMES:
                 return <SuggestLabelNamesPopup/>;
+            case PopupWindowType.LOADER:
+                return <ClipLoader
+                    sizeUnit={"px"}
+                    size={50}
+                    color={CSSHelper.getLeadingColor()}
+                    loading={true}
+                />;
             default:
                 return null;
         }

@@ -142,7 +142,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
-            if (!!labelPoint) {
+            if (!!labelPoint && labelPoint.status === LabelStatus.ACCEPTED) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);

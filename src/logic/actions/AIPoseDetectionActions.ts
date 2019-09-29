@@ -22,9 +22,10 @@ export class AIPoseDetectionActions {
     }
 
     public static detectPoses(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByPoseDetector)
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByPoseDetector || !AISelector.isAIPoseDetectorModelLoaded())
             return;
 
+        store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
         PoseDetector.predict(image, (poses: Pose[]) => {
             const suggestedLabelNames = AIPoseDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), poses);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
@@ -32,6 +33,8 @@ export class AIPoseDetectionActions {
             if (newlySuggestedNames.length > 0) {
                 store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
                 store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+            } else {
+                store.dispatch(updateActivePopupType(null));
             }
             AIPoseDetectionActions.savePosePredictions(imageId, poses, image);
         })

@@ -8,6 +8,7 @@ import {ClipLoader} from "react-spinners";
 import {AIModel} from "../../../data/enums/AIModel";
 import {PoseDetector} from "../../../ai/PoseDetector";
 import {findLast} from "lodash";
+import {CSSHelper} from "../../../logic/helpers/CSSHelper";
 
 interface SelectableModel {
     model: AIModel,
@@ -113,7 +114,7 @@ export const LoadModelPopup: React.FC = () => {
                     <ClipLoader
                         sizeUnit={"px"}
                         size={40}
-                        color={Settings.SECONDARY_COLOR}
+                        color={CSSHelper.getLeadingColor()}
                         loading={true}
                     /> :
                     <div className="Options">
