@@ -87,6 +87,7 @@ export class AIPoseDetectionActions {
     }
 
     public static acceptAllSuggestedPointLabels(imageData: ImageData) {
+        console.log("AIPoseDetectionActions.acceptAllSuggestedPointLabels");
         const newImageData: ImageData = {
             ...imageData,
             labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {

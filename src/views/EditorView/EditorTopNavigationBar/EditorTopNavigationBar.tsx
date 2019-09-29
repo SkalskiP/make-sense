@@ -47,88 +47,67 @@ const EditorTopNavigationBar: React.FC<IProps> = ({activeContext, updateImageDra
         }
     };
 
-    const DarkTooltip = withStyles(theme => ({
-        tooltip: {
-            backgroundColor: "#171717",
-            color: "#ffffff",
-            boxShadow: theme.shadows[1],
-            fontSize: 11,
-            maxWidth: 120
-        },
-    }))(Tooltip);
-
-    const attachTooltip = (element: JSX.Element, message: string): JSX.Element => {
-        return <DarkTooltip
-            disableFocusListener
-            title={message}
-            TransitionComponent={Fade}
-            TransitionProps={{ timeout: 500 }}
-            placement="bottom"
-        >
-            <div>
-                {element}
-            </div>
-        </DarkTooltip>
-    };
-
     return (
         <div className={getClassName()}>
             <div className="ButtonWrapper">
-                {attachTooltip(<ImageButton
+                <ImageButton
                     image={"ico/zoom-in.png"}
                     imageAlt={"zoom-in"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={() => ViewPortActions.zoomIn()}
-                />, "Zoom in")}
-                {attachTooltip(<ImageButton
+                />
+                <ImageButton
                     image={"ico/zoom-out.png"}
                     imageAlt={"zoom-out"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={() => ViewPortActions.zoomOut()}
-                />, "Zoom out")}
-                {attachTooltip(<ImageButton
+                />
+                <ImageButton
                     image={"ico/zoom-fit.png"}
                     imageAlt={"zoom-fit"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={() => ViewPortActions.setDefaultZoom()}
-                />, "Fit image")}
-                {attachTooltip(<ImageButton
+                />
+                <ImageButton
                     image={"ico/zoom-max.png"}
                     imageAlt={"zoom-max"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={() => ViewPortActions.setOneForOneZoom()}
-                />, "Max zoom")}
+                />
             </div>
             <div className="ButtonWrapper">
-                {attachTooltip(<ImageButton
+                <ImageButton
                     image={"ico/hand.png"}
                     imageAlt={"hand"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={imageDragOnClick}
                     isActive={imageDragMode}
-                />, "Drag image")}
+                />
             </div>
             {((activeLabelType === LabelType.RECTANGLE && AISelector.isAIObjectDetectorModelLoaded()) ||
                 (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
-                {attachTooltip(<ImageButton
+                <ImageButton
                     image={"ico/accept-all.png"}
                     imageAlt={"accept-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
-                    onClick={() => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())}
-                />, "Accept all suggested labels")}
-                {attachTooltip(<ImageButton
+                    onClick={() => {
+                        console.log("click");
+                        AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
+                    }}
+                />
+                <ImageButton
                     image={"ico/reject-all.png"}
                     imageAlt={"reject-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
                     onClick={() => AIActions.rejectAllSuggestedLabels(LabelsSelector.getActiveImageData())}
-                />, "Reject all suggested labels")}
+                />
             </div>}
         </div>
     )
