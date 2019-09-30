@@ -90,7 +90,7 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            {imageData.labelPoints.length === 0 ?
+            {imageData.labelPoints.filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED).length === 0 ?
                 <EmptyLabelList
                     labelBefore={"Mark the first point"}
                     labelAfter={"No labels created for this image"}

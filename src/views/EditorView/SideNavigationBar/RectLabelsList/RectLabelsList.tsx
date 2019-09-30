@@ -93,7 +93,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            {imageData.labelRects.length === 0 ?
+            {imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length === 0 ?
                 <EmptyLabelList
                     labelBefore={"Draw the first rect"}
                     labelAfter={"No labels created for this image"}

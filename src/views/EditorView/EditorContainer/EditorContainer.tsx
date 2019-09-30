@@ -15,12 +15,14 @@ import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import EditorBottomNavigationBar from "../EditorBottomNavigationBar/EditorBottomNavigationBar";
 import EditorTopNavigationBar from "../EditorTopNavigationBar/EditorTopNavigationBar";
+import {LabelType} from "../../../data/enums/LabelType";
 
 interface IProps {
     windowSize: ISize;
     activeImageIndex: number;
     imagesData: ImageData[];
     activeContext: ContextType;
+    activeLabelType: LabelType;
 }
 
 const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, imagesData, activeContext}) => {
@@ -129,7 +131,8 @@ const mapStateToProps = (state: AppState) => ({
     windowSize: state.general.windowSize,
     activeImageIndex: state.labels.activeImageIndex,
     imagesData: state.labels.imagesData,
-    activeContext: state.general.activeContext
+    activeContext: state.general.activeContext,
+    activeLabelType: state.labels.activeLabelType
 });
 
 export default connect(
