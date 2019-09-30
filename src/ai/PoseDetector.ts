@@ -6,6 +6,7 @@ import {updatePoseDetectorStatus} from "../store/ai/actionCreators";
 import {AIPoseDetectionActions} from "../logic/actions/AIPoseDetectionActions";
 import {LabelType} from "../data/enums/LabelType";
 import {LabelsSelector} from "../store/selectors/LabelsSelector";
+import {updateActiveLabelType} from "../store/labels/actionCreators";
 
 export class PoseDetector {
     private static model: PoseNet;
@@ -21,6 +22,7 @@ export class PoseDetector {
             .then((model: PoseNet) => {
                 PoseDetector.model = model;
                 store.dispatch(updatePoseDetectorStatus(true));
+                store.dispatch(updateActiveLabelType(LabelType.POINT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 activeLabelType === LabelType.POINT && AIPoseDetectionActions.detectPoseForActiveImage();
                 callback && callback();

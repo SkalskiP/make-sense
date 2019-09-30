@@ -5,6 +5,7 @@ import {updateObjectDetectorStatus} from "../store/ai/actionCreators";
 import {LabelType} from "../data/enums/LabelType";
 import {LabelsSelector} from "../store/selectors/LabelsSelector";
 import {AIObjectDetectionActions} from "../logic/actions/AIObjectDetectionActions";
+import {updateActiveLabelType} from "../store/labels/actionCreators";
 
 export class ObjectDetector {
     private static model: ObjectDetection;
@@ -15,6 +16,7 @@ export class ObjectDetector {
             .then((model: ObjectDetection) => {
                 ObjectDetector.model = model;
                 store.dispatch(updateObjectDetectorStatus(true));
+                store.dispatch(updateActiveLabelType(LabelType.RECTANGLE));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 activeLabelType === LabelType.RECTANGLE && AIObjectDetectionActions.detectRectsForActiveImage();
                 callback && callback();

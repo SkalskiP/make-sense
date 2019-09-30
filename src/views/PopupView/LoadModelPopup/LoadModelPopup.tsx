@@ -18,12 +18,12 @@ interface SelectableModel {
 const models: SelectableModel[] = [
     {
         model: AIModel.OBJECT_DETECTION,
-        name: "COCO SSD",
+        name: "COCO SSD - object detection using rectangles",
         flag: false
     },
     {
         model: AIModel.POSE_DETECTION,
-        name: "POSE-NET",
+        name: "POSE-NET - pose estimation using points",
         flag: false
     }
 ];
