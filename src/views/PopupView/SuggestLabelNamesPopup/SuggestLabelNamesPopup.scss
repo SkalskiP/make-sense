@@ -1,0 +1,79 @@
+@import '../../../settings/Settings';
+
+.SuggestLabelNamesPopupContent {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+  padding-top: 30px;
+  flex: 1;
+  min-height: 350px;
+
+  .Message {
+    align-self: stretch;
+    color: white;
+    font-size: 15px;
+    padding: 0 40px 0 40px;
+  }
+
+  .OptionsItem {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    color: white;
+
+    cursor: pointer;
+    user-select: none;
+    font-size: 15px;
+    padding: 5px 0;
+
+    > img {
+      max-width: 20px;
+      max-height: 20px;
+      margin-right: 5px;
+      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+      user-select: none;
+    }
+  }
+
+  .AllToggle {
+    align-self: stretch;
+    color: white;
+    font-size: 15px;
+    padding: 10px 40px 20px 40px;
+    border-bottom: solid 1px $darkThemeFirstColor;
+  }
+
+  .LabelNamesContainer {
+    align-self: stretch;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    color: white;
+
+    .LabelNamesContent {
+      margin-left: 40px;
+      margin-right: 10px;
+      margin-top: 20px;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+    }
+  }
+}

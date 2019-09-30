@@ -10,7 +10,7 @@
 
   align-self: stretch;
   flex: 1;
-  min-height: 450px;
+  min-height: 400px;
 
   .LeftContainer {
     width: 50px;
@@ -75,6 +75,24 @@
       align-content: center;
 
       color: white;
+
+      .ImageButton {
+        transition: transform 0.3s;
+
+        img {
+          filter: brightness(0) invert(1);
+          user-select: none;
+        }
+
+        &:hover {
+          background-color: transparent;
+        }
+
+        &:not(.disabled):hover {
+          filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+          filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+        }
+      }
 
       .EmptyList {
         align-self: stretch;

@@ -286,11 +286,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private addPolygonLabel(polygon: IPoint[]) {
-        const activeLabelIndex = LabelsSelector.getActiveLabelNameIndex();
+        const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPolygon: LabelPolygon = {
             id: uuidv1(),
-            labelIndex: activeLabelIndex,
+            labelId: activeLabelId,
             vertices: polygon
         };
         imageData.labelPolygons.push(labelPolygon);

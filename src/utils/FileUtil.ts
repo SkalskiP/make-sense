@@ -10,7 +10,8 @@ export class FileUtil {
             labelRects: [],
             labelPoints: [],
             labelPolygons: [],
-            isVisitedByObjectDetector: false
+            isVisitedByObjectDetector: false,
+            isVisitedByPoseDetector: false
         }
     }
 

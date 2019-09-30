@@ -1,0 +1,78 @@
+@import '../../../settings/Settings';
+
+.EditorBottomNavigationBar {
+  align-self: stretch;
+  height: $editorBottomNavigationBarHeight;
+  border-top: solid 1px $darkThemeFirstColor;
+  background-color: $darkThemeSecondColor;
+  user-select: none;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  &.with-context {
+    background-color: $darkThemeForthColor;
+  }
+
+  .ImageButton {
+    transition: transform 0.3s;
+
+    img {
+      filter: brightness(0) invert(1);
+      user-select: none;
+    }
+
+    &:hover {
+      background-color: transparent;
+    }
+
+    &:not(.disabled):hover {
+      filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+      filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+      &.right {
+        transform: translate(2px);
+      }
+      &.left {
+        transform: translate(-2px);
+      }
+    }
+
+    &.disabled {
+      img {
+        filter: invert(1) opacity(25%);
+        user-select: none;
+      }
+    }
+  }
+
+  .CurrentImageName {
+    min-width: 200px;
+    padding: 0 20px;
+    color: white;
+    font-size: 14px;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .CurrentImageCount {
+    min-width: 80px;
+    padding: 0 20px;
+    color: white;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+}

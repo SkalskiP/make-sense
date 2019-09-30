@@ -11,18 +11,23 @@ import {connect} from "react-redux";
 import {updateActiveLabelId, updateHighlightedLabelId} from "../../../../store/labels/actionCreators";
 import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from "../../../../data/enums/EventType";
+import {LabelName} from "../../../../store/labels/types";
+import {LabelsSelector} from "../../../../store/selectors/LabelsSelector";
+import {PopupWindowType} from "../../../../data/enums/PopupWindowType";
+import {updateActivePopupType} from "../../../../store/general/actionCreators";
 
 interface IProps {
     size: ISize;
     isActive: boolean;
     isHighlighted: boolean;
     id: string;
-    value: string;
-    options: string[];
+    value: LabelName;
+    options: LabelName[];
     onDelete: (id: string) => any;
-    onSelectLabel: (labelRectId: string, labelNameIndex: number) => any;
+    onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
     updateActiveLabelId: (highlightedLabelId: string) => any;
+    updateActivePopupType: (activePopupType: PopupWindowType) => any;
 }
 
 interface IState {
@@ -63,8 +68,12 @@ class LabelInputField extends React.Component<IProps, IState> {
     }
 
     private openDropdown = () => {
-        this.setState({isOpen: true});
-        window.addEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
+        if (LabelsSelector.getLabelNames().length === 0) {
+            this.props.updateActivePopupType(PopupWindowType.UPDATE_LABEL_NAMES);
+        } else {
+            this.setState({isOpen: true});
+            window.addEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
+        }
     };
 
     private closeDropdown = (event: MouseEvent) => {
@@ -99,23 +108,23 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     private getDropdownOptions = () => {
-        const onClick = (index: number, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const onClick = (id: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             this.setState({isOpen: false});
             window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
-            this.props.onSelectLabel(this.props.id, index);
+            this.props.onSelectLabel(this.props.id, id);
             this.props.updateHighlightedLabelId(null);
             this.props.updateActiveLabelId(this.props.id);
             event.stopPropagation();
         };
 
-        return this.props.options.map((option: string, index: number) => {
+        return this.props.options.map((option: LabelName) => {
             return <div
                 className="DropdownOption"
-                key={option}
+                key={option.id}
                 style={{height: this.dropdownOptionHeight}}
-                onClick={(event) => onClick(index, event)}
+                onClick={(event) => onClick(option.id, event)}
             >
-                {option}
+                {option.name}
             </div>
         })
     };
@@ -134,7 +143,6 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     public render() {
         const {size, id, value, onDelete} = this.props;
-
         return(
             <div
                 className={this.getClassName()}
@@ -161,14 +169,16 @@ class LabelInputField extends React.Component<IProps, IState> {
                                  ref={ref => this.dropdownLabel = ref}
                                  onClick={this.openDropdown}
                             >
-                                {value ? value : "Select label"}
+                                {value ? value.name : "Select label"}
                             </div>
                             {this.state.isOpen && <div
                                 className="Dropdown"
                                 style={this.getDropdownStyle()}
                                 ref={ref => this.dropdown = ref}
                             >
-                                <Scrollbars>
+                                <Scrollbars
+                                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                                >
                                     <div>
                                         {this.getDropdownOptions()}
                                     </div>
@@ -194,7 +204,8 @@ class LabelInputField extends React.Component<IProps, IState> {
 
 const mapDispatchToProps = {
     updateHighlightedLabelId,
-    updateActiveLabelId
+    updateActiveLabelId,
+    updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({});

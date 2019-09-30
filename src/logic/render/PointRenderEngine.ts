@@ -23,6 +23,7 @@ import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {EditorModel} from "../../staticModels/EditorModel";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -141,7 +142,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
-            if (!!labelPoint) {
+            if (!!labelPoint && labelPoint.status === LabelStatus.ACCEPTED) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
@@ -184,12 +185,15 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private addPointLabel = (point: IPoint) => {
-        const activeLabelIndex = LabelsSelector.getActiveLabelNameIndex();
+        const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
             id: uuidv1(),
-            labelIndex: activeLabelIndex,
-            point
+            labelId: activeLabelId,
+            point,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
         };
         imageData.labelPoints.push(labelPoint);
         store.dispatch(updateImageDataById(imageData.id, imageData));

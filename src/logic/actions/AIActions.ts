@@ -1,53 +1,54 @@
-import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {ImageData, LabelRect} from "../../store/labels/types";
+import {LabelType} from "../../data/enums/LabelType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import uuidv1 from 'uuid/v1';
-import {store} from "../../index";
-import {updateImageDataById} from "../../store/labels/actionCreators";
-import {ObjectDetector} from "../../ai/ObjectDetector";
-import {ImageRepository} from "../imageRepository/ImageRepository";
-import {LabelStatus} from "../../data/enums/LabelStatus";
+import {AIObjectDetectionActions} from "./AIObjectDetectionActions";
+import {AIPoseDetectionActions} from "./AIPoseDetectionActions";
+import {ImageData} from "../../store/labels/types";
 
 export class AIActions {
-    public static detectRectsForActiveImage(): void {
-        const activeImageData: ImageData = LabelsSelector.getActiveImageData();
-        AIActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
-    }
-
-    public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector)
-            return;
-
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            AIActions.savePredictions(imageId, predictions);
-        })
-    }
-
-    public static savePredictions(imageId: string, predictions: DetectedObject[]) {
-        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = AIActions.mapPredictionsToRectLabels(predictions);
-        const nextImageData: ImageData = {
-            ...imageData,
-            labelRects: imageData.labelRects.concat(predictedLabels),
-            isVisitedByObjectDetector: true
-        };
-        store.dispatch(updateImageDataById(imageData.id, nextImageData));
-    }
-
-    public static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
-        return predictions.map((prediction: DetectedObject) => {
-            return {
-                id: uuidv1(),
-                labelIndex: null,
-                rect: {
-                    x: prediction.bbox[0],
-                    y: prediction.bbox[1],
-                    width: prediction.bbox[2],
-                    height: prediction.bbox[3],
-                },
-                isCreatedByAI: true,
-                status: LabelStatus.UNDECIDED
+    public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
+        return suggestedLabels.reduce((acc: string[], label: string) => {
+            if (!rejectedLabels.includes(label)) {
+                acc.push(label)
             }
-        })
+            return acc;
+        }, [])
+    }
+
+    public static detect(imageId: string, image: HTMLImageElement): void {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.detectRects(imageId, image);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.detectPoses(imageId, image);
+                break;
+        }
+    }
+
+    public static rejectAllSuggestedLabels(imageData: ImageData) {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.rejectAllSuggestedPointLabels(imageData);
+                break;
+        }
+    }
+
+    public static acceptAllSuggestedLabels(imageData: ImageData) {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.acceptAllSuggestedPointLabels(imageData);
+                break;
+        }
     }
 }

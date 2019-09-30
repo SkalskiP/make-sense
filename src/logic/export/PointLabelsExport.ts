@@ -1,9 +1,10 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {ImageData, LabelPoint} from "../../store/labels/types";
+import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
 import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ExporterUtil} from "../../utils/ExporterUtil";
+import {findLast} from "lodash";
 
 export class PointLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
@@ -38,16 +39,17 @@ export class PointLabelsExporter {
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        const labelNamesList: string[] = LabelsSelector.getLabelNames();
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
-            const labelFields = [
-                labelNamesList[labelPoint.labelIndex],
+            const labelName: LabelName = findLast(labelNames, {id: labelPoint.labelId});
+            const labelFields = !!labelName ? [
+                labelName.name,
                 Math.round(labelPoint.point.x) + "",
                 Math.round(labelPoint.point.y) + "",
                 imageData.fileData.name,
                 image.width + "",
                 image.height + ""
-            ];
+            ] : [];
             return labelFields.join(",")
         });
         return labelRectsString.join("\n");

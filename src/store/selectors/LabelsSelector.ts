@@ -1,15 +1,15 @@
 import {store} from "../..";
-import {ImageData, LabelPoint, LabelPolygon, LabelRect} from "../labels/types";
-import _ from "lodash";
+import {ImageData, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../labels/types";
+import {find} from "lodash";
 import {LabelType} from "../../data/enums/LabelType";
 
 export class LabelsSelector {
-    public static getLabelNames(): string[] {
-        return store.getState().labels.labelNames;
+    public static getLabelNames(): LabelName[] {
+        return store.getState().labels.labels;
     }
 
-    public static getActiveLabelNameIndex(): number {
-        return store.getState().labels.activeLabelNameIndex;
+    public static getActiveLabelNameId(): string {
+        return store.getState().labels.activeLabelNameId;
     }
 
     public static getActiveLabelType(): LabelType {
@@ -40,7 +40,7 @@ export class LabelsSelector {
 
     public static getImageDataById(id: string): ImageData {
         const imagesData: ImageData[] = LabelsSelector.getImagesData();
-        return _.find(imagesData, {id: id});
+        return find(imagesData, {id: id});
     }
 
     public static getActiveLabelId(): string | null {
@@ -57,7 +57,7 @@ export class LabelsSelector {
         if (activeLabelId === null)
             return null;
 
-        return _.find(LabelsSelector.getActiveImageData().labelRects, {id: activeLabelId});
+        return find(LabelsSelector.getActiveImageData().labelRects, {id: activeLabelId});
     }
 
     public static getActivePointLabel(): LabelPoint | null {
@@ -66,7 +66,7 @@ export class LabelsSelector {
         if (activeLabelId === null)
             return null;
 
-        return _.find(LabelsSelector.getActiveImageData().labelPoints, {id: activeLabelId});
+        return find(LabelsSelector.getActiveImageData().labelPoints, {id: activeLabelId});
     }
 
     public static getActivePolygonLabel(): LabelPolygon | null {
@@ -75,6 +75,6 @@ export class LabelsSelector {
         if (activeLabelId === null)
             return null;
 
-        return _.find(LabelsSelector.getActiveImageData().labelPolygons, {id: activeLabelId});
+        return find(LabelsSelector.getActiveImageData().labelPolygons, {id: activeLabelId});
     }
 }

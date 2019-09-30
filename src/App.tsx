@@ -16,10 +16,11 @@ import classNames from "classnames";
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    AIMode: boolean;
+    ObjectDetectorLoaded: boolean;
+    PoseDetectionLoaded: boolean;
 }
 
-const App: React.FC<IProps> = ({projectType, windowSize, AIMode}) => {
+const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, PoseDetectionLoaded}) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
@@ -35,7 +36,7 @@ const App: React.FC<IProps> = ({projectType, windowSize, AIMode}) => {
     };
 
       return (
-        <div className={classNames("App", {"AI": AIMode})}
+        <div className={classNames("App", {"AI": ObjectDetectorLoaded || PoseDetectionLoaded})}
             draggable={false}
         >
             {selectRoute()}
@@ -47,7 +48,8 @@ const App: React.FC<IProps> = ({projectType, windowSize, AIMode}) => {
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
-    AIMode: state.ai.isObjectDetectorLoaded
+    ObjectDetectorLoaded: state.ai.isObjectDetectorLoaded,
+    PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
 });
 
 export default connect(

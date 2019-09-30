@@ -5,23 +5,38 @@ import {IPoint} from "../../interfaces/IPoint";
 import {LabelStatus} from "../../data/enums/LabelStatus";
 
 export type LabelRect = {
+    // GENERAL
     id: string;
-    labelIndex: number;
+    labelId: string;
     rect: IRect;
+
+    // AI
     isCreatedByAI: boolean;
     status: LabelStatus;
+    suggestedLabel: string;
 }
 
 export type LabelPoint = {
+    // GENERAL
     id: string;
-    labelIndex: number;
+    labelId: string;
     point: IPoint;
+
+    // AI
+    isCreatedByAI: boolean;
+    status: LabelStatus;
+    suggestedLabel: string;
 }
 
 export type LabelPolygon = {
     id: string;
-    labelIndex: number;
+    labelId: string;
     vertices: IPoint[];
+}
+
+export type LabelName = {
+    name: string;
+    id: string;
 }
 
 export type ImageData = {
@@ -31,18 +46,23 @@ export type ImageData = {
     labelRects: LabelRect[];
     labelPoints: LabelPoint[];
     labelPolygons: LabelPolygon[];
+
+    // SSD
     isVisitedByObjectDetector: boolean;
+
+    // POSE NET
+    isVisitedByPoseDetector: boolean;
 }
 
 export type LabelsState = {
     activeImageIndex: number;
-    activeLabelNameIndex: number;
+    activeLabelNameId: string;
     activeLabelType: LabelType;
     activeLabelId: string;
     highlightedLabelId: string;
     imagesData: ImageData[];
-    labelNames: string[];
     firstLabelCreatedFlag: boolean;
+    labels: LabelName[];
 }
 
 interface UpdateActiveImageIndex {
@@ -52,10 +72,10 @@ interface UpdateActiveImageIndex {
     }
 }
 
-interface UpdateActiveLabelNameIndex {
-    type: typeof Action.UPDATE_ACTIVE_LABEL_NAME_INDEX;
+interface UpdateActiveLabelNameId {
+    type: typeof Action.UPDATE_ACTIVE_LABEL_NAME_ID;
     payload: {
-        activeLabelNameIndex: number;
+        activeLabelNameId: string;
     }
 }
 
@@ -102,10 +122,10 @@ interface UpdateImageData {
     }
 }
 
-interface UpdateLabelNamesList {
-    type: typeof Action.UPDATE_LABEL_NAMES_LIST;
+interface UpdateLabelNames {
+    type: typeof Action.UPDATE_LABEL_NAMES;
     payload: {
-        labelNames: string[];
+        labels: LabelName[];
     }
 }
 
@@ -117,12 +137,12 @@ interface UpdateFirstLabelCreatedFlag {
 }
 
 export type LabelsActionTypes = UpdateActiveImageIndex
-    | UpdateActiveLabelNameIndex
+    | UpdateActiveLabelNameId
     | UpdateActiveLabelType
     | UpdateImageDataById
     | AddImageData
     | UpdateImageData
-    | UpdateLabelNamesList
+    | UpdateLabelNames
     | UpdateActiveLabelId
     | UpdateHighlightedLabelId
     | UpdateFirstLabelCreatedFlag

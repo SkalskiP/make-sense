@@ -1,0 +1,56 @@
+@import '../../../settings/Settings';
+
+.EditorTopNavigationBar {
+  align-self: stretch;
+  height: $editorTopNavigationBarHeight;
+  border-bottom: solid 1px $darkThemeFirstColor;
+  background-color: $darkThemeSecondColor;
+  user-select: none;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  padding: 0 5px;
+
+  &.with-context {
+    background-color: $darkThemeForthColor;
+  }
+
+  .ButtonWrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    &:not(:last-child) {
+      padding-right: 5px;
+      margin-right: 5px;
+      border-right: solid 1px $darkThemeFirstColor;
+    }
+  }
+
+  .ImageButton {
+    transition: transform 0.3s;
+    margin: 0 2px;
+
+    img {
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+
+    &.active {
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.1);
+    }
+  }
+}

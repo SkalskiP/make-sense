@@ -6,7 +6,8 @@ export class Settings {
     public static readonly PATREON_URL: string = "https://www.patreon.com/make_sense";
 
     public static readonly TOP_NAVIGATION_BAR_HEIGHT_PX: number = 35;
-    public static readonly BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 45 + 1;
+    public static readonly EDITOR_BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
+    public static readonly EDITOR_TOP_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX: number = 23 + 1;
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX: number = Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 300 + 1;
     public static readonly TOOLKIT_TAB_HEIGHT_PX: number = 40;
@@ -32,6 +33,7 @@ export class Settings {
     public static readonly CLOSEABLE_POPUPS: PopupWindowType[] = [
         PopupWindowType.LOAD_IMAGES,
         PopupWindowType.EXPORT_LABELS,
-        PopupWindowType.EXIT_PROJECT
+        PopupWindowType.EXIT_PROJECT,
+        PopupWindowType.UPDATE_LABEL_NAMES
     ];
 }

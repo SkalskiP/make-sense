@@ -1,11 +1,11 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelPolygon} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelPolygon} from "../../../../store/labels/types";
 import './PolygonLabelsList.scss';
 import {
     updateActiveLabelId,
-    updateActiveLabelNameIndex,
+    updateActiveLabelNameId,
     updateImageDataById
 } from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
@@ -13,20 +13,20 @@ import {connect} from "react-redux";
 import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
+import {findLast} from "lodash";
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
-    activeLabelIndex: number;
     activeLabelId: string;
     highlightedLabelId: string;
-    updateActiveLabelNameIndex: (activeLabelIndex: number) => any;
-    labelNames: string[];
+    updateActiveLabelNameId: (activeLabelId: string) => any;
+    labelNames: LabelName[];
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameIndex, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
+const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameId, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -41,21 +41,21 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
         LabelActions.deletePolygonLabelById(imageData.id, labelPolygonId);
     };
 
-    const updatePolygonLabel = (labelPolygonId: string, labelNameIndex: number) => {
+    const updatePolygonLabel = (labelPolygonId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
             labelPolygons: imageData.labelPolygons.map((currentLabel: LabelPolygon) => {
                 if (currentLabel.id === labelPolygonId) {
                     return {
                         ...currentLabel,
-                        labelIndex: labelNameIndex
+                        labelId: labelNameId
                     }
                 }
                 return currentLabel
             })
         };
         updateImageDataById(imageData.id, newImageData);
-        updateActiveLabelNameIndex(labelNameIndex);
+        updateActiveLabelNameId(labelNameId);
     };
 
     const onClickHandler = () => {
@@ -74,7 +74,7 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
                 id={labelPolygon.id}
                 key={labelPolygon.id}
                 onDelete={deletePolygonLabelById}
-                value={labelPolygon.labelIndex !== null ? labelNames[labelPolygon.labelIndex] : null}
+                value={labelPolygon.labelId !== null ? findLast(labelNames, {id: labelPolygon.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updatePolygonLabel}
             />
@@ -107,15 +107,14 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
 
 const mapDispatchToProps = {
     updateImageDataById,
-    updateActiveLabelNameIndex,
+    updateActiveLabelNameId,
     updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelIndex: state.labels.activeLabelNameIndex,
     activeLabelId: state.labels.activeLabelId,
     highlightedLabelId: state.labels.highlightedLabelId,
-    labelNames : state.labels.labelNames
+    labelNames : state.labels.labels
 });
 
 export default connect(

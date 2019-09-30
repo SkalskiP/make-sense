@@ -5,19 +5,21 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {IPoint} from "../../../interfaces/IPoint";
 import classNames from "classnames";
-import {LabelRect} from "../../../store/labels/types";
+import {LabelName, LabelPoint, LabelRect} from "../../../store/labels/types";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {LabelActions} from "../../../logic/actions/LabelActions";
 import {ImageData} from "../../../store/labels/types";
 import {LabelStatus} from "../../../data/enums/LabelStatus";
 import {updateImageDataById} from "../../../store/labels/actionCreators";
+import {findLast} from "lodash";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 
 interface IProps {
     position: IPoint;
     updatePreventCustomCursorStatus: (preventCustomCursor: boolean) => any;
     activeLabelId: string;
     highlightedLabelId: string;
-    labelData: LabelRect;
+    labelData: LabelRect | LabelPoint;
     imageData: ImageData;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
@@ -40,12 +42,26 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
             ...imageData,
             labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
                 if (labelRect.id === labelData.id) {
+                    const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelRect.suggestedLabel});
                     return {
                         ...labelRect,
-                        status: LabelStatus.ACCEPTED
+                        status: LabelStatus.ACCEPTED,
+                        labelId: !!labelName ? labelName.id : labelRect.labelId
                     }
                 } else {
                     return labelRect
+                }
+            }),
+            labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
+                if (labelPoint.id === labelData.id) {
+                    const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelPoint.suggestedLabel});
+                    return {
+                        ...labelPoint,
+                        status: LabelStatus.ACCEPTED,
+                        labelId: !!labelName ? labelName.id : labelPoint.labelId
+                    }
+                } else {
+                    return labelPoint
                 }
             })
         };
@@ -54,7 +70,7 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
     };
 
     const onReject = () => {
-        LabelActions.deleteRectLabelById(imageData.id, labelData.id);
+        LabelActions.deleteImageLabelById(imageData.id, labelData.id);
         updatePreventCustomCursorStatus(false);
     };
 
@@ -91,6 +107,12 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
                 padding={15}
                 onClick={onReject}
             />
+            {labelData.suggestedLabel && LabelActions.labelExistsInLabelNames(labelData.suggestedLabel) ?
+                <div className="SuggestedLabel">
+                    {labelData.suggestedLabel}
+                </div> :
+                null
+            }
         </>}
     </div>
 };
