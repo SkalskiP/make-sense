@@ -170,7 +170,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
                 </div>
             </div>
             <div className="LabelNamesContainer">
-                <Scrollbars>
+                <Scrollbars autoHeight={true}>
                     <div
                         className="LabelNamesContent"
                     >
