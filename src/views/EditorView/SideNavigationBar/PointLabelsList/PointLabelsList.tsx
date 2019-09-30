@@ -14,6 +14,7 @@ import LabelInputField from "../LabelInputField/LabelInputField";
 import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import {LabelActions} from "../../../../logic/actions/LabelActions";
 import {findLast} from "lodash";
+import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -63,7 +64,9 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
     };
 
     const getChildren = () => {
-        return imageData.labelPoints.map((labelPoint: LabelPoint) => {
+        return imageData.labelPoints
+            .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
+            .map((labelPoint: LabelPoint) => {
             return <LabelInputField
                 size={{
                     width: size.width,
@@ -87,7 +90,7 @@ const PointLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            {imageData.labelPoints.length === 0 ?
+            {imageData.labelPoints.filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED).length === 0 ?
                 <EmptyLabelList
                     labelBefore={"Mark the first point"}
                     labelAfter={"No labels created for this image"}

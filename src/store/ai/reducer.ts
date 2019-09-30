@@ -5,6 +5,7 @@ const initialState: AIState = {
     suggestedLabelList: [],
     rejectedSuggestedLabelList: [],
     isObjectDetectorLoaded: false,
+    isPoseDetectorLoaded: false,
     isAIDisabled: false
 };
 
@@ -29,6 +30,12 @@ export function aiReducer(
             return {
                 ...state,
                 isObjectDetectorLoaded: action.payload.isObjectDetectorLoaded
+            }
+        }
+        case Action.UPDATE_POSE_DETECTOR_STATUS: {
+            return {
+                ...state,
+                isPoseDetectorLoaded: action.payload.isPoseDetectorLoaded
             }
         }
         case Action.UPDATE_DISABLED_AI_FLAG: {

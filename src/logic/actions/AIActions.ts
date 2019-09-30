@@ -1,79 +1,10 @@
-import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
+import {LabelType} from "../../data/enums/LabelType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import uuidv1 from 'uuid/v1';
-import {store} from "../../index";
-import {updateImageDataById} from "../../store/labels/actionCreators";
-import {ObjectDetector} from "../../ai/ObjectDetector";
-import {ImageRepository} from "../imageRepository/ImageRepository";
-import {LabelStatus} from "../../data/enums/LabelStatus";
-import {findLast} from "lodash";
-import {updateSuggestedLabelList} from "../../store/ai/actionCreators";
-import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {updateActivePopupType} from "../../store/general/actionCreators";
-import {AISelector} from "../../store/selectors/AISelector";
+import {AIObjectDetectionActions} from "./AIObjectDetectionActions";
+import {AIPoseDetectionActions} from "./AIPoseDetectionActions";
+import {ImageData} from "../../store/labels/types";
 
 export class AIActions {
-    public static detectRectsForActiveImage(): void {
-        const activeImageData: ImageData = LabelsSelector.getActiveImageData();
-        AIActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
-    }
-
-    public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector)
-            return;
-
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AIActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
-            const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
-            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
-            if (newlySuggestedNames.length > 0) {
-                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
-                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
-            }
-            AIActions.savePredictions(imageId, predictions);
-        })
-    }
-
-    public static savePredictions(imageId: string, predictions: DetectedObject[]) {
-        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = AIActions.mapPredictionsToRectLabels(predictions);
-        const nextImageData: ImageData = {
-            ...imageData,
-            labelRects: imageData.labelRects.concat(predictedLabels),
-            isVisitedByObjectDetector: true
-        };
-        store.dispatch(updateImageDataById(imageData.id, nextImageData));
-    }
-
-    private static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
-        return predictions.map((prediction: DetectedObject) => {
-            return {
-                id: uuidv1(),
-                labelIndex: null,
-                labelId: null,
-                rect: {
-                    x: prediction.bbox[0],
-                    y: prediction.bbox[1],
-                    width: prediction.bbox[2],
-                    height: prediction.bbox[3],
-                },
-                isCreatedByAI: true,
-                status: LabelStatus.UNDECIDED,
-                suggestedLabel: prediction.class
-            }
-        })
-    }
-
-    public static extractNewSuggestedLabelNames(labels: LabelName[], predictions: DetectedObject[]): string[] {
-        return predictions.reduce((acc: string[], prediction: DetectedObject) => {
-            if (!acc.includes(prediction.class) && !findLast(labels, {name: prediction.class})) {
-                acc.push(prediction.class)
-            }
-            return acc;
-        }, [])
-    }
-
     public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
         return suggestedLabels.reduce((acc: string[], label: string) => {
             if (!rejectedLabels.includes(label)) {
@@ -83,26 +14,41 @@ export class AIActions {
         }, [])
     }
 
-    public static acceptAllSuggestedRectLabels(imageData: ImageData) {
-        const newImageData: ImageData = {
-            ...imageData,
-            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
-                const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelRect.suggestedLabel});
-                return {
-                    ...labelRect,
-                    status: LabelStatus.ACCEPTED,
-                    labelId: !!labelName ? labelName.id : labelRect.labelId
-                }
-            })
-        };
-        store.dispatch(updateImageDataById(newImageData.id, newImageData));
+    public static detect(imageId: string, image: HTMLImageElement): void {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.detectRects(imageId, image);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.detectPoses(imageId, image);
+                break;
+        }
     }
 
-    public static rejectAllSuggestedRectLabels(imageData: ImageData) {
-        const newImageData: ImageData = {
-            ...imageData,
-            labelRects: imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
-        };
-        store.dispatch(updateImageDataById(newImageData.id, newImageData));
+    public static rejectAllSuggestedLabels(imageData: ImageData) {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.rejectAllSuggestedPointLabels(imageData);
+                break;
+        }
+    }
+
+    public static acceptAllSuggestedLabels(imageData: ImageData) {
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+        switch (activeLabelType) {
+            case LabelType.RECTANGLE:
+                AIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                break;
+            case LabelType.POINT:
+                AIPoseDetectionActions.acceptAllSuggestedPointLabels(imageData);
+                break;
+        }
     }
 }

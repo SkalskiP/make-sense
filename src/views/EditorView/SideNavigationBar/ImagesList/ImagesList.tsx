@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {LabelType} from "../../../../data/enums/LabelType";
 import {ISize} from "../../../../interfaces/ISize";
 import {AppState} from "../../../../store";
-import {ImageData} from "../../../../store/labels/types";
+import {ImageData, LabelPoint, LabelRect} from "../../../../store/labels/types";
 import {VirtualList} from "../../../Common/VirtualList/VirtualList";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import './ImagesList.scss';
@@ -11,6 +11,7 @@ import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
 import {ImageActions} from "../../../../logic/actions/ImageActions";
 import {EventType} from "../../../../data/enums/EventType";
+import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     activeImageIndex: number;
@@ -55,6 +56,16 @@ class ImagesList extends React.Component<IProps, IState> {
         })
     };
 
+    private isImageChecked = (index:number): boolean => {
+        return (this.props.activeLabelType === LabelType.RECTANGLE &&
+            this.props.imagesData[index].labelRects
+                .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length > 0) ||
+            (this.props.activeLabelType === LabelType.POINT &&
+                this.props.imagesData[index].labelPoints
+                    .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED).length > 0) ||
+            (this.props.activeLabelType === LabelType.POLYGON && this.props.imagesData[index].labelPolygons.length > 0)
+    };
+
     private onClickHandler = (index: number) => {
         ImageActions.getImageByIndex(index)
     };
@@ -65,11 +76,7 @@ class ImagesList extends React.Component<IProps, IState> {
             style={style}
             size={{width: 150, height: 150}}
             isScrolling={isScrolling}
-            isChecked={
-                (this.props.activeLabelType === LabelType.RECTANGLE && this.props.imagesData[index].labelRects.length > 0) ||
-                (this.props.activeLabelType === LabelType.POINT && this.props.imagesData[index].labelPoints.length > 0) ||
-                (this.props.activeLabelType === LabelType.POLYGON && this.props.imagesData[index].labelPolygons.length > 0)
-            }
+            isChecked={this.isImageChecked(index)}
             imageData={this.props.imagesData[index]}
             onClick={() => this.onClickHandler(index)}
             isSelected={this.props.activeImageIndex === index}

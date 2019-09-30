@@ -9,8 +9,12 @@ export class AISelector {
         return store.getState().ai.rejectedSuggestedLabelList;
     }
 
-    public static isAIModelLoaded(): boolean {
+    public static isAIObjectDetectorModelLoaded(): boolean {
         return store.getState().ai.isObjectDetectorLoaded;
+    }
+
+    public static isAIPoseDetectorModelLoaded(): boolean {
+        return store.getState().ai.isPoseDetectorLoaded;
     }
 
     public static isAIDisabled(): boolean {

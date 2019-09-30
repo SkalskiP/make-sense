@@ -30,7 +30,6 @@ interface IProps {
 
 interface IState {
     size: ISize;
-    activeLabelType: LabelType;
 }
 
 class LabelsToolkit extends React.Component<IProps, IState> {
@@ -39,6 +38,10 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            size: null,
+        };
 
         this.tabs = props.projectType === ProjectType.IMAGE_RECOGNITION ?
             [
@@ -51,11 +54,6 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             ];
 
         const activeTab: LabelType = props.activeLabelType ? props.activeLabelType : this.tabs[0];
-
-        this.state = {
-            size: null,
-            activeLabelType: activeTab,
-        };
         props.updateActiveLabelType(activeTab);
     }
 
@@ -82,14 +80,13 @@ class LabelsToolkit extends React.Component<IProps, IState> {
     };
 
     private headerClickHandler = (activeTab: LabelType) => {
-        this.setState({activeLabelType: activeTab});
         this.props.updateActiveLabelType(activeTab);
         this.props.updateActiveLabelId(null);
     };
 
     private renderChildren = () => {
-        const {activeLabelType, size} = this.state;
-        const {activeImageIndex, imagesData} = this.props;
+        const {size} = this.state;
+        const {activeImageIndex, imagesData, activeLabelType} = this.props;
         return this.tabs.reduce((children, labelType: LabelType, index: number) => {
             const isActive: boolean = labelType === activeLabelType;
             const tabData: ILabelToolkit = find(LabelToolkitData, {labelType});
