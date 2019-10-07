@@ -89,7 +89,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mak
 
 ### Get Docker Container Logs
 
-```
+```bash
 docker logs make_sense
 ```
 
