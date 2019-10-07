@@ -85,7 +85,7 @@ docker run -dit -p 3000:3000 --restart=always --name=make_sense make_sense
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' make_sense
 ```
 
-- Go to <DOCKER_CONTAINER_IP>:3000
+- Go to `<DOCKER_CONTAINER_IP>:3000`
 
 ## Supported Keyboard Shortcuts
 
