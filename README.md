@@ -87,6 +87,12 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' mak
 
 - Go to `<DOCKER_CONTAINER_IP>:3000`
 
+### Get Docker Container Logs
+
+```
+docker logs make_sense
+```
+
 ## Supported Keyboard Shortcuts
 
 | Functionality                      | Context  | Mac | Windows / Linux  |
