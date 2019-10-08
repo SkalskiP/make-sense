@@ -67,29 +67,18 @@ To ensure proper functionality of the application locally, an npm `6.x.x` and no
 
 ## Set Up Project with Docker
 
-### Build Docker Image
-
 ```bash
+# Build Docker Image
 docker build -t make_sense docker/
-```
 
-### Run Docker Image as Service
-
-```bash
+# Run Docker Image as Service
 docker run -dit -p 3000:3000 --restart=always --name=make_sense make_sense
-```
 
-### Get Docker Container IP
-
-```bash
+# Get Docker Container IP
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' make_sense
-```
+# Go to `<DOCKER_CONTAINER_IP>:3000`
 
-- Go to `<DOCKER_CONTAINER_IP>:3000`
-
-### Get Docker Container Logs
-
-```bash
+# Get Docker Container Logs
 docker logs make_sense
 ```
 
