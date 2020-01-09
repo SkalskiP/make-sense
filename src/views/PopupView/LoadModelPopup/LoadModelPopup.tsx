@@ -8,6 +8,7 @@ import {AIModel} from "../../../data/enums/AIModel";
 import {PoseDetector} from "../../../ai/PoseDetector";
 import {findLast} from "lodash";
 import {CSSHelper} from "../../../logic/helpers/CSSHelper";
+import ReactGA from "react-ga";
 
 interface SelectableModel {
     model: AIModel,
@@ -37,11 +38,23 @@ export const LoadModelPopup: React.FC = () => {
         switch (extractSelectedModel()) {
             case AIModel.POSE_DETECTION:
                 PoseDetector.loadModel(() => {
+                    ReactGA.event({
+                        category: 'AI',
+                        action: 'AI Project type',
+                        label: 'Pose-Net',
+                    });
+
                     PopupActions.close();
                 });
                 break;
             case AIModel.OBJECT_DETECTION:
                 ObjectDetector.loadModel(() => {
+                    ReactGA.event({
+                        category: 'AI',
+                        action: 'AI Project type',
+                        label: 'SSD',
+                    });
+
                     PopupActions.close();
                 });
                 break;
@@ -97,6 +110,12 @@ export const LoadModelPopup: React.FC = () => {
     };
 
     const onReject = () => {
+        ReactGA.event({
+            category: 'AI',
+            action: 'AI Project type',
+            label: 'Label on your own',
+        });
+
         PopupActions.close();
     };
 

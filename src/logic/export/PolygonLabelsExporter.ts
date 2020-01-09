@@ -6,9 +6,22 @@ import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {findLast} from "lodash";
+import ReactGA from "react-ga";
 
 export class PolygonLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
+
+        const labeledImagesCount: number = LabelsSelector.getImagesData().filter((imageData: ImageData) => {
+            return !!imageData.labelPolygons.length
+        }).length;
+
+        ReactGA.event({
+            category: 'General',
+            action: 'Export label count',
+            label: 'Labeled images count',
+            value: labeledImagesCount
+        });
+
         switch (exportFormatType) {
             case ExportFormatType.VGG_JSON:
                 PolygonLabelsExporter.exportAsVGGJson();

@@ -8,9 +8,22 @@ import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {findIndex, findLast} from "lodash";
+import ReactGA from "react-ga";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
+
+        const labeledImagesCount: number = LabelsSelector.getImagesData().filter((imageData: ImageData) => {
+            return !!imageData.labelRects.length
+        }).length;
+
+        ReactGA.event({
+            category: 'General',
+            action: 'Export label count',
+            label: 'Labeled images count',
+            value: labeledImagesCount
+        });
+
         switch (exportFormatType) {
             case ExportFormatType.YOLO:
                 RectLabelsExporter.exportAsYOLO();

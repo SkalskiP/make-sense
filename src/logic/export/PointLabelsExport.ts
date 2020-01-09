@@ -5,9 +5,22 @@ import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {findLast} from "lodash";
+import ReactGA from "react-ga";
 
 export class PointLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
+
+        const labeledImagesCount: number = LabelsSelector.getImagesData().filter((imageData: ImageData) => {
+            return !!imageData.labelPoints.length
+        }).length;
+
+        ReactGA.event({
+            category: 'General',
+            action: 'Export label count',
+            label: 'Labeled images count',
+            value: labeledImagesCount
+        });
+
         switch (exportFormatType) {
             case ExportFormatType.CSV:
                 PointLabelsExporter.exportAsCSV();

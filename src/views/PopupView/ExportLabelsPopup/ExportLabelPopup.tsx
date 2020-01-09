@@ -14,6 +14,7 @@ import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
 import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
 import {PopupActions} from "../../../logic/actions/PopupActions";
+import ReactGA from "react-ga";
 
 const ExportLabelPopup: React.FC = () => {
     const [exportLabelType, setExportLabelType] = useState(LabelType.RECTANGLE);
@@ -21,6 +22,13 @@ const ExportLabelPopup: React.FC = () => {
 
     const onAccept = () => {
         if (!exportFormatType) return;
+
+        ReactGA.event({
+            category: 'AI',
+            action: 'Export label type',
+            label: exportLabelType + "_" + exportFormatType,
+        });
+
         switch (exportLabelType) {
             case LabelType.RECTANGLE:
                 RectLabelsExporter.export(exportFormatType);
