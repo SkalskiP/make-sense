@@ -12,6 +12,7 @@ import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType, updateProjectData} from "../../../store/general/actionCreators";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ProjectData} from "../../../store/general/types";
+import ReactGA from 'react-ga';
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
@@ -32,6 +33,14 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
                 ...projectData,
                 type: projectType
             });
+
+            ReactGA.event({
+                category: 'General',
+                action: 'Project started',
+                label: 'Images loaded',
+                value: acceptedFiles.length
+            });
+
             updateActiveImageIndex(0);
             addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
             updateActivePopupType(PopupWindowType.INSERT_LABEL_NAMES);

@@ -22,6 +22,7 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.8.6",
     "react-dropzone": "^10.1.5",
+    "react-ga": "^2.7.0",
     "react-redux": "^7.1.0",
     "react-scripts": "3.0.1",
     "react-spinners": "^0.5.4",
