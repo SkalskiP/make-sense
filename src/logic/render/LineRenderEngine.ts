@@ -76,11 +76,11 @@ export class LineRenderEngine extends BaseRenderEngine {
     }
 
     private drawExistingLabels(data: EditorData) {
-        const activeLabelId: string = LabelsSelector.getActiveLabelId();
-        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
+        // const activeLabelId: string = LabelsSelector.getActiveLabelId();
+        // const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         imageData.labelLines.forEach((labelLine: LabelLine) => {
-            const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
+            // const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
             const lineOnCanvas = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data)
             DrawUtil.drawLine(this.canvas, lineOnCanvas.start, lineOnCanvas.end, this.config.lineInactiveColor, this.config.lineThickness);
         });
