@@ -9,6 +9,7 @@ export class FileUtil {
             loadStatus: false,
             labelRects: [],
             labelPoints: [],
+            labelLines: [],
             labelPolygons: [],
             isVisitedByObjectDetector: false,
             isVisitedByPoseDetector: false
