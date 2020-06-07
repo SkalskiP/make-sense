@@ -6,6 +6,7 @@ import {updateCustomCursorStyle} from "../store/general/actionCreators";
 import {IPoint} from "../interfaces/IPoint";
 import {PointUtil} from "./PointUtil";
 import {IRect} from "../interfaces/IRect";
+import {ILine} from "../interfaces/ILine";
 
 export class RenderEngineUtil {
     public static calculateImageScale(data: EditorData): number {
@@ -20,22 +21,36 @@ export class RenderEngineUtil {
         return RectUtil.isPointInside({x: 0, y: 0, ...data.viewPortContentSize}, data.mousePositionOnViewPortContent);
     }
 
+    public static transferPointFromImageToViewPortContent(point: IPoint, data: EditorData): IPoint {
+        const scale = RenderEngineUtil.calculateImageScale(data);
+        return PointUtil.add(PointUtil.multiply(point, 1/scale), data.viewPortContentImageRect);
+    }
+
     public static transferPolygonFromImageToViewPortContent(polygon: IPoint[], data: EditorData): IPoint[] {
         return polygon.map((point: IPoint) => RenderEngineUtil.transferPointFromImageToViewPortContent(point, data));
     }
 
-    public static transferPointFromImageToViewPortContent(point: IPoint, data: EditorData): IPoint {
+    public static transferLineFromImageToViewPortContent(line: ILine, data: EditorData): ILine {
+        return {
+            start: RenderEngineUtil.transferPointFromImageToViewPortContent(line.start, data),
+            end: RenderEngineUtil.transferPointFromImageToViewPortContent(line.end, data)
+        }
+    }
+
+    public static transferPointFromViewPortContentToImage(point: IPoint, data: EditorData): IPoint {
         const scale = RenderEngineUtil.calculateImageScale(data);
-        return PointUtil.add(PointUtil.multiply(point, 1/scale), data.viewPortContentImageRect);
+        return PointUtil.multiply(PointUtil.subtract(point, data.viewPortContentImageRect), scale);
     }
 
     public static transferPolygonFromViewPortContentToImage(polygon: IPoint[], data: EditorData): IPoint[] {
         return polygon.map((point: IPoint) => RenderEngineUtil.transferPointFromViewPortContentToImage(point, data));
     }
 
-    public static transferPointFromViewPortContentToImage(point: IPoint, data: EditorData): IPoint {
-        const scale = RenderEngineUtil.calculateImageScale(data);
-        return PointUtil.multiply(PointUtil.subtract(point, data.viewPortContentImageRect), scale);
+    public static transferLineFromViewPortContentToImage(line: ILine, data: EditorData): ILine {
+        return {
+            start: RenderEngineUtil.transferPointFromViewPortContentToImage(line.start, data),
+            end: RenderEngineUtil.transferPointFromViewPortContentToImage(line.end, data)
+        }
     }
 
     public static transferRectFromViewPortContentToImage(rect: IRect, data: EditorData): IRect {
