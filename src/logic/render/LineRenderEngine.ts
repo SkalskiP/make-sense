@@ -15,6 +15,8 @@ import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import uuidv1 from "uuid/v1";
 import {ILine} from "../../interfaces/ILine";
+import {LineUtil} from "../../utils/LineUtil";
+import {IRect} from "../../interfaces/IRect";
 
 export class LineRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -45,7 +47,10 @@ export class LineRenderEngine extends BaseRenderEngine {
                     EditorActions.setViewPortActionsDisabledStatus(true);
                 }
             } else {
-                const line = {start: this.startLinePoint, end: data.mousePositionOnViewPortContent}
+                const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(
+                    data.mousePositionOnViewPortContent, data.viewPortContentImageRect
+                );
+                const line = {start: this.startLinePoint, end: mousePositionSnapped}
                 const lineOnImage = RenderEngineUtil.transferLineFromViewPortContentToImage(line, data)
                 this.addLineLabel(lineOnImage)
                 this.startLinePoint = null
@@ -76,13 +81,13 @@ export class LineRenderEngine extends BaseRenderEngine {
     }
 
     private drawExistingLabels(data: EditorData) {
-        // const activeLabelId: string = LabelsSelector.getActiveLabelId();
-        // const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
+        const activeLabelId: string = LabelsSelector.getActiveLabelId();
+        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         imageData.labelLines.forEach((labelLine: LabelLine) => {
-            // const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
+            const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
             const lineOnCanvas = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data)
-            DrawUtil.drawLine(this.canvas, lineOnCanvas.start, lineOnCanvas.end, this.config.lineInactiveColor, this.config.lineThickness);
+            this.drawLine(lineOnCanvas, isActive)
         });
     }
 
@@ -95,12 +100,32 @@ export class LineRenderEngine extends BaseRenderEngine {
 
     private updateCursorStyle(data: EditorData) {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
-            if (RectUtil.isPointInside({x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)}, data.mousePositionOnViewPortContent)) {
+            if (RectUtil.isPointInside(
+                {x: 0, y: 0, ...CanvasUtil.getSize(this.canvas)},
+                data.mousePositionOnViewPortContent)
+            ) {
                 RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                 this.canvas.style.cursor = "none";
             } else {
                 this.canvas.style.cursor = "default";
             }
+        }
+    }
+
+    private drawLine(line: ILine, isActive: boolean) {
+        const color: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        const standardizedLine: ILine = {
+            start: RenderEngineUtil.setPointBetweenPixels(line.start),
+            end: RenderEngineUtil.setPointBetweenPixels(line.end)
+        }
+        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, this.config.lineThickness);
+        if (isActive) {
+            LineUtil
+                .getPoints(line)
+                .map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize))
+                .forEach((handleRect: IRect) => {
+                    DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+                })
         }
     }
 
