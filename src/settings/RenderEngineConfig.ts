@@ -5,6 +5,8 @@ export class RenderEngineConfig {
     public readonly lineThickness: number = 2;
     public readonly lineActiveColor: string = Settings.PRIMARY_COLOR;
     public readonly lineInactiveColor: string = "#fff";
+    public readonly crossHairLineColor: string = "#fff";
+    public readonly crossHairPadding: number = 25;
     public readonly anchorSize: ISize = {
         width: Settings.RESIZE_HANDLE_DIMENSION_PX,
         height: Settings.RESIZE_HANDLE_DIMENSION_PX
