@@ -16,6 +16,7 @@ export type GeneralState = {
     customCursorStyle: CustomCursorStyle;
     preventCustomCursor: boolean;
     imageDragMode: boolean;
+    crossHairVisible: boolean;
     activeContext: ContextType;
     projectData: ProjectData;
     zoom: number;
@@ -70,6 +71,13 @@ interface UpdateImageDragModeStatus {
     }
 }
 
+interface UpdateCrossHairVisibleStatus {
+    type: typeof Action.UPDATE_CROSS_HAIR_VISIBLE_STATUS;
+    payload: {
+        crossHairVisible: boolean;
+    }
+}
+
 interface UpdateZoom {
     type: typeof Action.UPDATE_ZOOM,
     payload: {
@@ -84,4 +92,5 @@ export type GeneralActionTypes = UpdateProjectData
     | UpdateActiveContext
     | UpdatePreventCustomCursorStatus
     | UpdateImageDragModeStatus
+    | UpdateCrossHairVisibleStatus
     | UpdateZoom

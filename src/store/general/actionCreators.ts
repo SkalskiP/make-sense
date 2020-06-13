@@ -59,6 +59,15 @@ export function updateImageDragModeStatus(imageDragMode: boolean): GeneralAction
     };
 }
 
+export function updateCrossHairVisibleStatus(crossHairVisible: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_CROSS_HAIR_VISIBLE_STATUS,
+        payload: {
+            crossHairVisible,
+        },
+    };
+}
+
 export function updateProjectData(projectData: ProjectData): GeneralActionTypes {
     return {
         type: Action.UPDATE_PROJECT_DATA,
