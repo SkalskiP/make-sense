@@ -1,8 +1,12 @@
 import React from 'react';
+import './LineLabelsList.scss';
 import {ISize} from "../../../../interfaces/ISize";
-import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelPoint} from "../../../../store/labels/types";
-import './PointLabelsList.scss';
+import {ImageData, LabelLine, LabelName} from "../../../../store/labels/types";
+import {LabelActions} from "../../../../logic/actions/LabelActions";
+import LabelInputField from "../LabelInputField/LabelInputField";
+import {findLast} from "lodash";
+import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
+import Scrollbars from "react-custom-scrollbars";
 import {
     updateActiveLabelId,
     updateActiveLabelNameId,
@@ -10,11 +14,6 @@ import {
 } from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
-import LabelInputField from "../LabelInputField/LabelInputField";
-import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
-import {LabelActions} from "../../../../logic/actions/LabelActions";
-import {findLast} from "lodash";
-import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     size: ISize;
@@ -27,7 +26,7 @@ interface IProps {
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const PointLabelsList: React.FC<IProps> = (
+const LineLabelsList: React.FC<IProps> = (
     {
         size,
         imageData,
@@ -46,24 +45,24 @@ const PointLabelsList: React.FC<IProps> = (
     };
     const listStyleContent: React.CSSProperties = {
         width: size.width,
-        height: imageData.labelPoints.length * labelInputFieldHeight
+        height: imageData.labelLines.length * labelInputFieldHeight
     };
 
-    const deletePointLabelById = (labelPointId: string) => {
-        LabelActions.deletePointLabelById(imageData.id, labelPointId);
+    const deleteLineLabelById = (labelLineId: string) => {
+        LabelActions.deleteLineLabelById(imageData.id, labelLineId);
     };
 
-    const updatePointLabel = (labelPointId: string, labelNameId: string) => {
+    const updateLineLabel = (labelLineId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
-            labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
-                if (labelPoint.id === labelPointId) {
+            labelLines: imageData.labelLines.map((labelLine: LabelLine) => {
+                if (labelLine.id === labelLineId) {
                     return {
-                        ...labelPoint,
+                        ...labelLine,
                         labelId: labelNameId
                     }
                 }
-                return labelPoint
+                return labelLine
             })
         };
         updateImageDataById(imageData.id, newImageData);
@@ -75,40 +74,39 @@ const PointLabelsList: React.FC<IProps> = (
     };
 
     const getChildren = () => {
-        return imageData.labelPoints
-            .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
-            .map((labelPoint: LabelPoint) => {
-            return <LabelInputField
-                size={{
-                    width: size.width,
-                    height: labelInputFieldHeight
-                }}
-                isActive={labelPoint.id === activeLabelId}
-                isHighlighted={labelPoint.id === highlightedLabelId}
-                id={labelPoint.id}
-                key={labelPoint.id}
-                onDelete={deletePointLabelById}
-                value={labelPoint.labelId !== null ? findLast(labelNames, {id: labelPoint.labelId}) : null}
-                options={labelNames}
-                onSelectLabel={updatePointLabel}
-            />
-        });
+        return imageData.labelLines
+            .map((labelLine: LabelLine) => {
+                return <LabelInputField
+                    size={{
+                        width: size.width,
+                        height: labelInputFieldHeight
+                    }}
+                    isActive={labelLine.id === activeLabelId}
+                    isHighlighted={labelLine.id === highlightedLabelId}
+                    id={labelLine.id}
+                    key={labelLine.id}
+                    onDelete={deleteLineLabelById}
+                    value={labelLine.labelId !== null ? findLast(labelNames, {id: labelLine.labelId}) : null}
+                    options={labelNames}
+                    onSelectLabel={updateLineLabel}
+                />
+            });
     };
 
     return (
         <div
-            className="PointLabelsList"
+            className="LineLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            {imageData.labelPoints.filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED).length === 0 ?
+            {imageData.labelLines.length === 0 ?
                 <EmptyLabelList
-                    labelBefore={"Mark the first point"}
+                    labelBefore={"Mark the first line"}
                     labelAfter={"No labels created for this image"}
                 /> :
                 <Scrollbars>
                     <div
-                        className="PointLabelsListContent"
+                        className="LineLabelsListContent"
                         style={listStyleContent}
                     >
                         {getChildren()}
@@ -134,4 +132,4 @@ const mapStateToProps = (state: AppState) => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(PointLabelsList);
+)(LineLabelsList);

@@ -27,6 +27,12 @@ export const LabelToolkitData: ILabelToolkit[] = [
         imageAlt: "point",
     },
     {
+        labelType: LabelType.LINE,
+        headerText: "Line",
+        imageSrc: "ico/line.png",
+        imageAlt: "line",
+    },
+    {
         labelType: LabelType.POLYGON,
         headerText: "Polygon",
         imageSrc: "ico/polygon.png",

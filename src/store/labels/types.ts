@@ -3,6 +3,7 @@ import {Action} from "../Actions";
 import {LabelType} from "../../data/enums/LabelType";
 import {IPoint} from "../../interfaces/IPoint";
 import {LabelStatus} from "../../data/enums/LabelStatus";
+import {ILine} from "../../interfaces/ILine";
 
 export type LabelRect = {
     // GENERAL
@@ -34,6 +35,12 @@ export type LabelPolygon = {
     vertices: IPoint[];
 }
 
+export type LabelLine = {
+    id: string;
+    labelId: string;
+    line: ILine
+}
+
 export type LabelName = {
     name: string;
     id: string;
@@ -45,6 +52,7 @@ export type ImageData = {
     loadStatus: boolean;
     labelRects: LabelRect[];
     labelPoints: LabelPoint[];
+    labelLines: LabelLine[];
     labelPolygons: LabelPolygon[];
 
     // SSD

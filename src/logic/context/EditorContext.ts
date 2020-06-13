@@ -10,6 +10,7 @@ import {ViewPortActions} from "../actions/ViewPortActions";
 import {Direction} from "../../data/enums/Direction";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {LabelActions} from "../actions/LabelActions";
+import {LineRenderEngine} from "../render/LineRenderEngine";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -26,8 +27,16 @@ export class EditorContext extends BaseContext {
         {
             keyCombo: ["Escape"],
             action: (event: KeyboardEvent) => {
-                if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.POLYGON)
-                    (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                if (EditorModel.supportRenderingEngine) {
+                    switch (EditorModel.supportRenderingEngine.labelType) {
+                        case LabelType.POLYGON:
+                            (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                            break;
+                        case LabelType.LINE:
+                            (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
+                            break;
+                    }
+                }
                 EditorActions.fullRender();
             }
         },

@@ -63,7 +63,8 @@ class ImagesList extends React.Component<IProps, IState> {
             (this.props.activeLabelType === LabelType.POINT &&
                 this.props.imagesData[index].labelPoints
                     .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED).length > 0) ||
-            (this.props.activeLabelType === LabelType.POLYGON && this.props.imagesData[index].labelPolygons.length > 0)
+            (this.props.activeLabelType === LabelType.POLYGON && this.props.imagesData[index].labelPolygons.length > 0) ||
+            (this.props.activeLabelType === LabelType.LINE && this.props.imagesData[index].labelLines.length > 0)
     };
 
     private onClickHandler = (index: number) => {

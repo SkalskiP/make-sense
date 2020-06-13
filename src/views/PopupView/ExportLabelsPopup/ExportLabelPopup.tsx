@@ -14,6 +14,8 @@ import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
 import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
 import {PopupActions} from "../../../logic/actions/PopupActions";
+import {LineExportFormatData} from "../../../data/export/LineExportFormatData";
+import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
 
 const ExportLabelPopup: React.FC = () => {
     const [exportLabelType, setExportLabelType] = useState(LabelType.RECTANGLE);
@@ -27,6 +29,9 @@ const ExportLabelPopup: React.FC = () => {
                 break;
             case LabelType.POINT:
                 PointLabelsExporter.export(exportFormatType);
+                break;
+            case LabelType.LINE:
+                LineLabelsExporter.export(exportFormatType);
                 break;
             case LabelType.POLYGON:
                 PolygonLabelsExporter.export(exportFormatType);
@@ -92,6 +97,17 @@ const ExportLabelPopup: React.FC = () => {
                     isActive={exportLabelType === LabelType.POINT}
                 />
                 <ImageButton
+                    image={"ico/line.png"}
+                    imageAlt={"line"}
+                    buttonSize={{width: 40, height:40}}
+                    padding={20}
+                    onClick={() => {
+                        setExportLabelType(LabelType.LINE);
+                        setExportFormatType(null);
+                    }}
+                    isActive={exportLabelType === LabelType.LINE}
+                />
+                <ImageButton
                     image={"ico/polygon.png"}
                     imageAlt={"polygon"}
                     buttonSize={{width: 40, height:40}}
@@ -110,6 +126,7 @@ const ExportLabelPopup: React.FC = () => {
                 <div className="Options">
                     {exportLabelType === LabelType.RECTANGLE && getOptions(RectExportFormatData)}
                     {exportLabelType === LabelType.POINT && getOptions(PointExportFormatData)}
+                    {exportLabelType === LabelType.LINE && getOptions(LineExportFormatData)}
                     {exportLabelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
                 </div>
             </div>

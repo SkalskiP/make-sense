@@ -17,6 +17,7 @@ import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
 import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
 import {EventType} from "../../../../data/enums/EventType";
+import LineLabelsList from "../LineLabelsList/LineLabelsList";
 
 interface IProps {
     activeImageIndex:number,
@@ -50,6 +51,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             [
                 LabelType.RECTANGLE,
                 LabelType.POINT,
+                LabelType.LINE,
                 LabelType.POLYGON
             ];
 
@@ -139,6 +141,13 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         imageData={imagesData[activeImageIndex]}
                     />}
                     {labelType === LabelType.POINT && <PointLabelsList
+                        size={{
+                            width: size.width - 20,
+                            height: activeTabContentHeight - 20
+                        }}
+                        imageData={imagesData[activeImageIndex]}
+                    />}
+                    {labelType === LabelType.LINE && <LineLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20
