@@ -63,7 +63,7 @@ export class RectLabelsExporter {
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelFields = [
                 findIndex(labelNames, {id: labelRect.labelId}).toString(),
-                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6) .toString(),
+                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6).toString(),
                 ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6).toString(),
                 (labelRect.rect.width / image.width).toFixed(6).toString(),
                 (labelRect.rect.height / image.height).toFixed(6).toString()
