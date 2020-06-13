@@ -47,37 +47,26 @@ export class LineRenderEngine extends BaseRenderEngine {
     public mouseDownHandler(data: EditorData): void {
         const isMouseOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
+        const anchorTypeUnderMouse = this.getAnchorTypeUnderMouse(data);
+        const labelLineUnderMouse: LabelLine = this.getLineUnderMouse(data);
 
         if (isMouseOverCanvas) {
-            const anchorTypeUnderMouse = this.getAnchorTypeUnderMouse(data);
-            const labelLineUnderMouse: LabelLine = this.getLineUnderMouse(data);
-
             if (!!anchorTypeUnderMouse && !this.isResizeInProgress()) {
                 const labelLine: LabelLine = this.getLineUnderMouse(data);
-                this.startExistingLabelResize(labelLine.id, anchorTypeUnderMouse)
+                this.startExistingLabelUpdate(labelLine.id, anchorTypeUnderMouse)
             } else if (!!labelLineUnderMouse) {
                 store.dispatch(updateActiveLabelId(labelLineUnderMouse.id));
-            } else if (!this.isInProgress()) {
-                if (isMouseOverImage) {
-                    this.lineCreationStartPoint = RenderEngineUtil.setPointBetweenPixels(data.mousePositionOnViewPortContent)
-                    EditorActions.setViewPortActionsDisabledStatus(true);
-                }
+            } else if (!this.isInProgress() && isMouseOverImage) {
+                this.startNewLabelCreation(data)
             } else {
-                const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(
-                    data.mousePositionOnViewPortContent, data.viewPortContentImageRect
-                );
-                const line = {start: this.lineCreationStartPoint, end: mousePositionSnapped}
-                const lineOnImage = RenderEngineUtil.transferLineFromViewPortContentToImage(line, data)
-                this.addLineLabel(lineOnImage)
-                this.lineCreationStartPoint = null
-                EditorActions.setViewPortActionsDisabledStatus(false);
+                this.finishNewLabelCreation(data);
             }
         }
     }
 
     public mouseUpHandler(data: EditorData): void {
         if (this.isResizeInProgress()) {
-            this.endExistingLabelResize(data)
+            this.endExistingLabelUpdate(data)
         }
     }
 
@@ -201,31 +190,48 @@ export class LineRenderEngine extends BaseRenderEngine {
     // CREATION
     // =================================================================================================================
 
-    private addLineLabel = (line: ILine) => {
+    private startNewLabelCreation = (data: EditorData) => {
+        this.lineCreationStartPoint = RenderEngineUtil.setPointBetweenPixels(data.mousePositionOnViewPortContent)
+        EditorActions.setViewPortActionsDisabledStatus(true);
+    }
+
+    private finishNewLabelCreation = (data: EditorData) => {
+        const mousePositionOnCanvasSnapped: IPoint = RectUtil.snapPointToRect(
+            data.mousePositionOnViewPortContent, data.viewPortContentImageRect
+        );
+        const lineOnCanvas = {start: this.lineCreationStartPoint, end: mousePositionOnCanvasSnapped}
+        const lineOnImage = RenderEngineUtil.transferLineFromViewPortContentToImage(lineOnCanvas, data);
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelLine: LabelLine = {
             id: uuidv1(),
             labelId: activeLabelId,
-            line
+            line: lineOnImage
         };
         imageData.labelLines.push(labelLine);
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));
         store.dispatch(updateActiveLabelId(labelLine.id));
+        this.lineCreationStartPoint = null
+        EditorActions.setViewPortActionsDisabledStatus(false);
     };
+
+    public cancelLabelCreation() {
+        this.lineCreationStartPoint = null
+        EditorActions.setViewPortActionsDisabledStatus(false);
+    }
 
     // =================================================================================================================
     // UPDATE
     // =================================================================================================================
 
-    private startExistingLabelResize(labelId: string, anchorType: LineAnchorType) {
+    private startExistingLabelUpdate(labelId: string, anchorType: LineAnchorType) {
         store.dispatch(updateActiveLabelId(labelId));
         this.lineUpdateAnchorType = anchorType;
         EditorActions.setViewPortActionsDisabledStatus(true);
     }
 
-    private endExistingLabelResize(data: EditorData) {
+    private endExistingLabelUpdate(data: EditorData) {
         this.applyUpdateToLineLabel(data);
         this.lineUpdateAnchorType = null;
         EditorActions.setViewPortActionsDisabledStatus(false);

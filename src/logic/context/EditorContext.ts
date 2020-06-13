@@ -10,6 +10,7 @@ import {ViewPortActions} from "../actions/ViewPortActions";
 import {Direction} from "../../data/enums/Direction";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {LabelActions} from "../actions/LabelActions";
+import {LineRenderEngine} from "../render/LineRenderEngine";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -28,6 +29,8 @@ export class EditorContext extends BaseContext {
             action: (event: KeyboardEvent) => {
                 if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.POLYGON)
                     (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                else if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.LINE)
+                    (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
                 EditorActions.fullRender();
             }
         },
