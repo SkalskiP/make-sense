@@ -15,17 +15,24 @@ import {ContextManager} from "../../../logic/context/ContextManager";
 import {ContextType} from "../../../data/enums/ContextType";
 import EditorBottomNavigationBar from "../EditorBottomNavigationBar/EditorBottomNavigationBar";
 import EditorTopNavigationBar from "../EditorTopNavigationBar/EditorTopNavigationBar";
-import {LabelType} from "../../../data/enums/LabelType";
+import {ProjectType} from "../../../data/enums/ProjectType";
 
 interface IProps {
     windowSize: ISize;
     activeImageIndex: number;
     imagesData: ImageData[];
     activeContext: ContextType;
-    activeLabelType: LabelType;
+    projectType: ProjectType;
 }
 
-const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, imagesData, activeContext}) => {
+const EditorContainer: React.FC<IProps> = (
+    {
+        windowSize,
+        activeImageIndex,
+        imagesData,
+        activeContext,
+        projectType
+    }) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
 
@@ -105,7 +112,7 @@ const EditorContainer: React.FC<IProps> = ({windowSize, activeImageIndex, images
             <div className="EditorWrapper"
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
             >
-                <EditorTopNavigationBar/>
+                {projectType === ProjectType.OBJECT_DETECTION && <EditorTopNavigationBar/>}
                 <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
@@ -132,7 +139,7 @@ const mapStateToProps = (state: AppState) => ({
     activeImageIndex: state.labels.activeImageIndex,
     imagesData: state.labels.imagesData,
     activeContext: state.general.activeContext,
-    activeLabelType: state.labels.activeLabelType
+    projectType: state.general.projectData.type
 });
 
 export default connect(

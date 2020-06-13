@@ -14,14 +14,22 @@ import {LabelName} from "../../../store/labels/types";
 import {LabelUtil} from "../../../utils/LabelUtil";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {LabelActions} from "../../../logic/actions/LabelActions";
+import {ProjectType} from "../../../data/enums/ProjectType";
 
 interface IProps {
+    projectType: ProjectType;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateLabelNames: (labels: LabelName[]) => any;
     isUpdate: boolean;
 }
 
-const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLabelNames, isUpdate}) => {
+const InsertLabelNamesPopup: React.FC<IProps> = (
+    {
+        projectType,
+        updateActivePopupType,
+        updateLabelNames,
+        isUpdate
+    }) => {
     const initialLabels = LabelUtil.convertLabelNamesListToMap(LabelsSelector.getLabelNames());
     const [labelNames, setLabelNames] = useState(initialLabels);
 
@@ -64,7 +72,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateL
         if (labelNamesList.length > 0) {
             updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
         }
-        updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
+
+        if (projectType === ProjectType.OBJECT_DETECTION)
+            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
+        else
+            updateActivePopupType(null);
     };
 
     const onUpdateAccept = () => {
@@ -152,7 +164,9 @@ const mapDispatchToProps = {
     updateLabelNames
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    projectType: state.general.projectData.type
+});
 
 export default connect(
     mapStateToProps,
