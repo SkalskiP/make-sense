@@ -1,6 +1,6 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelLine, LabelName, LabelPoint} from "../../store/labels/types";
+import {ImageData, LabelLine, LabelName} from "../../store/labels/types";
 import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {ImageRepository} from "../imageRepository/ImageRepository";
