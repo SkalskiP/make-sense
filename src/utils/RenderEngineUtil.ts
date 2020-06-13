@@ -7,6 +7,8 @@ import {IPoint} from "../interfaces/IPoint";
 import {PointUtil} from "./PointUtil";
 import {IRect} from "../interfaces/IRect";
 import {ILine} from "../interfaces/ILine";
+import {LineUtil} from "./LineUtil";
+import {ISize} from "../interfaces/ISize";
 
 export class RenderEngineUtil {
     public static calculateImageScale(data: EditorData): number {
@@ -104,5 +106,21 @@ export class RenderEngineUtil {
             width: bottomRightBetweenPixels.x - topLeftBetweenPixels.x,
             height: bottomRightBetweenPixels.y - topLeftBetweenPixels.y
         }
+    }
+
+    public static isMouseOverLine(mouse: IPoint, l: ILine, radius: number): boolean {
+        const minX: number = Math.min(l.start.x, l.end.x);
+        const maxX: number = Math.max(l.start.x, l.end.x);
+        const minY: number = Math.min(l.start.y, l.end.y);
+        const maxY: number = Math.max(l.start.y, l.end.y);
+
+        return (minX - radius <= mouse.x && maxX + radius >= mouse.x) &&
+            (minY - radius <= mouse.y && maxY + radius >= mouse.y) &&
+            LineUtil.getDistanceFromLine(l, mouse) < radius;
+    }
+
+    public static isMouseOverAnchor(mouse: IPoint, anchor: IPoint, size: ISize): boolean {
+        if (!mouse || !anchor) return null;
+        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, size), mouse);
     }
 }

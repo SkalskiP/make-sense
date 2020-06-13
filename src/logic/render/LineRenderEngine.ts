@@ -7,7 +7,12 @@ import {ImageData, LabelLine} from "../../store/labels/types";
 import {IPoint} from "../../interfaces/IPoint";
 import {RectUtil} from "../../utils/RectUtil";
 import {store} from "../../index";
-import {updateActiveLabelId, updateFirstLabelCreatedFlag, updateImageDataById} from "../../store/labels/actionCreators";
+import {
+    updateActiveLabelId,
+    updateFirstLabelCreatedFlag,
+    updateHighlightedLabelId,
+    updateImageDataById
+} from "../../store/labels/actionCreators";
 import {EditorActions} from "../actions/EditorActions";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {DrawUtil} from "../../utils/DrawUtil";
@@ -66,7 +71,16 @@ export class LineRenderEngine extends BaseRenderEngine {
     public mouseMoveHandler(data: EditorData): void {
         const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         if (isOverImage) {
-            console.log("MOUSE MOVE")
+            const labelLine: LabelLine = this.getLineUnderMouse(data)
+            if (!!labelLine) {
+                if (LabelsSelector.getHighlightedLabelId() !== labelLine.id) {
+                    store.dispatch(updateHighlightedLabelId(labelLine.id))
+                }
+            } else {
+                if (LabelsSelector.getHighlightedLabelId() !== null) {
+                    store.dispatch(updateHighlightedLabelId(null));
+                }
+            }
         }
     }
 
@@ -130,12 +144,16 @@ export class LineRenderEngine extends BaseRenderEngine {
     }
 
     // =================================================================================================================
-    // HELPERS
+    // VALIDATORS
     // =================================================================================================================
 
     public isInProgress(): boolean {
         return !!this.startLinePoint
     }
+
+    // =================================================================================================================
+    // CREATION
+    // =================================================================================================================
 
     private addLineLabel = (line: ILine) => {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
@@ -150,4 +168,22 @@ export class LineRenderEngine extends BaseRenderEngine {
         store.dispatch(updateFirstLabelCreatedFlag(true));
         store.dispatch(updateActiveLabelId(labelLine.id));
     };
+
+    // =================================================================================================================
+    // GETTERS
+    // =================================================================================================================
+
+    private getLineUnderMouse(data: EditorData): LabelLine {
+        const labelLines: LabelLine[] = LabelsSelector.getActiveImageData().labelLines;
+        for (let i = 0; i < labelLines.length; i++) {
+            const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLines[i].line, data);
+            const mouseOverLine = RenderEngineUtil.isMouseOverLine(
+                data.mousePositionOnViewPortContent,
+                lineOnCanvas,
+                this.config.anchorHoverSize.width / 2
+            )
+            if (mouseOverLine) return labelLines[i]
+        }
+        return null;
+    }
 }
