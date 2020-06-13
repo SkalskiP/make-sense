@@ -50,9 +50,13 @@ export class LineRenderEngine extends BaseRenderEngine {
 
         if (isMouseOverCanvas) {
             const anchorTypeUnderMouse = this.getAnchorTypeUnderMouse(data);
+            const labelLineUnderMouse: LabelLine = this.getLineUnderMouse(data);
+
             if (!!anchorTypeUnderMouse && !this.isResizeInProgress()) {
                 const labelLine: LabelLine = this.getLineUnderMouse(data);
                 this.startExistingLabelResize(labelLine.id, anchorTypeUnderMouse)
+            } else if (!!labelLineUnderMouse) {
+                store.dispatch(updateActiveLabelId(labelLineUnderMouse.id));
             } else if (!this.isInProgress()) {
                 if (isMouseOverImage) {
                     this.lineCreationStartPoint = RenderEngineUtil.setPointBetweenPixels(data.mousePositionOnViewPortContent)
@@ -146,6 +150,8 @@ export class LineRenderEngine extends BaseRenderEngine {
             if (isMouseOverCanvas) {
                 const anchorTypeUnderMouse = this.getAnchorTypeUnderMouse(data);
                 if (!this.isInProgress() && !!anchorTypeUnderMouse) {
+                    store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
+                } else if (this.isResizeInProgress()) {
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 } else {
                     RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
