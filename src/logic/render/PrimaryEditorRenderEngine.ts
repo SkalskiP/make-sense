@@ -3,8 +3,14 @@ import {BaseRenderEngine} from "./BaseRenderEngine";
 import {EditorData} from "../../data/EditorData";
 import {EditorModel} from "../../staticModels/EditorModel";
 import {ViewPortActions} from "../actions/ViewPortActions";
+import {DrawUtil} from "../../utils/DrawUtil";
+import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
+import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
+import {IPoint} from "../../interfaces/IPoint";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
+    private config: RenderEngineConfig = new RenderEngineConfig();
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
@@ -23,7 +29,37 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public render(data: EditorData): void {
-        EditorModel.primaryRenderingEngine.drawImage(EditorModel.image, ViewPortActions.calculateViewPortContentImageRect());
+        this.drawImage(EditorModel.image, ViewPortActions.calculateViewPortContentImageRect());
+        this.renderCursor(data);
+    }
+
+    public renderCursor(data: EditorData): void {
+        const drawLine = (startPoint: IPoint, endPoint: IPoint) => {
+            DrawUtil.drawLine(this.canvas, startPoint, endPoint, this.config.crossHairLineColor, 1)
+        }
+
+        if (!this.canvas || !GeneralSelector.getCrossHairVisibleStatus()) return;
+
+        const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
+        if (isMouseOverCanvas) {
+            const mouse = RenderEngineUtil.setPointBetweenPixels(data.mousePositionOnViewPortContent);
+            drawLine(
+                {x: mouse.x, y: 0},
+                {x: mouse.x - 1, y: mouse.y - this.config.crossHairPadding}
+            )
+            drawLine(
+                {x: mouse.x, y: mouse.y + this.config.crossHairPadding},
+                {x: mouse.x - 1, y: data.viewPortContentSize.height}
+            )
+            drawLine(
+                {x: 0, y: mouse.y},
+                {x: mouse.x - this.config.crossHairPadding, y: mouse.y - 1}
+            )
+            drawLine(
+                {x: mouse.x + this.config.crossHairPadding, y: mouse.y},
+                {x: data.viewPortContentSize.width, y: mouse.y - 1}
+            )
+        }
     }
 
     public drawImage(image: HTMLImageElement, imageRect: IRect) {

@@ -10,6 +10,7 @@ const initialState: GeneralState = {
     activeContext: null,
     preventCustomCursor: false,
     imageDragMode: false,
+    crossHairVisible: true,
     projectData: {
         type: null,
         name: "my-project-name",
@@ -56,6 +57,12 @@ export function generalReducer(
             return {
                 ...state,
                 imageDragMode: action.payload.imageDragMode
+            }
+        }
+        case Action.UPDATE_CROSS_HAIR_VISIBLE_STATUS: {
+            return {
+                ...state,
+                crossHairVisible: action.payload.crossHairVisible
             }
         }
         case Action.UPDATE_PROJECT_DATA: {
