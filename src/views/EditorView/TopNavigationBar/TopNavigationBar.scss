@@ -19,7 +19,7 @@
     color: white;
     align-self: stretch;
     flex: 1;
-
+    height: calc(#{$topNavigationBarHeight} - #{$stateBarHeight});
     display: flex;
     flex-wrap: nowrap;
     justify-content: space-between;
