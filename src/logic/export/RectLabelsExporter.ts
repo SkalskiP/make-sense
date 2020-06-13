@@ -178,14 +178,14 @@ export class RectLabelsExporter {
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelName: LabelName = findLast(labelNames, {id: labelRect.labelId});
             const labelFields = !!labelName ? [
+                imageData.fileData.name,
+                image.width + "",
+                image.height + "",
                 labelName.name,
                 Math.round(labelRect.rect.x) + "",
                 Math.round(labelRect.rect.y) + "",
-                Math.round(labelRect.rect.width) + "",
-                Math.round(labelRect.rect.height) + "",
-                imageData.fileData.name,
-                image.width + "",
-                image.height + ""
+                Math.round(labelRect.rect.x + labelRect.rect.width) + "",
+                Math.round(labelRect.rect.y + labelRect.rect.height) + "",
             ] : [];
             return labelFields.join(",")
         });

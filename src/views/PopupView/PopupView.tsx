@@ -4,6 +4,7 @@ import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
+import ImportAnnotationsPopup from "./ImportAnnotationsPopup/ImportAnnotationsPopup";
 import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
@@ -23,6 +24,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
         switch (activePopupType) {
             case PopupWindowType.LOAD_LABEL_NAMES:
                 return <LoadLabelsPopup/>;
+            case PopupWindowType.IMPORT_ANNOTATIONS:
+                return <ImportAnnotationsPopup/>;
             case PopupWindowType.EXPORT_LABELS:
                 return <ExportLabelPopup/>;
             case PopupWindowType.INSERT_LABEL_NAMES:

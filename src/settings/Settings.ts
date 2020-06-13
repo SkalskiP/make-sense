@@ -32,6 +32,7 @@ export class Settings {
 
     public static readonly CLOSEABLE_POPUPS: PopupWindowType[] = [
         PopupWindowType.LOAD_IMAGES,
+        PopupWindowType.IMPORT_ANNOTATIONS,
         PopupWindowType.EXPORT_LABELS,
         PopupWindowType.EXIT_PROJECT,
         PopupWindowType.UPDATE_LABEL_NAMES
