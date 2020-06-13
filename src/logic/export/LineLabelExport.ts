@@ -44,13 +44,13 @@ export class LineLabelsExporter {
             const labelName: LabelName = findLast(labelNames, {id: labelLine.labelId});
             const labelFields = !!labelName ? [
                 labelName.name,
-                Math.round(labelLine.line.start.x) + "",
-                Math.round(labelLine.line.start.y) + "",
-                Math.round(labelLine.line.end.x) + "",
-                Math.round(labelLine.line.end.y) + "",
+                Math.round(labelLine.line.start.x).toString(),
+                Math.round(labelLine.line.start.y).toString(),
+                Math.round(labelLine.line.end.x).toString(),
+                Math.round(labelLine.line.end.y).toString(),
                 imageData.fileData.name,
-                image.width + "",
-                image.height + ""
+                image.width.toString(),
+                image.height.toString()
             ] : [];
             return labelFields.join(",")
         });

@@ -27,10 +27,16 @@ export class EditorContext extends BaseContext {
         {
             keyCombo: ["Escape"],
             action: (event: KeyboardEvent) => {
-                if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.POLYGON)
-                    (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
-                else if (EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.labelType === LabelType.LINE)
-                    (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
+                if (EditorModel.supportRenderingEngine) {
+                    switch (EditorModel.supportRenderingEngine.labelType) {
+                        case LabelType.POLYGON:
+                            (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                            break;
+                        case LabelType.LINE:
+                            (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
+                            break;
+                    }
+                }
                 EditorActions.fullRender();
             }
         },

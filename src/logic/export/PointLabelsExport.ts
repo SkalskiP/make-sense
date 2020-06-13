@@ -44,11 +44,11 @@ export class PointLabelsExporter {
             const labelName: LabelName = findLast(labelNames, {id: labelPoint.labelId});
             const labelFields = !!labelName ? [
                 labelName.name,
-                Math.round(labelPoint.point.x) + "",
-                Math.round(labelPoint.point.y) + "",
+                Math.round(labelPoint.point.x).toString(),
+                Math.round(labelPoint.point.y).toString(),
                 imageData.fileData.name,
-                image.width + "",
-                image.height + ""
+                image.width.toString(),
+                image.height.toString()
             ] : [];
             return labelFields.join(",")
         });

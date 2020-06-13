@@ -63,10 +63,10 @@ export class RectLabelsExporter {
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelFields = [
                 findIndex(labelNames, {id: labelRect.labelId}).toString(),
-                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6) + "",
-                ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6) + "",
-                (labelRect.rect.width / image.width).toFixed(6) + "",
-                (labelRect.rect.height / image.height).toFixed(6) + ""
+                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6) .toString(),
+                ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6).toString(),
+                (labelRect.rect.width / image.width).toFixed(6).toString(),
+                (labelRect.rect.height / image.height).toFixed(6).toString()
             ];
             return labelFields.join(" ")
         });
@@ -179,13 +179,13 @@ export class RectLabelsExporter {
             const labelName: LabelName = findLast(labelNames, {id: labelRect.labelId});
             const labelFields = !!labelName ? [
                 labelName.name,
-                Math.round(labelRect.rect.x) + "",
-                Math.round(labelRect.rect.y) + "",
-                Math.round(labelRect.rect.width) + "",
-                Math.round(labelRect.rect.height) + "",
+                Math.round(labelRect.rect.x).toString(),
+                Math.round(labelRect.rect.y).toString(),
+                Math.round(labelRect.rect.width).toString(),
+                Math.round(labelRect.rect.height).toString(),
                 imageData.fileData.name,
-                image.width + "",
-                image.height + ""
+                image.width.toString(),
+                image.height.toString()
             ] : [];
             return labelFields.join(",")
         });
