@@ -21,7 +21,7 @@ export const EditorFeatureData: IEditorFeature[] = [
         imageAlt: "private",
     },
     {
-        displayText: "Support multiple label types - bounding box, polygon, point",
+        displayText: "Support multiple label types - rects, lines, points and polygons",
         imageSrc: "img/labels.png",
         imageAlt: "labels",
     },
