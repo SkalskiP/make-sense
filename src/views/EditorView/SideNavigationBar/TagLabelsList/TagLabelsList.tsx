@@ -1,7 +1,6 @@
 import {ISize} from "../../../../interfaces/ISize";
 import {ImageData, LabelName} from "../../../../store/labels/types";
 import React from "react";
-import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
 import Scrollbars from "react-custom-scrollbars";
 import {updateImageDataById} from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
@@ -90,10 +89,17 @@ const TagLabelsList: React.FC<IProps> = (
             style={listStyle}
         >
             {labelNames.length === 0 ?
-                <EmptyLabelList
-                    labelBefore={"Mark the first polygon"}
-                    labelAfter={"No labels created for this image"}
-                /> :
+                <div
+                    className="EmptyLabelList"
+                    onClick={addNewOnClick}
+                >
+                    <img
+                        draggable={false}
+                        alt={"upload"}
+                        src={"img/type-writer.png"}
+                    />
+                    <p className="extraBold">Your label list is empty</p>
+                </div> :
                 <Scrollbars>
                     <div
                         className="TagLabelsListContent"
