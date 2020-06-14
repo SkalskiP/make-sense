@@ -16,7 +16,7 @@ export const LabelToolkitData: ILabelToolkit[] = [
     },
     {
         labelType: LabelType.RECTANGLE,
-        headerText: "Bounding box",
+        headerText: "Rect",
         imageSrc: "ico/rectangle.png",
         imageAlt: "rectangle",
     },
