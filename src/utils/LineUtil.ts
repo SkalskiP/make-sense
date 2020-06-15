@@ -17,4 +17,8 @@ export class LineUtil {
             y: (l.start.y + l.end.y) / 2
         }
     }
+
+    public static getPoints(l: ILine): IPoint[] {
+        return [l.start, l.end]
+    }
 }

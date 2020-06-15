@@ -2,5 +2,6 @@ export enum LabelType {
     NAME = "NAME",
     POINT = "POINT",
     RECTANGLE = "RECTANGLE",
-    POLYGON = "POLYGON"
+    POLYGON = "POLYGON",
+    LINE = "LINE"
 }

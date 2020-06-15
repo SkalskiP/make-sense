@@ -19,6 +19,7 @@ import {ImageUtil} from "../../utils/ImageUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {ViewPortHelper} from "../helpers/ViewPortHelper";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
+import {LineRenderEngine} from "../render/LineRenderEngine";
 
 export class EditorActions {
 
@@ -33,6 +34,9 @@ export class EditorActions {
                 break;
             case LabelType.POINT:
                 EditorModel.supportRenderingEngine = new PointRenderEngine(EditorModel.canvas);
+                break;
+            case LabelType.LINE:
+                EditorModel.supportRenderingEngine = new LineRenderEngine(EditorModel.canvas);
                 break;
             case LabelType.POLYGON:
                 EditorModel.supportRenderingEngine = new PolygonRenderEngine(EditorModel.canvas);

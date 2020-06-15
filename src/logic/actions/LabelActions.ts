@@ -1,5 +1,5 @@
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
+import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
 import {filter} from "lodash";
 import {store} from "../../index";
 import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
@@ -43,6 +43,17 @@ export class LabelActions {
             ...imageData,
             labelPoints: filter(imageData.labelPoints, (currentLabel: LabelPoint) => {
                 return currentLabel.id !== labelPointId;
+            })
+        };
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
+    }
+
+    public static deleteLineLabelById(imageId: string, labelLineId: string) {
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+        const newImageData = {
+            ...imageData,
+            labelLines: filter(imageData.labelLines, (currentLabel: LabelLine) => {
+                return currentLabel.id !== labelLineId;
             })
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));

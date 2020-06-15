@@ -95,7 +95,7 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
         >
             {imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length === 0 ?
                 <EmptyLabelList
-                    labelBefore={"Draw the first rect"}
+                    labelBefore={"Draw the first bounding box"}
                     labelAfter={"No labels created for this image"}
                 /> :
                 <Scrollbars>

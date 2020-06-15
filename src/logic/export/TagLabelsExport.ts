@@ -1,16 +1,16 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
-import {saveAs} from "file-saver";
-import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
+import {ImageData, LabelName} from "../../store/labels/types";
+import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
+import {ImageRepository} from "../imageRepository/ImageRepository";
 import {findLast} from "lodash";
 
-export class PointLabelsExporter {
+export class TagLabelsExporter {
     public static export(exportFormatType: ExportFormatType): void {
         switch (exportFormatType) {
             case ExportFormatType.CSV:
-                PointLabelsExporter.exportAsCSV();
+                TagLabelsExporter.exportAsCSV();
                 break;
             default:
                 return;
@@ -20,7 +20,7 @@ export class PointLabelsExporter {
     private static exportAsCSV(): void {
         const content: string = LabelsSelector.getImagesData()
             .map((imageData: ImageData) => {
-                return PointLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
+                return TagLabelsExporter.wrapLineLabelsIntoCSV(imageData)})
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
@@ -34,24 +34,20 @@ export class PointLabelsExporter {
         }
     }
 
-    private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
-        if (imageData.labelPoints.length === 0 || !imageData.loadStatus)
+    private static wrapLineLabelsIntoCSV(imageData: ImageData): string {
+        if (imageData.labelTagId === null || !imageData.loadStatus)
             return null;
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
-        const labelRectsString: string[] = imageData.labelPoints.map((labelPoint: LabelPoint) => {
-            const labelName: LabelName = findLast(labelNames, {id: labelPoint.labelId});
-            const labelFields = !!labelName ? [
-                labelName.name,
-                Math.round(labelPoint.point.x).toString(),
-                Math.round(labelPoint.point.y).toString(),
-                imageData.fileData.name,
-                image.width.toString(),
-                image.height.toString()
-            ] : [];
-            return labelFields.join(",")
-        });
-        return labelRectsString.join("\n");
+        const labelName: LabelName = findLast(labelNames, {id: imageData.labelTagId});
+        const labelFields = !!labelName ? [
+            labelName.name,
+            imageData.fileData.name,
+            image.width.toString(),
+            image.height.toString()
+        ] : [];
+        return labelFields.join(",")
+
     }
 }

@@ -69,7 +69,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
             if (this.isCreationInProgress()) {
-                const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnViewPortContent, this.activePath[0]);
+                const isMouseOverStartAnchor: boolean = RenderEngineUtil.isMouseOverAnchor(
+                    data.mousePositionOnViewPortContent, this.activePath[0], this.config.anchorSize);
                 if (isMouseOverStartAnchor) {
                     this.addLabelAndFinishCreation(data);
                 } else  {
@@ -123,7 +124,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
                     for (let j = 0; j < linesOnCanvas.length; j++) {
-                        if (this.isMouseOverLine(data.mousePositionOnViewPortContent, linesOnCanvas[j])) {
+                        const mouseOverLine = RenderEngineUtil.isMouseOverLine(
+                            data.mousePositionOnViewPortContent,
+                            linesOnCanvas[j],
+                            this.config.anchorHoverSize.width / 2
+                        )
+                        if (mouseOverLine) {
                             this.suggestedAnchorPositionOnCanvas = LineUtil.getCenter(linesOnCanvas[j]);
                             this.suggestedAnchorIndexInPolygon = j + 1;
                             break;
@@ -396,18 +402,6 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, this.config.anchorSize), mouse);
     }
 
-    private isMouseOverLine(mouse: IPoint, l: ILine): boolean {
-        const hoverReach: number = this.config.anchorHoverSize.width / 2;
-        const minX: number = Math.min(l.start.x, l.end.x);
-        const maxX: number = Math.max(l.start.x, l.end.x);
-        const minY: number = Math.min(l.start.y, l.end.y);
-        const maxY: number = Math.max(l.start.y, l.end.y);
-
-        return (minX - hoverReach <= mouse.x && maxX + hoverReach >= mouse.x) &&
-            (minY - hoverReach <= mouse.y && maxY + hoverReach >= mouse.y) &&
-            LineUtil.getDistanceFromLine(l, mouse) < hoverReach;
-    }
-
     // =================================================================================================================
     // MAPPERS
     // =================================================================================================================
@@ -435,7 +429,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
             for (let j = 0; j < linesOnCanvas.length; j++) {
-                if (this.isMouseOverLine(data.mousePositionOnViewPortContent, linesOnCanvas[j]))
+                const mouseOverLine = RenderEngineUtil.isMouseOverLine(
+                    data.mousePositionOnViewPortContent,
+                    linesOnCanvas[j],
+                    this.config.anchorHoverSize.width / 2
+                )
+                if (mouseOverLine)
                     return labelPolygons[i];
             }
             for (let j = 0; j < pathOnCanvas.length; j ++) {

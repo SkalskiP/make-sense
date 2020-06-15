@@ -34,8 +34,11 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
             labelPoints: [],
             labelRects: [],
             labelPolygons: [],
+            labelLines: [],
+            labelTagId: null,
             fileData: {} as File,
-            isVisitedByObjectDetector: true
+            isVisitedByObjectDetector: true,
+            isVisitedByPoseDetector: true
         };
         expect(PolygonLabelsExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
     });
@@ -69,8 +72,11 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                     ]
                 }
             ],
+            labelLines: [],
+            labelTags: [],
             fileData: {} as File,
-            isVisitedByObjectDetector: true
+            isVisitedByObjectDetector: true,
+            isVisitedByPoseDetector: true
         };
 
         const givenLabelNames: LabelName[] = [
@@ -138,8 +144,11 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                     ]
                 }
             ],
+            labelLines: [],
+            labelTags: [],
             fileData: {} as File,
-            isVisitedByObjectDetector: true
+            isVisitedByObjectDetector: true,
+            isVisitedByPoseDetector: true
         };
 
         const givenLabelNames: LabelName[] = [

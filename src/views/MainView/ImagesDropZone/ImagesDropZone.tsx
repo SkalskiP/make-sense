@@ -1,6 +1,6 @@
 import React from "react";
 import './ImagesDropZone.scss';
-import {useDropzone} from "react-dropzone";
+import {useDropzone,DropzoneOptions} from "react-dropzone";
 import {TextButton} from "../../Common/TextButton/TextButton";
 import {ImageData} from "../../../store/labels/types";
 import {connect} from "react-redux";
@@ -24,7 +24,7 @@ interface IProps {
 const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData, updateProjectData, updateActivePopupType, projectData}) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.IMAGE
-    });
+    } as DropzoneOptions);
 
     const startEditor = (projectType: ProjectType) => {
         if (acceptedFiles.length > 0) {
@@ -80,14 +80,14 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
             </div>
             <div className="DropZoneButtons">
                 <TextButton
-                    label={"Image recognition"}
-                    isDisabled={true}
-                    onClick={() => {}}
-                />
-                <TextButton
                     label={"Object Detection"}
                     isDisabled={!acceptedFiles.length}
                     onClick={() => startEditor(ProjectType.OBJECT_DETECTION)}
+                />
+                <TextButton
+                    label={"Image recognition"}
+                    isDisabled={!acceptedFiles.length}
+                    onClick={() => startEditor(ProjectType.IMAGE_RECOGNITION)}
                 />
             </div>
         </div>

@@ -16,7 +16,7 @@ export const LabelToolkitData: ILabelToolkit[] = [
     },
     {
         labelType: LabelType.RECTANGLE,
-        headerText: "Bounding box",
+        headerText: "Rect",
         imageSrc: "ico/rectangle.png",
         imageAlt: "rectangle",
     },
@@ -25,6 +25,12 @@ export const LabelToolkitData: ILabelToolkit[] = [
         headerText: "Point",
         imageSrc: "ico/point.png",
         imageAlt: "point",
+    },
+    {
+        labelType: LabelType.LINE,
+        headerText: "Line",
+        imageSrc: "ico/line.png",
+        imageAlt: "line",
     },
     {
         labelType: LabelType.POLYGON,

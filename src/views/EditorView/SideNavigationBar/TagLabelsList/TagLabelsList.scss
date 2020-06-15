@@ -1,0 +1,89 @@
+@import '../../../../settings/Settings';
+
+.TagLabelsList {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .EmptyLabelList {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    width: 150px;
+    color: white;
+    font-size: 16px;
+    user-select: none;
+
+    > img {
+      filter: brightness(0) invert(1);
+      max-width: 80px;
+      max-height: 80px;
+      margin-bottom: 20px;
+      user-select: none;
+    }
+
+    > p {
+      &.extraBold {
+        font-size: 16px;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .TagLabelsListContent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    flex: 1 1 auto;
+  }
+
+  .TagItem {
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding: 5px 20px;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    text-decoration: none;
+    color: white;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    &.active {
+      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+      background-color: var(--leading-color);
+    }
+  }
+
+  .ImageButton {
+    margin: 0 0 10px 0;
+    border-radius: 3px;
+    background-color: rgba(0, 0, 0, 0.2);
+
+    img {
+      filter: brightness(0) invert(1);
+      user-select: none;
+      width: 16px;
+      height: 16px;
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+}
