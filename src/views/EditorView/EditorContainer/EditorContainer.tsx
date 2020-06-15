@@ -108,19 +108,25 @@ const EditorContainer: React.FC<IProps> = (
                 isWithContext={activeContext === ContextType.LEFT_NAVBAR}
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
+                key="left-side-navigation-bar"
             />
             <div className="EditorWrapper"
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
+                 key="editor-wrapper"
             >
-                {projectType === ProjectType.OBJECT_DETECTION && <EditorTopNavigationBar/>}
+                {projectType === ProjectType.OBJECT_DETECTION && <EditorTopNavigationBar
+                    key="editor-top-navigation-bar"
+                />}
                 <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
+                    key="editor"
                 />
                 <EditorBottomNavigationBar
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
                     totalImageCount={imagesData.length}
+                    key="editor-bottom-navigation-bar"
                 />
             </div>
             <SideNavigationBar
@@ -129,6 +135,7 @@ const EditorContainer: React.FC<IProps> = (
                 isWithContext={activeContext === ContextType.RIGHT_NAVBAR}
                 renderCompanion={rightSideBarCompanionRender}
                 renderContent={rightSideBarRender}
+                key="right-side-navigation-bar"
             />
         </div>
     );

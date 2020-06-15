@@ -87,11 +87,13 @@ const TagLabelsList: React.FC<IProps> = (
         <div
             className="TagLabelsList"
             style={listStyle}
+            key="tag-labels-list"
         >
             {labelNames.length === 0 ?
                 <div
                     className="EmptyLabelList"
                     onClick={addNewOnClick}
+                    key="empty-label-list"
                 >
                     <img
                         draggable={false}
@@ -104,6 +106,7 @@ const TagLabelsList: React.FC<IProps> = (
                     <div
                         className="TagLabelsListContent"
                         style={listStyleContent}
+                        key="tag-labels-list-content"
                     >
                         {getChildren()}
                     </div>
