@@ -28,6 +28,10 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
         return currentCount + (currentImage.labelLines.length > 0 ? 1 : 0);
     }, 0);
 
+    const tagLabeledImages = imagesData.reduce((currentCount: number, currentImage: ImageData) => {
+        return currentCount + (currentImage.labelTagId !== null ? 1 : 0);
+    }, 0);
+
     const getProgress = () => {
         switch (activeLabelType) {
             case LabelType.POINT:
@@ -38,6 +42,8 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
                 return (100 * polygonLabeledImages) / imagesData.length;
             case LabelType.LINE:
                 return (100 * lineLabeledImages) / imagesData.length;
+            case LabelType.NAME:
+                return (100 * tagLabeledImages) / imagesData.length;
             default:
                 return 0;
         }

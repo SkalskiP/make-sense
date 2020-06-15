@@ -8,6 +8,7 @@ import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
 import {IPoint} from "../../interfaces/IPoint";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {ProjectType} from "../../data/enums/ProjectType";
 
 export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -38,7 +39,11 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
             DrawUtil.drawLine(this.canvas, startPoint, endPoint, this.config.crossHairLineColor, 1)
         }
 
-        if (!this.canvas || !GeneralSelector.getCrossHairVisibleStatus()) return;
+        const crossHairVisible = GeneralSelector.getCrossHairVisibleStatus();
+        const imageDragMode = GeneralSelector.getImageDragModeStatus();
+        const projectType: ProjectType = GeneralSelector.getProjectType();
+
+        if (!this.canvas || !crossHairVisible || imageDragMode || projectType === ProjectType.IMAGE_RECOGNITION) return;
 
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {

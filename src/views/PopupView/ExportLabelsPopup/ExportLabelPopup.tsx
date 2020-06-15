@@ -16,9 +16,15 @@ import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter
 import {PopupActions} from "../../../logic/actions/PopupActions";
 import {LineExportFormatData} from "../../../data/export/LineExportFormatData";
 import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
+import {TagExportFormatData} from "../../../data/export/TagExportFormatData";
+import {TagLabelsExporter} from "../../../logic/export/TagLabelsExport";
 
-const ExportLabelPopup: React.FC = () => {
-    const [exportLabelType, setExportLabelType] = useState(LabelType.RECTANGLE);
+interface IProps {
+    activeLabelType: LabelType
+}
+
+const ExportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
+    const [exportLabelType, setExportLabelType] = useState(activeLabelType);
     const [exportFormatType, setExportFormatType] = useState(null);
 
     const onAccept = () => {
@@ -35,6 +41,9 @@ const ExportLabelPopup: React.FC = () => {
                 break;
             case LabelType.POLYGON:
                 PolygonLabelsExporter.export(exportFormatType);
+                break;
+            case LabelType.NAME:
+                TagLabelsExporter.export(exportFormatType);
                 break;
         }
         PopupActions.close();
@@ -73,7 +82,7 @@ const ExportLabelPopup: React.FC = () => {
 
     const renderContent = () => {
         return(<div className="ExportLabelPopupContent">
-            <div className="LeftContainer">
+            {activeLabelType !== LabelType.NAME && <div className="LeftContainer">
                 <ImageButton
                     image={"ico/rectangle.png"}
                     imageAlt={"rectangle"}
@@ -118,7 +127,7 @@ const ExportLabelPopup: React.FC = () => {
                     }}
                     isActive={exportLabelType === LabelType.POLYGON}
                 />
-            </div>
+            </div>}
             <div className="RightContainer">
                 <div className="Message">
                     Select label type and the file format you would like to use for exporting labels.
@@ -128,6 +137,7 @@ const ExportLabelPopup: React.FC = () => {
                     {exportLabelType === LabelType.POINT && getOptions(PointExportFormatData)}
                     {exportLabelType === LabelType.LINE && getOptions(LineExportFormatData)}
                     {exportLabelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
+                    {exportLabelType === LabelType.NAME && getOptions(TagExportFormatData)}
                 </div>
             </div>
         </div>);
@@ -148,7 +158,7 @@ const ExportLabelPopup: React.FC = () => {
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    imagesData: state.labels.imagesData
+    activeLabelType: state.labels.activeLabelType
 });
 
 export default connect(
