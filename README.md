@@ -107,9 +107,9 @@ docker logs make_sense
 | **Polygon**   | ☐   | ✗    | ☐       | ✓        | ☐    | ☐          |
 
 **Table 2.** The matrix of supported labels export format, where:
-* ☑ - supported format
+* ✓ - supported format
 * ☐ - not yet supported format
-* ☒ - format does not make sense for a given label type  
+* ✗ - format does not make sense for a given label type  
 
 You can find examples of export files along with a description and schema on our [Wiki][7].
 
