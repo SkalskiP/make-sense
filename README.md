@@ -102,9 +102,9 @@ docker logs make_sense
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:----:|:----------:|
-| **Point**     | ☑   | ☒    | ☐       | ☐        | ☐    | ☒          |
-| **Rect**      | ☑   | ☑    | ☑       | ☐        | ☐    | ☒          |
-| **Polygon**   | ☐   | ☒    | ☐       | ☑        | ☐    | ☐          |
+| **Point**     | ✓   | ✗    | ☐       | ☐        | ☐    | ✗          |
+| **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐    | ✗          |
+| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ☐    | ☐          |
 
 **Table 2.** The matrix of supported labels export format, where:
 * ☑ - supported format
