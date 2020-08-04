@@ -124,7 +124,7 @@ Our application is being actively developed. Check out our plans for the near fu
 ## Tutorials
 
 <p align="center"> 
-    <img width="1000" src="https://github.com/SkalskiP/ILearnDeepLearning.py/edit/master/02_data_science_toolkit/02_yolo_object_detection/visualizations/object_detection_basketball.gif" alt="Object detection tutorial">
+    <img width="1000" src=".//examples/object_detection_basketball.gif" alt="Object detection tutorial">
 </p>
 
 **Figure 4.** Detection of players moving around the basketball court, based on <a href="https://research.google.com/youtube8m/">YouTube-8M</a> dataset.
