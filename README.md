@@ -121,6 +121,14 @@ We don't store your images, because we don't send them anywhere in the first pla
 
 Our application is being actively developed. Check out our plans for the near future on our [Wiki][6]. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
 
+## Tutorials
+
+<p align="center"> 
+    <img width="1000" src="https://github.com/SkalskiP/ILearnDeepLearning.py/edit/master/02_data_science_toolkit/02_yolo_object_detection/visualizations/object_detection_basketball.gif" alt="Object detection tutorial">
+</p>
+
+**Figure 4.** Detection of players moving around the basketball court, based on <a href="https://research.google.com/youtube8m/">YouTube-8M</a> dataset.
+
 ## Contribution
 
 Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pull requests](https://github.com/SkalskiP/make-sense/pulls).  
