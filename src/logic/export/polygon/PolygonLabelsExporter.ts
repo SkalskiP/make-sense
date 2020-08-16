@@ -1,10 +1,10 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {IPoint} from "../../interfaces/IPoint";
-import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../data/VGG/IVGG";
-import {ImageData, LabelName, LabelPolygon} from "../../store/labels/types";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
+import {ExportFormatType} from "../../../data/enums/ExportFormatType";
+import {IPoint} from "../../../interfaces/IPoint";
+import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../../data/VGG/IVGG";
+import {ImageData, LabelName, LabelPolygon} from "../../../store/labels/types";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {saveAs} from "file-saver";
-import {ExporterUtil} from "../../utils/ExporterUtil";
+import {ExporterUtil} from "../../../utils/ExporterUtil";
 import {findLast} from "lodash";
 
 export class PolygonLabelsExporter {
@@ -12,6 +12,8 @@ export class PolygonLabelsExporter {
         switch (exportFormatType) {
             case ExportFormatType.VGG_JSON:
                 PolygonLabelsExporter.exportAsVGGJson();
+                break;
+            case ExportFormatType.COCO_JSON:
                 break;
             default:
                 return;

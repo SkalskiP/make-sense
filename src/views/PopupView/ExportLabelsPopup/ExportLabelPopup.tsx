@@ -12,7 +12,7 @@ import {RectExportFormatData} from "../../../data/export/RectExportFormatData";
 import {PointExportFormatData} from "../../../data/export/PointExportFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
-import {PolygonLabelsExporter} from "../../../logic/export/PolygonLabelsExporter";
+import {PolygonLabelsExporter} from "../../../logic/export/polygon/PolygonLabelsExporter";
 import {PopupActions} from "../../../logic/actions/PopupActions";
 import {LineExportFormatData} from "../../../data/export/LineExportFormatData";
 import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";

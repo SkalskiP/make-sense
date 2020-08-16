@@ -1,7 +1,7 @@
-import {IPoint} from "../../../interfaces/IPoint";
+import {IPoint} from "../../../../interfaces/IPoint";
 import {PolygonLabelsExporter} from "../PolygonLabelsExporter";
-import {VGGPolygon, VGGRegionsData} from "../../../data/VGG/IVGG";
-import {ImageData, LabelName} from "../../../store/labels/types";
+import {VGGPolygon, VGGRegionsData} from "../../../../data/VGG/IVGG";
+import {ImageData, LabelName} from "../../../../store/labels/types";
 
 describe('PolygonLabelsExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {
@@ -73,7 +73,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTags: [],
+            labelTagId: null,
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
@@ -145,7 +145,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTags: [],
+            labelTagId: null,
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
