@@ -100,11 +100,12 @@ docker logs make_sense
 
 ## Supported Output Formats
 
-|               | CSV | YOLO | VOC XML | VGG JSON | COCO | PIXEL MASK |
-|:-------------:|:---:|:----:|:-------:|:--------:|:----:|:----------:|
-| **Point**     | ✓   | ✗    | ☐       | ☐        | ☐    | ✗          |
-| **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐    | ✗          |
-| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ☐    | ☐          |
+|               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
+|:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
+| **Point**     | ✓   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐         | ✗          |
+| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ☐         | ☐          |
+| **Label**     | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
 **Table 2.** The matrix of supported labels export format, where:
 * ✓ - supported format
