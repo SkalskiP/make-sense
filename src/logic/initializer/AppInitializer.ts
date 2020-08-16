@@ -1,20 +1,32 @@
-import {updateWindowSize} from "../../store/general/actionCreators";
+import {updateActivePopupType, updateWindowSize} from "../../store/general/actionCreators";
 import {ContextManager} from "../context/ContextManager";
 import {store} from "../../index";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {EventType} from "../../data/enums/EventType";
+import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 
 export class AppInitializer {
     public static inti():void {
         AppInitializer.handleResize();
         AppInitializer.detectDeviceParams();
+        AppInitializer.handleAccidentalPageExit();
         window.addEventListener(EventType.RESIZE, AppInitializer.handleResize);
         window.addEventListener(EventType.MOUSE_WHEEL, AppInitializer.disableGenericScrollZoom,{passive:false});
         window.addEventListener(EventType.KEY_DOWN, AppInitializer.disableUnwantedKeyBoardBehaviour);
         window.addEventListener(EventType.KEY_PRESS, AppInitializer.disableUnwantedKeyBoardBehaviour);
         ContextManager.init();
     }
+
+    private static handleAccidentalPageExit = () => {
+        window.onbeforeunload = (event) => {
+            const projectType = GeneralSelector.getProjectType();
+            if (projectType != null) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        }
+    };
 
     private static handleResize = () => {
         store.dispatch(updateWindowSize({
