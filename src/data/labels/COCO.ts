@@ -1,3 +1,5 @@
+export type COCOSegmentation = number[][]
+
 export type COCOInfo = {
     description: string;
 }
@@ -18,7 +20,7 @@ export type COCOAnnotation = {
     id: number;
     category_id: number;
     iscrowd: number;
-    segmentation: number[][];
+    segmentation: COCOSegmentation;
     image_id: number;
     area: number;
     bbox: number[];

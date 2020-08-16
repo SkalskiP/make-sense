@@ -1,12 +1,20 @@
-import {ImageData, LabelName} from "../../../store/labels/types";
+import {ImageData, LabelName, LabelPolygon} from "../../../store/labels/types";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {GeneralSelector} from "../../../store/selectors/GeneralSelector";
 import {ImageRepository} from "../../imageRepository/ImageRepository";
 import {ExporterUtil} from "../../../utils/ExporterUtil";
-import {COCOAnnotation, COCOCategory, COCOImage, COCOInfo, COCOObject} from "../../../data/labels/COCO";
+import {
+    COCOAnnotation,
+    COCOCategory,
+    COCOImage,
+    COCOInfo,
+    COCOObject,
+    COCOSegmentation
+} from "../../../data/labels/COCO";
+import {flatten} from "lodash";
+import {IPoint} from "../../../interfaces/IPoint";
 
 export type LabelDataMap = { [key: string]: number; }
-export type ImageDataMap = { [key: string]: number; }
 
 export class COCOExporter {
     public static export(): void {
@@ -60,7 +68,22 @@ export class COCOExporter {
     }
 
     public static getAnnotationsComponent(imagesData: ImageData[], labelNames: LabelName[]): COCOAnnotation[] {
-        return {};
+        const labelsMap: LabelDataMap = COCOExporter.mapLabelsData(labelNames);
+        let id = 0;
+        const annotations: COCOAnnotation[][] = imagesData.map((imageData: ImageData, index: number) => {
+            return imageData.labelPolygons.map((labelPolygon: LabelPolygon) => {
+                return {
+                    "id": id++,
+                    "iscrowd": 0,
+                    "image_id": index + 1,
+                    "category_id": labelsMap[labelPolygon.labelId],
+                    "segmentation": COCOExporter.getCOCOSegmentation(labelPolygon.vertices),
+                    "bbox": COCOExporter.getCOCOBbox(labelPolygon.vertices),
+                    "area": COCOExporter.getCOCOArea(labelPolygon.vertices)
+                }
+            })
+        })
+        return flatten(annotations);
     }
 
     public static mapLabelsData(labelNames: LabelName[]): LabelDataMap {
@@ -70,10 +93,32 @@ export class COCOExporter {
         }, {})
     }
 
-    public static mapImageData(imagesData: ImageData[]): ImageDataMap {
-        return imagesData.reduce((data: ImageDataMap, image: ImageData, index: number) => {
-            data[image.id] = index + 1;
-            return data;
-        }, {})
+    public static getCOCOSegmentation(vertices: IPoint[]): COCOSegmentation {
+        const points: number[][] = vertices.map((point: IPoint) => [point.x, point.y]);
+        return [flatten(points)];
+    }
+
+    public static getCOCOBbox(vertices: IPoint[]): number[] {
+        let xMin: number = vertices[0].x;
+        let xMax: number = vertices[0].x;
+        let yMin: number = vertices[0].y;
+        let yMax: number = vertices[0].y;
+        for (const vertex of vertices){
+            if (xMin > vertex.x) xMin = vertex.x;
+            if (xMax < vertex.x) xMax = vertex.x;
+            if (yMin > vertex.y) yMin = vertex.y;
+            if (yMax < vertex.y) yMax = vertex.y;
+        }
+        return [xMin, yMin, xMax - xMin, yMax - yMin];
+    }
+
+    public static getCOCOArea(vertices: IPoint[]): number {
+        let area = 0;
+        let j = vertices.length - 1;
+        for (let  i = 0; i < vertices.length; i++) {
+            area += (vertices[j].x + vertices[i].x) * (vertices[j].y - vertices[i].y);
+            j = i;
+        }
+        return Math.abs(area/2);
     }
 }
