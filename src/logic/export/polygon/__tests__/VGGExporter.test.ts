@@ -1,5 +1,5 @@
 import {IPoint} from "../../../../interfaces/IPoint";
-import {VGGPolygon, VGGRegionsData} from "../../../../data/VGG/IVGG";
+import {VGGPolygon, VGGRegionsData} from "../../../../data/labels/VGG";
 import {ImageData, LabelName} from "../../../../store/labels/types";
 import {VGGExporter} from "../VGGExporter";
 

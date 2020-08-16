@@ -5,7 +5,7 @@ import {saveAs} from "file-saver";
 export class ExporterUtil {
     public static getExportFileName(): string {
         const projectName: string = GeneralSelector.getProjectName();
-        const date: string = moment().format('YYYYMMDDhhmmss');
+        const date: string = moment().format('YYYY-MM-DD-hh-mm-ss');
         return `labels_${projectName}_${date}`
     }
 
