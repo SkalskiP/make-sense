@@ -1,4 +1,4 @@
-import {updateActivePopupType, updateWindowSize} from "../../store/general/actionCreators";
+import {updateWindowSize} from "../../store/general/actionCreators";
 import {ContextManager} from "../context/ContextManager";
 import {store} from "../../index";
 import {PlatformUtil} from "../../utils/PlatformUtil";
