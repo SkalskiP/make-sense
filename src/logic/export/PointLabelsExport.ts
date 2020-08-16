@@ -1,6 +1,5 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
-import {saveAs} from "file-saver";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ExporterUtil} from "../../utils/ExporterUtil";
@@ -24,14 +23,8 @@ export class PointLabelsExporter {
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
-
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {
