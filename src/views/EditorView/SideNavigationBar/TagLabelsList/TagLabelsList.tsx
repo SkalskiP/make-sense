@@ -60,7 +60,7 @@ const TagLabelsList: React.FC<IProps> = (
     };
 
     const addNewOnClick = () => {
-        updateActivePopupType(PopupWindowType.UPDATE_LABEL_NAMES)
+        updateActivePopupType(PopupWindowType.UPDATE_LABEL)
     }
 
     const getChildren = () => {

@@ -47,7 +47,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
                     alt={"upload"}
                     src={"img/box-opened.png"}
                 />
-                <p className="extraBold">Drop some images</p>
+                <p className="extraBold">Drop images</p>
                 <p>or</p>
                 <p className="extraBold">Click here to select them</p>
             </>;
