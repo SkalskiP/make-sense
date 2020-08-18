@@ -10,6 +10,9 @@ export class TagLabelsExporter {
             case ExportFormatType.CSV:
                 TagLabelsExporter.exportAsCSV();
                 break;
+            case ExportFormatType.JSON:
+                TagLabelsExporter.exportAsJSON();
+                break;
             default:
                 return;
         }
@@ -17,16 +20,32 @@ export class TagLabelsExporter {
 
     private static exportAsCSV(): void {
         const content: string = LabelsSelector.getImagesData()
+            .filter((imageData: ImageData) => {
+                return imageData.labelNameIds.length > 0
+            })
             .map((imageData: ImageData) => {
-                return TagLabelsExporter.wrapLineLabelsIntoCSV(imageData)})
-            .filter((imageLabelData: string) => {
-                return !!imageLabelData})
+                return TagLabelsExporter.wrapLabelNamesIntoCSV(imageData)})
             .join("\n");
         const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
         ExporterUtil.saveAs(content, fileName);
     }
 
-    private static wrapLineLabelsIntoCSV(imageData: ImageData): string {
+    private static exportAsJSON(): void {
+        const contentObjects: object[] = LabelsSelector.getImagesData()
+            .filter((imageData: ImageData) => {
+                return imageData.labelNameIds.length > 0
+            })
+            .map((imageData: ImageData) => {
+                return {
+                    "image": imageData.fileData.name,
+                    "annotations": TagLabelsExporter.wrapLabelNamesIntoJSON(imageData)
+                }})
+        const content: string = JSON.stringify(contentObjects);
+        const fileName: string = `${ExporterUtil.getExportFileName()}.json`;
+        ExporterUtil.saveAs(content, fileName);
+    }
+
+    private static wrapLabelNamesIntoCSV(imageData: ImageData): string {
         if (imageData.labelNameIds.length === 0 || !imageData.loadStatus)
             return null;
 
@@ -39,5 +58,14 @@ export class TagLabelsExporter {
             `"[${annotations.toString()}]"`
         ] : [];
         return labelFields.join(",")
+    }
+
+    private static wrapLabelNamesIntoJSON(imageData: ImageData): string[] {
+        if (imageData.labelNameIds.length === 0 || !imageData.loadStatus)
+            return [];
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
+        return imageData.labelNameIds.map((labelNameId: string) => {
+            return findLast(labelNames, {id: labelNameId}).name;
+        })
     }
 }
