@@ -110,6 +110,9 @@ export class LabelActions {
                 } else {
                     return labelPolygon
                 }
+            }),
+            labelNameIds: imageData.labelNameIds.filter((labelNameId: string) => {
+                return !labelNamesIds.includes(labelNameId)
             })
         }
     }

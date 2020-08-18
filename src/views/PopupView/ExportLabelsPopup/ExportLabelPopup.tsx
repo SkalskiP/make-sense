@@ -145,7 +145,7 @@ const ExportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
 
     return(
         <GenericYesNoPopup
-            title={"Export your labels"}
+            title={"Export annotations"}
             renderContent={renderContent}
             acceptLabel={"Export"}
             onAccept={onAccept}
