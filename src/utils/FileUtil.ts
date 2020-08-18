@@ -11,7 +11,7 @@ export class FileUtil {
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],
-            labelTagId: null,
+            labelNameIds: [],
             isVisitedByObjectDetector: false,
             isVisitedByPoseDetector: false
         }

@@ -62,7 +62,7 @@ class ImagesList extends React.Component<IProps, IState> {
             case LabelType.LINE:
                 return imageData.labelLines.length > 0
             case LabelType.NAME:
-                return imageData.labelTagId !== null
+                return imageData.labelNameIds.length > 0
             case LabelType.POINT:
                 return imageData.labelPoints
                     .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
