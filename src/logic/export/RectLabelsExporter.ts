@@ -159,14 +159,8 @@ export class RectLabelsExporter {
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
-
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {

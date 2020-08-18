@@ -1,39 +1,22 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
-import {IPoint} from "../../interfaces/IPoint";
-import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../data/VGG/IVGG";
-import {ImageData, LabelName, LabelPolygon} from "../../store/labels/types";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {saveAs} from "file-saver";
-import {ExporterUtil} from "../../utils/ExporterUtil";
+import {ImageData, LabelName, LabelPolygon} from "../../../store/labels/types";
+import {VGGFileData, VGGObject, VGGPolygon, VGGRegionsData} from "../../../data/labels/VGG";
 import {findLast} from "lodash";
+import {IPoint} from "../../../interfaces/IPoint";
+import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
+import {ExporterUtil} from "../../../utils/ExporterUtil";
 
-export class PolygonLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
-        switch (exportFormatType) {
-            case ExportFormatType.VGG_JSON:
-                PolygonLabelsExporter.exportAsVGGJson();
-                break;
-            default:
-                return;
-        }
-    }
-
-    private static exportAsVGGJson(): void {
+export class VGGExporter {
+    public static export(): void {
         const imagesData: ImageData[] = LabelsSelector.getImagesData();
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
-        const content: string = JSON.stringify(PolygonLabelsExporter.mapImagesDataToVGGObject(imagesData, labelNames));
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.json`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const content: string = JSON.stringify(VGGExporter.mapImagesDataToVGGObject(imagesData, labelNames));
+        const fileName: string = `${ExporterUtil.getExportFileName()}.json`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
     private static mapImagesDataToVGGObject(imagesData: ImageData[], labelNames: LabelName[]): VGGObject {
         return imagesData.reduce((data: VGGObject, image: ImageData) => {
-            const fileData: VGGFileData = PolygonLabelsExporter.mapImageDataToVGGFileData(image, labelNames);
+            const fileData: VGGFileData = VGGExporter.mapImageDataToVGGFileData(image, labelNames);
             if (!!fileData) {
                 data[image.fileData.name] = fileData
             }
@@ -42,7 +25,7 @@ export class PolygonLabelsExporter {
     }
 
     private static mapImageDataToVGGFileData(imageData: ImageData, labelNames: LabelName[]): VGGFileData {
-        const regionsData: VGGRegionsData = PolygonLabelsExporter.mapImageDataToVGG(imageData, labelNames);
+        const regionsData: VGGRegionsData = VGGExporter.mapImageDataToVGG(imageData, labelNames);
         if (!regionsData) return null;
         return {
             fileref: "",
@@ -58,7 +41,7 @@ export class PolygonLabelsExporter {
         if (!imageData.loadStatus || !imageData.labelPolygons || !imageData.labelPolygons.length ||
             !labelNames || !labelNames.length) return null;
 
-        const validLabels: LabelPolygon[] = PolygonLabelsExporter.getValidPolygonLabels(imageData);
+        const validLabels: LabelPolygon[] = VGGExporter.getValidPolygonLabels(imageData);
 
         if (!validLabels.length) return null;
 
@@ -66,7 +49,7 @@ export class PolygonLabelsExporter {
             const labelName: LabelName = findLast(labelNames, {id: label.labelId});
             if (!!labelName) {
                 data[index.toString()] = {
-                    shape_attributes: PolygonLabelsExporter.mapPolygonToVGG(label.vertices),
+                    shape_attributes: VGGExporter.mapPolygonToVGG(label.vertices),
                     region_attributes: {
                         label: labelName.name
                     }

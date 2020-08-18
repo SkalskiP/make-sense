@@ -1,7 +1,6 @@
 import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelLine, LabelName} from "../../store/labels/types";
-import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {findLast} from "lodash";
@@ -24,14 +23,8 @@ export class LineLabelsExporter {
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
-
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
     private static wrapLineLabelsIntoCSV(imageData: ImageData): string {

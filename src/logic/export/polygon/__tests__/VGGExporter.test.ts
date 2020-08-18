@@ -1,9 +1,9 @@
-import {IPoint} from "../../../interfaces/IPoint";
-import {PolygonLabelsExporter} from "../PolygonLabelsExporter";
-import {VGGPolygon, VGGRegionsData} from "../../../data/VGG/IVGG";
-import {ImageData, LabelName} from "../../../store/labels/types";
+import {IPoint} from "../../../../interfaces/IPoint";
+import {VGGPolygon, VGGRegionsData} from "../../../../data/labels/VGG";
+import {ImageData, LabelName} from "../../../../store/labels/types";
+import {VGGExporter} from "../VGGExporter";
 
-describe('PolygonLabelsExporter mapPolygonToVGG method', () => {
+describe('VGGExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {
         const givenPath: IPoint[] = [
             {x: 1, y: 1},
@@ -17,16 +17,16 @@ describe('PolygonLabelsExporter mapPolygonToVGG method', () => {
             all_points_x: [1, 5, 6, 0, 1],
             all_points_y: [1, 1, 10, 10, 1]
         };
-        expect(PolygonLabelsExporter.mapPolygonToVGG(givenPath)).toEqual(expectedPolygon);
+        expect(VGGExporter.mapPolygonToVGG(givenPath)).toEqual(expectedPolygon);
     });
 
     it('should return null', () => {
         const givenPath: IPoint[] = [];
-        expect(PolygonLabelsExporter.mapPolygonToVGG(givenPath)).toBeNull();
+        expect(VGGExporter.mapPolygonToVGG(givenPath)).toBeNull();
     });
 });
 
-describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
+describe("VGGExporter mapImageDataToVGG method", () => {
     it('should return null', () => {
         const givenImageData: ImageData = {
             id: "1",
@@ -40,7 +40,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
         };
-        expect(PolygonLabelsExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
+        expect(VGGExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
     });
 
     it('should return valid VGGRegionsData', () => {
@@ -73,7 +73,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTags: [],
+            labelTagId: null,
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
@@ -112,7 +112,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             }
         };
-        expect(PolygonLabelsExporter.mapImageDataToVGG(givenImageData, givenLabelNames)).toEqual(expectedVGGRegionData);
+        expect(VGGExporter.mapImageDataToVGG(givenImageData, givenLabelNames)).toEqual(expectedVGGRegionData);
     });
 
     it('should return valid VGGRegionsData', () => {
@@ -145,7 +145,7 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTags: [],
+            labelTagId: null,
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
@@ -174,6 +174,6 @@ describe("PolygonLabelsExporter mapImageDataToVGG method", () => {
                 }
             }
         };
-        expect(PolygonLabelsExporter.mapImageDataToVGG(givenImageData, givenLabelNames)).toEqual(expectedVGGRegionData);
+        expect(VGGExporter.mapImageDataToVGG(givenImageData, givenLabelNames)).toEqual(expectedVGGRegionData);
     });
 });
