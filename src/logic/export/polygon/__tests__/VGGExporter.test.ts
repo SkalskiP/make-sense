@@ -35,7 +35,7 @@ describe("VGGExporter mapImageDataToVGG method", () => {
             labelRects: [],
             labelPolygons: [],
             labelLines: [],
-            labelTagId: null,
+            labelNameIds: [],
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
@@ -73,7 +73,7 @@ describe("VGGExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTagId: null,
+            labelNameIds: [],
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true
@@ -145,7 +145,7 @@ describe("VGGExporter mapImageDataToVGG method", () => {
                 }
             ],
             labelLines: [],
-            labelTagId: null,
+            labelNameIds: [],
             fileData: {} as File,
             isVisitedByObjectDetector: true,
             isVisitedByPoseDetector: true

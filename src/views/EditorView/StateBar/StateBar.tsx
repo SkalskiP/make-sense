@@ -29,7 +29,7 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
     }, 0);
 
     const tagLabeledImages = imagesData.reduce((currentCount: number, currentImage: ImageData) => {
-        return currentCount + (currentImage.labelTagId !== null ? 1 : 0);
+        return currentCount + (currentImage.labelNameIds.length !== 0 ? 1 : 0);
     }, 0);
 
     const getProgress = () => {
