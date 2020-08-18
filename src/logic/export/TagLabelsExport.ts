@@ -2,7 +2,6 @@ import {ExportFormatType} from "../../data/enums/ExportFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelName} from "../../store/labels/types";
 import {ExporterUtil} from "../../utils/ExporterUtil";
-import {ImageRepository} from "../imageRepository/ImageRepository";
 import {findLast} from "lodash";
 
 export class TagLabelsExporter {
@@ -28,19 +27,17 @@ export class TagLabelsExporter {
     }
 
     private static wrapLineLabelsIntoCSV(imageData: ImageData): string {
-        if (imageData.labelTagId === null || !imageData.loadStatus)
+        if (imageData.labelNameIds.length === 0 || !imageData.loadStatus)
             return null;
 
-        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
-        const labelName: LabelName = findLast(labelNames, {id: imageData.labelTagId});
-        const labelFields = !!labelName ? [
-            labelName.name,
+        const annotations: string[] = imageData.labelNameIds.map((labelNameId: string) => {
+            return findLast(labelNames, {id: labelNameId}).name;
+        })
+        const labelFields = annotations.length !== 0 ? [
             imageData.fileData.name,
-            image.width.toString(),
-            image.height.toString()
+            `"[${annotations.toString()}]"`
         ] : [];
         return labelFields.join(",")
-
     }
 }
