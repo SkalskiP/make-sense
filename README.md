@@ -104,7 +104,7 @@ docker logs make_sense
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
 | **Point**     | ✓   | ✗    | ☐       | ☐        | ☐         | ✗          |
 | **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐         | ✗          |
-| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ☐         | ☐          |
+| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ✓         | ☐          |
 | **Label**     | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
 **Table 2.** The matrix of supported labels export format, where:
