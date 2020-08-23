@@ -1,12 +1,8 @@
 import React, {useState} from 'react'
 import './ExportLabelPopup.scss'
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
 import {ExportFormatType} from "../../../data/enums/ExportFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 import {LabelType} from "../../../data/enums/LabelType";
-import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {IExportFormat} from "../../../interfaces/IExportFormat";
 import {RectExportFormatData} from "../../../data/export/RectExportFormatData";
 import {PointExportFormatData} from "../../../data/export/PointExportFormatData";
@@ -18,18 +14,15 @@ import {LineExportFormatData} from "../../../data/export/LineExportFormatData";
 import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
 import {TagExportFormatData} from "../../../data/export/TagExportFormatData";
 import {TagLabelsExporter} from "../../../logic/export/TagLabelsExport";
+import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
 
-interface IProps {
-    activeLabelType: LabelType
-}
 
-const ExportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
-    const [exportLabelType, setExportLabelType] = useState(activeLabelType);
+export const ExportLabelPopup: React.FC = () => {
     const [exportFormatType, setExportFormatType] = useState(null);
 
-    const onAccept = () => {
+    const onAccept = (labelType: LabelType) => {
         if (!exportFormatType) return;
-        switch (exportLabelType) {
+        switch (labelType) {
             case LabelType.RECTANGLE:
                 RectLabelsExporter.export(exportFormatType);
                 break;
@@ -49,7 +42,7 @@ const ExportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
         PopupActions.close();
     };
 
-    const onReject = () => {
+    const onReject = (labelType: LabelType) => {
         PopupActions.close();
     };
 
@@ -80,88 +73,34 @@ const ExportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
         })
     };
 
-    const renderContent = () => {
-        return(<div className="ExportLabelPopupContent">
-            {activeLabelType !== LabelType.NAME && <div className="LeftContainer">
-                <ImageButton
-                    image={"ico/rectangle.png"}
-                    imageAlt={"rectangle"}
-                    buttonSize={{width: 40, height: 40}}
-                    padding={20}
-                    onClick={() => {
-                        setExportLabelType(LabelType.RECTANGLE);
-                        setExportFormatType(null);
-                    }}
-                    isActive={exportLabelType === LabelType.RECTANGLE}
-                />
-                <ImageButton
-                    image={"ico/point.png"}
-                    imageAlt={"point"}
-                    buttonSize={{width: 40, height:40}}
-                    padding={20}
-                    onClick={() => {
-                        setExportLabelType(LabelType.POINT);
-                        setExportFormatType(null);
-                    }}
-                    isActive={exportLabelType === LabelType.POINT}
-                />
-                <ImageButton
-                    image={"ico/line.png"}
-                    imageAlt={"line"}
-                    buttonSize={{width: 40, height:40}}
-                    padding={20}
-                    onClick={() => {
-                        setExportLabelType(LabelType.LINE);
-                        setExportFormatType(null);
-                    }}
-                    isActive={exportLabelType === LabelType.LINE}
-                />
-                <ImageButton
-                    image={"ico/polygon.png"}
-                    imageAlt={"polygon"}
-                    buttonSize={{width: 40, height:40}}
-                    padding={20}
-                    onClick={() => {
-                        setExportLabelType(LabelType.POLYGON);
-                        setExportFormatType(null);
-                    }}
-                    isActive={exportLabelType === LabelType.POLYGON}
-                />
-            </div>}
-            <div className="RightContainer">
-                <div className="Message">
-                    Select label type and the file format you would like to use for exporting labels.
-                </div>
-                <div className="Options">
-                    {exportLabelType === LabelType.RECTANGLE && getOptions(RectExportFormatData)}
-                    {exportLabelType === LabelType.POINT && getOptions(PointExportFormatData)}
-                    {exportLabelType === LabelType.LINE && getOptions(LineExportFormatData)}
-                    {exportLabelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
-                    {exportLabelType === LabelType.NAME && getOptions(TagExportFormatData)}
-                </div>
+    const renderInternalContent = (labelType: LabelType) => {
+        return [
+            <div className="Message">
+                Select label type and the file format you would like to use for exporting labels.
+            </div>,
+            <div className="Options">
+                {labelType === LabelType.RECTANGLE && getOptions(RectExportFormatData)}
+                {labelType === LabelType.POINT && getOptions(PointExportFormatData)}
+                {labelType === LabelType.LINE && getOptions(LineExportFormatData)}
+                {labelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
+                {labelType === LabelType.NAME && getOptions(TagExportFormatData)}
             </div>
-        </div>);
-    };
+        ]
+    }
+
+    const onLabelTypeChange = (labelType: LabelType) => {
+        setExportFormatType(null);
+    }
 
     return(
-        <GenericYesNoPopup
+        <GenericLabelTypePopup
             title={"Export annotations"}
-            renderContent={renderContent}
+            onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Export"}
             onAccept={onAccept}
             rejectLabel={"I'm not ready yet"}
             onReject={onReject}
+            renderInternalContent={renderInternalContent}
         />
-    );
+    )
 };
-
-const mapDispatchToProps = {};
-
-const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.labels.activeLabelType
-});
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ExportLabelPopup);

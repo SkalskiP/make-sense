@@ -4,7 +4,6 @@ import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
-import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
@@ -12,6 +11,7 @@ import {LoadModelPopup} from "./LoadModelPopup/LoadModelPopup";
 import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
 import {CSSHelper} from "../../logic/helpers/CSSHelper";
 import {ClipLoader} from "react-spinners";
+import {ExportLabelPopup} from "./ExportLabelsPopup/ExportLabelPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
