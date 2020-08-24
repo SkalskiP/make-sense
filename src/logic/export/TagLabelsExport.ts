@@ -1,16 +1,16 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
+import {LabelFormatType} from "../../data/enums/LabelFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelName} from "../../store/labels/types";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {findLast} from "lodash";
 
 export class TagLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
+    public static export(exportFormatType: LabelFormatType): void {
         switch (exportFormatType) {
-            case ExportFormatType.CSV:
+            case LabelFormatType.CSV:
                 TagLabelsExporter.exportAsCSV();
                 break;
-            case ExportFormatType.JSON:
+            case LabelFormatType.JSON:
                 TagLabelsExporter.exportAsJSON();
                 break;
             default:

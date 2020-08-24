@@ -1,20 +1,16 @@
 import React, {useState} from 'react'
 import './ExportLabelPopup.scss'
-import {ExportFormatType} from "../../../data/enums/ExportFormatType";
+import {LabelFormatType} from "../../../data/enums/LabelFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 import {LabelType} from "../../../data/enums/LabelType";
 import {IExportFormat} from "../../../interfaces/IExportFormat";
-import {RectExportFormatData} from "../../../data/export/RectExportFormatData";
-import {PointExportFormatData} from "../../../data/export/PointExportFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
-import {PolygonExportFormatData} from "../../../data/export/PolygonExportFormatData";
 import {PolygonLabelsExporter} from "../../../logic/export/polygon/PolygonLabelsExporter";
 import {PopupActions} from "../../../logic/actions/PopupActions";
-import {LineExportFormatData} from "../../../data/export/LineExportFormatData";
 import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
-import {TagExportFormatData} from "../../../data/export/TagExportFormatData";
 import {TagLabelsExporter} from "../../../logic/export/TagLabelsExport";
 import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
+import {ExportFormatData} from "../../../data/ExportFormatData";
 
 
 export const ExportLabelPopup: React.FC = () => {
@@ -46,7 +42,7 @@ export const ExportLabelPopup: React.FC = () => {
         PopupActions.close();
     };
 
-    const onSelect = (exportFormatType: ExportFormatType) => {
+    const onSelect = (exportFormatType: LabelFormatType) => {
         setExportFormatType(exportFormatType);
     };
 
@@ -79,11 +75,7 @@ export const ExportLabelPopup: React.FC = () => {
                 Select label type and the file format you would like to use for exporting labels.
             </div>,
             <div className="Options">
-                {labelType === LabelType.RECTANGLE && getOptions(RectExportFormatData)}
-                {labelType === LabelType.POINT && getOptions(PointExportFormatData)}
-                {labelType === LabelType.LINE && getOptions(LineExportFormatData)}
-                {labelType === LabelType.POLYGON && getOptions(PolygonExportFormatData)}
-                {labelType === LabelType.NAME && getOptions(TagExportFormatData)}
+                {getOptions(ExportFormatData[labelType])}
             </div>
         ]
     }
