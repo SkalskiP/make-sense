@@ -15,6 +15,7 @@ interface IProps {
     onLabelTypeChange?: (labelType: LabelType) => any;
     acceptLabel: string;
     onAccept: (labelType: LabelType) => any;
+    skipAcceptButton?: boolean;
     rejectLabel: string;
     onReject: (labelType: LabelType) => any;
     renderInternalContent: (labelType: LabelType) => any;
@@ -28,6 +29,7 @@ const GenericLabelTypePopup: React.FC<IProps> = (
         onLabelTypeChange,
         acceptLabel,
         onAccept,
+        skipAcceptButton,
         rejectLabel,
         onReject,
         renderInternalContent
@@ -70,6 +72,7 @@ const GenericLabelTypePopup: React.FC<IProps> = (
             renderContent={renderContent}
             acceptLabel={acceptLabel}
             onAccept={() => onAccept(labelType)}
+            skipAcceptButton={skipAcceptButton}
             rejectLabel={rejectLabel}
             onReject={() => onReject(labelType)}
         />

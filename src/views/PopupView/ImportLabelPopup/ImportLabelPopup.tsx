@@ -6,6 +6,7 @@ import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
 import {PopupActions} from "../../../logic/actions/PopupActions";
 import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
 import {ImportFormatData} from "../../../data/ImportFormatData";
+import {FeatureInProgress} from "../../EditorView/FeatureInProgress/FeatureInProgress";
 
 
 export const ImportLabelPopup: React.FC = () => {
@@ -13,7 +14,6 @@ export const ImportLabelPopup: React.FC = () => {
 
     const onAccept = (labelType: LabelType) => {
         if (!importFormatType) return;
-        console.log(labelType, importFormatType);
         PopupActions.close();
     };
 
@@ -49,12 +49,15 @@ export const ImportLabelPopup: React.FC = () => {
     };
 
     const renderInternalContent = (labelType: LabelType) => {
-        return [
+        const importFormatData = ImportFormatData[labelType];
+        return importFormatData.length === 0 ? [
+            <FeatureInProgress/>
+        ] : [
             <div className="Message">
-                Select label type and the file format you would like to use to import labels.
+                Select file format you would like to use to import labels.
             </div>,
             <div className="Options">
-                {getOptions(ImportFormatData[labelType])}
+                {getOptions(importFormatData)}
             </div>
         ]
     }

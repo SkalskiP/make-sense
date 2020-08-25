@@ -10,6 +10,10 @@
     align-items: center;
     align-content: flex-start;
 
+    .FeatureInProgress {
+      flex: 1;
+    }
+
     .Message {
       align-self: stretch;
       color: white;
