@@ -25,6 +25,7 @@ import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {Settings} from "../../settings/Settings";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -199,8 +200,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         lines.forEach((line: ILine) => {
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
         });
-        this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
-            DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+        standardizedPoints.forEach((point: IPoint) => {
+            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
         })
     }
 
@@ -236,8 +237,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         }
         DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, this.config.lineThickness);
         if (isActive) {
-            this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+            standardizedPoints.forEach((point: IPoint) => {
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
             })
         }
     }
@@ -249,8 +250,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const isMouseOverSuggestedAnchor: boolean = RectUtil.isPointInside(suggestedAnchorRect, data.mousePositionOnViewPortContent);
 
             if (isMouseOverSuggestedAnchor) {
-                const handleRect = RectUtil.getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.anchorSize);
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.lineInactiveColor);
+                DrawUtil.drawCircleWithFill(
+                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.lineInactiveColor);
             }
         }
     }
@@ -412,10 +413,6 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             lines.push({start: points[i], end: points[i + 1]})
         }
         return lines;
-    }
-
-    private mapPointsToAnchors(points: IPoint[]): IRect[] {
-        return points.map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize));
     }
 
     // =================================================================================================================
