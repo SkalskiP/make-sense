@@ -1,0 +1,57 @@
+@import '../../../settings/Settings';
+
+.GenericLabelTypePopupContent {
+
+  .RightContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    .Message {
+      align-self: stretch;
+      color: white;
+      font-size: 15px;
+      padding: 30px 40px;
+      border-bottom: solid 1px $darkThemeFirstColor;
+    }
+
+    .Options {
+      align-self: stretch;
+      padding: 30px 40px;
+
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: flex-start;
+      align-content: flex-start;
+
+      .OptionsItem {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        color: white;
+
+        cursor: pointer;
+        user-select: none;
+        font-size: 15px;
+        padding: 5px 0;
+
+        > img {
+          max-width: 20px;
+          max-height: 20px;
+          margin-right: 5px;
+          filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+          filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+          user-select: none;
+        }
+      }
+    }
+  }
+}

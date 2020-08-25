@@ -1,8 +1,8 @@
-import {IExportFormat} from "../interfaces/IExportFormat";
+import {ILabelFormatData} from "../interfaces/ILabelFormatData";
 import {LabelType} from "./enums/LabelType";
 import {LabelFormatType} from "./enums/LabelFormatType";
 
-export type ExportFormatDataMap = { [s in LabelType]: IExportFormat[]; };
+export type ExportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
 
 export const ExportFormatData: ExportFormatDataMap = {
     RECTANGLE: [

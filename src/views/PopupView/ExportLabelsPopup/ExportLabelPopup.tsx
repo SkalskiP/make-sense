@@ -3,7 +3,7 @@ import './ExportLabelPopup.scss'
 import {LabelFormatType} from "../../../data/enums/LabelFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 import {LabelType} from "../../../data/enums/LabelType";
-import {IExportFormat} from "../../../interfaces/IExportFormat";
+import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
 import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
 import {PolygonLabelsExporter} from "../../../logic/export/polygon/PolygonLabelsExporter";
 import {PopupActions} from "../../../logic/actions/PopupActions";
@@ -46,8 +46,8 @@ export const ExportLabelPopup: React.FC = () => {
         setExportFormatType(exportFormatType);
     };
 
-    const getOptions = (exportFormatData: IExportFormat[]) => {
-        return exportFormatData.map((entry: IExportFormat) => {
+    const getOptions = (exportFormatData: ILabelFormatData[]) => {
+        return exportFormatData.map((entry: ILabelFormatData) => {
             return <div
                 className="OptionsItem"
                 onClick={() => onSelect(entry.type)}
@@ -72,7 +72,7 @@ export const ExportLabelPopup: React.FC = () => {
     const renderInternalContent = (labelType: LabelType) => {
         return [
             <div className="Message">
-                Select label type and the file format you would like to use for exporting labels.
+                Select label type and the file format you would like to use to export labels.
             </div>,
             <div className="Options">
                 {getOptions(ExportFormatData[labelType])}
@@ -90,7 +90,7 @@ export const ExportLabelPopup: React.FC = () => {
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Export"}
             onAccept={onAccept}
-            rejectLabel={"I'm not ready yet"}
+            rejectLabel={"Cancel"}
             onReject={onReject}
             renderInternalContent={renderInternalContent}
         />

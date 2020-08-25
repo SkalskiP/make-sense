@@ -20,7 +20,6 @@ import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import uuidv1 from "uuid/v1";
 import {ILine} from "../../interfaces/ILine";
 import {LineUtil} from "../../utils/LineUtil";
-import {IRect} from "../../interfaces/IRect";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {LineAnchorType} from "../../data/enums/LineAnchorType";
@@ -162,9 +161,8 @@ export class LineRenderEngine extends BaseRenderEngine {
         if (isActive) {
             LineUtil
                 .getPoints(line)
-                .map((point: IPoint) => {
-                    DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
-                })
+                .map((point: IPoint) => DrawUtil.drawCircleWithFill(
+                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor))
         }
     }
 

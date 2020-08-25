@@ -1,6 +1,6 @@
 import {LabelFormatType} from "../data/enums/LabelFormatType";
 
-export interface IExportFormat {
+export interface ILabelFormatData {
     type: LabelFormatType,
     label: string
 }
