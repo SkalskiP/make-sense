@@ -7,10 +7,16 @@ import {PopupActions} from "../../../logic/actions/PopupActions";
 import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
 import {ImportFormatData} from "../../../data/ImportFormatData";
 import {FeatureInProgress} from "../../EditorView/FeatureInProgress/FeatureInProgress";
+import {AppState} from "../../../store";
+import {connect} from "react-redux";
 
+interface IProps {
+    activeLabelType: LabelType,
+}
 
-export const ImportLabelPopup: React.FC = () => {
+const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
     const [importFormatType, setImportFormatType] = useState(null);
+    const [labelType, setLabelType] = useState(activeLabelType);
 
     const onAccept = (labelType: LabelType) => {
         if (!importFormatType) return;
@@ -63,6 +69,7 @@ export const ImportLabelPopup: React.FC = () => {
     }
 
     const onLabelTypeChange = (labelType: LabelType) => {
+        setLabelType(labelType);
         setImportFormatType(null);
     }
 
@@ -72,9 +79,21 @@ export const ImportLabelPopup: React.FC = () => {
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Import"}
             onAccept={onAccept}
+            skipAcceptButton={ImportFormatData[labelType].length === 0}
             rejectLabel={"Cancel"}
             onReject={onReject}
             renderInternalContent={renderInternalContent}
         />
     )
 };
+
+const mapDispatchToProps = {};
+
+const mapStateToProps = (state: AppState) => ({
+    activeLabelType: state.labels.activeLabelType,
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ImportLabelPopup);
