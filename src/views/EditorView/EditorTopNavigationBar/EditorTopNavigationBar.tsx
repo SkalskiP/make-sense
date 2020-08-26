@@ -108,7 +108,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     isActive={crossHairVisible}
                 />
             </div>
-            {((activeLabelType === LabelType.RECTANGLE && AISelector.isAIObjectDetectorModelLoaded()) ||
+            {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
                 (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
                 <ImageButton
                     image={"ico/accept-all.png"}

@@ -11,15 +11,21 @@ import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
 import {TagLabelsExporter} from "../../../logic/export/TagLabelsExport";
 import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
 import {ExportFormatData} from "../../../data/ExportFormatData";
+import {AppState} from "../../../store";
+import {connect} from "react-redux";
 
+interface IProps {
+    activeLabelType: LabelType,
+}
 
-export const ExportLabelPopup: React.FC = () => {
+const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
+    const [labelType, setLabelType] = useState(activeLabelType);
     const [exportFormatType, setExportFormatType] = useState(null);
 
     const onAccept = (labelType: LabelType) => {
         if (!exportFormatType) return;
         switch (labelType) {
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 RectLabelsExporter.export(exportFormatType);
                 break;
             case LabelType.POINT:
@@ -31,7 +37,7 @@ export const ExportLabelPopup: React.FC = () => {
             case LabelType.POLYGON:
                 PolygonLabelsExporter.export(exportFormatType);
                 break;
-            case LabelType.NAME:
+            case LabelType.IMAGE_RECOGNITION:
                 TagLabelsExporter.export(exportFormatType);
                 break;
         }
@@ -81,12 +87,13 @@ export const ExportLabelPopup: React.FC = () => {
     }
 
     const onLabelTypeChange = (labelType: LabelType) => {
+        setLabelType(labelType);
         setExportFormatType(null);
     }
 
     return(
         <GenericLabelTypePopup
-            title={"Export annotations"}
+            title={`Export ${labelType.toLowerCase()} annotations`}
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Export"}
             onAccept={onAccept}
@@ -96,3 +103,14 @@ export const ExportLabelPopup: React.FC = () => {
         />
     )
 };
+
+const mapDispatchToProps = {};
+
+const mapStateToProps = (state: AppState) => ({
+    activeLabelType: state.labels.activeLabelType,
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ExportLabelPopup);

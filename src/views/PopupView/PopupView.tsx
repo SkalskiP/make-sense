@@ -11,8 +11,8 @@ import {LoadModelPopup} from "./LoadModelPopup/LoadModelPopup";
 import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
 import {CSSHelper} from "../../logic/helpers/CSSHelper";
 import {ClipLoader} from "react-spinners";
-import {ExportLabelPopup} from "./ExportLabelsPopup/ExportLabelPopup";
 import ImportLabelPopup from "./ImportLabelPopup/ImportLabelPopup";
+import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;

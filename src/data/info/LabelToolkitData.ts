@@ -11,14 +11,14 @@ export interface ILabelToolkit {
 
 export const LabelToolkitData: ILabelToolkit[] = [
     {
-        labelType: LabelType.NAME,
+        labelType: LabelType.IMAGE_RECOGNITION,
         headerText: "Image recognition",
         imageSrc: "ico/object.png",
         imageAlt: "object",
         projectType: ProjectType.IMAGE_RECOGNITION,
     },
     {
-        labelType: LabelType.RECTANGLE,
+        labelType: LabelType.RECT,
         headerText: "Rect",
         imageSrc: "ico/rectangle.png",
         imageAlt: "rectangle",

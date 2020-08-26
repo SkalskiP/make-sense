@@ -1,25 +1,30 @@
 import React, {useState} from 'react'
 import './ImportLabelPopup.scss'
-import {LabelFormatType} from "../../../data/enums/LabelFormatType";
 import {LabelType} from "../../../data/enums/LabelType";
-import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
 import {PopupActions} from "../../../logic/actions/PopupActions";
 import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
 import {ImportFormatData} from "../../../data/ImportFormatData";
 import {FeatureInProgress} from "../../EditorView/FeatureInProgress/FeatureInProgress";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
+import {useDropzone} from "react-dropzone";
+import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 
 interface IProps {
     activeLabelType: LabelType,
 }
 
 const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
-    const [importFormatType, setImportFormatType] = useState(null);
     const [labelType, setLabelType] = useState(activeLabelType);
+    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+        accept: AcceptedFileType.TEXT,
+        multiple: true,
+        onDrop: (acceptedFiles) => {
+            console.log(acceptedFiles)
+        }
+    });
 
     const onAccept = (labelType: LabelType) => {
-        if (!importFormatType) return;
         PopupActions.close();
     };
 
@@ -27,55 +32,36 @@ const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
         PopupActions.close();
     };
 
-    const onSelect = (importFormatType: LabelFormatType) => {
-        setImportFormatType(importFormatType);
-    };
-
-    const getOptions = (importFormatData: ILabelFormatData[]) => {
-        return importFormatData.map((entry: ILabelFormatData) => {
-            return <div
-                className="OptionsItem"
-                onClick={() => onSelect(entry.type)}
-                key={entry.type}
-            >
-                {entry.type === importFormatType ?
-                    <img
-                        draggable={false}
-                        src={"ico/checkbox-checked.png"}
-                        alt={"checked"}
-                    /> :
-                    <img
-                        draggable={false}
-                        src={"ico/checkbox-unchecked.png"}
-                        alt={"unchecked"}
-                    />}
-                {entry.label}
-            </div>
-        })
+    const getDropZoneContent = () => {
+        return <>
+            <input {...getInputProps()} />
+            <img
+                draggable={false}
+                alt={"upload"}
+                src={"img/box-opened.png"}
+            />
+            <p className="extraBold">Drop COCO annotation file</p>
+            <p>or</p>
+            <p className="extraBold">Click here to select it</p>
+        </>;
     };
 
     const renderInternalContent = (labelType: LabelType) => {
         const importFormatData = ImportFormatData[labelType];
-        return importFormatData.length === 0 ? [
-            <FeatureInProgress/>
-        ] : [
-            <div className="Message">
-                Select file format you would like to use to import labels.
-            </div>,
-            <div className="Options">
-                {getOptions(importFormatData)}
+        return importFormatData.length === 0 ?
+            <FeatureInProgress/> :
+            <div {...getRootProps({className: 'DropZone'})}>
+                {getDropZoneContent()}
             </div>
-        ]
     }
 
     const onLabelTypeChange = (labelType: LabelType) => {
         setLabelType(labelType);
-        setImportFormatType(null);
     }
 
     return(
         <GenericLabelTypePopup
-            title={"Import annotations"}
+            title={`Import ${labelType.toLowerCase()} annotations`}
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Import"}
             onAccept={onAccept}

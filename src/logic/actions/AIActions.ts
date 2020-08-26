@@ -18,7 +18,7 @@ export class AIActions {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
 
         switch (activeLabelType) {
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 AIObjectDetectionActions.detectRects(imageId, image);
                 break;
             case LabelType.POINT:
@@ -31,7 +31,7 @@ export class AIActions {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
 
         switch (activeLabelType) {
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 AIObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
                 break;
             case LabelType.POINT:
@@ -43,7 +43,7 @@ export class AIActions {
     public static acceptAllSuggestedLabels(imageData: ImageData) {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
         switch (activeLabelType) {
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 AIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
                 break;
             case LabelType.POINT:

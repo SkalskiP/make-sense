@@ -37,7 +37,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
-        this.labelType = LabelType.RECTANGLE;
+        this.labelType = LabelType.RECT;
     }
 
     // =================================================================================================================

@@ -5,7 +5,7 @@ import {LabelFormatType} from "./enums/LabelFormatType";
 export type ExportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
 
 export const ExportFormatData: ExportFormatDataMap = {
-    RECTANGLE: [
+    "RECT": [
         {
             type: LabelFormatType.YOLO,
             label: "A .zip package containing files in YOLO format."
@@ -19,19 +19,19 @@ export const ExportFormatData: ExportFormatDataMap = {
             label: "Single CSV file."
         }
     ],
-    POINT: [
+    "POINT": [
         {
             type: LabelFormatType.CSV,
             label: "Single CSV file."
         }
     ],
-    LINE: [
+    "LINE": [
         {
             type: LabelFormatType.CSV,
             label: "Single CSV file."
         }
     ],
-    POLYGON: [
+    "POLYGON": [
         {
             type: LabelFormatType.VGG_JSON,
             label: "Single file in VGG JSON format."
@@ -41,7 +41,7 @@ export const ExportFormatData: ExportFormatDataMap = {
             label: "Single file in COCO JSON format."
         }
     ],
-    NAME: [
+    "IMAGE RECOGNITION": [
         {
             type: LabelFormatType.CSV,
             label: "Single CSV file."
