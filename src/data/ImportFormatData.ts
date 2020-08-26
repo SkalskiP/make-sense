@@ -5,7 +5,12 @@ import {LabelFormatType} from "./enums/LabelFormatType";
 export type ImportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
 
 export const ImportFormatData: ImportFormatDataMap = {
-    RECTANGLE: [],
+    RECTANGLE: [
+        {
+            type: LabelFormatType.COCO_JSON,
+            label: "Single file in COCO JSON format."
+        }
+    ],
     POINT: [],
     LINE: [],
     POLYGON: [
