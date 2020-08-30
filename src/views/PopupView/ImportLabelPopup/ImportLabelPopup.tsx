@@ -17,7 +17,7 @@ interface IProps {
 const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
     const [labelType, setLabelType] = useState(activeLabelType);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: AcceptedFileType.TEXT,
+        accept: AcceptedFileType.JSON,
         multiple: true,
         onDrop: (acceptedFiles) => {
             console.log(acceptedFiles)
@@ -66,6 +66,7 @@ const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
             acceptLabel={"Import"}
             onAccept={onAccept}
             skipAcceptButton={ImportFormatData[labelType].length === 0}
+            disableAcceptButton={acceptedFiles.length === 0}
             rejectLabel={"Cancel"}
             onReject={onReject}
             renderInternalContent={renderInternalContent}

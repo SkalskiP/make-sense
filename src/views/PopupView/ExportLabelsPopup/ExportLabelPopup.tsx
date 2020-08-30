@@ -23,7 +23,6 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
     const [exportFormatType, setExportFormatType] = useState(null);
 
     const onAccept = (labelType: LabelType) => {
-        if (!exportFormatType) return;
         switch (labelType) {
             case LabelType.RECT:
                 RectLabelsExporter.export(exportFormatType);
@@ -97,6 +96,7 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Export"}
             onAccept={onAccept}
+            disableAcceptButton={!exportFormatType}
             rejectLabel={"Cancel"}
             onReject={onReject}
             renderInternalContent={renderInternalContent}
