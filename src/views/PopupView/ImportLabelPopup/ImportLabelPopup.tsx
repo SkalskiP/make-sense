@@ -9,6 +9,8 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {useDropzone} from "react-dropzone";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
+import {ImageData, LabelName} from "../../../store/labels/types";
+import {COCOImporter} from "../../../logic/import/polygon/COCOImporter";
 
 interface IProps {
     activeLabelType: LabelType,
@@ -16,13 +18,24 @@ interface IProps {
 
 const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
     const [labelType, setLabelType] = useState(activeLabelType);
+    const [annotationsLoadedError, setAnnotationsLoadedError] = useState(false);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.JSON,
         multiple: true,
         onDrop: (acceptedFiles) => {
-            console.log(acceptedFiles)
+            if (acceptedFiles.length === 1 && labelType === LabelType.POLYGON) {
+                COCOImporter.import(acceptedFiles[0], onAnnotationLoadSuccess, onAnnotationsLoadFailure);
+            }
         }
     });
+
+    const onAnnotationLoadSuccess = (imagesData: ImageData[], labelNames: LabelName[]) => {
+
+    }
+
+    const onAnnotationsLoadFailure = () => {
+        setAnnotationsLoadedError(true);
+    };
 
     const onAccept = (labelType: LabelType) => {
         PopupActions.close();
@@ -66,7 +79,7 @@ const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
             acceptLabel={"Import"}
             onAccept={onAccept}
             skipAcceptButton={ImportFormatData[labelType].length === 0}
-            disableAcceptButton={acceptedFiles.length === 0}
+            disableAcceptButton={acceptedFiles.length === 0 || annotationsLoadedError}
             rejectLabel={"Cancel"}
             onReject={onReject}
             renderInternalContent={renderInternalContent}
