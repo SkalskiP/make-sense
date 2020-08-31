@@ -1,8 +1,10 @@
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import {COCOAnnotation, COCOCategory, COCOImage, COCOObject} from "../../../data/labels/COCO";
+import {COCOCategory, COCOImage, COCOObject} from "../../../data/labels/COCO";
 import uuidv1 from 'uuid/v1';
 import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
+import {ImageDataUtil} from "../../../utils/ImageDataUtil";
+import {LabelUtil} from "../../../utils/LabelUtil";
 
 export type COCOImportResult = {
     imagesData: ImageData[]
@@ -34,15 +36,28 @@ export class COCOImporter {
         reader.onerror = () => onFailure();
     }
 
-    public static applyLabels(inputImagesData: ImageData[], annotationsObject: COCOObject): COCOImportResult {
-        const {info, images, categories, annotations} = annotationsObject;
+    public static applyLabels(imageData: ImageData[], annotationsObject: COCOObject): COCOImportResult {
+        const {images, categories, annotations} = annotationsObject;
         const labelNameMap: LabelNameMap = COCOImporter.mapCOCOCategories(categories);
-        const imageDataPartition: PartitionResult<ImageData> = COCOImporter.partitionImageData(inputImagesData, images);
+        const cleanImageData: ImageData[] = imageData.map((item: ImageData) => ImageDataUtil.cleanAnnotations(item));
+        const imageDataPartition: PartitionResult<ImageData> = COCOImporter.partitionImageData(cleanImageData, images);
         const imageDataMap: ImageDataMap = COCOImporter.mapImageData(imageDataPartition.pass, images);
-        console.log(imageDataMap);
+
+        for (const annotation of annotations) {
+            imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
+                labelNameMap[annotation.category_id].id,
+                {
+                    x: annotation.bbox[0],
+                    y: annotation.bbox[1],
+                    width: annotation.bbox[2],
+                    height: annotation.bbox[3]
+                }
+            ))
+        }
+
         return {
-            imagesData: [],
-            labelNames: []
+            imagesData: Object.values(imageDataMap),
+            labelNames: Object.values(labelNameMap)
         }
     }
 

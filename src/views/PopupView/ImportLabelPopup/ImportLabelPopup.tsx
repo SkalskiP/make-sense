@@ -11,12 +11,20 @@ import {useDropzone} from "react-dropzone";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {COCOImporter} from "../../../logic/import/polygon/COCOImporter";
+import {updateImageData, updateLabelNames} from "../../../store/labels/actionCreators";
 
 interface IProps {
     activeLabelType: LabelType,
+    updateImageData: (imageData: ImageData[]) => any,
+    updateLabelNames: (labels: LabelName[]) => any
 }
 
-const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
+const ImportLabelPopup: React.FC<IProps> = (
+    {
+        activeLabelType,
+        updateImageData,
+        updateLabelNames
+    }) => {
     const [labelType, setLabelType] = useState(activeLabelType);
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(false);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
@@ -30,7 +38,8 @@ const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
     });
 
     const onAnnotationLoadSuccess = (imagesData: ImageData[], labelNames: LabelName[]) => {
-
+        updateImageData(imagesData);
+        updateLabelNames(labelNames);
     }
 
     const onAnnotationsLoadFailure = () => {
@@ -87,7 +96,10 @@ const ImportLabelPopup: React.FC<IProps> = ({activeLabelType}) => {
     )
 };
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+    updateImageData,
+    updateLabelNames
+};
 
 const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.labels.activeLabelType,
