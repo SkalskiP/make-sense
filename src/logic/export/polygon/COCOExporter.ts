@@ -58,6 +58,7 @@ export class COCOExporter {
     public static getImagesComponent(imagesData: ImageData[]): COCOImage[] {
         return imagesData
             .filter((imagesData: ImageData) => imagesData.loadStatus)
+            .filter((imagesData: ImageData) => imagesData.labelPolygons.length !== 0)
             .map((imageData: ImageData, index: number) => {
                 const image: HTMLImageElement = ImageRepository.getById(imageData.id);
                 return {
@@ -74,6 +75,7 @@ export class COCOExporter {
         let id = 0;
         const annotations: COCOAnnotation[][] = imagesData
             .filter((imagesData: ImageData) => imagesData.loadStatus)
+            .filter((imagesData: ImageData) => imagesData.labelPolygons.length !== 0)
             .map((imageData: ImageData, index: number) => {
                 return imageData.labelPolygons.map((labelPolygon: LabelPolygon) => {
                     return {
