@@ -7,11 +7,11 @@ import {connect} from "react-redux";
 import {addImageData, updateActiveImageIndex} from "../../../store/labels/actionCreators";
 import {AppState} from "../../../store";
 import {ProjectType} from "../../../data/enums/ProjectType";
-import {FileUtil} from "../../../utils/FileUtil";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType, updateProjectData} from "../../../store/general/actionCreators";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ProjectData} from "../../../store/general/types";
+import {ImageDataUtil} from "../../../utils/ImageDataUtil";
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
@@ -33,7 +33,7 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
                 type: projectType
             });
             updateActiveImageIndex(0);
-            addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
+            addImageData(acceptedFiles.map((fileData:File) => ImageDataUtil.createImageDataFromFileData(fileData)));
             updateActivePopupType(PopupWindowType.INSERT_LABEL_NAMES);
         }
     };

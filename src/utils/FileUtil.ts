@@ -1,22 +1,4 @@
-import uuidv1 from 'uuid/v1';
-import {ImageData} from "../store/labels/types";
-
 export class FileUtil {
-    public static mapFileDataToImageData(fileData: File): ImageData {
-        return {
-            id: uuidv1(),
-            fileData: fileData,
-            loadStatus: false,
-            labelRects: [],
-            labelPoints: [],
-            labelLines: [],
-            labelPolygons: [],
-            labelNameIds: [],
-            isVisitedByObjectDetector: false,
-            isVisitedByPoseDetector: false
-        }
-    }
-
     public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
 		return new Promise((resolve, reject) => {
 			const url = URL.createObjectURL(fileData);
