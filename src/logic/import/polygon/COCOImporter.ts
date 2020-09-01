@@ -1,10 +1,13 @@
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import {COCOCategory, COCOImage, COCOObject} from "../../../data/labels/COCO";
+import {COCOBBox, COCOCategory, COCOImage, COCOObject, COCOSegmentation} from "../../../data/labels/COCO";
 import uuidv1 from 'uuid/v1';
 import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
 import {ImageDataUtil} from "../../../utils/ImageDataUtil";
 import {LabelUtil} from "../../../utils/LabelUtil";
+import {IRect} from "../../../interfaces/IRect";
+import {IPoint} from "../../../interfaces/IPoint";
+import {chunk} from "lodash";
 
 export type COCOImportResult = {
     imagesData: ImageData[]
@@ -46,17 +49,16 @@ export class COCOImporter {
         for (const annotation of annotations) {
             imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
                 labelNameMap[annotation.category_id].id,
-                {
-                    x: annotation.bbox[0],
-                    y: annotation.bbox[1],
-                    width: annotation.bbox[2],
-                    height: annotation.bbox[3]
-                }
+                COCOImporter.bbox2rect(annotation.bbox)
+            ))
+            imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
+                labelNameMap[annotation.category_id].id,
+                COCOImporter.segmentation2vertices(annotation.segmentation)
             ))
         }
 
         return {
-            imagesData: Object.values(imageDataMap),
+            imagesData: Object.values(imageDataMap).concat(imageDataPartition.fail),
             labelNames: Object.values(labelNameMap)
         }
     }
@@ -86,5 +88,20 @@ export class COCOImporter {
             acc[fileNameCOCOIdMap[image.fileData.name]] = image
             return acc;
         }, {});
+    }
+
+    public static bbox2rect(bbox: COCOBBox): IRect {
+        return {
+            x: bbox[0],
+            y: bbox[1],
+            width: bbox[2],
+            height: bbox[3]
+        }
+    }
+
+    public static segmentation2vertices(segmentation: COCOSegmentation): IPoint[] {
+        return chunk(segmentation[0], 2).map((pair: number[]) => {
+            return {x: pair[0], y: pair[1]}
+        })
     }
 }

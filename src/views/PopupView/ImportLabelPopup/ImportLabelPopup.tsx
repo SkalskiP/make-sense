@@ -11,21 +11,21 @@ import {useDropzone} from "react-dropzone";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {COCOImporter} from "../../../logic/import/polygon/COCOImporter";
-import {updateImageData, updateLabelNames} from "../../../store/labels/actionCreators";
+import {updateActiveLabelType, updateImageData, updateLabelNames} from "../../../store/labels/actionCreators";
 
 interface IProps {
-    activeLabelType: LabelType,
     updateImageData: (imageData: ImageData[]) => any,
-    updateLabelNames: (labels: LabelName[]) => any
+    updateLabelNames: (labels: LabelName[]) => any,
+    updateActiveLabelType: (activeLabelType: LabelType) => any
 }
 
 const ImportLabelPopup: React.FC<IProps> = (
     {
-        activeLabelType,
         updateImageData,
-        updateLabelNames
+        updateLabelNames,
+        updateActiveLabelType
     }) => {
-    const [labelType, setLabelType] = useState(activeLabelType);
+    const [labelType, setLabelType] = useState(LabelType.POLYGON);
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(false);
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.JSON,
@@ -40,6 +40,7 @@ const ImportLabelPopup: React.FC<IProps> = (
     const onAnnotationLoadSuccess = (imagesData: ImageData[], labelNames: LabelName[]) => {
         updateImageData(imagesData);
         updateLabelNames(labelNames);
+        updateActiveLabelType(labelType);
     }
 
     const onAnnotationsLoadFailure = () => {
@@ -83,6 +84,7 @@ const ImportLabelPopup: React.FC<IProps> = (
 
     return(
         <GenericLabelTypePopup
+            activeLabelType={labelType}
             title={`Import ${labelType.toLowerCase()} annotations`}
             onLabelTypeChange={onLabelTypeChange}
             acceptLabel={"Import"}
@@ -98,12 +100,11 @@ const ImportLabelPopup: React.FC<IProps> = (
 
 const mapDispatchToProps = {
     updateImageData,
-    updateLabelNames
+    updateLabelNames,
+    updateActiveLabelType
 };
 
-const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.labels.activeLabelType,
-});
+const mapStateToProps = (state: AppState) => ({});
 
 export default connect(
     mapStateToProps,

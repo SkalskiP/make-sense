@@ -4,7 +4,7 @@ import {GeneralSelector} from "../../../store/selectors/GeneralSelector";
 import {ImageRepository} from "../../imageRepository/ImageRepository";
 import {ExporterUtil} from "../../../utils/ExporterUtil";
 import {
-    COCOAnnotation,
+    COCOAnnotation, COCOBBox,
     COCOCategory,
     COCOImage,
     COCOInfo,
@@ -104,7 +104,7 @@ export class COCOExporter {
         return [flatten(points)];
     }
 
-    public static getCOCOBbox(vertices: IPoint[]): number[] {
+    public static getCOCOBbox(vertices: IPoint[]): COCOBBox {
         let xMin: number = vertices[0].x;
         let xMax: number = vertices[0].x;
         let yMin: number = vertices[0].y;

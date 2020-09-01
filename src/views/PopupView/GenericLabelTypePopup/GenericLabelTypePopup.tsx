@@ -85,7 +85,6 @@ const GenericLabelTypePopup: React.FC<IProps> = (
 const mapDispatchToProps = {};
 
 const mapStateToProps = (state: AppState) => ({
-    activeLabelType: state.labels.activeLabelType,
     projectType: state.general.projectData.type
 });
 

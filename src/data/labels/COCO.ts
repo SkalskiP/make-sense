@@ -1,4 +1,5 @@
 export type COCOSegmentation = number[][]
+export type COCOBBox = [number, number, number, number]
 
 export type COCOInfo = {
     description: string;
@@ -23,7 +24,7 @@ export type COCOAnnotation = {
     segmentation: COCOSegmentation;
     image_id: number;
     area: number;
-    bbox: number[];
+    bbox: COCOBBox;
 }
 
 export type COCOObject = {
