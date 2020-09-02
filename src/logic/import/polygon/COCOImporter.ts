@@ -8,6 +8,7 @@ import {LabelUtil} from "../../../utils/LabelUtil";
 import {IRect} from "../../../interfaces/IRect";
 import {IPoint} from "../../../interfaces/IPoint";
 import {chunk} from "lodash";
+import {CocoFormatValidationError} from "../errors";
 
 export type COCOImportResult = {
     imagesData: ImageData[]
@@ -19,10 +20,11 @@ export type LabelNameMap = { [labelCOCOId: number]: LabelName; }
 export type ImageDataMap = { [imageCOCOId: number]: ImageData; }
 
 export class COCOImporter {
+    public static requiredKeys = ["images", "annotations", "categories"]
     public static import(
         fileData: File,
         onSuccess: (imagesData: ImageData[], labelNames: LabelName[]) => any,
-        onFailure: () => any
+        onFailure: (error?:Error) => any
     ): void {
         const reader = new FileReader();
         reader.readAsText(fileData);
@@ -33,13 +35,14 @@ export class COCOImporter {
                 const {imagesData, labelNames} = COCOImporter.applyLabels(inputImagesData, annotations as COCOObject);
                 onSuccess(imagesData,labelNames);
             } catch (error) {
-                onFailure();
+                onFailure(error);
             }
         };
         reader.onerror = () => onFailure();
     }
 
     public static applyLabels(imageData: ImageData[], annotationsObject: COCOObject): COCOImportResult {
+        COCOImporter.validateCocoFormat(annotationsObject);
         const {images, categories, annotations} = annotationsObject;
         const labelNameMap: LabelNameMap = COCOImporter.mapCOCOCategories(categories);
         const cleanImageData: ImageData[] = imageData.map((item: ImageData) => ImageDataUtil.cleanAnnotations(item));
@@ -47,6 +50,9 @@ export class COCOImporter {
         const imageDataMap: ImageDataMap = COCOImporter.mapImageData(imageDataPartition.pass, images);
 
         for (const annotation of annotations) {
+            if (!imageDataMap[annotation.image_id])
+                continue
+
             imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
                 labelNameMap[annotation.category_id].id,
                 COCOImporter.bbox2rect(annotation.bbox)
@@ -103,5 +109,12 @@ export class COCOImporter {
         return chunk(segmentation[0], 2).map((pair: number[]) => {
             return {x: pair[0], y: pair[1]}
         })
+    }
+
+    public static validateCocoFormat(annotationsObject: COCOObject): void {
+        const missingKeys = COCOImporter.requiredKeys.filter((key: string) => !annotationsObject.hasOwnProperty(key))
+        if (missingKeys.length !== 0) {
+            throw new CocoFormatValidationError(`Uploaded file does not contain all required keys: ${missingKeys}`)
+        }
     }
 }

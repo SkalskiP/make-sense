@@ -43,7 +43,7 @@ const ImportLabelPopup: React.FC<IProps> = (
         updateActiveLabelType(labelType);
     }
 
-    const onAnnotationsLoadFailure = () => {
+    const onAnnotationsLoadFailure = (error?:Error) => {
         setAnnotationsLoadedError(true);
     };
 
