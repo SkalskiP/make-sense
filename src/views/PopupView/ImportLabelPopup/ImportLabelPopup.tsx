@@ -30,7 +30,7 @@ const ImportLabelPopup: React.FC<IProps> = (
     const [loadedImageData, setLoadedImageData] = useState([]);
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(null);
 
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+    const {getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.JSON,
         multiple: true,
         onDrop: (acceptedFiles) => {
@@ -41,6 +41,7 @@ const ImportLabelPopup: React.FC<IProps> = (
     });
 
     const onLabelTypeChange = (labelType: LabelType) => {
+        setLabelType(labelType);
         setLoadedLabelNames([]);
         setLoadedImageData([]);
         setAnnotationsLoadedError(null);
