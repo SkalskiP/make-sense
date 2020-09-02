@@ -8,7 +8,12 @@ import {LabelUtil} from "../../../utils/LabelUtil";
 import {IRect} from "../../../interfaces/IRect";
 import {IPoint} from "../../../interfaces/IPoint";
 import {chunk} from "lodash";
-import {CocoFormatValidationError} from "../errors";
+import {
+    CocoAnnotationDeserializationError,
+    CocoAnnotationReadingError,
+    CocoFormatValidationError
+} from "../errors";
+import {LabelType} from "../../../data/enums/LabelType";
 
 export type COCOImportResult = {
     imagesData: ImageData[]
@@ -24,24 +29,33 @@ export class COCOImporter {
     public static import(
         fileData: File,
         onSuccess: (imagesData: ImageData[], labelNames: LabelName[]) => any,
-        onFailure: (error?:Error) => any
+        onFailure: (error?:Error) => any,
+        labelType: LabelType[]
     ): void {
         const reader = new FileReader();
         reader.readAsText(fileData);
         reader.onloadend = function (evt: any) {
             try {
                 const inputImagesData: ImageData[] = LabelsSelector.getImagesData();
-                const annotations: object = JSON.parse(evt.target.result);
-                const {imagesData, labelNames} = COCOImporter.applyLabels(inputImagesData, annotations as COCOObject);
+                const annotations = COCOImporter.deserialize(evt.target.result)
+                const {imagesData, labelNames} = COCOImporter.applyLabels(inputImagesData, annotations, labelType);
                 onSuccess(imagesData,labelNames);
             } catch (error) {
                 onFailure(error);
             }
         };
-        reader.onerror = () => onFailure();
+        reader.onerror = () => onFailure(new CocoAnnotationReadingError());
     }
 
-    public static applyLabels(imageData: ImageData[], annotationsObject: COCOObject): COCOImportResult {
+    public static deserialize(text: string): COCOObject {
+        try {
+            return JSON.parse(text) as COCOObject
+        } catch (error) {
+            throw new CocoAnnotationDeserializationError()
+        }
+    }
+
+    public static applyLabels(imageData: ImageData[], annotationsObject: COCOObject, labelType: LabelType[]): COCOImportResult {
         COCOImporter.validateCocoFormat(annotationsObject);
         const {images, categories, annotations} = annotationsObject;
         const labelNameMap: LabelNameMap = COCOImporter.mapCOCOCategories(categories);
@@ -53,14 +67,19 @@ export class COCOImporter {
             if (!imageDataMap[annotation.image_id])
                 continue
 
-            imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
-                labelNameMap[annotation.category_id].id,
-                COCOImporter.bbox2rect(annotation.bbox)
-            ))
-            imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
-                labelNameMap[annotation.category_id].id,
-                COCOImporter.segmentation2vertices(annotation.segmentation)
-            ))
+            if (labelType.includes(LabelType.RECT)) {
+                imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
+                    labelNameMap[annotation.category_id].id,
+                    COCOImporter.bbox2rect(annotation.bbox)
+                ))
+            }
+
+            if (labelType.includes(LabelType.POLYGON)) {
+                imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
+                    labelNameMap[annotation.category_id].id,
+                    COCOImporter.segmentation2vertices(annotation.segmentation)
+                ))
+            }
         }
 
         return {
