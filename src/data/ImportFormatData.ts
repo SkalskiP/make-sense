@@ -9,6 +9,10 @@ export const ImportFormatData: ImportFormatDataMap = {
         {
             type: AnnotationFormatType.COCO,
             label: "Single file in COCO JSON format."
+        },
+        {
+            type: AnnotationFormatType.YOLO,
+            label: "Multiple files in YOLO format."
         }
     ],
     "POINT": [],
