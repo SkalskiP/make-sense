@@ -98,11 +98,12 @@ docker logs make_sense
 
 **Table 1.** Supported keyboard shortcuts
 
-## Supported Import Formats
+## Supported Export Formats
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
 | **Point**     | ✓   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Line**      | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
 | **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐         | ✗          |
 | **Polygon**   | ☐   | ✗    | ☐       | ✓        | ✓         | ☐          |
 | **Label**     | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
@@ -114,11 +115,12 @@ docker logs make_sense
 
 You can find examples of export files along with a description and schema on our [Wiki][7].
 
-## Supported Export Formats
+## Supported Import Formats
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
 | **Point**     | ☐   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Line**      | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
 | **Rect**      | ☐   | ☐    | ☐       | ☐        | ☐         | ✗          |
 | **Polygon**   | ☐   | ✗    | ☐       | ☐        | ✓         | ☐          |
 | **Label**     | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
