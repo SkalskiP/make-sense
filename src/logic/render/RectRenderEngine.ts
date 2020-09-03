@@ -4,7 +4,6 @@ import {RectUtil} from "../../utils/RectUtil";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {store} from "../..";
 import {ImageData, LabelRect} from "../../store/labels/types";
-import uuidv1 from 'uuid/v1';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
@@ -24,6 +23,7 @@ import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {LabelStatus} from "../../data/enums/LabelStatus";
+import {LabelUtil} from "../../utils/LabelUtil";
 
 export class RectRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -37,7 +37,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
-        this.labelType = LabelType.RECTANGLE;
+        this.labelType = LabelType.RECT;
     }
 
     // =================================================================================================================
@@ -229,14 +229,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     private addRectLabel = (rect: IRect) => {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
-        const labelRect: LabelRect = {
-            id: uuidv1(),
-            labelId: activeLabelId,
-            rect,
-            isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
-            suggestedLabel: null
-        };
+        const labelRect: LabelRect = LabelUtil.createLabelRect(activeLabelId, rect);
         imageData.labelRects.push(labelRect);
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));

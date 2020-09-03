@@ -6,13 +6,12 @@ export const FeatureInProgress: React.FC = () => {
         <div
             className="FeatureInProgress"
         >
-            <p className="extraBold">Coming soon...</p>
             <img
                 draggable={false}
-                alt={"fingers_crossed"}
-                src={"img/fingers_crossed.png"}
+                alt={"take_off"}
+                src={"img/take-off.png"}
             />
-            <p>Keep your fingers crossed!</p>
+            <p className="extraBold">new feature <br/> coming soon...</p>
         </div>
     )
 };

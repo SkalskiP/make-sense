@@ -4,7 +4,6 @@ import {PopupWindowType} from "../../data/enums/PopupWindowType";
 import {AppState} from "../../store";
 import {connect} from "react-redux";
 import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
-import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
 import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
 import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
@@ -12,6 +11,8 @@ import {LoadModelPopup} from "./LoadModelPopup/LoadModelPopup";
 import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
 import {CSSHelper} from "../../logic/helpers/CSSHelper";
 import {ClipLoader} from "react-spinners";
+import ImportLabelPopup from "./ImportLabelPopup/ImportLabelPopup";
+import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -25,6 +26,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <LoadLabelsPopup/>;
             case PopupWindowType.EXPORT_ANNOTATIONS:
                 return <ExportLabelPopup/>;
+            case PopupWindowType.IMPORT_ANNOTATIONS:
+                return <ImportLabelPopup/>;
             case PopupWindowType.INSERT_LABEL_NAMES:
                 return <InsertLabelNamesPopup
                     isUpdate={false}

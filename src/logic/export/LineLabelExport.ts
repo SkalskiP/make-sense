@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
+import {LabelFormatType} from "../../data/enums/LabelFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelLine, LabelName} from "../../store/labels/types";
 import {ExporterUtil} from "../../utils/ExporterUtil";
@@ -6,9 +6,9 @@ import {ImageRepository} from "../imageRepository/ImageRepository";
 import {findLast} from "lodash";
 
 export class LineLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
+    public static export(exportFormatType: LabelFormatType): void {
         switch (exportFormatType) {
-            case ExportFormatType.CSV:
+            case LabelFormatType.CSV:
                 LineLabelsExporter.exportAsCSV();
                 break;
             default:

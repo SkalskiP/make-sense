@@ -1,4 +1,4 @@
-export enum ExportFormatType {
+export enum LabelFormatType {
     YOLO = "YOLO",
     COCO_JSON = "COCO_JSON",
     CSV = "CSV",

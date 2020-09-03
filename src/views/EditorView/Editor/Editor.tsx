@@ -178,7 +178,7 @@ class Editor extends React.Component<IProps, IState> {
 
     private getOptionsPanels = () => {
         const editorData: EditorData = EditorActions.getEditorData();
-        if (this.props.activeLabelType === LabelType.RECTANGLE) {
+        if (this.props.activeLabelType === LabelType.RECT) {
             return this.props.imageData.labelRects
                 .filter((labelRect: LabelRect) => labelRect.isCreatedByAI && labelRect.status !== LabelStatus.ACCEPTED)
                 .map((labelRect: LabelRect) => {

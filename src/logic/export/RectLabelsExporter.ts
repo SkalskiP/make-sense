@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
+import {LabelFormatType} from "../../data/enums/LabelFormatType";
 import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import JSZip from 'jszip';
@@ -10,15 +10,15 @@ import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {findIndex, findLast} from "lodash";
 
 export class RectLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
+    public static export(exportFormatType: LabelFormatType): void {
         switch (exportFormatType) {
-            case ExportFormatType.YOLO:
+            case LabelFormatType.YOLO:
                 RectLabelsExporter.exportAsYOLO();
                 break;
-            case ExportFormatType.VOC:
+            case LabelFormatType.VOC:
                 RectLabelsExporter.exportAsVOC();
                 break;
-            case ExportFormatType.CSV:
+            case LabelFormatType.CSV:
                 RectLabelsExporter.exportAsCSV();
                 break;
             default:

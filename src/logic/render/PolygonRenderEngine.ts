@@ -11,7 +11,6 @@ import {DrawUtil} from "../../utils/DrawUtil";
 import {IRect} from "../../interfaces/IRect";
 import {ImageData, LabelPolygon} from "../../store/labels/types";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import uuidv1 from 'uuid/v1';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
@@ -25,6 +24,8 @@ import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorActions} from "../actions/EditorActions";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {Settings} from "../../settings/Settings";
+import {LabelUtil} from "../../utils/LabelUtil";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -199,8 +200,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         lines.forEach((line: ILine) => {
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
         });
-        this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
-            DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+        standardizedPoints.forEach((point: IPoint) => {
+            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
         })
     }
 
@@ -236,8 +237,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         }
         DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, this.config.lineThickness);
         if (isActive) {
-            this.mapPointsToAnchors(standardizedPoints).forEach((handleRect: IRect) => {
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+            standardizedPoints.forEach((point: IPoint) => {
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
             })
         }
     }
@@ -249,8 +250,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const isMouseOverSuggestedAnchor: boolean = RectUtil.isPointInside(suggestedAnchorRect, data.mousePositionOnViewPortContent);
 
             if (isMouseOverSuggestedAnchor) {
-                const handleRect = RectUtil.getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.anchorSize);
-                DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.lineInactiveColor);
+                DrawUtil.drawCircleWithFill(
+                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.lineInactiveColor);
             }
         }
     }
@@ -294,11 +295,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private addPolygonLabel(polygon: IPoint[]) {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
-        const labelPolygon: LabelPolygon = {
-            id: uuidv1(),
-            labelId: activeLabelId,
-            vertices: polygon
-        };
+        const labelPolygon: LabelPolygon = LabelUtil.createLabelPolygon(activeLabelId, polygon);
         imageData.labelPolygons.push(labelPolygon);
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));
@@ -412,10 +409,6 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             lines.push({start: points[i], end: points[i + 1]})
         }
         return lines;
-    }
-
-    private mapPointsToAnchors(points: IPoint[]): IRect[] {
-        return points.map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize));
     }
 
     // =================================================================================================================

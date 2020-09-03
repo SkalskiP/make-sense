@@ -36,13 +36,13 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
         switch (activeLabelType) {
             case LabelType.POINT:
                 return (100 * pointLabeledImages) / imagesData.length;
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 return (100 * rectLabeledImages) / imagesData.length;
             case LabelType.POLYGON:
                 return (100 * polygonLabeledImages) / imagesData.length;
             case LabelType.LINE:
                 return (100 * lineLabeledImages) / imagesData.length;
-            case LabelType.NAME:
+            case LabelType.IMAGE_RECOGNITION:
                 return (100 * tagLabeledImages) / imagesData.length;
             default:
                 return 0;

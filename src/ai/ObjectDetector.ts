@@ -16,9 +16,9 @@ export class ObjectDetector {
             .then((model: ObjectDetection) => {
                 ObjectDetector.model = model;
                 store.dispatch(updateObjectDetectorStatus(true));
-                store.dispatch(updateActiveLabelType(LabelType.RECTANGLE));
+                store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
-                activeLabelType === LabelType.RECTANGLE && AIObjectDetectionActions.detectRectsForActiveImage();
+                activeLabelType === LabelType.RECT && AIObjectDetectionActions.detectRectsForActiveImage();
                 callback && callback();
             })
             .catch((error) => {

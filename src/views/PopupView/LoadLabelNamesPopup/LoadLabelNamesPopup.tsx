@@ -42,7 +42,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
 
     const onAccept = () => {
         if (labelsList.length > 0) {
-            updateLabels(labelsList.map((name: string) => LabelUtil.mapNamesToLabelNames(name)));
+            updateLabels(labelsList.map((name: string) => LabelUtil.createLabelName(name)));
             updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };
