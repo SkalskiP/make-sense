@@ -98,7 +98,7 @@ docker logs make_sense
 
 **Table 1.** Supported keyboard shortcuts
 
-## Supported Export Formats
+## Supported Import Formats
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
