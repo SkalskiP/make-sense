@@ -98,7 +98,7 @@ docker logs make_sense
 
 **Table 1.** Supported keyboard shortcuts
 
-## Supported Output Formats
+## Supported Export Formats
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
@@ -107,12 +107,23 @@ docker logs make_sense
 | **Polygon**   | ☐   | ✗    | ☐       | ✓        | ✓         | ☐          |
 | **Label**     | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
-**Table 2.** The matrix of supported labels export format, where:
+**Table 2.** The matrix of supported labels export formats, where:
 * ✓ - supported format
 * ☐ - not yet supported format
 * ✗ - format does not make sense for a given label type  
 
 You can find examples of export files along with a description and schema on our [Wiki][7].
+
+## Supported Export Formats
+
+|               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
+|:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
+| **Point**     | ☐   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Rect**      | ☐   | ☐    | ☐       | ☐        | ☐         | ✗          |
+| **Polygon**   | ☐   | ✗    | ☐       | ☐        | ✓         | ☐          |
+| **Label**     | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
+
+**Table 3.** The matrix of supported labels import formats
 
 ## Privacy
 
