@@ -64,7 +64,7 @@ export class COCOImporter {
         const imageDataMap: ImageDataMap = COCOImporter.mapImageData(imageDataPartition.pass, images);
 
         for (const annotation of annotations) {
-            if (!imageDataMap[annotation.image_id])
+            if (!imageDataMap[annotation.image_id] || annotation.iscrowd === 1)
                 continue
 
             if (labelType.includes(LabelType.RECT)) {
@@ -75,10 +75,12 @@ export class COCOImporter {
             }
 
             if (labelType.includes(LabelType.POLYGON)) {
-                imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
-                    labelNameMap[annotation.category_id].id,
-                    COCOImporter.segmentation2vertices(annotation.segmentation)
-                ))
+                const polygons = COCOImporter.segmentation2vertices(annotation.segmentation);
+                for (const polygon of polygons) {
+                    imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
+                        labelNameMap[annotation.category_id].id, polygon
+                    ))
+                }
             }
         }
 
@@ -124,9 +126,11 @@ export class COCOImporter {
         }
     }
 
-    public static segmentation2vertices(segmentation: COCOSegmentation): IPoint[] {
-        return chunk(segmentation[0], 2).map((pair: number[]) => {
-            return {x: pair[0], y: pair[1]}
+    public static segmentation2vertices(segmentation: COCOSegmentation): IPoint[][] {
+        return segmentation.map((segment: number[]) => {
+            return chunk(segment, 2).map((pair: number[]) => {
+                return {x: pair[0], y: pair[1]}
+            })
         })
     }
 
