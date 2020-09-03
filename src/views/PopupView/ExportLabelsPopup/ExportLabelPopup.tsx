@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import './ExportLabelPopup.scss'
-import {LabelFormatType} from "../../../data/enums/LabelFormatType";
+import {AnnotationFormatType} from "../../../data/enums/AnnotationFormatType";
 import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
 import {LabelType} from "../../../data/enums/LabelType";
 import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
@@ -47,7 +47,7 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
         PopupActions.close();
     };
 
-    const onSelect = (exportFormatType: LabelFormatType) => {
+    const onSelect = (exportFormatType: AnnotationFormatType) => {
         setExportFormatType(exportFormatType);
     };
 

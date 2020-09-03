@@ -1,53 +1,53 @@
 import {ILabelFormatData} from "../interfaces/ILabelFormatData";
 import {LabelType} from "./enums/LabelType";
-import {LabelFormatType} from "./enums/LabelFormatType";
+import {AnnotationFormatType} from "./enums/AnnotationFormatType";
 
 export type ExportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
 
 export const ExportFormatData: ExportFormatDataMap = {
     "RECT": [
         {
-            type: LabelFormatType.YOLO,
+            type: AnnotationFormatType.YOLO,
             label: "A .zip package containing files in YOLO format."
         },
         {
-            type: LabelFormatType.VOC,
+            type: AnnotationFormatType.VOC,
             label: "A .zip package containing files in VOC XML format."
         },
         {
-            type: LabelFormatType.CSV,
+            type: AnnotationFormatType.CSV,
             label: "Single CSV file."
         }
     ],
     "POINT": [
         {
-            type: LabelFormatType.CSV,
+            type: AnnotationFormatType.CSV,
             label: "Single CSV file."
         }
     ],
     "LINE": [
         {
-            type: LabelFormatType.CSV,
+            type: AnnotationFormatType.CSV,
             label: "Single CSV file."
         }
     ],
     "POLYGON": [
         {
-            type: LabelFormatType.VGG_JSON,
+            type: AnnotationFormatType.VGG,
             label: "Single file in VGG JSON format."
         },
         {
-            type: LabelFormatType.COCO_JSON,
+            type: AnnotationFormatType.COCO,
             label: "Single file in COCO JSON format."
         }
     ],
     "IMAGE RECOGNITION": [
         {
-            type: LabelFormatType.CSV,
+            type: AnnotationFormatType.CSV,
             label: "Single CSV file."
         },
         {
-            type: LabelFormatType.JSON,
+            type: AnnotationFormatType.JSON,
             label: "Single JSON file."
         }
     ]

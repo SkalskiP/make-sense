@@ -10,8 +10,9 @@ import {connect} from "react-redux";
 import {useDropzone} from "react-dropzone";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ImageData, LabelName} from "../../../store/labels/types";
-import {COCOImporter} from "../../../logic/import/polygon/COCOImporter";
 import {updateActiveLabelType, updateImageData, updateLabelNames} from "../../../store/labels/actionCreators";
+import {ImporterSpecData} from "../../../data/ImporterSpecData";
+import {AnnotationFormatType} from "../../../data/enums/AnnotationFormatType";
 
 interface IProps {
     updateImageData: (imageData: ImageData[]) => any,
@@ -34,9 +35,8 @@ const ImportLabelPopup: React.FC<IProps> = (
         accept: AcceptedFileType.JSON,
         multiple: true,
         onDrop: (acceptedFiles) => {
-            if (acceptedFiles.length === 1 && labelType === LabelType.POLYGON) {
-                COCOImporter.import(acceptedFiles[0], onAnnotationLoadSuccess, onAnnotationsLoadFailure, [LabelType.POLYGON, LabelType.RECT]);
-            }
+            const importer = new (ImporterSpecData[AnnotationFormatType.COCO])([labelType])
+            importer.import(acceptedFiles, onAnnotationLoadSuccess, onAnnotationsLoadFailure);
         }
     });
 

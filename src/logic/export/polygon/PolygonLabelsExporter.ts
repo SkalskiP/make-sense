@@ -1,14 +1,14 @@
-import {LabelFormatType} from "../../../data/enums/LabelFormatType";
+import {AnnotationFormatType} from "../../../data/enums/AnnotationFormatType";
 import {VGGExporter} from "./VGGExporter";
 import {COCOExporter} from "./COCOExporter";
 
 export class PolygonLabelsExporter {
-    public static export(exportFormatType: LabelFormatType): void {
+    public static export(exportFormatType: AnnotationFormatType): void {
         switch (exportFormatType) {
-            case LabelFormatType.VGG_JSON:
+            case AnnotationFormatType.VGG:
                 VGGExporter.export();
                 break;
-            case LabelFormatType.COCO_JSON:
+            case AnnotationFormatType.COCO:
                 COCOExporter.export();
                 break;
             default:

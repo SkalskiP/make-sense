@@ -25,3 +25,10 @@ export class CocoAnnotationDeserializationError extends CocoImportError {
         this.name = "CocoAnnotationDeserializationError";
     }
 }
+
+export class CocoAnnotationFileCountError extends CocoImportError {
+    constructor() {
+        super("COCO annotation requires single file but multiple were given");
+        this.name = "CocoAnnotationFileCountError";
+    }
+}

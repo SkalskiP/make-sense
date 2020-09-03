@@ -1,6 +1,6 @@
-import {LabelFormatType} from "../data/enums/LabelFormatType";
+import {AnnotationFormatType} from "../data/enums/AnnotationFormatType";
 
 export interface ILabelFormatData {
-    type: LabelFormatType,
+    type: AnnotationFormatType,
     label: string
 }

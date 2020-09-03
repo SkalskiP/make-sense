@@ -1,4 +1,4 @@
-import {LabelFormatType} from "../../data/enums/LabelFormatType";
+import {AnnotationFormatType} from "../../data/enums/AnnotationFormatType";
 import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
@@ -6,9 +6,9 @@ import {ExporterUtil} from "../../utils/ExporterUtil";
 import {findLast} from "lodash";
 
 export class PointLabelsExporter {
-    public static export(exportFormatType: LabelFormatType): void {
+    public static export(exportFormatType: AnnotationFormatType): void {
         switch (exportFormatType) {
-            case LabelFormatType.CSV:
+            case AnnotationFormatType.CSV:
                 PointLabelsExporter.exportAsCSV();
                 break;
             default:
