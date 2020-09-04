@@ -120,6 +120,7 @@ export class ViewPortActions {
         const currentScrollPosition = ViewPortActions.getAbsoluteScrollPosition();
         const nextScrollPosition = PointUtil.add(currentScrollPosition, translationVector);
         ViewPortActions.setScrollPosition(nextScrollPosition);
+        EditorModel.mousePositionOnViewPortContent = PointUtil.add(EditorModel.mousePositionOnViewPortContent, translationVector);
         EditorActions.fullRender();
     }
 

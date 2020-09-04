@@ -173,8 +173,8 @@ class Editor extends React.Component<IProps, IState> {
             else if ((PlatformModel.isMac && scrollSign === 1) || (!PlatformModel.isMac && scrollSign === -1)) {
                 ViewPortActions.zoomIn();
             }
-            EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
         }
+        EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
     };
 
     private getOptionsPanels = () => {
