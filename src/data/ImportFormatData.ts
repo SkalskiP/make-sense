@@ -12,7 +12,7 @@ export const ImportFormatData: ImportFormatDataMap = {
         },
         {
             type: AnnotationFormatType.YOLO,
-            label: "Multiple files in YOLO format."
+            label: "Multiple files in YOLO format along with labels names definition - labels.txt file."
         }
     ],
     "POINT": [],

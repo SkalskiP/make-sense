@@ -35,7 +35,7 @@
     > img {
       max-width: 20px;
       max-height: 20px;
-      margin-right: 5px;
+      margin-right: 10px;
       filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
       filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
       user-select: none;

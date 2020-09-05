@@ -113,7 +113,7 @@ export class ViewPortActions {
     }
 
     public static translateViewPortPosition(direction: Direction) {
-        if (EditorModel.viewPortActionsDisabled) return;
+        if (EditorModel.viewPortActionsDisabled || GeneralSelector.getZoom() === ViewPointSettings.MIN_ZOOM) return;
 
         const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
         const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
