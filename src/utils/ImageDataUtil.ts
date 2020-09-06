@@ -1,10 +1,10 @@
 import {ImageData} from "../store/labels/types";
-import uuidv1 from "uuid/v1";
+import uuidv4 from "uuid/v4";
 
 export class ImageDataUtil {
     public static createImageDataFromFileData(fileData: File): ImageData {
         return {
-            id: uuidv1(),
+            id: uuidv4(),
             fileData: fileData,
             loadStatus: false,
             labelRects: [],
@@ -26,5 +26,11 @@ export class ImageDataUtil {
             labelPolygons: [],
             labelNameIds: []
         }
+    }
+
+    public static arrange(items: ImageData[], idArrangement: string[]): ImageData[] {
+        return items.sort((a: ImageData, b: ImageData) => {
+            return idArrangement.indexOf(a.id) - idArrangement.indexOf(b.id)
+        })
     }
 }

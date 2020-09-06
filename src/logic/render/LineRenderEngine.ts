@@ -17,7 +17,7 @@ import {EditorActions} from "../actions/EditorActions";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import uuidv1 from "uuid/v1";
+import uuidv4 from "uuid/v4";
 import {ILine} from "../../interfaces/ILine";
 import {LineUtil} from "../../utils/LineUtil";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
@@ -201,7 +201,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelLine: LabelLine = {
-            id: uuidv1(),
+            id: uuidv4(),
             labelId: activeLabelId,
             line: lineOnImage
         };

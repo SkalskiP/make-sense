@@ -1,7 +1,7 @@
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {COCOBBox, COCOCategory, COCOImage, COCOObject, COCOSegmentation} from "../../../data/labels/COCO";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
 import {ImageDataUtil} from "../../../utils/ImageDataUtil";
 import {LabelUtil} from "../../../utils/LabelUtil";
@@ -89,8 +89,10 @@ export class COCOImporter extends AnnotationImporter {
             }
         }
 
+        const resultImageData = Object.values(imageDataMap).concat(imageDataPartition.fail);
+
         return {
-            imagesData: Object.values(imageDataMap).concat(imageDataPartition.fail),
+            imagesData: ImageDataUtil.arrange(resultImageData, imageData.map((item: ImageData) => item.id)),
             labelNames: Object.values(labelNameMap)
         }
     }
@@ -104,7 +106,7 @@ export class COCOImporter extends AnnotationImporter {
     protected static mapCOCOCategories(categories: COCOCategory[]): LabelNameMap {
         return categories.reduce((acc: LabelNameMap, category : COCOCategory) => {
             acc[category.id] = {
-                id: uuidv1(),
+                id: uuidv4(),
                 name: category.name
             }
             return acc

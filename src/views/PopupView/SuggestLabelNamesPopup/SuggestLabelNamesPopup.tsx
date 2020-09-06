@@ -10,7 +10,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import {LabelName} from "../../../store/labels/types";
 import {updateLabelNames} from "../../../store/labels/actionCreators";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 
 interface SelectableName {
     name: string;
@@ -46,7 +46,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
         updateLabelNames(extractSelectedNames().reduce((acc: LabelName[], entry: string) => {
             acc.push({
                 name: entry,
-                id: uuidv1()
+                id: uuidv4()
             });
             return acc;
         }, LabelsSelector.getLabelNames()));
