@@ -1,6 +1,6 @@
 import {LabelName} from "../../../store/labels/types";
 import {LabelUtil} from "../../../utils/LabelUtil";
-import {LabelNamesNotUniqueError} from "./errors";
+import {LabelNamesNotUniqueError} from "./YOLOErrors";
 import {ArrayUtil} from "../../../utils/ArrayUtil";
 
 export class YOLOUtils {

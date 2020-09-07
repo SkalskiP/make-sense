@@ -1,5 +1,5 @@
 import {LabelName} from "../store/labels/types";
-import {YOLOUtils} from "../logic/import/yolo/utils";
+import {YOLOUtils} from "../logic/import/yolo/YOLOUtils";
 
 export class FileUtil {
     public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
@@ -16,7 +16,6 @@ export class FileUtil {
 				reject();
 			};
 		})
-
     }
 
     public static loadLabelsList(fileData: File, onSuccess: (labels: LabelName[]) => any, onFailure: () => any) {
@@ -38,6 +37,16 @@ export class FileUtil {
             };
             reader.onerror = reject;
             reader.readAsText(fileData);
+        })
+    }
+
+    public static readFiles(fileData: File[]): Promise<string[]> {
+        return new Promise((resolve, reject) => {
+            const promises: Promise<string>[] = fileData.map((fileData: File) => FileUtil.readFile(fileData))
+            Promise
+                .all(promises)
+                .then((values: string[]) => resolve(values))
+                .catch((error) => reject(error));
         })
     }
 }

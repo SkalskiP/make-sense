@@ -12,7 +12,7 @@ import {
     COCOAnnotationDeserializationError, COCOAnnotationFileCountError,
     COCOAnnotationReadingError,
     COCOFormatValidationError
-} from "./errors";
+} from "./COCOErrors";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AnnotationImporter, ImportResult} from "../AnnotationImporter";
 

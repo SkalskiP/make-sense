@@ -1,7 +1,7 @@
-import {YOLOUtils} from "../../../import/yolo/utils";
+import {YOLOUtils} from "../../../import/yolo/YOLOUtils";
 import {isEqual} from "lodash";
 import {LabelName} from "../../../../store/labels/types";
-import {LabelNamesNotUniqueError} from "../../../import/yolo/errors";
+import {LabelNamesNotUniqueError} from "../../../import/yolo/YOLOErrors";
 
 describe('YOLOUtils parseLabelsFile method', () => {
     it('should return list of label names', () => {
