@@ -1,3 +1,6 @@
+import {LabelName} from "../store/labels/types";
+import {YOLOUtils} from "../logic/import/yolo/utils";
+
 export class FileUtil {
     public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
 		return new Promise((resolve, reject) => {
@@ -16,11 +19,12 @@ export class FileUtil {
 
     }
 
-    public static loadLabelsList(fileData: File, onSuccess: (labels:string[]) => any, onFailure: () => any) {
+    public static loadLabelsList(fileData: File, onSuccess: (labels: LabelName[]) => any, onFailure: () => any) {
         const reader = new FileReader();
         reader.onloadend = function (evt: any) {
-            const contents:string = evt.target.result;
-            onSuccess(contents.split(/[\r\n]/));
+            const content: string = evt.target.result;
+            const labelNames = YOLOUtils.parseLabelsNamesFromString(content);
+            onSuccess(labelNames);
         };
         reader.onerror = () => onFailure();
         reader.readAsText(fileData);
