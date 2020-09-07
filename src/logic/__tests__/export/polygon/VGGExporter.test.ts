@@ -1,7 +1,7 @@
 import {IPoint} from "../../../../interfaces/IPoint";
 import {VGGPolygon, VGGRegionsData} from "../../../../data/labels/VGG";
 import {ImageData, LabelName} from "../../../../store/labels/types";
-import {VGGExporter} from "../VGGExporter";
+import {VGGExporter} from "../../../export/polygon/VGGExporter";
 
 describe('VGGExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {

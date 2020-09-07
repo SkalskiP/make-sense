@@ -1,20 +1,19 @@
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import {COCOBBox, COCOCategory, COCOImage, COCOObject, COCOSegmentation} from "../../../data/labels/COCO";
+import {COCOCategory, COCOImage, COCOObject} from "../../../data/labels/COCO";
 import uuidv4 from 'uuid/v4';
 import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
 import {ImageDataUtil} from "../../../utils/ImageDataUtil";
 import {LabelUtil} from "../../../utils/LabelUtil";
-import {IRect} from "../../../interfaces/IRect";
-import {IPoint} from "../../../interfaces/IPoint";
-import {chunk} from "lodash";
 import {
-    COCOAnnotationDeserializationError, COCOAnnotationFileCountError,
+    COCOAnnotationDeserializationError,
+    COCOAnnotationFileCountError,
     COCOAnnotationReadingError,
     COCOFormatValidationError
 } from "./COCOErrors";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AnnotationImporter, ImportResult} from "../AnnotationImporter";
+import {COCOUtils} from "./COCOUtils";
 
 export type FileNameCOCOIdMap = {[ fileName: string]: number; }
 export type LabelNameMap = { [labelCOCOId: number]: LabelName; }
@@ -70,12 +69,12 @@ export class COCOImporter extends AnnotationImporter {
             if (this.labelType.includes(LabelType.RECT)) {
                 imageDataMap[annotation.image_id].labelRects.push(LabelUtil.createLabelRect(
                     labelNameMap[annotation.category_id].id,
-                    COCOImporter.bbox2rect(annotation.bbox)
+                    COCOUtils.bbox2rect(annotation.bbox)
                 ))
             }
 
             if (this.labelType.includes(LabelType.POLYGON)) {
-                const polygons = COCOImporter.segmentation2vertices(annotation.segmentation);
+                const polygons = COCOUtils.segmentation2vertices(annotation.segmentation);
                 for (const polygon of polygons) {
                     imageDataMap[annotation.image_id].labelPolygons.push(LabelUtil.createLabelPolygon(
                         labelNameMap[annotation.category_id].id, polygon
@@ -117,23 +116,6 @@ export class COCOImporter extends AnnotationImporter {
             acc[fileNameCOCOIdMap[image.fileData.name]] = image
             return acc;
         }, {});
-    }
-
-    public static bbox2rect(bbox: COCOBBox): IRect {
-        return {
-            x: bbox[0],
-            y: bbox[1],
-            width: bbox[2],
-            height: bbox[3]
-        }
-    }
-
-    public static segmentation2vertices(segmentation: COCOSegmentation): IPoint[][] {
-        return segmentation.map((segment: number[]) => {
-            return chunk(segment, 2).map((pair: number[]) => {
-                return {x: pair[0], y: pair[1]}
-            })
-        })
     }
 
     public static validateCocoFormat(annotationsObject: COCOObject): void {

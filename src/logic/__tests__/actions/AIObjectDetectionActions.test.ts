@@ -1,6 +1,6 @@
 import {LabelName} from "../../../store/labels/types";
 import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {AIObjectDetectionActions} from "../AIObjectDetectionActions";
+import {AIObjectDetectionActions} from "../../actions/AIObjectDetectionActions";
 
 describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => {
     const mockLabelNames: LabelName[] = [
@@ -23,17 +23,17 @@ describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => 
         const labelNames: LabelName[] = mockLabelNames;
         const predictions: DetectedObject[] = [
             {
-                bbox: [],
+                bbox: [1, 2, 3 , 4],
                 class: "label_3",
                 score: 0
             },
             {
-                bbox: [],
+                bbox: [1, 2, 3 , 4],
                 class: "label_4",
                 score: 0
             },
             {
-                bbox: [],
+                bbox: [1, 2, 3 , 4],
                 class: "label_5",
                 score: 0
             }
@@ -51,12 +51,12 @@ describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => 
         const labelNames: LabelName[] = mockLabelNames;
         const predictions: DetectedObject[] = [
             {
-                bbox: [],
+                bbox: [1, 2, 3 , 4],
                 class: "label_3",
                 score: 0
             },
             {
-                bbox: [],
+                bbox: [1, 2, 3 , 4],
                 class: "label_1",
                 score: 0
             }

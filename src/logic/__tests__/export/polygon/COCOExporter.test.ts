@@ -1,5 +1,5 @@
 import {COCOCategory, COCOInfo} from "../../../../data/labels/COCO";
-import {COCOExporter} from "../COCOExporter";
+import {COCOExporter} from "../../../export/polygon/COCOExporter";
 import {LabelName} from "../../../../store/labels/types";
 
 describe('COCOExporter produces correct COCO label', () => {
