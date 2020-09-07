@@ -1,6 +1,3 @@
-import {LabelName} from "../store/labels/types";
-import {YOLOUtils} from "../logic/import/yolo/YOLOUtils";
-
 export class FileUtil {
     public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
 		return new Promise((resolve, reject) => {
@@ -16,17 +13,6 @@ export class FileUtil {
 				reject();
 			};
 		})
-    }
-
-    public static loadLabelsList(fileData: File, onSuccess: (labels: LabelName[]) => any, onFailure: () => any) {
-        const reader = new FileReader();
-        reader.onloadend = function (evt: any) {
-            const content: string = evt.target.result;
-            const labelNames = YOLOUtils.parseLabelsNamesFromString(content);
-            onSuccess(labelNames);
-        };
-        reader.onerror = () => onFailure();
-        reader.readAsText(fileData);
     }
 
     public static readFile(fileData: File): Promise<string> {
@@ -48,5 +34,14 @@ export class FileUtil {
                 .then((values: string[]) => resolve(values))
                 .catch((error) => reject(error));
         })
+    }
+
+    public static extractFileExtension(name: string): string | null {
+        const parts = name.split(".");
+        return parts.length > 1 ? parts[1] : null;
+    }
+
+    public static extractFileName(name: string): string | null {
+        return name.split(".")[0];
     }
 }

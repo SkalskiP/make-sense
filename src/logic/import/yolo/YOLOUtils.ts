@@ -17,4 +17,15 @@ export class YOLOUtils {
         return labelNames
             .map((name: string) => LabelUtil.createLabelName(name))
     }
+
+    public static loadLabelsList(fileData: File, onSuccess: (labels: LabelName[]) => any, onFailure: () => any) {
+        const reader = new FileReader();
+        reader.onloadend = function (evt: any) {
+            const content: string = evt.target.result;
+            const labelNames = YOLOUtils.parseLabelsNamesFromString(content);
+            onSuccess(labelNames);
+        };
+        reader.onerror = () => onFailure();
+        reader.readAsText(fileData);
+    }
 }
