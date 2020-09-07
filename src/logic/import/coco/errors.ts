@@ -1,34 +1,34 @@
-export class CocoImportError extends Error {
+export class COCOAnnotationsLoadingError extends Error {
     constructor(message) {
         super(message);
-        this.name = "CocoAnnotationsLoadingError";
+        this.name = "COCOAnnotationsLoadingError";
     }
 }
 
-export class CocoFormatValidationError extends CocoImportError {
+export class COCOFormatValidationError extends COCOAnnotationsLoadingError {
     constructor(message) {
         super(message);
-        this.name = "CocoFormatValidationError";
+        this.name = "COCOFormatValidationError";
     }
 }
 
-export class CocoAnnotationReadingError extends CocoImportError {
+export class COCOAnnotationReadingError extends COCOAnnotationsLoadingError {
     constructor() {
         super("Unexpected error occurred during reading annotations from file");
-        this.name = "CocoAnnotationDeserializationError";
+        this.name = "COCOAnnotationReadingError";
     }
 }
 
-export class CocoAnnotationDeserializationError extends CocoImportError {
+export class COCOAnnotationDeserializationError extends COCOAnnotationsLoadingError {
     constructor() {
         super("COCO annotation file need to be in JSON format");
-        this.name = "CocoAnnotationDeserializationError";
+        this.name = "COCOAnnotationDeserializationError";
     }
 }
 
-export class CocoAnnotationFileCountError extends CocoImportError {
+export class COCOAnnotationFileCountError extends COCOAnnotationsLoadingError {
     constructor() {
         super("COCO annotation requires single file but multiple were given");
-        this.name = "CocoAnnotationFileCountError";
+        this.name = "COCOAnnotationFileCountError";
     }
 }

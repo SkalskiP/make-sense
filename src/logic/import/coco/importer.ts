@@ -9,9 +9,9 @@ import {IRect} from "../../../interfaces/IRect";
 import {IPoint} from "../../../interfaces/IPoint";
 import {chunk} from "lodash";
 import {
-    CocoAnnotationDeserializationError, CocoAnnotationFileCountError,
-    CocoAnnotationReadingError,
-    CocoFormatValidationError
+    COCOAnnotationDeserializationError, COCOAnnotationFileCountError,
+    COCOAnnotationReadingError,
+    COCOFormatValidationError
 } from "./errors";
 import {LabelType} from "../../../data/enums/LabelType";
 import {AnnotationImporter} from "../AnnotationImporter";
@@ -34,7 +34,7 @@ export class COCOImporter extends AnnotationImporter {
         onFailure: (error?:Error) => any
     ): void {
         if (filesData.length > 1) {
-            onFailure(new CocoAnnotationFileCountError());
+            onFailure(new COCOAnnotationFileCountError());
         }
 
         const reader = new FileReader();
@@ -49,14 +49,14 @@ export class COCOImporter extends AnnotationImporter {
                 onFailure(error);
             }
         };
-        reader.onerror = () => onFailure(new CocoAnnotationReadingError());
+        reader.onerror = () => onFailure(new COCOAnnotationReadingError());
     }
 
     public static deserialize(text: string): COCOObject {
         try {
             return JSON.parse(text) as COCOObject
         } catch (error) {
-            throw new CocoAnnotationDeserializationError()
+            throw new COCOAnnotationDeserializationError()
         }
     }
 
@@ -144,7 +144,7 @@ export class COCOImporter extends AnnotationImporter {
     public static validateCocoFormat(annotationsObject: COCOObject): void {
         const missingKeys = COCOImporter.requiredKeys.filter((key: string) => !annotationsObject.hasOwnProperty(key))
         if (missingKeys.length !== 0) {
-            throw new CocoFormatValidationError(`Uploaded file does not contain all required keys: ${missingKeys}`)
+            throw new COCOFormatValidationError(`Uploaded file does not contain all required keys: ${missingKeys}`)
         }
     }
 }

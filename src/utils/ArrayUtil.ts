@@ -13,4 +13,8 @@ export class ArrayUtil {
             return acc
         }, {pass: [], fail: []})
     }
+
+    public static unique<T>(array: T[]): T[] {
+        return [...new Set(array)];
+    }
 }
