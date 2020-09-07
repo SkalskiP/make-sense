@@ -12,6 +12,13 @@ export class YOLOLabelsReadingError extends YOLOAnnotationsLoadingError {
     }
 }
 
+export class NoLabelNamesFileProvidedError extends YOLOAnnotationsLoadingError {
+    constructor() {
+        super("For YOLO labels to be loaded correctly, labels.txt file is required");
+        this.name = "NoLabelNamesFileProvidedError";
+    }
+}
+
 export class LabelNamesNotUniqueError extends YOLOAnnotationsLoadingError {
     constructor() {
         super("Label names listed in labels.txt file should be unique");

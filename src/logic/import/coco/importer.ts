@@ -14,12 +14,7 @@ import {
     COCOFormatValidationError
 } from "./errors";
 import {LabelType} from "../../../data/enums/LabelType";
-import {AnnotationImporter} from "../AnnotationImporter";
-
-export type COCOImportResult = {
-    imagesData: ImageData[]
-    labelNames: LabelName[]
-}
+import {AnnotationImporter, ImportResult} from "../AnnotationImporter";
 
 export type FileNameCOCOIdMap = {[ fileName: string]: number; }
 export type LabelNameMap = { [labelCOCOId: number]: LabelName; }
@@ -60,7 +55,7 @@ export class COCOImporter extends AnnotationImporter {
         }
     }
 
-    public applyLabels(imageData: ImageData[], annotationsObject: COCOObject): COCOImportResult {
+    public applyLabels(imageData: ImageData[], annotationsObject: COCOObject): ImportResult {
         COCOImporter.validateCocoFormat(annotationsObject);
         const {images, categories, annotations} = annotationsObject;
         const labelNameMap: LabelNameMap = COCOImporter.mapCOCOCategories(categories);

@@ -1,6 +1,11 @@
 import {ImageData, LabelName} from "../../store/labels/types";
 import {LabelType} from "../../data/enums/LabelType";
 
+export type ImportResult = {
+    imagesData: ImageData[]
+    labelNames: LabelName[]
+}
+
 export class AnnotationImporter {
     public labelType: LabelType[]
 
