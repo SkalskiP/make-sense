@@ -2,12 +2,13 @@ import {ImageData} from "../../store/labels/types";
 import uuidv4 from 'uuid/v4';
 import {LabelUtil} from "../LabelUtil";
 import {ImageDataUtil} from "../ImageDataUtil";
+import {AcceptedFileType} from "../../data/enums/AcceptedFileType";
 
 
 const getDummyImageData = (id: string): ImageData => {
     return {
         id: id,
-        fileData: new File([""], "filename", { type: 'text/html' }),
+        fileData: new File([""], "filename.txt", { type: AcceptedFileType.TEXT }),
         loadStatus: true,
         labelRects: [],
         labelPoints: [],

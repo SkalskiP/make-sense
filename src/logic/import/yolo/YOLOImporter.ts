@@ -48,7 +48,6 @@ export class YOLOImporter extends AnnotationImporter {
             filesData,
             (item: File) => imageIdentifiers.includes(FileUtil.extractFileName(item.name))
         )
-
         return {
             labelNameFile: functionalityPartitionResult.pass[0],
             annotationFiles: matchingPartitionResult.pass
