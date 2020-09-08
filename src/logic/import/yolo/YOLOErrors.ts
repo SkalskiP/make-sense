@@ -25,3 +25,10 @@ export class LabelNamesNotUniqueError extends YOLOAnnotationsLoadingError {
         this.name = "LabelNamesNotUniqueError";
     }
 }
+
+export class AnnotationsParsingError extends YOLOAnnotationsLoadingError {
+    constructor(imageName: string) {
+        super(`Unexpected error occurred during parsing of ${imageName} annotations file`);
+        this.name = "AnnotationsParsingError";
+    }
+}
