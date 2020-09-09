@@ -3,7 +3,6 @@ import {LabelUtil} from "../../../utils/LabelUtil";
 import {AnnotationsParsingError, LabelNamesNotUniqueError} from "./YOLOErrors";
 import {ArrayUtil} from "../../../utils/ArrayUtil";
 import {ISize} from "../../../interfaces/ISize";
-import {ProjectType} from "../../../data/enums/ProjectType";
 
 export class YOLOUtils {
     public static parseLabelsNamesFromString(content: string): LabelName[] {
@@ -38,17 +37,30 @@ export class YOLOUtils {
     //     return []
     // }
 
-    // public static parseYOLOAnnotationFromString(
-    //     content: string,
-    //     labelNames: LabelName[],
-    //     imageSize: ISize,
-    //     imageName: string
-    // ): LabelRect {
-    //     const components = content.split(" ");
-    //     if (components.length !== 5) {
-    //         throw new AnnotationsParsingError(imageName);
-    //     }
-    // }
+    public static parseYOLOAnnotationFromString(
+        content: string,
+        labelNames: LabelName[],
+        imageSize: ISize,
+        imageName: string
+    ): LabelRect {
+        const components = content.split(" ");
+        if (!YOLOUtils.validateYOLOAnnotationComponents(components, labelNames.length)) {
+            throw new AnnotationsParsingError(imageName);
+        }
+        const labelIndex: number = parseInt(components[0]);
+        const labelId: string = labelNames[labelIndex].id;
+        const rectX: number = parseFloat(components[1]);
+        const rectY: number = parseFloat(components[2]);
+        const rectWidth: number = parseFloat(components[3]);
+        const rectHeight: number = parseFloat(components[4]);
+        const rect = {
+            x: rectX * imageSize.width,
+            y: rectY * imageSize.height,
+            width: rectWidth * imageSize.width,
+            height: rectHeight * imageSize.height
+        }
+        return LabelUtil.createLabelRect(labelId, rect);
+    }
 
     public static validateYOLOAnnotationComponents(components: string[], labelNamesCount: number): boolean {
         const validateCoordinateValue = (rawValue: string): boolean => {
