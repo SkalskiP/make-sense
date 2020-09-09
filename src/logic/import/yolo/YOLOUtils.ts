@@ -30,20 +30,27 @@ export class YOLOUtils {
         reader.readAsText(fileData);
     }
 
-    // public static parseYOLOAnnotationsFromString(content: string, labelNames: LabelName[], fileName: string): LabelRect[] {
-    //     const labelRect = content
-    //         .split(/[\r\n]/)
-    //         .filter(Boolean)
-    //     return []
-    // }
+    public static parseYOLOAnnotationsFromString(
+        rawAnnotations: string,
+        labelNames: LabelName[],
+        imageSize: ISize,
+        imageName: string
+    ): LabelRect[] {
+        return rawAnnotations
+            .split(/[\r\n]/)
+            .filter(Boolean)
+            .map((rawAnnotation: string) => YOLOUtils.parseYOLOAnnotationFromString(
+                rawAnnotation, labelNames, imageSize, imageName
+            ))
+    }
 
     public static parseYOLOAnnotationFromString(
-        content: string,
+        rawAnnotation: string,
         labelNames: LabelName[],
         imageSize: ISize,
         imageName: string
     ): LabelRect {
-        const components = content.split(" ");
+        const components = rawAnnotation.split(" ");
         if (!YOLOUtils.validateYOLOAnnotationComponents(components, labelNames.length)) {
             throw new AnnotationsParsingError(imageName);
         }
@@ -69,7 +76,7 @@ export class YOLOUtils {
         }
         const validateLabelIdx = (rawValue: string): boolean => {
             const intValue: number = parseInt(rawValue);
-            return !!intValue && 0 <= intValue && intValue < labelNamesCount;
+            return !isNaN(intValue) && 0 <= intValue && intValue < labelNamesCount;
         }
         return [
             components.length === 5,

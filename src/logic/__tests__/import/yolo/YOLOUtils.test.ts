@@ -158,3 +158,48 @@ describe('YOLOUtils parseYOLOAnnotationFromString method', () => {
         expect(wrapper).toThrowError(new AnnotationsParsingError(imageName));
     });
 });
+
+describe('YOLOUtils parseYOLOAnnotationsFromString method', () => {
+    it('should return correct array of LabelRect', () => {
+        // given
+        const rawAnnotations: string = "1 0.200000 0.200000 0.200000 0.200000\n0 0.300000 0.200000 0.300000 0.200000\n2 0.200000 0.300000 0.200000 0.300000";
+        const labelId: string = uuidv4();
+        const labelNames: LabelName[] = [
+            {id: uuidv4(), name: "orange"},
+            {id: uuidv4(), name: "apple"},
+            {id: labelId, name: "banana"}
+        ];
+        const imageSize: ISize = {width: 1000, height: 1000};
+        const imageName: string = "0000.png";
+
+        // when
+        const result: LabelRect[] = YOLOUtils.parseYOLOAnnotationsFromString(
+            rawAnnotations, labelNames, imageSize, imageName
+        )
+
+        // then
+        const rect: IRect = {x: 200, y: 300, width: 200, height: 300}
+        expect(result.length).toBe(3);
+        expect(result[2].labelId).toBe(labelId);
+        expect(JSON.stringify(result[2].rect)).toBe(JSON.stringify(rect));
+    });
+
+    it('should throw AnnotationsParsingError', () => {
+        // given
+        const rawAnnotations: string = "1 0.200000 0.200000 0.200000 0.200000\n0 0.300000 0.200000 0.300000 0.200000\n4 0.200000 0.300000 0.200000 0.300000";
+        const labelId: string = uuidv4();
+        const labelNames: LabelName[] = [
+            {id: uuidv4(), name: "orange"},
+            {id: uuidv4(), name: "apple"},
+            {id: labelId, name: "banana"}
+        ];
+        const imageSize: ISize = {width: 1000, height: 1000};
+        const imageName: string = "0000.png";
+
+        // when
+        function wrapper() {
+            return YOLOUtils.parseYOLOAnnotationsFromString(rawAnnotations, labelNames, imageSize, imageName)
+        }
+        expect(wrapper).toThrowError(new AnnotationsParsingError(imageName));
+    });
+});
