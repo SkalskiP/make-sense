@@ -37,9 +37,11 @@ export class YOLOImporter extends AnnotationImporter {
             .then((values: [LabelName[], void, string[]]) => {
                 const labelNames: LabelName[] = values[0];
                 const annotationsRaw: string[] = values[2];
-                const cleanImageData: ImageData[] = imagesData.map((i: ImageData) => ImageDataUtil.cleanAnnotations(i));
-                const imageDataPartition: PartitionResult<ImageData> = YOLOImporter.partitionImageData(cleanImageData, annotationFiles);
-                const x: ImageData[] = ArrayUtil.match<File, ImageData>(
+                const cleanImageData: ImageData[] = imagesData
+                    .map((i: ImageData) => ImageDataUtil.cleanAnnotations(i));
+                const imageDataPartition: PartitionResult<ImageData> = YOLOImporter
+                    .partitionImageData(cleanImageData, annotationFiles);
+                const imageDataWithAnnotation: ImageData[] = ArrayUtil.match<File, ImageData>(
                     annotationFiles,
                     imageDataPartition.pass,
                         (ann: File, image: ImageData) => FileUtil.extractFileName(image.fileData.name) === FileUtil.extractFileName(ann.name)
@@ -48,12 +50,19 @@ export class YOLOImporter extends AnnotationImporter {
                         const annotationFile: File = i[0]
                         const imageData: ImageData = i[1][0];
                         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-                        const annotation = YOLOUtils.parseYOLOAnnotationsFromString(annotationsRaw[index], labelNames, {width: image.width, height: image.height}, annotationFile.name);
-                        imageData.labelRects = annotation;
+                        imageData.labelRects = YOLOUtils.parseYOLOAnnotationsFromString(
+                            annotationsRaw[index],
+                            labelNames,
+                            {width: image.width, height: image.height},
+                            annotationFile.name
+                        );
                         return imageData;
                     })
                 onSuccess(
-                    ImageDataUtil.arrange([...x, ...imageDataPartition.fail], imagesData.map((item: ImageData) => item.id)),
+                    ImageDataUtil.arrange(
+                        [...imageDataWithAnnotation, ...imageDataPartition.fail],
+                        imagesData.map((item: ImageData) => item.id)
+                    ),
                     labelNames
                 )
             })
