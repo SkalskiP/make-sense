@@ -115,10 +115,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     imageAlt={"accept-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
-                    onClick={() => {
-                        console.log("click");
-                        AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    }}
+                    onClick={() => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())}
                 />
                 <ImageButton
                     image={"ico/reject-all.png"}

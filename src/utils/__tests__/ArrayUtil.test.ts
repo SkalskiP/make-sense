@@ -68,3 +68,36 @@ describe('ArrayUtil unique method', () => {
         expect(new Set(items)).toEqual(new Set(result));
     });
 });
+
+describe('ArrayUtil match method', () => {
+    it('should return empty array', () => {
+        // when
+        const result = ArrayUtil.match([], [], (k, v) => true)
+
+        // then
+        expect(result.length).toEqual(0);
+    });
+
+    it('should return correct array when number of keys and values is even', () => {
+        // when
+        const result = ArrayUtil.match([4, 2, 1, 3], [1, 2, 4, 3], (k, v) => k === v)
+
+        // then
+        const expectedResult = [[4, [4]], [2, [2]], [1, [1]], [3, [3]]];
+        expect(result.length).toEqual(4);
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
+    });
+
+    it('should return correct array when number of keys smaller than values', () => {
+        // when
+        const result = ArrayUtil.match(
+            ["aa", "bb", "cc",],
+            ["bb1", "aa2", "cc4", "cc3", "aa1", "bb2", "aa3"],
+            (k, v) => v.startsWith(k))
+
+        // then
+        const expectedResult = [["aa", ["aa2", "aa1", "aa3"]], ["bb", ["bb1", "bb2"]], ["cc", ["cc4", "cc3"]]];
+        expect(result.length).toEqual(3);
+        expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
+    });
+});

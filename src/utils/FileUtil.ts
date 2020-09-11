@@ -1,18 +1,22 @@
 export class FileUtil {
-    public static loadImage(fileData: File, onSuccess: (image:HTMLImageElement) => any, onFailure: () => any): any {
+    public static loadImage(fileData: File): Promise<HTMLImageElement> {
 		return new Promise((resolve, reject) => {
 			const url = URL.createObjectURL(fileData);
             const image = new Image();
 			image.src = url;
-			image.onload = () => {
-				onSuccess(image);
-				resolve();
-			};
-			image.onerror = () => {
-				onFailure();
-				reject();
-			};
+			image.onload = () => resolve(image);
+			image.onerror = reject;
 		})
+    }
+
+    public static loadImages(fileData: File[]): Promise<HTMLImageElement[]> {
+        return new Promise((resolve, reject) => {
+            const promises: Promise<HTMLImageElement>[] = fileData.map((fileData: File) => FileUtil.loadImage(fileData))
+            Promise
+                .all(promises)
+                .then((values: HTMLImageElement[]) => resolve(values))
+                .catch((error) => reject(error));
+        });
     }
 
     public static readFile(fileData: File): Promise<string> {
@@ -33,7 +37,7 @@ export class FileUtil {
                 .all(promises)
                 .then((values: string[]) => resolve(values))
                 .catch((error) => reject(error));
-        })
+        });
     }
 
     public static extractFileExtension(name: string): string | null {

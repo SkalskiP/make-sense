@@ -61,8 +61,8 @@ export class YOLOUtils {
         const rectWidth: number = parseFloat(components[3]);
         const rectHeight: number = parseFloat(components[4]);
         const rect = {
-            x: rectX * imageSize.width,
-            y: rectY * imageSize.height,
+            x: (rectX - rectWidth /2) * imageSize.width,
+            y: (rectY - rectHeight /2) * imageSize.height,
             width: rectWidth * imageSize.width,
             height: rectHeight * imageSize.height
         }

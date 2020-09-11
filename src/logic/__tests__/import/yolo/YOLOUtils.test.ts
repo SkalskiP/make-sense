@@ -118,7 +118,7 @@ describe('YOLOUtils validateYOLOAnnotationComponents method', () => {
 describe('YOLOUtils parseYOLOAnnotationFromString method', () => {
     it('should return correct LabelRect', () => {
         // given
-        const rawAnnotation: string = "1 0.340000 0.540000 0.060000 0.100000";
+        const rawAnnotation: string = "1 0.300000 0.200000 0.300000 0.200000";
         const labelId: string = uuidv4();
         const labelNames: LabelName[] = [
             {id: uuidv4(), name: "orange"},
@@ -134,7 +134,7 @@ describe('YOLOUtils parseYOLOAnnotationFromString method', () => {
         )
 
         // then
-        const rect: IRect = {x: 340, y: 540, width: 60, height: 100}
+        const rect: IRect = {x: 150, y: 100, width: 300, height: 200}
         expect(result.labelId).toBe(labelId);
         expect(JSON.stringify(result.rect)).toBe(JSON.stringify(rect));
     });
@@ -178,7 +178,7 @@ describe('YOLOUtils parseYOLOAnnotationsFromString method', () => {
         )
 
         // then
-        const rect: IRect = {x: 200, y: 300, width: 200, height: 300}
+        const rect: IRect = {x: 100, y: 150, width: 200, height: 300}
         expect(result.length).toBe(3);
         expect(result[2].labelId).toBe(labelId);
         expect(JSON.stringify(result[2].rect)).toBe(JSON.stringify(rect));

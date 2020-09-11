@@ -17,4 +17,11 @@ export class ArrayUtil {
     public static unique<T>(array: T[]): T[] {
         return [...new Set(array)];
     }
+
+    public static match<T, P>(keys: T[], values: P[], predicate: (key: T, value: P) => boolean): [T, P[]][] {
+        return keys.reduce((acc: [T, P[]][], key: T) => {
+            acc.push([key, values.filter((value: P) => predicate(key, value))])
+            return acc
+        }, [])
+    }
 }
