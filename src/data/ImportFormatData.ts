@@ -2,7 +2,7 @@ import {LabelType} from "./enums/LabelType";
 import {ILabelFormatData} from "../interfaces/ILabelFormatData";
 import {AnnotationFormatType} from "./enums/AnnotationFormatType";
 
-export type ImportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
+export type ImportFormatDataMap = Record<LabelType, ILabelFormatData[]>
 
 export const ImportFormatData: ImportFormatDataMap = {
     "RECT": [

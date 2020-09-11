@@ -9,7 +9,7 @@ export type ImportResult = {
 export class AnnotationImporter {
     public labelType: LabelType[]
 
-    constructor(labelType?: LabelType[]) {
+    constructor(labelType: LabelType[]) {
         this.labelType = labelType;
     }
 

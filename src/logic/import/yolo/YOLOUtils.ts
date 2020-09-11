@@ -1,8 +1,8 @@
 import {LabelName, LabelRect} from "../../../store/labels/types";
 import {LabelUtil} from "../../../utils/LabelUtil";
 import {AnnotationsParsingError, LabelNamesNotUniqueError} from "./YOLOErrors";
-import {ArrayUtil} from "../../../utils/ArrayUtil";
 import {ISize} from "../../../interfaces/ISize";
+import {uniq} from "lodash";
 
 export class YOLOUtils {
     public static parseLabelsNamesFromString(content: string): LabelName[] {
@@ -11,7 +11,7 @@ export class YOLOUtils {
             .filter(Boolean)
             .map((name: string) => name.replace(/\s/g, ""))
 
-        if (ArrayUtil.unique(labelNames).length !== labelNames.length) {
+        if (uniq(labelNames).length !== labelNames.length) {
             throw new LabelNamesNotUniqueError()
         }
 

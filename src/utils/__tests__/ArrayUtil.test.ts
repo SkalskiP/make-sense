@@ -49,26 +49,6 @@ describe('ArrayUtil partition method', () => {
     });
 });
 
-describe('ArrayUtil unique method', () => {
-    it('should return empty array', () => {
-        // when
-        const result = ArrayUtil.unique([]);
-
-        // then
-        expect(result.length).toEqual(0);
-    });
-
-    it('should return array array with unique items', () => {
-        // when
-        const items: string[] = ['aaa', 'aab', 'abb', 'aaa', 'bbb', 'abb']
-        const result = ArrayUtil.unique(items);
-
-        // then
-        expect(result.length).toEqual(4);
-        expect(new Set(items)).toEqual(new Set(result));
-    });
-});
-
 describe('ArrayUtil match method', () => {
     it('should return empty array', () => {
         // when
