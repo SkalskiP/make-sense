@@ -3,6 +3,13 @@ export type PartitionResult<T> = {
     fail: T[]
 }
 
+export class ArrayUtilAmbiguousMatchError extends Error {
+    constructor() {
+        super("Given predicate results in more than one value being matched.");
+        this.name = "ArrayUtilAmbiguousMatchError";
+    }
+}
+
 export class ArrayUtil {
     public static partition<T>(array: T[], predicate: (T) => boolean): PartitionResult<T> {
         return array.reduce((acc: PartitionResult<T>, item: T) => {
@@ -14,10 +21,23 @@ export class ArrayUtil {
         }, {pass: [], fail: []})
     }
 
-    public static match<T, P>(keys: T[], values: P[], predicate: (key: T, value: P) => boolean): [T, P[]][] {
-        return keys.reduce((acc: [T, P[]][], key: T) => {
-            acc.push([key, values.filter((value: P) => predicate(key, value))])
+    public static match<T, P>(array1: T[], array2: P[], predicate: (key: T, value: P) => boolean): [T, P][] {
+        return array1.reduce((acc: [T, P][], key: T) => {
+            const match = array2.filter((value: P) => predicate(key, value))
+            if (match.length === 1) {
+                acc.push([key, match[0]])
+            } else if (match.length > 1) {
+                throw new ArrayUtilAmbiguousMatchError()
+            }
             return acc
         }, [])
+    }
+
+    public static unzip<T, P>(array: [T, P][]): [T[], P[]] {
+        return array.reduce((acc: [T[], P[]], i: [T, P]) => {
+            acc[0].push(i[0]);
+            acc[1].push(i[1]);
+            return acc;
+        }, [[], []])
     }
 }

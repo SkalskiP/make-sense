@@ -1,4 +1,6 @@
-import {ArrayUtil} from "../ArrayUtil";
+import {ArrayUtil, ArrayUtilAmbiguousMatchError} from "../ArrayUtil";
+import {YOLOUtils} from "../../logic/import/yolo/YOLOUtils";
+import {AnnotationsParsingError} from "../../logic/import/yolo/YOLOErrors";
 
 describe('ArrayUtil partition method', () => {
     it('should return empty PartitionResult if array is empty', () => {
@@ -63,21 +65,20 @@ describe('ArrayUtil match method', () => {
         const result = ArrayUtil.match([4, 2, 1, 3], [1, 2, 4, 3], (k, v) => k === v)
 
         // then
-        const expectedResult = [[4, [4]], [2, [2]], [1, [1]], [3, [3]]];
+        const expectedResult = [[4, 4], [2, 2], [1, 1], [3, 3]];
         expect(result.length).toEqual(4);
         expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
     });
 
     it('should return correct array when number of keys smaller than values', () => {
-        // when
-        const result = ArrayUtil.match(
-            ["aa", "bb", "cc",],
-            ["bb1", "aa2", "cc4", "cc3", "aa1", "bb2", "aa3"],
-            (k, v) => v.startsWith(k))
+        // given
+        const array1 = ["aa", "bb", "cc",];
+        const array2 = ["bb1", "aa2", "cc4", "cc3", "aa1", "bb2", "aa3"];
+        const predicate = (k, v) => v.startsWith(k);
 
-        // then
-        const expectedResult = [["aa", ["aa2", "aa1", "aa3"]], ["bb", ["bb1", "bb2"]], ["cc", ["cc4", "cc3"]]];
-        expect(result.length).toEqual(3);
-        expect(JSON.stringify(result)).toEqual(JSON.stringify(expectedResult));
+        function wrapper() {
+            return ArrayUtil.match(array1, array2, predicate)
+        }
+        expect(wrapper).toThrowError(new ArrayUtilAmbiguousMatchError());
     });
 });

@@ -1,12 +1,13 @@
 import {AnnotationImporter} from "../AnnotationImporter";
 import {ImageData, LabelName} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
-import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
+import {ArrayUtil} from "../../../utils/ArrayUtil";
 import {NoLabelNamesFileProvidedError} from "./YOLOErrors";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
 import {YOLOUtils} from "./YOLOUtils";
-import {ImageRepository} from "../../imageRepository/ImageRepository";
 import {ImageDataUtil} from "../../../utils/ImageDataUtil";
+import {zip, find} from "lodash";
+import {ImageRepository} from "../../imageRepository/ImageRepository";
 
 export type YOLOFilesSpec = {
     labelNameFile: File
@@ -21,53 +22,25 @@ export class YOLOImporter extends AnnotationImporter {
         onSuccess: (imagesData: ImageData[], labelNames: LabelName[]) => any,
         onFailure: (error?:Error) => any
     ): void {
-        const imagesData: ImageData[] = LabelsSelector.getImagesData();
-        const {labelNameFile, annotationFiles} = YOLOImporter.filterFilesData(filesData, imagesData);
-        const missingImages: ImageData[] = YOLOImporter.listImagesStillToBeLoaded(annotationFiles, imagesData);
-        const missingImagesFileData: File[] = missingImages.map((i: ImageData) => i.fileData);
+        const sourceImagesData = LabelsSelector.getImagesData()
+            .map((i: ImageData) => ImageDataUtil.cleanAnnotations(i));
+        const {labelNameFile, annotationFiles} = YOLOImporter.filterFilesData(filesData, sourceImagesData);
+        const [relevantImageData, relevantAnnotations] = YOLOImporter
+            .matchImagesWithAnnotations(sourceImagesData, annotationFiles);
         const labelNamesPromise: Promise<LabelName[]> = FileUtil.readFile(labelNameFile)
             .then((fileContent: string) => YOLOUtils.parseLabelsNamesFromString(fileContent));
-        const missingImagesPromise: Promise<void> = FileUtil.loadImages(missingImagesFileData)
-            .then((images:HTMLImageElement[]) => {
-                ImageRepository.storeImages(missingImages.map((i: ImageData) => i.id), images);
-            });
-        const annotationFilesPromise: Promise<string[]> = FileUtil.readFiles(annotationFiles);
+        const missingImagesPromise: Promise<void> = ImageDataUtil.loadMissingImages(relevantImageData);
+        const annotationFilesPromise: Promise<string[]> = FileUtil.readFiles(relevantAnnotations);
         Promise
             .all([labelNamesPromise, missingImagesPromise, annotationFilesPromise])
             .then((values: [LabelName[], void, string[]]) => {
-                const labelNames: LabelName[] = values[0];
-                const annotationsRaw: string[] = values[2];
-                const cleanImageData: ImageData[] = imagesData
-                    .map((i: ImageData) => ImageDataUtil.cleanAnnotations(i));
-                const imageDataPartition: PartitionResult<ImageData> = YOLOImporter
-                    .partitionImageData(cleanImageData, annotationFiles);
-                const imageDataWithAnnotation: ImageData[] = ArrayUtil.match<File, ImageData>(
-                    annotationFiles,
-                    imageDataPartition.pass,
-                        (ann: File, image: ImageData) => FileUtil.extractFileName(image.fileData.name) === FileUtil.extractFileName(ann.name)
-                    )
-                    .map((i: [File, ImageData[]], index: number) => {
-                        const annotationFile: File = i[0]
-                        const imageData: ImageData = i[1][0];
-                        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-                        imageData.labelRects = YOLOUtils.parseYOLOAnnotationsFromString(
-                            annotationsRaw[index],
-                            labelNames,
-                            {width: image.width, height: image.height},
-                            annotationFile.name
-                        );
-                        return imageData;
-                    })
-                onSuccess(
-                    ImageDataUtil.arrange(
-                        [...imageDataWithAnnotation, ...imageDataPartition.fail],
-                        imagesData.map((item: ImageData) => item.id)
-                    ),
-                    labelNames
-                )
+                const [labelNames, , annotationsRaw] = values;
+                const resultImageData = zip<ImageData, string>(relevantImageData, annotationsRaw)
+                    .map((pair: [ImageData, string]) => YOLOImporter.applyAnnotations(pair[0], pair[1], labelNames))
+                onSuccess(YOLOImporter.injectImageDataWithAnnotations(sourceImagesData, resultImageData), labelNames);
             })
-            .catch((error: Error) => onFailure(error));
-    }
+            .catch((error: Error) => onFailure(error))
+    };
 
     public static filterFilesData(filesData: File[], imagesData: ImageData[]): YOLOFilesSpec {
         const functionalityPartitionResult = ArrayUtil.partition(
@@ -90,16 +63,30 @@ export class YOLOImporter extends AnnotationImporter {
         }
     }
 
-    public static listImagesStillToBeLoaded(filesData: File[], imagesData: ImageData[]): ImageData[] {
-        const annotationIdentifiers: string[] = filesData.map((i: File) => FileUtil.extractFileName(i.name))
-        return imagesData
-            .filter((i: ImageData) => !i.loadStatus)
-            .filter((i: ImageData) => annotationIdentifiers.includes(FileUtil.extractFileName(i.fileData.name)))
+    public static matchImagesWithAnnotations(images: ImageData[], annotations: File[]): [ImageData[], File[]] {
+        const predicate = (image: ImageData, annotation:  File) => {
+            return FileUtil.extractFileName(image.fileData.name) === FileUtil.extractFileName(annotation.name)
+        }
+        return ArrayUtil.unzip(
+            ArrayUtil.match<ImageData, File>(images, annotations, predicate)
+        );
     }
 
-    protected static partitionImageData(items: ImageData[], annotationFiles: File[]): PartitionResult<ImageData> {
-        const annotationFileNames: string[] = annotationFiles.map((i: File) => FileUtil.extractFileName(i.name));
-        const predicate = (i: ImageData) => annotationFileNames.includes(FileUtil.extractFileName(i.fileData.name));
-        return ArrayUtil.partition<ImageData>(items, predicate);
+    public static applyAnnotations(imageData: ImageData, rawAnnotations: string, labelNames: LabelName[]): ImageData {
+        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+        imageData.labelRects = YOLOUtils.parseYOLOAnnotationsFromString(
+            rawAnnotations,
+            labelNames,
+            {width: image.width, height: image.height},
+            imageData.fileData.name
+        );
+        return imageData;
+    }
+
+    public static injectImageDataWithAnnotations(sourceImageData: ImageData[], annotatedImageData: ImageData[]): ImageData[] {
+        return sourceImageData.map((i: ImageData) => {
+            const result = find(annotatedImageData, {id: i.id});
+            return !!result ? result : i;
+        })
     }
 }
