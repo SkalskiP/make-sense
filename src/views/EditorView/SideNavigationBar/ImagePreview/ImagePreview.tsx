@@ -78,14 +78,16 @@ class ImagePreview extends React.Component<IProps, IState> {
         else if (!isScrolling || !this.isLoading) {
             this.isLoading = true;
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            await FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            FileUtil.loadImage(imageData.fileData)
+                .then((image:HTMLImageElement) => saveLoadedImagePartial(image))
+                .catch((error) => this.handleLoadImageError())
         }
     };
 
     private saveLoadedImage = (image: HTMLImageElement, imageData: ImageData) => {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
-        ImageRepository.store(imageData.id, image);
+        ImageRepository.storeImage(imageData.id, image);
         if (imageData.id === this.props.imageData.id) {
             this.setState({image});
             this.isLoading = false;

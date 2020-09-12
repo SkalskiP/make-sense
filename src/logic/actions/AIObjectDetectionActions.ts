@@ -1,7 +1,7 @@
 import {DetectedObject} from "@tensorflow-models/coco-ssd";
 import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {store} from "../../index";
 import {updateImageDataById} from "../../store/labels/actionCreators";
 import {ObjectDetector} from "../../ai/ObjectDetector";
@@ -53,7 +53,7 @@ export class AIObjectDetectionActions {
     private static mapPredictionsToRectLabels(predictions: DetectedObject[]): LabelRect[] {
         return predictions.map((prediction: DetectedObject) => {
             return {
-                id: uuidv1(),
+                id: uuidv4(),
                 labelIndex: null,
                 labelId: null,
                 rect: {

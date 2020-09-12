@@ -5,6 +5,7 @@ import {PlatformUtil} from "../../utils/PlatformUtil";
 import {PlatformModel} from "../../staticModels/PlatformModel";
 import {EventType} from "../../data/enums/EventType";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
+import {EnvironmentUtil} from "../../utils/EnvironmentUtil";
 
 export class AppInitializer {
     public static inti():void {
@@ -21,7 +22,7 @@ export class AppInitializer {
     private static handleAccidentalPageExit = () => {
         window.onbeforeunload = (event) => {
             const projectType = GeneralSelector.getProjectType();
-            if (projectType != null) {
+            if (projectType != null && EnvironmentUtil.isProd()) {
                 event.preventDefault();
                 event.returnValue = '';
             }

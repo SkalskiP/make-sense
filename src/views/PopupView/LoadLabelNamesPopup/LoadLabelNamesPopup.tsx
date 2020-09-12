@@ -7,10 +7,9 @@ import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {PopupWindowType} from "../../../data/enums/PopupWindowType";
 import {updateActivePopupType} from "../../../store/general/actionCreators";
 import {useDropzone} from "react-dropzone";
-import {FileUtil} from "../../../utils/FileUtil";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {LabelName} from "../../../store/labels/types";
-import {LabelUtil} from "../../../utils/LabelUtil";
+import {YOLOUtils} from "../../../logic/import/yolo/YOLOUtils";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
@@ -26,12 +25,12 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
         multiple: false,
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length === 1) {
-                FileUtil.loadLabelsList(acceptedFiles[0], onSuccess, onFailure);
+                YOLOUtils.loadLabelsList(acceptedFiles[0], onSuccess, onFailure);
             }
         }
     });
 
-    const onSuccess = (labelsList: string[]) => {
+    const onSuccess = (labelsList: LabelName[]) => {
         setLabelsList(labelsList);
         setInvalidFileLoadedStatus(false);
     };
@@ -42,7 +41,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
 
     const onAccept = () => {
         if (labelsList.length > 0) {
-            updateLabels(labelsList.map((name: string) => LabelUtil.createLabelName(name)));
+            updateLabels(labelsList);
             updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };

@@ -121,7 +121,9 @@ class Editor extends React.Component<IProps, IState> {
             if (!EditorModel.isLoading) {
                 EditorActions.setLoadingStatus(true);
                 const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-                FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+                FileUtil.loadImage(imageData.fileData)
+                    .then((image:HTMLImageElement) => saveLoadedImagePartial(image))
+                    .catch((error) => this.handleLoadImageError())
             }
         }
     };
@@ -129,7 +131,7 @@ class Editor extends React.Component<IProps, IState> {
     private saveLoadedImage = (image: HTMLImageElement, imageData: ImageData) => {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
-        ImageRepository.store(imageData.id, image);
+        ImageRepository.storeImage(imageData.id, image);
         EditorActions.setActiveImage(image);
         AIActions.detect(imageData.id, image);
         EditorActions.setLoadingStatus(false);
@@ -174,6 +176,7 @@ class Editor extends React.Component<IProps, IState> {
                 ViewPortActions.zoomIn();
             }
         }
+        EditorModel.mousePositionOnViewPortContent = CanvasUtil.getMousePositionOnCanvasFromEvent(event, EditorModel.canvas);
     };
 
     private getOptionsPanels = () => {

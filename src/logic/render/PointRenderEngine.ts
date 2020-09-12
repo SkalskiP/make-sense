@@ -4,7 +4,7 @@ import {IPoint} from "../../interfaces/IPoint";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
 import {ImageData, LabelPoint} from "../../store/labels/types";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
@@ -187,7 +187,7 @@ export class PointRenderEngine extends BaseRenderEngine {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
-            id: uuidv1(),
+            id: uuidv4(),
             labelId: activeLabelId,
             point,
             isCreatedByAI: false,

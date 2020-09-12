@@ -10,10 +10,13 @@ import {connect} from "react-redux";
 import {useDropzone} from "react-dropzone";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {ImageData, LabelName} from "../../../store/labels/types";
-import {COCOImporter} from "../../../logic/import/polygon/COCOImporter";
 import {updateActiveLabelType, updateImageData, updateLabelNames} from "../../../store/labels/actionCreators";
+import {ImporterSpecData} from "../../../data/ImporterSpecData";
+import {AnnotationFormatType} from "../../../data/enums/AnnotationFormatType";
+import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
 
 interface IProps {
+    activeLabelType: LabelType,
     updateImageData: (imageData: ImageData[]) => any,
     updateLabelNames: (labels: LabelName[]) => any,
     updateActiveLabelType: (activeLabelType: LabelType) => any
@@ -21,27 +24,34 @@ interface IProps {
 
 const ImportLabelPopup: React.FC<IProps> = (
     {
+        activeLabelType,
         updateImageData,
         updateLabelNames,
         updateActiveLabelType
     }) => {
-    const [labelType, setLabelType] = useState(LabelType.POLYGON);
+    const resolveFormatType = (labelType: LabelType): AnnotationFormatType => {
+        const possibleImportFormats = ImportFormatData[labelType]
+        return possibleImportFormats.length === 1 ? possibleImportFormats[0].type : null
+    }
+
+    const [labelType, setLabelType] = useState(activeLabelType);
+    const [formatType, setFormatType] = useState(resolveFormatType(activeLabelType));
     const [loadedLabelNames, setLoadedLabelNames] = useState([]);
     const [loadedImageData, setLoadedImageData] = useState([]);
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(null);
 
     const {getRootProps, getInputProps} = useDropzone({
-        accept: AcceptedFileType.JSON,
+        accept: [AcceptedFileType.JSON, AcceptedFileType.TEXT],
         multiple: true,
         onDrop: (acceptedFiles) => {
-            if (acceptedFiles.length === 1 && labelType === LabelType.POLYGON) {
-                COCOImporter.import(acceptedFiles[0], onAnnotationLoadSuccess, onAnnotationsLoadFailure, [LabelType.POLYGON, LabelType.RECT]);
-            }
+            const importer = new (ImporterSpecData[formatType])([labelType])
+            importer.import(acceptedFiles, onAnnotationLoadSuccess, onAnnotationsLoadFailure);
         }
     });
 
     const onLabelTypeChange = (labelType: LabelType) => {
         setLabelType(labelType);
+        setFormatType(resolveFormatType(labelType))
         setLoadedLabelNames([]);
         setLoadedImageData([]);
         setAnnotationsLoadedError(null);
@@ -69,6 +79,10 @@ const ImportLabelPopup: React.FC<IProps> = (
     const onReject = (labelType: LabelType) => {
         PopupActions.close();
     };
+
+    const onAnnotationFormatChange = (format: AnnotationFormatType) => {
+        setFormatType(format);
+    }
 
     const getDropZoneContent = () => {
         if (!!annotationsLoadedError) {
@@ -102,14 +116,47 @@ const ImportLabelPopup: React.FC<IProps> = (
                     alt={"upload"}
                     src={"img/box-opened.png"}
                 />
-                <p className="extraBold">Drop COCO annotation file</p>
+                <p className="extraBold">{`Drop ${formatType} annotations`}</p>
                 <p>or</p>
-                <p className="extraBold">Click here to select it</p>
+                <p className="extraBold">Click here to select them</p>
             </>;
         }
     };
 
+    const getOptions = (exportFormatData: ILabelFormatData[]) => {
+        return exportFormatData.map((entry: ILabelFormatData) => {
+            return <div
+                className="OptionsItem"
+                onClick={() => onAnnotationFormatChange(entry.type)}
+                key={entry.type}
+            >
+                {entry.type === formatType ?
+                    <img
+                        draggable={false}
+                        src={"ico/checkbox-checked.png"}
+                        alt={"checked"}
+                    /> :
+                    <img
+                        draggable={false}
+                        src={"ico/checkbox-unchecked.png"}
+                        alt={"unchecked"}
+                    />}
+                {entry.label}
+            </div>
+        })
+    };
+
     const renderInternalContent = (labelType: LabelType) => {
+        if (!formatType && ImportFormatData[labelType].length !== 0) {
+            return [
+                <div className="Message">
+                    Select file format you would like to use to import labels.
+                </div>,
+                <div className="Options">
+                    {getOptions(ImportFormatData[labelType])}
+                </div>
+            ]
+        }
         const importFormatData = ImportFormatData[labelType];
         return importFormatData.length === 0 ?
             <FeatureInProgress/> :
@@ -140,7 +187,9 @@ const mapDispatchToProps = {
     updateActiveLabelType
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    activeLabelType: state.labels.activeLabelType,
+});
 
 export default connect(
     mapStateToProps,

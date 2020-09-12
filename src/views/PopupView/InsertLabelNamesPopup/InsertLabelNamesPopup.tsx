@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 import Scrollbars from 'react-custom-scrollbars';
 import TextInput from "../../Common/TextInput/TextInput";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {LabelName} from "../../../store/labels/types";
 import {LabelUtil} from "../../../utils/LabelUtil";
 import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
@@ -34,7 +34,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const [labelNames, setLabelNames] = useState(initialLabels);
 
     const addHandle = () => {
-        const newLabelNames = {...labelNames, [uuidv1()]: ""};
+        const newLabelNames = {...labelNames, [uuidv4()]: ""};
         setLabelNames(newLabelNames);
     };
 

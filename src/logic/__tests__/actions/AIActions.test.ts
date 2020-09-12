@@ -1,4 +1,4 @@
-import {AIActions} from "../AIActions";
+import {AIActions} from "../../actions/AIActions";
 
 describe('AIActions excludeRejectedLabelNames method', () => {
     it('should return list with correct values', () => {
