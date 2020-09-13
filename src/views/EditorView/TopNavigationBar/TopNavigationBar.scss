@@ -27,13 +27,24 @@
     align-content: space-between;
 
     .NavigationBarGroupWrapper {
-      align-self: stretch;
+      margin: 4px 0;
 
+      align-self: stretch;
       display: flex;
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
       align-content: center;
+
+      &.middle {
+        flex: auto;
+      }
+
+      &:not(:last-child) {
+        padding-right: 10px;
+        margin-right: 10px;
+        border-right: solid 1px $darkThemeForthColor;
+      }
     }
 
     .ProjectName {
@@ -106,6 +117,10 @@
 
       font-weight: 900;
       user-select: none;
+    }
+
+    .DropDownMenuWrapper {
+      align-self: stretch;
     }
   }
 }
