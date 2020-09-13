@@ -8,6 +8,14 @@
   align-items: center;
   align-content: center;
 
+  .DropDownMenuContent {
+    z-index: 10000;
+    position: absolute;
+    background-color: red;
+    width: 200px;
+    height: 100px;
+  }
+
   .DropDownMenuTab {
     display: flex;
     flex-wrap: nowrap;
@@ -19,6 +27,7 @@
     align-self: stretch;
     cursor: pointer;
     font-weight: 700;
+    transition: 0.3s ease-in-out;
 
     &:not(:last-child) {
       margin-right: 4px;

@@ -5,23 +5,36 @@ import {DropDownMenuData, DropDownMenuNode} from "../../../../data/info/DropDown
 import {EventType} from "../../../../data/enums/EventType";
 
 export const DropDownMenu: React.FC = () => {
-    const [activeTabIdx, setActiveTabIdx] = useState(null);
+    const topAnchor = 35;
 
-    const onTabClick = (tabIdx: number) => {
+    const [activeTabIdx, setActiveTabIdx] = useState(null);
+    const [activeDropDownAnchor, setDropDownAnchor] = useState(null);
+
+    const onTabClick = (tabIdx: number, event) => {
         if (activeTabIdx === null) {
             window.addEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
         }
 
         if (activeTabIdx === tabIdx) {
             setActiveTabIdx(null);
+            setDropDownAnchor(null);
         } else {
             setActiveTabIdx(tabIdx);
+            setDropDownAnchor({x: event.target.offsetLeft, y: topAnchor});
         }
     }
 
     const onMouseDownBeyondDropDown = (event: MouseEvent) => {
         setActiveTabIdx(null);
         window.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
+    }
+
+    const onMouseEnter = (tabIdx: number, event) => {
+        console.log("onMouseEnter", "activeTabIdx", activeTabIdx, "tabIdx", tabIdx)
+        if (activeTabIdx !== null && activeTabIdx !== tabIdx) {
+            setActiveTabIdx(tabIdx);
+            setDropDownAnchor({x: event.target.offsetLeft, y: topAnchor});
+        }
     }
 
     const getDropDownMenuTabClassName = (tabIdx: number) => {
@@ -38,7 +51,9 @@ export const DropDownMenu: React.FC = () => {
     const getDropDownTab = (data: DropDownMenuNode, index: number) => {
         return <div
             className={getDropDownMenuTabClassName(index)}
-            onClick={() => onTabClick(index)}
+            key={index}
+            onClickCapture={(event) => onTabClick(index, event)}
+            onMouseEnter={(event) => onMouseEnter(index, event)}
         >
             <img
                 draggable={false}
@@ -48,8 +63,18 @@ export const DropDownMenu: React.FC = () => {
             {data.name}
         </div>
     }
+    const getDropDownWindow = (data: DropDownMenuNode) => {
+        if (activeTabIdx !== null) {
+            return <div className={"DropDownMenuContent"} style={{top: 35, left: activeDropDownAnchor.x}}/>
+        } else {
+            return null;
+        }
+    }
 
     return(<div className="DropDownMenuWrapper">
-        {getDropDownContent()}
+        <>
+            {getDropDownContent()}
+            {getDropDownWindow(DropDownMenuData[activeTabIdx])}
+        </>
     </div>)
 }
