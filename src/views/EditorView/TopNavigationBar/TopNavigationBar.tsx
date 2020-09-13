@@ -80,11 +80,11 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                     {/*    under={true}*/}
                     {/*    onClick={() => updateActivePopupType(PopupWindowType.EXPORT_ANNOTATIONS)}*/}
                     {/*/>*/}
-                    <UnderlineTextButton
-                        label={"IMPORT ANNOTATIONS"}
-                        under={true}
-                        onClick={() => updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS)}
-                    />
+                    {/*<UnderlineTextButton*/}
+                    {/*    label={"IMPORT ANNOTATIONS"}*/}
+                    {/*    under={true}*/}
+                    {/*    onClick={() => updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS)}*/}
+                    {/*/>*/}
                     <ImageButton
                         image={"img/github-logo.png"}
                         imageAlt={"github-logo.png"}

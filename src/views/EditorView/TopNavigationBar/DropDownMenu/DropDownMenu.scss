@@ -1,6 +1,45 @@
 @import '../../../../settings/Settings';
 
 .DropDownMenuWrapper {
-  background-color: red;
-  width: 100px;
+  align-self: stretch;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+
+  .DropDownMenuTab {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 0 10px;
+    border-radius: 3px;
+    align-self: stretch;
+    cursor: pointer;
+    font-weight: 700;
+
+    &:not(:last-child) {
+      margin-right: 4px;
+    }
+
+    img {
+      width: 15px;
+      height: 15px;
+      margin-right: 10px;
+      user-select: none;
+      filter: brightness(0) invert(1);
+    }
+
+    &:hover {
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    &.active {
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 1.0);
+    }
+  }
 }
