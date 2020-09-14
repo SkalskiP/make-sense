@@ -11,9 +11,30 @@
   .DropDownMenuContent {
     z-index: 10000;
     position: absolute;
-    background-color: red;
-    width: 200px;
-    height: 100px;
+    background-color: $darkThemeSecondColor;
+    width: 250px;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-bottom: solid 1px $darkThemeFirstColor;
+    border-left: solid 1px $darkThemeFirstColor;
+    border-right: solid 1px $darkThemeFirstColor;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    .DropDownMenuContentOption {
+      cursor: pointer;
+      align-self: stretch;
+      height: 40px;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
   }
 
   .DropDownMenuTab {

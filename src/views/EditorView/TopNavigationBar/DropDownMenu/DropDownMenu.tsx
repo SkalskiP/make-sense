@@ -12,7 +12,7 @@ export const DropDownMenu: React.FC = () => {
 
     const onTabClick = (tabIdx: number, event) => {
         if (activeTabIdx === null) {
-            window.addEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
+            document.addEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
         }
 
         if (activeTabIdx === tabIdx) {
@@ -24,9 +24,12 @@ export const DropDownMenu: React.FC = () => {
         }
     }
 
-    const onMouseDownBeyondDropDown = (event: MouseEvent) => {
+    const onMouseDownBeyondDropDown = (event) => {
+        if (event.target.classList.contains("DropDownMenuTab")) {
+            return;
+        }
         setActiveTabIdx(null);
-        window.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
+        document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
     }
 
     const onMouseEnter = (tabIdx: number, event) => {
@@ -52,7 +55,7 @@ export const DropDownMenu: React.FC = () => {
         return <div
             className={getDropDownMenuTabClassName(index)}
             key={index}
-            onClickCapture={(event) => onTabClick(index, event)}
+            onClick={(event) => onTabClick(index, event)}
             onMouseEnter={(event) => onMouseEnter(index, event)}
         >
             <img
@@ -65,7 +68,15 @@ export const DropDownMenu: React.FC = () => {
     }
     const getDropDownWindow = (data: DropDownMenuNode) => {
         if (activeTabIdx !== null) {
-            return <div className={"DropDownMenuContent"} style={{top: 35, left: activeDropDownAnchor.x}}/>
+            return <div className={"DropDownMenuContent"} style={
+                {
+                    top: 35,
+                    left: activeDropDownAnchor.x,
+                    height: 40 * data.children.length + 10
+                }
+            }>
+                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption"/>)}
+            </div>
         } else {
             return null;
         }
