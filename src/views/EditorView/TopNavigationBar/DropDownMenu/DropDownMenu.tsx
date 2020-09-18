@@ -24,6 +24,14 @@ export const DropDownMenu: React.FC = () => {
         }
     }
 
+    const onMouseEnterWindow = (event) => {
+        console.log("Enter");
+    }
+
+    const onMouseLeaveWindow = (event) => {
+        console.log("Leave");
+    }
+
     const onMouseDownBeyondDropDown = (event) => {
         if (event.target.classList.contains("DropDownMenuTab")) {
             return;
@@ -32,8 +40,7 @@ export const DropDownMenu: React.FC = () => {
         document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
     }
 
-    const onMouseEnter = (tabIdx: number, event) => {
-        console.log("onMouseEnter", "activeTabIdx", activeTabIdx, "tabIdx", tabIdx)
+    const onMouseEnterTab = (tabIdx: number, event) => {
         if (activeTabIdx !== null && activeTabIdx !== tabIdx) {
             setActiveTabIdx(tabIdx);
             setDropDownAnchor({x: event.target.offsetLeft, y: topAnchor});
@@ -56,7 +63,7 @@ export const DropDownMenu: React.FC = () => {
             className={getDropDownMenuTabClassName(index)}
             key={index}
             onClick={(event) => onTabClick(index, event)}
-            onMouseEnter={(event) => onMouseEnter(index, event)}
+            onMouseEnter={(event) => onMouseEnterTab(index, event)}
         >
             <img
                 draggable={false}
@@ -68,14 +75,22 @@ export const DropDownMenu: React.FC = () => {
     }
     const getDropDownWindow = (data: DropDownMenuNode) => {
         if (activeTabIdx !== null) {
-            return <div className={"DropDownMenuContent"} style={
-                {
-                    top: 35,
-                    left: activeDropDownAnchor.x,
-                    height: 40 * data.children.length + 10
-                }
-            }>
-                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption"/>)}
+            const style: React.CSSProperties = {
+                top: 35,
+                left: activeDropDownAnchor.x,
+                height: 40 * data.children.length + 10
+            }
+            return <div
+                className={"DropDownMenuContent"}
+                style={style}
+                onMouseEnter={onMouseEnterWindow}
+                onMouseLeave={onMouseLeaveWindow}
+            >
+                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption">
+                    <div className="Marker"/>
+                    <img src={i.imageSrc} alt={i.imageAlt}/>
+                    {i.name}
+                </div>)}
             </div>
         } else {
             return null;

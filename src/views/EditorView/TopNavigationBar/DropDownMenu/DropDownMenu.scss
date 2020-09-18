@@ -27,12 +27,36 @@
     align-content: flex-start;
 
     .DropDownMenuContentOption {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      align-content: center;
       cursor: pointer;
       align-self: stretch;
       height: 40px;
 
+      .Marker {
+        align-self: stretch;
+        width: 5px;
+        background-color: transparent;
+        transition: background-color 0.3s ease-in-out, transform 0.3s;
+      }
+
+      img {
+        max-width: 18px;
+        max-height: 18px;
+        margin: 0 20px;
+        filter: brightness(0) invert(1);
+      }
+
       &:hover {
         background-color: rgba(0, 0, 0, 0.1);
+
+        .Marker {
+          background-color: $secondaryColor;
+        }
       }
     }
   }

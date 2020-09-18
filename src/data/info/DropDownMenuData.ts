@@ -18,7 +18,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
             {
                 name: "Labels",
                 description: "Modify labels list",
-                imageSrc: "ico/tag.png",
+                imageSrc: "ico/tags.png",
                 imageAlt: "labels",
                 disabled: false
             },
@@ -31,14 +31,16 @@ export const DropDownMenuData: DropDownMenuNode[] = [
             },
             {
                 name: "Import",
-                imageSrc: "",
-                imageAlt: "",
+                description: "Import annotations from file",
+                imageSrc: "ico/import-labels.png",
+                imageAlt: "import-labels",
                 disabled: false
             },
             {
                 name: "Export",
-                imageSrc: "",
-                imageAlt: "",
+                description: "Export annotations to file",
+                imageSrc: "ico/export-labels.png",
+                imageAlt: "export-labels",
                 disabled: false
             },
         ]
@@ -52,15 +54,15 @@ export const DropDownMenuData: DropDownMenuNode[] = [
             {
                 name: "Documentation",
                 description: "Coming soon",
-                imageSrc: "",
-                imageAlt: "",
+                imageSrc: "ico/documentation.png",
+                imageAlt: "documentation",
                 disabled: true
             },
             {
                 name: "Bugs and Features",
                 description: "Coming soon",
-                imageSrc: "",
-                imageAlt: "",
+                imageSrc: "ico/bug.png",
+                imageAlt: "bug",
                 disabled: true
             }
         ]
