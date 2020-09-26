@@ -1,3 +1,7 @@
+import {updateActivePopupType} from "../../store/general/actionCreators";
+import {PopupWindowType} from "../enums/PopupWindowType";
+import {store} from "../../index";
+
 export type DropDownMenuNode = {
     name: string
     description?: string
@@ -20,28 +24,32 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 description: "Modify labels list",
                 imageSrc: "ico/tags.png",
                 imageAlt: "labels",
-                disabled: false
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.UPDATE_LABEL))
             },
             {
                 name: "Images",
                 description: "Load more images",
                 imageSrc: "ico/camera.png",
                 imageAlt: "images",
-                disabled: false
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_IMAGES))
             },
             {
                 name: "Import",
                 description: "Import annotations from file",
                 imageSrc: "ico/import-labels.png",
                 imageAlt: "import-labels",
-                disabled: false
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS))
             },
             {
                 name: "Export",
                 description: "Export annotations to file",
                 imageSrc: "ico/export-labels.png",
                 imageAlt: "export-labels",
-                disabled: false
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.EXPORT_ANNOTATIONS))
             },
         ]
     },

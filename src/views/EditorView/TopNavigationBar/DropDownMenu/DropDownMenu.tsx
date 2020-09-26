@@ -3,8 +3,15 @@ import classNames from 'classnames'
 import './DropDownMenu.scss';
 import {DropDownMenuData, DropDownMenuNode} from "../../../../data/info/DropDownMenuData";
 import {EventType} from "../../../../data/enums/EventType";
+import {updatePreventCustomCursorStatus} from "../../../../store/general/actionCreators";
+import {AppState} from "../../../../store";
+import {connect} from "react-redux";
 
-export const DropDownMenu: React.FC = () => {
+interface IProps {
+    updatePreventCustomCursorStatus: (preventCustomCursor: boolean) => any;
+}
+
+const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
     const topAnchor = 35;
 
     const [activeTabIdx, setActiveTabIdx] = useState(null);
@@ -25,15 +32,15 @@ export const DropDownMenu: React.FC = () => {
     }
 
     const onMouseEnterWindow = (event) => {
-        console.log("Enter");
+        updatePreventCustomCursorStatus(true);
     }
 
     const onMouseLeaveWindow = (event) => {
-        console.log("Leave");
+        updatePreventCustomCursorStatus(false);
     }
 
     const onMouseDownBeyondDropDown = (event) => {
-        if (event.target.classList.contains("DropDownMenuTab")) {
+        if (event.target.classList.contains("DropDownMenuTab") || event.target.classList.contains("DropDownMenuContentOption")) {
             return;
         }
         setActiveTabIdx(null);
@@ -58,6 +65,15 @@ export const DropDownMenu: React.FC = () => {
         return DropDownMenuData.map((data: DropDownMenuNode, index: number) => getDropDownTab(data, index))
     }
 
+    const wrapOnClick = (onClick?: () => void): () => void => {
+        return () => {
+            !!onClick && onClick();
+            setActiveTabIdx(null);
+            updatePreventCustomCursorStatus(false);
+            document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
+        }
+    }
+
     const getDropDownTab = (data: DropDownMenuNode, index: number) => {
         return <div
             className={getDropDownMenuTabClassName(index)}
@@ -73,6 +89,7 @@ export const DropDownMenu: React.FC = () => {
             {data.name}
         </div>
     }
+
     const getDropDownWindow = (data: DropDownMenuNode) => {
         if (activeTabIdx !== null) {
             const style: React.CSSProperties = {
@@ -86,7 +103,9 @@ export const DropDownMenu: React.FC = () => {
                 onMouseEnter={onMouseEnterWindow}
                 onMouseLeave={onMouseLeaveWindow}
             >
-                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption">
+                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption"
+                    onClick={wrapOnClick(i.onClick)}
+                >
                     <div className="Marker"/>
                     <img src={i.imageSrc} alt={i.imageAlt}/>
                     {i.name}
@@ -104,3 +123,14 @@ export const DropDownMenu: React.FC = () => {
         </>
     </div>)
 }
+
+const mapDispatchToProps = {
+    updatePreventCustomCursorStatus,
+};
+
+const mapStateToProps = (state: AppState) => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DropDownMenu);
