@@ -64,28 +64,8 @@ const TopNavigationBar: React.FC<IProps> = ({updateActivePopupType, updateProjec
                     />
                 </div>
                 <div className="NavigationBarGroupWrapper">
-                    {/*<UnderlineTextButton*/}
-                    {/*    label={"LABELS"}*/}
-                    {/*    under={true}*/}
-                    {/*    onClick={() => updateActivePopupType(PopupWindowType.UPDATE_LABEL)}*/}
-                    {/*/>*/}
-                    {/*<UnderlineTextButton*/}
-                    {/*    label={"IMAGES"}*/}
-                    {/*    under={true}*/}
-                    {/*    onClick={() => updateActivePopupType(PopupWindowType.IMPORT_IMAGES)}*/}
-                    {/*/>*/}
-                    {/*<UnderlineTextButton*/}
-                    {/*    label={"EXPORT ANNOTATIONS"}*/}
-                    {/*    under={true}*/}
-                    {/*    onClick={() => updateActivePopupType(PopupWindowType.EXPORT_ANNOTATIONS)}*/}
-                    {/*/>*/}
-                    {/*<UnderlineTextButton*/}
-                    {/*    label={"IMPORT ANNOTATIONS"}*/}
-                    {/*    under={true}*/}
-                    {/*    onClick={() => updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS)}*/}
-                    {/*/>*/}
                     <ImageButton
-                        image={"img/github-logo.png"}
+                        image={"ico/github-logo.png"}
                         imageAlt={"github-logo.png"}
                         buttonSize={{width: 30, height: 30}}
                         href={Settings.GITHUB_URL}

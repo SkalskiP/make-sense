@@ -61,13 +61,21 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
         );
     };
 
+    const getDropDownMenuContentOption = (disabled: boolean) => {
+        return classNames(
+            "DropDownMenuContentOption",
+            {"active": !disabled}
+        );
+    }
+
     const getDropDownContent = () => {
         return DropDownMenuData.map((data: DropDownMenuNode, index: number) => getDropDownTab(data, index))
     }
 
-    const wrapOnClick = (onClick?: () => void): () => void => {
+    const wrapOnClick = (onClick?: () => void, disabled?: boolean): () => void => {
         return () => {
-            !!onClick && onClick();
+            if (!!disabled) return;
+            if (!!onClick) onClick();
             setActiveTabIdx(null);
             updatePreventCustomCursorStatus(false);
             document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
@@ -103,8 +111,8 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
                 onMouseEnter={onMouseEnterWindow}
                 onMouseLeave={onMouseLeaveWindow}
             >
-                {data.children.map((i:DropDownMenuNode) => <div className="DropDownMenuContentOption"
-                    onClick={wrapOnClick(i.onClick)}
+                {data.children.map((i:DropDownMenuNode) => <div className={getDropDownMenuContentOption(i.disabled)}
+                    onClick={wrapOnClick(i.onClick, i.disabled)}
                 >
                     <div className="Marker"/>
                     <img src={i.imageSrc} alt={i.imageAlt}/>

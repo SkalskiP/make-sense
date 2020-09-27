@@ -82,7 +82,7 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         <img
             draggable={false}
             alt={"main-logo"}
-            src={"img/main-image-color.png"}
+            src={"ico/main-image-color.png"}
         />
         <div className="TriangleHorizontal Bottom">
             <div className="TriangleHorizontalContent"/>

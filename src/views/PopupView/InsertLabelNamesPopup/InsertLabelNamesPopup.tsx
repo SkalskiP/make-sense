@@ -72,11 +72,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         if (labelNamesList.length > 0) {
             updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
         }
-
-        if (projectType === ProjectType.OBJECT_DETECTION)
-            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
-        else
-            updateActivePopupType(null);
+        updateActivePopupType(null);
     };
 
     const onUpdateAccept = () => {
@@ -139,7 +135,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                         <img
                             draggable={false}
                             alt={"upload"}
-                            src={"img/type-writer.png"}
+                            src={"ico/type-writer.png"}
                         />
                         <p className="extraBold">Your label list is empty</p>
                     </div>}

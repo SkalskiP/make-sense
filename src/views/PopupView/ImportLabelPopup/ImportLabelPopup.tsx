@@ -91,7 +91,7 @@ const ImportLabelPopup: React.FC<IProps> = (
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">Annotation import was unsuccessful</p>
                 {annotationsLoadedError.message}
@@ -102,7 +102,7 @@ const ImportLabelPopup: React.FC<IProps> = (
                 <img
                     draggable={false}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p className="extraBold">Annotation ready for import</p>
                 After import you will lose
@@ -114,7 +114,7 @@ const ImportLabelPopup: React.FC<IProps> = (
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">{`Drop ${formatType} annotations`}</p>
                 <p>or</p>

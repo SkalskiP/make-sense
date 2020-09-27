@@ -56,7 +56,13 @@
         background-color: rgba(0, 0, 0, 0.1);
 
         .Marker {
-          background-color: $secondaryColor;
+          background-color: $darkThemeThirdColor;
+        }
+
+        &.active {
+          .Marker {
+            background-color: $secondaryColor;
+          }
         }
       }
     }

@@ -20,7 +20,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         disabled: false,
         children: [
             {
-                name: "Labels",
+                name: "Edit Labels",
                 description: "Modify labels list",
                 imageSrc: "ico/tags.png",
                 imageAlt: "labels",
@@ -28,7 +28,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.UPDATE_LABEL))
             },
             {
-                name: "Images",
+                name: "Import Images",
                 description: "Load more images",
                 imageSrc: "ico/camera.png",
                 imageAlt: "images",
@@ -36,7 +36,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_IMAGES))
             },
             {
-                name: "Import",
+                name: "Import Annotations",
                 description: "Import annotations from file",
                 imageSrc: "ico/import-labels.png",
                 imageAlt: "import-labels",
@@ -44,12 +44,20 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS))
             },
             {
-                name: "Export",
+                name: "Export Annotations",
                 description: "Export annotations to file",
                 imageSrc: "ico/export-labels.png",
                 imageAlt: "export-labels",
                 disabled: false,
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.EXPORT_ANNOTATIONS))
+            },
+            {
+                name: "Load AI Model",
+                description: "Load our pre-trained annotation models",
+                imageSrc: "ico/ai.png",
+                imageAlt: "load-ai-model",
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.LOAD_AI_MODEL))
             },
         ]
     },
@@ -71,7 +79,8 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 description: "Coming soon",
                 imageSrc: "ico/bug.png",
                 imageAlt: "bug",
-                disabled: true
+                disabled: false,
+                onClick: () => window.open("https://github.com/SkalskiP/make-sense/issues", "_blank")
             }
         ]
     }
