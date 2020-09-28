@@ -111,13 +111,15 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
                 onMouseEnter={onMouseEnterWindow}
                 onMouseLeave={onMouseLeaveWindow}
             >
-                {data.children.map((i:DropDownMenuNode) => <div className={getDropDownMenuContentOption(i.disabled)}
-                    onClick={wrapOnClick(i.onClick, i.disabled)}
-                >
-                    <div className="Marker"/>
-                    <img src={i.imageSrc} alt={i.imageAlt}/>
-                    {i.name}
-                </div>)}
+                {data.children.map((element: DropDownMenuNode, index: number) => {
+                    return <div className={getDropDownMenuContentOption(element.disabled)}
+                        onClick={wrapOnClick(element.onClick, element.disabled)}
+                        key={index}
+                    >
+                        <div className="Marker"/>
+                        <img src={element.imageSrc} alt={element.imageAlt}/>
+                        {element.name}
+                    </div>})}
             </div>
         } else {
             return null;
