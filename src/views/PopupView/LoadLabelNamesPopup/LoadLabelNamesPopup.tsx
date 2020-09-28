@@ -42,7 +42,6 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
     const onAccept = () => {
         if (labelsList.length > 0) {
             updateLabels(labelsList);
-            updateActivePopupType(PopupWindowType.LOAD_AI_MODEL);
         }
     };
 
@@ -57,7 +56,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">Loading of labels file was unsuccessful</p>
                 <p className="extraBold">Try again</p>
@@ -68,7 +67,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">Drop labels file</p>
                 <p>or</p>
@@ -79,7 +78,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
                 <img
                     draggable={false}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p className="extraBold">only 1 label found</p>
             </>;
@@ -88,7 +87,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
                 <img
                     draggable={false}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p className="extraBold">{labelsList.length} labels found</p>
             </>;

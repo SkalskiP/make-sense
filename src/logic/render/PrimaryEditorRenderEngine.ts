@@ -66,6 +66,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
         const projectType: ProjectType = GeneralSelector.getProjectType();
         const activePopupType: PopupWindowType = GeneralSelector.getActivePopupType();
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
+        const isCustomCursorBlocked =  GeneralSelector.getPreventCustomCursorStatus();
 
         return [
             !!this.canvas,
@@ -73,7 +74,8 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
             !isImageInDragMode,
             projectType !== ProjectType.IMAGE_RECOGNITION,
             !activePopupType,
-            isMouseOverCanvas
+            isMouseOverCanvas,
+            !isCustomCursorBlocked
         ].every(Boolean)
     }
 

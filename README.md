@@ -5,7 +5,7 @@
 <h1 align="center">makesense.ai</h1>
 
 <p align="center"> 
-    <img width="600" src=".//public/img/main-image-dark_alter.png" alt="Logo">
+    <img width="600" src=".//public/ico/main-image-dark_alter.png" alt="Logo">
 </p>
 
 ## Description

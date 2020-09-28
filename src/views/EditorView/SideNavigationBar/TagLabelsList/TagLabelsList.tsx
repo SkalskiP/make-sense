@@ -99,7 +99,7 @@ const TagLabelsList: React.FC<IProps> = (
                     <img
                         draggable={false}
                         alt={"upload"}
-                        src={"img/type-writer.png"}
+                        src={"ico/type-writer.png"}
                     />
                     <p className="extraBold">Your label list is empty</p>
                 </div> :

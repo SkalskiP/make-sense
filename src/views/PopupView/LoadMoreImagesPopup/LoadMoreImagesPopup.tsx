@@ -37,7 +37,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">Add new images</p>
                 <p>or</p>
@@ -48,7 +48,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                 <img
                     draggable={false}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p className="extraBold">1 new image loaded</p>
             </>;
@@ -58,7 +58,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                     draggable={false}
                     key={1}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p key={2} className="extraBold">{acceptedFiles.length} new images loaded</p>
             </>;
