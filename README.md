@@ -121,7 +121,7 @@ You can find examples of export files along with a description and schema on our
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
 | **Point**     | ☐   | ✗    | ☐       | ☐        | ☐         | ✗          |
 | **Line**      | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
-| **Rect**      | ☐   | ☐    | ☐       | ☐        | ☐         | ✗          |
+| **Rect**      | ☐   | ✓    | ☐       | ☐        | ✓         | ✗          |
 | **Polygon**   | ☐   | ✗    | ☐       | ☐        | ✓         | ☐          |
 | **Label**     | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
