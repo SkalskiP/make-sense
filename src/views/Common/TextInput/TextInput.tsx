@@ -11,6 +11,7 @@ interface IProps {
     labelStyle?: React.CSSProperties;
     barStyle?: React.CSSProperties;
     value?: string;
+    onKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = (props: IProps) => {
@@ -24,7 +25,8 @@ const TextInput = (props: IProps) => {
         inputStyle,
         labelStyle,
         barStyle,
-        value
+        value,
+        onKeyUp
     } = props;
 
     const getInputType = () => {
@@ -40,6 +42,8 @@ const TextInput = (props: IProps) => {
                 style={inputStyle}
                 onChange={onChange ? onChange : undefined}
                 onFocus={onFocus ? onFocus : undefined}
+                autoFocus
+                onKeyUp={onKeyUp}
             />
             {!!label && <label
                 htmlFor={key}
