@@ -11,7 +11,7 @@ interface IProps {
     labelStyle?: React.CSSProperties;
     barStyle?: React.CSSProperties;
     value?: string;
-    handlerForEnterKey?: () => void;
+    handleKeyUp?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = (props: IProps) => {
@@ -26,20 +26,12 @@ const TextInput = (props: IProps) => {
         labelStyle,
         barStyle,
         value,
-        handlerForEnterKey
+        handleKeyUp
     } = props;
 
     const getInputType = () => {
         return isPassword ? "password" : "text";
     };
-
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (handlerForEnterKey) {
-            if (event.key === 'Enter') {
-                handlerForEnterKey();
-            }
-        }
-    }
 
     return (
         <div className="TextInput">

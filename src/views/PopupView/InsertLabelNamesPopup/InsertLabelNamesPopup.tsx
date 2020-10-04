@@ -44,6 +44,13 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         setLabelNames(newLabelNames);
     };
 
+    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+        console.log("key up!")
+        if (event.key === 'Enter') {
+            addHandle();
+        }
+    }
+
     const labelInputs = Object.keys(labelNames).map((key: string) => {
         return <div className="LabelEntry" key={key}>
             <TextInput
@@ -52,7 +59,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                 isPassword={false}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
                 label={"Insert label"}
-                handlerForEnterKey={() => addHandle()}
+                handleKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyUp(event)}
             />
             <ImageButton
                 image={"ico/trash.png"}
