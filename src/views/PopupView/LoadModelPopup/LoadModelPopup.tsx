@@ -1,13 +1,13 @@
-import React, {useState} from "react";
-import {PopupActions} from "../../../logic/actions/PopupActions";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {ObjectDetector} from "../../../ai/ObjectDetector";
+import React, { useState } from "react";
+import { PopupActions } from "../../../logic/actions/PopupActions";
+import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
+import { ObjectDetector } from "../../../ai/ObjectDetector";
 import './LoadModelPopup.scss'
-import {ClipLoader} from "react-spinners";
-import {AIModel} from "../../../data/enums/AIModel";
-import {PoseDetector} from "../../../ai/PoseDetector";
-import {findLast} from "lodash";
-import {CSSHelper} from "../../../logic/helpers/CSSHelper";
+import { ClipLoader } from "react-spinners";
+import { AIModel } from "../../../data/enums/AIModel";
+import { PoseDetector } from "../../../ai/PoseDetector";
+import { findLast } from "lodash";
+import { CSSHelper } from "../../../logic/helpers/CSSHelper";
 
 interface SelectableModel {
     model: AIModel,
@@ -49,7 +49,7 @@ export const LoadModelPopup: React.FC = () => {
     };
 
     const extractSelectedModel = (): AIModel => {
-        const model: SelectableModel = findLast(selectedModelToLoad, {flag: true});
+        const model: SelectableModel = findLast(selectedModelToLoad, { flag: true });
         if (!!model) {
             return model.model
         } else {
@@ -111,7 +111,6 @@ export const LoadModelPopup: React.FC = () => {
             <div className="Companion">
                 {modelIsLoadingStatus ?
                     <ClipLoader
-                        sizeUnit={"px"}
                         size={40}
                         color={CSSHelper.getLeadingColor()}
                         loading={true}
@@ -124,7 +123,7 @@ export const LoadModelPopup: React.FC = () => {
         </div>
     };
 
-    return(
+    return (
         <GenericYesNoPopup
             title={"Say hello to AI"}
             renderContent={renderContent}
