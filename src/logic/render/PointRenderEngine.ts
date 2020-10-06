@@ -4,7 +4,7 @@ import {IPoint} from "../../interfaces/IPoint";
 import {CanvasUtil} from "../../utils/CanvasUtil";
 import {store} from "../../index";
 import {ImageData, LabelPoint} from "../../store/labels/types";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
@@ -24,6 +24,7 @@ import {EditorActions} from "../actions/EditorActions";
 import {EditorModel} from "../../staticModels/EditorModel";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {LabelStatus} from "../../data/enums/LabelStatus";
+import {Settings} from "../../settings/Settings";
 
 export class PointRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -118,8 +119,7 @@ export class PointRenderEngine extends BaseRenderEngine {
                     if (this.isInProgress()) {
                         const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
                         const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
-                        const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
-                        DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
+                        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor)
                     } else {
                         this.renderPoint(labelPoint, true, data);
                     }
@@ -134,9 +134,8 @@ export class PointRenderEngine extends BaseRenderEngine {
     private renderPoint(labelPoint: LabelPoint, isActive: boolean, data: EditorData) {
         const pointOnImage: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
         const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnImage);
-        const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorSize);
         const handleColor: string = isActive ? this.config.activeAnchorColor : this.config.inactiveAnchorColor;
-        DrawUtil.drawRectWithFill(this.canvas, handleRect, handleColor);
+        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, handleColor)
     }
 
     private updateCursorStyle(data: EditorData) {
@@ -188,7 +187,7 @@ export class PointRenderEngine extends BaseRenderEngine {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelPoint: LabelPoint = {
-            id: uuidv1(),
+            id: uuidv4(),
             labelId: activeLabelId,
             point,
             isCreatedByAI: false,

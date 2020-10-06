@@ -1,4 +1,4 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
+import {AnnotationFormatType} from "../../data/enums/AnnotationFormatType";
 import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import JSZip from 'jszip';
@@ -10,15 +10,15 @@ import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {findIndex, findLast} from "lodash";
 
 export class RectLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
+    public static export(exportFormatType: AnnotationFormatType): void {
         switch (exportFormatType) {
-            case ExportFormatType.YOLO:
+            case AnnotationFormatType.YOLO:
                 RectLabelsExporter.exportAsYOLO();
                 break;
-            case ExportFormatType.VOC:
+            case AnnotationFormatType.VOC:
                 RectLabelsExporter.exportAsVOC();
                 break;
-            case ExportFormatType.CSV:
+            case AnnotationFormatType.CSV:
                 RectLabelsExporter.exportAsCSV();
                 break;
             default:
@@ -159,14 +159,8 @@ export class RectLabelsExporter {
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
             .join("\n");
-
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
     private static wrapRectLabelsIntoCSV(imageData: ImageData): string {

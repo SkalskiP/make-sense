@@ -47,10 +47,10 @@ class LabelsToolkit extends React.Component<IProps, IState> {
 
         this.tabs = props.projectType === ProjectType.IMAGE_RECOGNITION ?
             [
-                LabelType.NAME
+                LabelType.IMAGE_RECOGNITION
             ] :
             [
-                LabelType.RECTANGLE,
+                LabelType.RECT,
                 LabelType.POINT,
                 LabelType.LINE,
                 LabelType.POLYGON
@@ -134,7 +134,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     className={getClassName("Content")}
                     style={{height: isActive ? activeTabContentHeight : 0}}
                 >
-                    {labelType === LabelType.RECTANGLE && <RectLabelsList
+                    {labelType === LabelType.RECT && <RectLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20
@@ -162,7 +162,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         }}
                         imageData={imagesData[activeImageIndex]}
                     />}
-                    {labelType === LabelType.NAME && <TagLabelsList
+                    {labelType === LabelType.IMAGE_RECOGNITION && <TagLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20

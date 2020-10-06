@@ -1,12 +1,34 @@
-import {LabelName} from "../store/labels/types";
-import uuidv1 from 'uuid/v1';
+import {LabelName, LabelPolygon, LabelRect} from "../store/labels/types";
+import uuidv4 from 'uuid/v4';
 import {find} from "lodash";
+import {IRect} from "../interfaces/IRect";
+import {LabelStatus} from "../data/enums/LabelStatus";
+import {IPoint} from "../interfaces/IPoint";
 
 export class LabelUtil {
-    public static mapNamesToLabelNames(name: string): LabelName {
+    public static createLabelName(name: string): LabelName {
         return {
-            id: uuidv1(),
+            id: uuidv4(),
             name: name
+        }
+    }
+
+    public static createLabelRect(labelId: string, rect: IRect): LabelRect {
+        return {
+            id: uuidv4(),
+            labelId: labelId,
+            rect,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
+        }
+    }
+
+    public static createLabelPolygon(labelId: string, vertices: IPoint[]): LabelPolygon {
+        return {
+            id: uuidv4(),
+            labelId: labelId,
+            vertices: vertices
         }
     }
 

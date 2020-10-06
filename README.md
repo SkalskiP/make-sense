@@ -5,7 +5,7 @@
 <h1 align="center">makesense.ai</h1>
 
 <p align="center"> 
-    <img width="600" src=".//public/img/main-image-dark_alter.png" alt="Logo">
+    <img width="600" src=".//public/ico/main-image-dark_alter.png" alt="Logo">
 </p>
 
 ## Description
@@ -98,20 +98,34 @@ docker logs make_sense
 
 **Table 1.** Supported keyboard shortcuts
 
-## Supported Output Formats
+## Supported Export Formats
 
-|               | CSV | YOLO | VOC XML | VGG JSON | COCO | PIXEL MASK |
-|:-------------:|:---:|:----:|:-------:|:--------:|:----:|:----------:|
-| **Point**     | ☑   | ☒    | ☐       | ☐        | ☐    | ☒          |
-| **Rect**      | ☑   | ☑    | ☑       | ☐        | ☐    | ☒          |
-| **Polygon**   | ☐   | ☒    | ☐       | ☑        | ☐    | ☐          |
+|               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
+|:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
+| **Point**     | ✓   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Line**      | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
+| **Rect**      | ✓   | ✓    | ✓       | ☐        | ☐         | ✗          |
+| **Polygon**   | ☐   | ✗    | ☐       | ✓        | ✓         | ☐          |
+| **Label**     | ✓   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
-**Table 2.** The matrix of supported labels export format, where:
-* ☑ - supported format
+**Table 2.** The matrix of supported labels export formats, where:
+* ✓ - supported format
 * ☐ - not yet supported format
-* ☒ - format does not make sense for a given label type  
+* ✗ - format does not make sense for a given label type  
 
 You can find examples of export files along with a description and schema on our [Wiki][7].
+
+## Supported Import Formats
+
+|               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
+|:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
+| **Point**     | ☐   | ✗    | ☐       | ☐        | ☐         | ✗          |
+| **Line**      | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
+| **Rect**      | ☐   | ✓    | ☐       | ☐        | ✓         | ✗          |
+| **Polygon**   | ☐   | ✗    | ☐       | ☐        | ✓         | ☐          |
+| **Label**     | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
+
+**Table 3.** The matrix of supported labels import formats
 
 ## Privacy
 
@@ -120,6 +134,16 @@ We don't store your images, because we don't send them anywhere in the first pla
 ## Road Map
 
 Our application is being actively developed. Check out our plans for the near future on our [Wiki][6]. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
+
+## Tutorials
+
+If you are just starting your adventure with deep learning and would like to learn and create something cool along the way, [makesense.ai][1] can help you with that. Leverage our bounding box labeling functionality to prepare a data set and use it to train your first state-of-the-art object detection model. Follow [instructions][12] and [examples][13] but most importantly, free your creativity.
+
+<p align="center"> 
+    <img width="800" src=".//examples/object_detection_basketball.gif" alt="Object detection tutorial">
+</p>
+
+**Figure 4.** Detection of players moving around the basketball court, based on <a href="https://research.google.com/youtube8m/">YouTube-8M</a> dataset.
 
 ## Contribution
 
@@ -153,3 +177,5 @@ Copyright (c) 2019-present, Piotr Skalski
 [9]: http://cocodataset.org
 [10]: https://www.tensorflow.org/js
 [11]: https://www.tensorflow.org/lite/models/pose_estimation/overview
+[12]: https://towardsdatascience.com/chess-rolls-or-basketball-lets-create-a-custom-object-detection-model-ef53028eac7d
+[13]: https://github.com/SkalskiP/ILearnDeepLearning.py/tree/master/02_data_science_toolkit/02_yolo_object_detection

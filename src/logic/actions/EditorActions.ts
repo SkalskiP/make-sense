@@ -29,7 +29,7 @@ export class EditorActions {
 
     public static mountSupportRenderingEngine(activeLabelType: LabelType) {
         switch (activeLabelType) {
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 EditorModel.supportRenderingEngine = new RectRenderEngine(EditorModel.canvas);
                 break;
             case LabelType.POINT:

@@ -5,6 +5,7 @@ import Scrollbars from "react-custom-scrollbars";
 import {updateImageDataById} from "../../../../store/labels/actionCreators";
 import {AppState} from "../../../../store";
 import {connect} from "react-redux";
+import {remove} from "lodash";
 import './TagLabelsList.scss';
 import classNames from "classnames";
 import {ImageButton} from "../../../Common/ImageButton/ImageButton";
@@ -37,15 +38,15 @@ const TagLabelsList: React.FC<IProps> = (
     };
 
     const onTagClick = (labelId: string)  => {
-        if (imageData.labelTagId === labelId) {
+        if (imageData.labelNameIds.includes(labelId)) {
             updateImageDataById(imageData.id, {
                 ...imageData,
-                labelTagId: null
+                labelNameIds: remove(imageData.labelNameIds, (element: string) => element !== labelId)
             })
         } else {
             updateImageDataById(imageData.id, {
                 ...imageData,
-                labelTagId: labelId
+                labelNameIds: imageData.labelNameIds.concat(labelId)
             })
         }
     }
@@ -54,13 +55,13 @@ const TagLabelsList: React.FC<IProps> = (
         return classNames(
             "TagItem",
             {
-                "active": imageData.labelTagId === labelId
+                "active": imageData.labelNameIds.includes(labelId)
             }
         );
     };
 
     const addNewOnClick = () => {
-        updateActivePopupType(PopupWindowType.UPDATE_LABEL_NAMES)
+        updateActivePopupType(PopupWindowType.UPDATE_LABEL)
     }
 
     const getChildren = () => {
@@ -98,7 +99,7 @@ const TagLabelsList: React.FC<IProps> = (
                     <img
                         draggable={false}
                         alt={"upload"}
-                        src={"img/type-writer.png"}
+                        src={"ico/type-writer.png"}
                     />
                     <p className="extraBold">Your label list is empty</p>
                 </div> :

@@ -17,13 +17,13 @@ import {EditorActions} from "../actions/EditorActions";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {DrawUtil} from "../../utils/DrawUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import uuidv1 from "uuid/v1";
+import uuidv4 from "uuid/v4";
 import {ILine} from "../../interfaces/ILine";
 import {LineUtil} from "../../utils/LineUtil";
-import {IRect} from "../../interfaces/IRect";
 import {updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 import {LineAnchorType} from "../../data/enums/LineAnchorType";
+import {Settings} from "../../settings/Settings";
 
 export class LineRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -114,8 +114,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         if (this.isInProgress()) {
             const line = {start: this.lineCreationStartPoint, end: data.mousePositionOnViewPortContent}
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
-            const lineStartHandle = RectUtil.getRectWithCenterAndSize(this.lineCreationStartPoint, this.config.anchorSize);
-            DrawUtil.drawRectWithFill(this.canvas, lineStartHandle, this.config.activeAnchorColor);
+            DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor)
         }
     }
 
@@ -162,10 +161,8 @@ export class LineRenderEngine extends BaseRenderEngine {
         if (isActive) {
             LineUtil
                 .getPoints(line)
-                .map((point: IPoint) => RectUtil.getRectWithCenterAndSize(point, this.config.anchorSize))
-                .forEach((handleRect: IRect) => {
-                    DrawUtil.drawRectWithFill(this.canvas, handleRect, this.config.activeAnchorColor);
-                })
+                .map((point: IPoint) => DrawUtil.drawCircleWithFill(
+                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor))
         }
     }
 
@@ -204,7 +201,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         const labelLine: LabelLine = {
-            id: uuidv1(),
+            id: uuidv4(),
             labelId: activeLabelId,
             line: lineOnImage
         };

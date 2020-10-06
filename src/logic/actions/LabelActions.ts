@@ -17,7 +17,7 @@ export class LabelActions {
             case LabelType.POINT:
                 LabelActions.deletePointLabelById(imageId, labelId);
                 break;
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 LabelActions.deleteRectLabelById(imageId, labelId);
                 break;
             case LabelType.POLYGON:
@@ -110,6 +110,9 @@ export class LabelActions {
                 } else {
                     return labelPolygon
                 }
+            }),
+            labelNameIds: imageData.labelNameIds.filter((labelNameId: string) => {
+                return !labelNamesIds.includes(labelNameId)
             })
         }
     }

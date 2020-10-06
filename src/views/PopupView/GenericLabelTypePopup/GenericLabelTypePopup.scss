@@ -1,0 +1,50 @@
+@import '../../../settings/Settings';
+
+.GenericLabelTypePopupContent {
+  align-self: stretch;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+  min-height: 300px;
+
+  .LeftContainer {
+    width: 50px;
+    align-self: stretch;
+    border-right: solid 1px $darkThemeFirstColor;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    padding: 3px 0;
+
+    .ImageButton {
+      transition: transform 0.3s;
+
+      img {
+        filter: brightness(0) invert(1);
+      }
+
+      &:hover {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &.active {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+    }
+  }
+
+  .RightContainer {
+    align-self: stretch;
+    flex: 1;
+  }
+}

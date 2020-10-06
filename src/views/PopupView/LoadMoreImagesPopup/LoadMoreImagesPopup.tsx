@@ -5,10 +5,10 @@ import {connect} from "react-redux";
 import {addImageData} from "../../../store/labels/actionCreators";
 import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
 import {useDropzone} from "react-dropzone";
-import {FileUtil} from "../../../utils/FileUtil";
 import {ImageData} from "../../../store/labels/types";
 import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
 import {PopupActions} from "../../../logic/actions/PopupActions";
+import {ImageDataUtil} from "../../../utils/ImageDataUtil";
 
 interface IProps {
     addImageData: (imageData: ImageData[]) => any;
@@ -21,7 +21,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
 
     const onAccept = () => {
         if (acceptedFiles.length > 0) {
-            addImageData(acceptedFiles.map((fileData:File) => FileUtil.mapFileDataToImageData(fileData)));
+            addImageData(acceptedFiles.map((fileData:File) => ImageDataUtil.createImageDataFromFileData(fileData)));
             PopupActions.close();
         }
     };
@@ -37,7 +37,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                 <img
                     draggable={false}
                     alt={"upload"}
-                    src={"img/box-opened.png"}
+                    src={"ico/box-opened.png"}
                 />
                 <p className="extraBold">Add new images</p>
                 <p>or</p>
@@ -48,7 +48,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                 <img
                     draggable={false}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p className="extraBold">1 new image loaded</p>
             </>;
@@ -58,7 +58,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
                     draggable={false}
                     key={1}
                     alt={"uploaded"}
-                    src={"img/box-closed.png"}
+                    src={"ico/box-closed.png"}
                 />
                 <p key={2} className="extraBold">{acceptedFiles.length} new images loaded</p>
             </>;

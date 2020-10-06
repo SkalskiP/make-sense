@@ -8,7 +8,7 @@ export const SizeItUpView: React.FC = () => {
         <img
             draggable={false}
             alt={"small_window"}
-            src={"img/small_window.png"}
+            src={"ico/small_window.png"}
         />
         <p className="extraBold">Please... make it at least {Settings.EDITOR_MIN_WIDTH} x {Settings.EDITOR_MIN_HEIGHT} px.</p>
     </div>)

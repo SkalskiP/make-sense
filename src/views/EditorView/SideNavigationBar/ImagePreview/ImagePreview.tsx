@@ -1,18 +1,18 @@
 import classNames from "classnames";
 import React from 'react';
-import {connect} from "react-redux";
-import {ClipLoader} from "react-spinners";
-import {ImageLoadManager} from "../../../../logic/imageRepository/ImageLoadManager";
-import {IRect} from "../../../../interfaces/IRect";
-import {ISize} from "../../../../interfaces/ISize";
-import {ImageRepository} from "../../../../logic/imageRepository/ImageRepository";
-import {AppState} from "../../../../store";
-import {updateImageDataById} from "../../../../store/labels/actionCreators";
-import {ImageData} from "../../../../store/labels/types";
-import {FileUtil} from "../../../../utils/FileUtil";
-import {RectUtil} from "../../../../utils/RectUtil";
+import { connect } from "react-redux";
+import { ClipLoader } from "react-spinners";
+import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
+import { IRect } from "../../../../interfaces/IRect";
+import { ISize } from "../../../../interfaces/ISize";
+import { ImageRepository } from "../../../../logic/imageRepository/ImageRepository";
+import { AppState } from "../../../../store";
+import { updateImageDataById } from "../../../../store/labels/actionCreators";
+import { ImageData } from "../../../../store/labels/types";
+import { FileUtil } from "../../../../utils/FileUtil";
+import { RectUtil } from "../../../../utils/RectUtil";
 import './ImagePreview.scss';
-import {CSSHelper} from "../../../../logic/helpers/CSSHelper";
+import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
 
 interface IProps {
     imageData: ImageData;
@@ -50,7 +50,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                 ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, nextProps.isScrolling));
             }
             else {
-                this.setState({image: null});
+                this.setState({ image: null });
             }
         }
 
@@ -68,26 +68,28 @@ class ImagePreview extends React.Component<IProps, IState> {
         )
     }
 
-    private loadImage = async (imageData:ImageData, isScrolling:boolean) => {
+    private loadImage = async (imageData: ImageData, isScrolling: boolean) => {
         if (imageData.loadStatus) {
             const image = ImageRepository.getById(imageData.id);
             if (this.state.image !== image) {
-                this.setState({image});
+                this.setState({ image });
             }
         }
         else if (!isScrolling || !this.isLoading) {
             this.isLoading = true;
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            await FileUtil.loadImage(imageData.fileData, saveLoadedImagePartial, this.handleLoadImageError);
+            FileUtil.loadImage(imageData.fileData)
+                .then((image: HTMLImageElement) => saveLoadedImagePartial(image))
+                .catch((error) => this.handleLoadImageError())
         }
     };
 
     private saveLoadedImage = (image: HTMLImageElement, imageData: ImageData) => {
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
-        ImageRepository.store(imageData.id, image);
+        ImageRepository.storeImage(imageData.id, image);
         if (imageData.id === this.props.imageData.id) {
-            this.setState({image});
+            this.setState({ image });
             this.isLoading = false;
         }
     };
@@ -102,7 +104,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             height: 0.7 * size.height
         };
 
-        const imageRect:IRect = {
+        const imageRect: IRect = {
             x: 0,
             y: 0,
             width: this.state.image.width,
@@ -120,7 +122,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         }
     };
 
-    private handleLoadImageError = () => {};
+    private handleLoadImageError = () => { };
 
     private getClassName = () => {
         return classNames(
@@ -138,7 +140,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             onClick
         } = this.props;
 
-        return(
+        return (
             <div
                 className={this.getClassName()}
                 style={style}
@@ -156,7 +158,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                                 draggable={false}
                                 src={this.state.image.src}
                                 alt={this.state.image.alt}
-                                style={{...this.getStyle(), left: 0, top: 0}}
+                                style={{ ...this.getStyle(), left: 0, top: 0 }}
                             />
                             {isChecked && <img
                                 className="CheckBox"
@@ -172,7 +174,6 @@ class ImagePreview extends React.Component<IProps, IState> {
                         />
                     ] :
                     <ClipLoader
-                        sizeUnit={"px"}
                         size={30}
                         color={CSSHelper.getLeadingColor()}
                         loading={true}

@@ -61,15 +61,15 @@ class ImagesList extends React.Component<IProps, IState> {
         switch (this.props.activeLabelType) {
             case LabelType.LINE:
                 return imageData.labelLines.length > 0
-            case LabelType.NAME:
-                return imageData.labelTagId !== null
+            case LabelType.IMAGE_RECOGNITION:
+                return imageData.labelNameIds.length > 0
             case LabelType.POINT:
                 return imageData.labelPoints
                     .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
                     .length > 0
             case LabelType.POLYGON:
                 return imageData.labelPolygons.length > 0
-            case LabelType.RECTANGLE:
+            case LabelType.RECT:
                 return imageData.labelRects
                     .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
                     .length > 0

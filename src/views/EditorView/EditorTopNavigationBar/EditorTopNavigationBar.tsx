@@ -108,17 +108,14 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     isActive={crossHairVisible}
                 />
             </div>
-            {((activeLabelType === LabelType.RECTANGLE && AISelector.isAIObjectDetectorModelLoaded()) ||
+            {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
                 (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
                 <ImageButton
                     image={"ico/accept-all.png"}
                     imageAlt={"accept-all"}
                     buttonSize={buttonSize}
                     padding={buttonPadding}
-                    onClick={() => {
-                        console.log("click");
-                        AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    }}
+                    onClick={() => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())}
                 />
                 <ImageButton
                     image={"ico/reject-all.png"}

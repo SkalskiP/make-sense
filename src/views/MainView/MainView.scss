@@ -8,6 +8,8 @@
   padding: 0;
 
   background-image: linear-gradient(to top right, $primaryColor, $secondaryColor);
+  background-size: 400% 400%;
+  animation: backgroundAnimation 10s ease-in-out infinite;
 
   display: flex;
   flex-direction: row;
@@ -265,5 +267,17 @@
   100% {
     opacity: 0;
     width: 0;
+  }
+}
+
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
   }
 }

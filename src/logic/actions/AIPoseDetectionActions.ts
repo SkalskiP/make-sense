@@ -4,7 +4,7 @@ import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageRepository} from "../imageRepository/ImageRepository";
 import {LabelStatus} from "../../data/enums/LabelStatus";
-import uuidv1 from 'uuid/v1';
+import uuidv4 from 'uuid/v4';
 import {store} from "../../index";
 import {updateImageDataById} from "../../store/labels/actionCreators";
 import {findLast} from "lodash";
@@ -60,7 +60,7 @@ export class AIPoseDetectionActions {
                 return prediction.keypoints
                     .map((keypoint: Keypoint) => {
                         return {
-                            id: uuidv1(),
+                            id: uuidv4(),
                             labelIndex: null,
                             labelId: null,
                             point: {

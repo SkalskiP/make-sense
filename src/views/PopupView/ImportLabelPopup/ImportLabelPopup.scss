@@ -1,0 +1,59 @@
+@import '../../../settings/Settings';
+
+.GenericLabelTypePopupContent {
+
+  .RightContainer {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+
+    .FeatureInProgress {
+      flex: 1;
+    }
+
+    .DropZone {
+      user-select: none;
+      align-self: stretch;
+      border-radius: 4px;
+      flex: 1;
+      color: white;
+
+      display: flex;
+      flex-direction: column;
+      justify-items: center;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      outline: none;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+
+      > img {
+        max-width: 60px;
+        max-height: 60px;
+        margin-bottom: 30px;
+        filter: brightness(0) invert(1);
+        user-select: none;
+      }
+
+      > input {
+        outline: none;
+      }
+
+      > p {
+        margin-top: 2px;
+        margin-bottom: 0;
+
+        &.extraBold {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

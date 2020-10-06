@@ -1,16 +1,17 @@
-import {ExportFormatType} from "../../data/enums/ExportFormatType";
+import {AnnotationFormatType} from "../../data/enums/AnnotationFormatType";
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
 import {ImageData, LabelName} from "../../store/labels/types";
-import {saveAs} from "file-saver";
 import {ExporterUtil} from "../../utils/ExporterUtil";
-import {ImageRepository} from "../imageRepository/ImageRepository";
 import {findLast} from "lodash";
 
 export class TagLabelsExporter {
-    public static export(exportFormatType: ExportFormatType): void {
+    public static export(exportFormatType: AnnotationFormatType): void {
         switch (exportFormatType) {
-            case ExportFormatType.CSV:
+            case AnnotationFormatType.CSV:
                 TagLabelsExporter.exportAsCSV();
+                break;
+            case AnnotationFormatType.JSON:
+                TagLabelsExporter.exportAsJSON();
                 break;
             default:
                 return;
@@ -19,35 +20,52 @@ export class TagLabelsExporter {
 
     private static exportAsCSV(): void {
         const content: string = LabelsSelector.getImagesData()
+            .filter((imageData: ImageData) => {
+                return imageData.labelNameIds.length > 0
+            })
             .map((imageData: ImageData) => {
-                return TagLabelsExporter.wrapLineLabelsIntoCSV(imageData)})
-            .filter((imageLabelData: string) => {
-                return !!imageLabelData})
+                return TagLabelsExporter.wrapLabelNamesIntoCSV(imageData)})
             .join("\n");
-
-        const blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        try {
-            saveAs(blob, `${ExporterUtil.getExportFileName()}.csv`);
-        } catch (error) {
-            // TODO
-            throw new Error(error);
-        }
+        const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
+        ExporterUtil.saveAs(content, fileName);
     }
 
-    private static wrapLineLabelsIntoCSV(imageData: ImageData): string {
-        if (imageData.labelTagId === null || !imageData.loadStatus)
+    private static exportAsJSON(): void {
+        const contentObjects: object[] = LabelsSelector.getImagesData()
+            .filter((imageData: ImageData) => {
+                return imageData.labelNameIds.length > 0
+            })
+            .map((imageData: ImageData) => {
+                return {
+                    "image": imageData.fileData.name,
+                    "annotations": TagLabelsExporter.wrapLabelNamesIntoJSON(imageData)
+                }})
+        const content: string = JSON.stringify(contentObjects);
+        const fileName: string = `${ExporterUtil.getExportFileName()}.json`;
+        ExporterUtil.saveAs(content, fileName);
+    }
+
+    private static wrapLabelNamesIntoCSV(imageData: ImageData): string {
+        if (imageData.labelNameIds.length === 0 || !imageData.loadStatus)
             return null;
 
-        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
-        const labelName: LabelName = findLast(labelNames, {id: imageData.labelTagId});
-        const labelFields = !!labelName ? [
-            labelName.name,
+        const annotations: string[] = imageData.labelNameIds.map((labelNameId: string) => {
+            return findLast(labelNames, {id: labelNameId}).name;
+        })
+        const labelFields = annotations.length !== 0 ? [
             imageData.fileData.name,
-            image.width.toString(),
-            image.height.toString()
+            `"[${annotations.toString()}]"`
         ] : [];
         return labelFields.join(",")
+    }
 
+    private static wrapLabelNamesIntoJSON(imageData: ImageData): string[] {
+        if (imageData.labelNameIds.length === 0 || !imageData.loadStatus)
+            return [];
+        const labelNames: LabelName[] = LabelsSelector.getLabelNames();
+        return imageData.labelNameIds.map((labelNameId: string) => {
+            return findLast(labelNames, {id: labelNameId}).name;
+        })
     }
 }

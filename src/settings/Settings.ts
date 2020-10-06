@@ -31,9 +31,10 @@ export class Settings {
     public static readonly RESIZE_HANDLE_HOVER_DIMENSION_PX = 16;
 
     public static readonly CLOSEABLE_POPUPS: PopupWindowType[] = [
-        PopupWindowType.LOAD_IMAGES,
-        PopupWindowType.EXPORT_LABELS,
+        PopupWindowType.IMPORT_IMAGES,
+        PopupWindowType.EXPORT_ANNOTATIONS,
+        PopupWindowType.IMPORT_ANNOTATIONS,
         PopupWindowType.EXIT_PROJECT,
-        PopupWindowType.UPDATE_LABEL_NAMES
+        PopupWindowType.UPDATE_LABEL
     ];
 }
