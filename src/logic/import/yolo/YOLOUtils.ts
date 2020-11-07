@@ -71,13 +71,14 @@ export class YOLOUtils {
 
     public static validateYOLOAnnotationComponents(components: string[], labelNamesCount: number): boolean {
         const validateCoordinateValue = (rawValue: string): boolean => {
-            const floatValue: number = parseFloat(rawValue);
-            return !!floatValue &&  0.0 <= floatValue && floatValue <= 1.0;
+            const floatValue: number = Number(rawValue);
+            return !isNaN(floatValue) && 0.0 <= floatValue && floatValue <= 1.0;
         }
         const validateLabelIdx = (rawValue: string): boolean => {
             const intValue: number = parseInt(rawValue);
             return !isNaN(intValue) && 0 <= intValue && intValue < labelNamesCount;
         }
+
         return [
             components.length === 5,
             validateLabelIdx(components[0]),
