@@ -113,6 +113,17 @@ describe('YOLOUtils validateYOLOAnnotationComponents method', () => {
         // then
         expect(result).toBe(true);
     });
+
+    it('should return true', () => {
+        // given
+        const components: string[] = ["6", "0.557911", "0.924187", "0.000673", "0.000000"]
+
+        // when
+        const result = YOLOUtils.validateYOLOAnnotationComponents(components, 10);
+
+        // then
+        expect(result).toBe(true);
+    });
 });
 
 describe('YOLOUtils parseYOLOAnnotationFromString method', () => {

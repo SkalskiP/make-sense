@@ -70,10 +70,12 @@ const ImportLabelPopup: React.FC<IProps> = (
     };
 
     const onAccept = (labelType: LabelType) => {
-        updateImageData(loadedImageData);
-        updateLabelNames(loadedLabelNames);
-        updateActiveLabelType(labelType);
-        PopupActions.close();
+        if (loadedLabelNames.length !== 0 && loadedImageData.length !== 0) {
+            updateImageData(loadedImageData);
+            updateLabelNames(loadedLabelNames);
+            updateActiveLabelType(labelType);
+            PopupActions.close();
+        }
     };
 
     const onReject = (labelType: LabelType) => {
