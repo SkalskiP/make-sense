@@ -56,10 +56,8 @@ export class LineRenderEngine extends BaseRenderEngine {
                 this.startExistingLabelUpdate(labelLine.id, anchorTypeUnderMouse)
             } else if (!!labelLineUnderMouse) {
                 store.dispatch(updateActiveLabelId(labelLineUnderMouse.id));
-            } else if (!this.isInProgress() && isMouseOverImage) {
-                this.startNewLabelCreation(data)
             } else if (!this.isInProgress()) {
-
+                isMouseOverImage && this.startNewLabelCreation(data)
             } else {
                 this.finishNewLabelCreation(data);
             }
