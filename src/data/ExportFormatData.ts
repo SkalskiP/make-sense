@@ -5,6 +5,20 @@ import {AnnotationFormatType} from "./enums/AnnotationFormatType";
 export type ExportFormatDataMap = { [s in LabelType]: ILabelFormatData[]; };
 
 export const ExportFormatData: ExportFormatDataMap = {
+    "AUTORECT": [
+        {
+            type: AnnotationFormatType.YOLO,
+            label: "A .zip package containing files in YOLO format."
+        },
+        {
+            type: AnnotationFormatType.VOC,
+            label: "A .zip package containing files in VOC XML format."
+        },
+        {
+            type: AnnotationFormatType.CSV,
+            label: "Single CSV file."
+        }
+    ],
     "RECT": [
         {
             type: AnnotationFormatType.YOLO,

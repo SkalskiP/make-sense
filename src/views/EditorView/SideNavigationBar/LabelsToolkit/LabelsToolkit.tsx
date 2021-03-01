@@ -12,6 +12,7 @@ import {find} from "lodash";
 import {ILabelToolkit, LabelToolkitData} from "../../../../data/info/LabelToolkitData";
 import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
+import AutoRectLabelsList from "../AutoRectLabelsList/AutoRectLabelsList";
 import PointLabelsList from "../PointLabelsList/PointLabelsList";
 import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
 import {ContextManager} from "../../../../logic/context/ContextManager";
@@ -51,6 +52,7 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             ] :
             [
                 LabelType.RECT,
+                LabelType.AUTORECT,
                 LabelType.POINT,
                 LabelType.LINE,
                 LabelType.POLYGON
@@ -134,6 +136,13 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                     className={getClassName("Content")}
                     style={{height: isActive ? activeTabContentHeight : 0}}
                 >
+                    {labelType === LabelType.AUTORECT && <AutoRectLabelsList
+                        size={{
+                            width: size.width - 20,
+                            height: activeTabContentHeight - 20
+                        }}
+                        imageData={imagesData[activeImageIndex]}
+                    />}
                     {labelType === LabelType.RECT && <RectLabelsList
                         size={{
                             width: size.width - 20,

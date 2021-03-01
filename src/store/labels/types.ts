@@ -1,4 +1,5 @@
 import {IRect} from "../../interfaces/IRect";
+import {IAutoRect} from "../../interfaces/IAutoRect";
 import {Action} from "../Actions";
 import {LabelType} from "../../data/enums/LabelType";
 import {IPoint} from "../../interfaces/IPoint";
@@ -10,6 +11,18 @@ export type LabelRect = {
     id: string;
     labelId: string;
     rect: IRect;
+
+    // AI
+    isCreatedByAI: boolean;
+    status: LabelStatus;
+    suggestedLabel: string;
+}
+
+export type LabelAutoRect = {
+    // GENERAL
+    id: string;
+    labelId: string;
+    rect: IAutoRect;
 
     // AI
     isCreatedByAI: boolean;
@@ -51,6 +64,7 @@ export type ImageData = {
     fileData: File;
     loadStatus: boolean;
     labelRects: LabelRect[];
+    labelAutoRects: LabelAutoRect[];
     labelPoints: LabelPoint[];
     labelLines: LabelLine[];
     labelPolygons: LabelPolygon[];

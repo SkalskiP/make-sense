@@ -10,6 +10,7 @@ export class ImageDataUtil {
             fileData: fileData,
             loadStatus: false,
             labelRects: [],
+            labelAutoRects: [],
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],
@@ -23,6 +24,7 @@ export class ImageDataUtil {
         return {
             ...item,
             labelRects: [],
+            labelAutoRects: [],
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],

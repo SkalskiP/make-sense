@@ -15,6 +15,7 @@ import {
   LabelPoint,
   LabelPolygon,
   LabelRect,
+  LabelAutoRect,
 } from "../../store/labels/types";
 import { LabelStatus } from "../../data/enums/LabelStatus";
 import { remove } from "lodash";
@@ -107,6 +108,22 @@ export class ImageActions {
         newImageData.labelRects = imageData.labelRects.map(
           (labelRectangle: LabelRect) => {
             if (labelRectangle.id === rect.id) {
+              return {
+                ...labelRectangle,
+                labelId: labelNames[labelIndex].id,
+                status: LabelStatus.ACCEPTED,
+              };
+            }
+            return labelRectangle;
+          }
+        );
+        store.dispatch(updateActiveLabelId(rect.id));
+        break;
+      case LabelType.AUTORECT:
+        const auto_rect = LabelsSelector.getActiveRectLabel();
+        newImageData.labelRects = imageData.labelRects.map(
+          (labelRectangle: LabelAutoRect) => {
+            if (labelRectangle.id === auto_rect.id) {
               return {
                 ...labelRectangle,
                 labelId: labelNames[labelIndex].id,

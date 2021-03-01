@@ -5,7 +5,7 @@ import {AppState} from "../../../store";
 import {connect} from "react-redux";
 import {IPoint} from "../../../interfaces/IPoint";
 import classNames from "classnames";
-import {LabelName, LabelPoint, LabelRect} from "../../../store/labels/types";
+import {LabelName, LabelPoint, LabelRect, LabelAutoRect} from "../../../store/labels/types";
 import {ImageButton} from "../../Common/ImageButton/ImageButton";
 import {LabelActions} from "../../../logic/actions/LabelActions";
 import {ImageData} from "../../../store/labels/types";
@@ -62,6 +62,18 @@ const LabelControlPanel: React.FC<IProps> = ({position, updatePreventCustomCurso
                     }
                 } else {
                     return labelPoint
+                }
+            }),
+            labelAutoRects: imageData.labelAutoRects.map((labelAutoRect: LabelAutoRect) => {
+                if (labelAutoRect.id === labelData.id) {
+                    const labelName: LabelName = findLast(LabelsSelector.getLabelNames(), {name: labelAutoRect.suggestedLabel});
+                    return {
+                        ...labelAutoRect,
+                        status: LabelStatus.ACCEPTED,
+                        labelId: !!labelName ? labelName.id : labelAutoRect.labelId
+                    }
+                } else {
+                    return labelAutoRect
                 }
             })
         };
