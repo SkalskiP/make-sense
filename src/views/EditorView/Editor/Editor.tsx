@@ -1,7 +1,7 @@
 import React from 'react';
 import './Editor.scss';
 import {ISize} from "../../../interfaces/ISize";
-import {ImageData, LabelPoint, LabelRect} from "../../../store/labels/types";
+import {ImageData, LabelPoint, LabelRect, LabelAutoRect} from "../../../store/labels/types";
 import {FileUtil} from "../../../utils/FileUtil";
 import {AppState} from "../../../store";
 import {connect} from "react-redux";
@@ -206,6 +206,20 @@ class Editor extends React.Component<IProps, IState> {
                         labelData={labelPoint}
                         imageData={this.props.imageData}
                         key={labelPoint.id}
+                    />
+                })
+        }
+        else if (this.props.activeLabelType === LabelType.AUTORECT) {
+            return this.props.imageData.labelAutoRects
+                .filter((labelAutoRect: LabelAutoRect) => labelAutoRect.isCreatedByAI && labelAutoRect.status !== LabelStatus.ACCEPTED)
+                .map((labelAutoRect: LabelAutoRect) => {
+                    const positionOnImage: IPoint = {x: labelAutoRect.rect.x, y: labelAutoRect.rect.y};
+                    const positionOnViewPort: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(positionOnImage, editorData);
+                    return <LabelControlPanel
+                        position={positionOnViewPort}
+                        labelData={labelAutoRect}
+                        imageData={this.props.imageData}
+                        key={labelAutoRect.id}
                     />
                 })
         }

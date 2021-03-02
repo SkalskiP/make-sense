@@ -1,5 +1,6 @@
 import {LabelType} from "../../data/enums/LabelType";
 import {EditorModel} from "../../staticModels/EditorModel";
+import {AutoRectRenderEngine} from "../render/AutoRectRenderEngine";
 import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
@@ -31,6 +32,9 @@ export class EditorActions {
         switch (activeLabelType) {
             case LabelType.RECT:
                 EditorModel.supportRenderingEngine = new RectRenderEngine(EditorModel.canvas);
+                break;
+            case LabelType.AUTORECT:
+                EditorModel.supportRenderingEngine = new AutoRectRenderEngine(EditorModel.canvas);
                 break;
             case LabelType.POINT:
                 EditorModel.supportRenderingEngine = new PointRenderEngine(EditorModel.canvas);

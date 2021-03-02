@@ -1,7 +1,8 @@
-import {LabelName, LabelPolygon, LabelRect} from "../store/labels/types";
+import {LabelName, LabelPolygon, LabelRect, LabelAutoRect} from "../store/labels/types";
 import uuidv4 from 'uuid/v4';
 import {find} from "lodash";
 import {IRect} from "../interfaces/IRect";
+import {IAutoRect} from "../interfaces/IAutoRect"
 import {LabelStatus} from "../data/enums/LabelStatus";
 import {IPoint} from "../interfaces/IPoint";
 
@@ -23,7 +24,16 @@ export class LabelUtil {
             suggestedLabel: null
         }
     }
-
+    public static createLabelAutoRect(labelId: string, rect: IAutoRect): LabelAutoRect {
+        return {
+            id: uuidv4(),
+            labelId: labelId,
+            rect,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
+        }
+    }
     public static createLabelPolygon(labelId: string, vertices: IPoint[]): LabelPolygon {
         return {
             id: uuidv4(),

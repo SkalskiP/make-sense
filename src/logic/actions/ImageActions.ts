@@ -121,7 +121,7 @@ export class ImageActions {
         break;
       case LabelType.AUTORECT:
         const auto_rect = LabelsSelector.getActiveRectLabel();
-        newImageData.labelRects = imageData.labelRects.map(
+        newImageData.labelAutoRects = imageData.labelAutoRects.map(
           (labelRectangle: LabelAutoRect) => {
             if (labelRectangle.id === auto_rect.id) {
               return {
@@ -133,7 +133,7 @@ export class ImageActions {
             return labelRectangle;
           }
         );
-        store.dispatch(updateActiveLabelId(rect.id));
+        store.dispatch(updateActiveLabelId(auto_rect.id));
         break;
       case LabelType.POLYGON:
         const polygon = LabelsSelector.getActivePolygonLabel();

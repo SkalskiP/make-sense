@@ -1,5 +1,5 @@
 import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
+import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelAutoRect, LabelRect} from "../../store/labels/types";
 import {filter} from "lodash";
 import {store} from "../../index";
 import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
@@ -20,6 +20,9 @@ export class LabelActions {
             case LabelType.RECT:
                 LabelActions.deleteRectLabelById(imageId, labelId);
                 break;
+            case LabelType.AUTORECT:
+                LabelActions.deleteAutoRectLabelById(imageId, labelId);
+                break;
             case LabelType.POLYGON:
                 LabelActions.deletePolygonLabelById(imageId, labelId);
                 break;
@@ -36,7 +39,16 @@ export class LabelActions {
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
-
+    public static deleteAutoRectLabelById(imageId: string, labelAutoRectId: string) {
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+        const newImageData = {
+            ...imageData,
+            labelAutoRects: filter(imageData.labelAutoRects, (currentLabel: LabelAutoRect) => {
+                return currentLabel.id !== labelAutoRectId;
+            })
+        };
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
+    }
     public static deletePointLabelById(imageId: string, labelPointId: string) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
@@ -89,6 +101,16 @@ export class LabelActions {
                     }
                 } else {
                     return labelRect
+                }
+            }),
+            labelAutoRects: imageData.labelAutoRects.map((labelAutoRect: LabelAutoRect) => {
+                if (labelNamesIds.includes(labelAutoRect.id)) {
+                    return {
+                        ...labelAutoRect,
+                        id: null
+                    }
+                } else {
+                    return labelAutoRect
                 }
             }),
             labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import {ISize} from "../../../../interfaces/ISize";
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelRect} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelRect, LabelAutoRect} from "../../../../store/labels/types";
 import './AutoRectLabelsList.scss';
 import {
     updateActiveLabelId,
@@ -35,26 +35,26 @@ const AutoRectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataB
     };
     const listStyleContent: React.CSSProperties = {
         width: size.width,
-        height: imageData.labelRects.length * labelInputFieldHeight
+        height: imageData.labelAutoRects.length * labelInputFieldHeight
     };
 
-    const deleteRectLabelById = (labelRectId: string) => {
-        LabelActions.deleteRectLabelById(imageData.id, labelRectId);
+    const deleteAutoRectLabelById = (labelAutoRectId: string) => {
+        LabelActions.deleteAutoRectLabelById(imageData.id, labelAutoRectId);
     };
 
-    const updateRectLabel = (labelRectId: string, labelNameId: string) => {
+    const updateAutoRectLabel = (labelAutoRectId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
-            labelRects: imageData.labelRects
-                .map((labelRect: LabelRect) => {
-                if (labelRect.id === labelRectId) {
+            labelAutoRects: imageData.labelAutoRects
+                .map((labelAutoRect: LabelAutoRect) => {
+                if (labelAutoRect.id === labelAutoRectId) {
                     return {
-                        ...labelRect,
+                        ...labelAutoRect,
                         labelId: labelNameId,
                         status: LabelStatus.ACCEPTED
                     }
                 } else {
-                    return labelRect
+                    return labelAutoRect
                 }
             })
         };
@@ -67,33 +67,33 @@ const AutoRectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataB
     };
 
     const getChildren = () => {
-        return imageData.labelRects
-            .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
-            .map((labelRect: LabelRect) => {
+        return imageData.labelAutoRects
+            .filter((labelAutoRect: LabelAutoRect) => labelAutoRect.status === LabelStatus.ACCEPTED)
+            .map((labelAutoRect: LabelAutoRect) => {
             return <LabelInputField
                 size={{
                     width: size.width,
                     height: labelInputFieldHeight
                 }}
-                isActive={labelRect.id === activeLabelId}
-                isHighlighted={labelRect.id === highlightedLabelId}
-                id={labelRect.id}
-                key={labelRect.id}
-                onDelete={deleteRectLabelById}
-                value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
+                isActive={labelAutoRect.id === activeLabelId}
+                isHighlighted={labelAutoRect.id === highlightedLabelId}
+                id={labelAutoRect.id}
+                key={labelAutoRect.id}
+                onDelete={deleteAutoRectLabelById}
+                value={labelAutoRect.labelId !== null ? findLast(labelNames, {id: labelAutoRect.labelId}) : null}
                 options={labelNames}
-                onSelectLabel={updateRectLabel}
+                onSelectLabel={updateAutoRectLabel}
             />
         });
     };
 
     return (
         <div
-            className="RectLabelsList"
+            className="AutoRectLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
-            {imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length === 0 ?
+            {imageData.labelRects.filter((labelAutoRect: LabelAutoRect) => labelAutoRect.status === LabelStatus.ACCEPTED).length === 0 ?
                 <EmptyLabelList
                     labelBefore={"draw your first auto bounding box"}
                     labelAfter={"no labels created for this image yet"}
