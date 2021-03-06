@@ -152,6 +152,8 @@ Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pu
 
 ## Citation
 
+Please cite Make Sense in your publications if this is useful for your research. Here is an example BibTeX entry:
+
 ```
 @MISC{make-sense,
    author = {Piotr Skalski},
