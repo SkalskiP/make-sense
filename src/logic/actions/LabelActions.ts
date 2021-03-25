@@ -23,6 +23,9 @@ export class LabelActions {
             case LabelType.POLYGON:
                 LabelActions.deletePolygonLabelById(imageId, labelId);
                 break;
+            case LabelType.LINE:
+                LabelActions.deleteLineLabelById(imageId, labelId);
+                break;
         }
     }
 
