@@ -53,7 +53,8 @@ export class FileUtil {
         var splitPath = name.split(".");
         var fName = "";
         for(const idx of Array(splitPath.length - 1).keys()){
-            fName = fName + "." + splitPath[idx];
+            if(fName == "") fName += splitPath[idx];
+            else fName += "." + splitPath[idx];
         }
         return fName;
     }
