@@ -42,14 +42,10 @@ export class FileUtil {
 
     public static extractFileExtension(name: string): string | null {
         const parts = name.split(".");
-        //return parts.length > 1 ? parts[1] : null;
-        // fix for files with multiple dots
         return parts.length > 1 ? parts[parts.length - 1] : null;
     }
 
     public static extractFileName(name: string): string | null {
-        //return name.split(".")[0];
-        // fix for files with multiple dots
         var splitPath = name.split(".");
         var fName = "";
         for(const idx of Array(splitPath.length - 1).keys()){
