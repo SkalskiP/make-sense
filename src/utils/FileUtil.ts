@@ -42,10 +42,16 @@ export class FileUtil {
 
     public static extractFileExtension(name: string): string | null {
         const parts = name.split(".");
-        return parts.length > 1 ? parts[1] : null;
+        return parts.length > 1 ? parts[parts.length - 1] : null;
     }
 
     public static extractFileName(name: string): string | null {
-        return name.split(".")[0];
+        var splitPath = name.split(".");
+        var fName = "";
+        for(const idx of Array(splitPath.length - 1).keys()){
+            if(fName == "") fName += splitPath[idx];
+            else fName += "." + splitPath[idx];
+        }
+        return fName;
     }
 }
