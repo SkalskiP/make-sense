@@ -46,10 +46,10 @@ export class FileUtil {
     }
 
     public static extractFileName(name: string): string | null {
-        var splitPath = name.split(".");
-        var fName = "";
+        const splitPath = name.split(".");
+        let fName = "";
         for(const idx of Array(splitPath.length - 1).keys()){
-            if(fName == "") fName += splitPath[idx];
+            if(fName === "") fName += splitPath[idx];
             else fName += "." + splitPath[idx];
         }
         return fName;
