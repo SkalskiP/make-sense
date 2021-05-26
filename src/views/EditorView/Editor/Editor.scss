@@ -77,7 +77,7 @@
       border: 2px solid transparent;
     }
 
-    &.move, &.add, &.resize, &.close, &.cancel, &.grab, &.grabbing {
+    &.drag, &.move, &.add, &.resize, &.close, &.cancel, &.grab, &.grabbing {
       > img {
         display: block;
       }

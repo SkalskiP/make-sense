@@ -6,5 +6,6 @@ export enum CustomCursorStyle {
     CANCEL = "CANCEL",
     CLOSE = "CLOSE",
     GRAB = "GRAB",
-    GRABBING = "GRABBING"
+    GRABBING = "GRABBING",
+    DRAG = "DRAG"
 }

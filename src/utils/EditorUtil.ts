@@ -12,6 +12,8 @@ export class EditorUtil {
                 return "ico/close.png";
             case CustomCursorStyle.MOVE:
                 return "ico/move.png";
+            case CustomCursorStyle.DRAG:
+                return "ico/move.png";
             case CustomCursorStyle.CANCEL:
                 return "ico/cancel.png";
             case CustomCursorStyle.GRAB:
@@ -32,7 +34,8 @@ export class EditorUtil {
                 "close": cursorStyle === CustomCursorStyle.CLOSE,
                 "cancel": cursorStyle === CustomCursorStyle.CANCEL,
                 "grab": cursorStyle === CustomCursorStyle.GRAB,
-                "grabbing": cursorStyle === CustomCursorStyle.GRABBING
+                "grabbing": cursorStyle === CustomCursorStyle.GRABBING,
+                "drag": cursorStyle === CustomCursorStyle.DRAG
             }
         );
     };
