@@ -10,11 +10,15 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           issue-message: |
-            👋 Hello @${{ github.actor }}, thank you for your interest in make-sense labelling tool 🏷️!
+            👋 Hello @${{ github.actor }}, thank you for your interest in make-sense - free to use online tool for labelling photos! 🏷️
 
             ## 🐞 Bug reports
 
-            Please provide us with as much information as possible. To make your life easier, we have prepared a bug report template. We know! We ask for a lot of information, but please believe that it really helps us to know which browser you are using. 😉
+            If you noticed that make-sense is not working properly, please provide us with as much information as possible. To make your life easier, we have prepared a **bug report template** containing all the relevant details. We know, we ask for a lot... However, please believe that knowing all that extra information - like the type of browser you use or the version of node you have installed - really helps us to solve your problems faster and more efficiently. 😉
+
+            ## 💬 Get in touch
+
+            If you've been trying to contact us but for some reason we haven't responded to your issue yet, don't hesitate to get back to us on [Gitter](https://gitter.im/make-sense-ai/community) or [Twitter](https://twitter.com/PiotrSkalski92).
 
             ## 💻 Local setup
 
