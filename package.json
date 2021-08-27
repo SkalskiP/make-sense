@@ -13,7 +13,7 @@
     "@types/react-dom": "16.8.4",
     "classnames": "^2.2.6",
     "file-saver": "^2.0.2",
-    "jszip": "^3.2.2",
+    "jszip": "^3.7.0",
     "lodash": "^4.17.20",
     "mobile-detect": "^1.4.3",
     "moment": "^2.24.0",
