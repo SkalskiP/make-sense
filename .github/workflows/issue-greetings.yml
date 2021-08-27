@@ -1,0 +1,35 @@
+name: Issue greetings
+
+on: [issues]
+
+jobs:
+  greeting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/first-interaction@v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            👋 Hello @${{ github.actor }}, thank you for your interest in make-sense labelling tool 🏷️!
+
+            ## 🐞 Bug reports
+
+            Please provide us with as much information as possible. To make your life easier, we have prepared a bug report template. We know! We ask for a lot of information, but please believe that it really helps us to know which browser you are using. 😉
+
+            ## 💻 Local setup
+
+            ```bash
+            # clone repository
+            git clone https://github.com/SkalskiP/make-sense.git
+
+            # navigate to main dir
+            cd make-sense
+
+            # install dependencies
+            npm install
+
+            # serve with hot reload at localhost:3000
+            npm start
+            ```
+            To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v11.x.x` versions are required. More information about this problem is available in the [#16](https://github.com/SkalskiP/make-sense/issues/16) issue.
+
