@@ -1,5 +1,5 @@
 # Project information
-site_name: make-sense beta
+site_name: Make Sense
 site_url: https://skalskip.github.io/make-sense
 site_author: Piotr Skalski
 site_description: >-
@@ -28,15 +28,16 @@ extra:
 # Page tree
 nav:
   - Home: index.md
+  - Import: import.md
+  - Export: export.md
   - Contribution Guide: CONTRIBUTING.md
-  - License: LICENSE.md
 
 
 # Configuration
 theme:
   name: 'material'
   palette:
-    primary: 'indigo'
+    primary: 'black'
     accent: 'indigo'
   font:
     text: Roboto
