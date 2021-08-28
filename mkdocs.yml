@@ -27,7 +27,7 @@ extra:
 
 # Page tree
 nav:
-  - Home: home.md
+  - Home: index.md
   - Import: import.md
   - Export: export.md
   - Local setup: local-setup.md
