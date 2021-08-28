@@ -13,6 +13,10 @@
 
 [makesense.ai][1] is a free to use online tool for labelling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deeplearning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded  in one of multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
 
+## Documentation
+
+You can find out more about our tool from the newly released [documentation][14].
+
 ## Motto
 
 > For AI to be free we need not just Open Source, but also a strong Open Data movement.  
@@ -168,7 +172,7 @@ Please cite Make Sense in your publications if this is useful for your research.
 
 This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
 
-Copyright (c) 2019-present, Piotr Skalski
+Copyright &copy; 2019 Piotr Skalski
 
 [1]: http://makesense.ai
 [2]: ./LICENSE
@@ -183,3 +187,4 @@ Copyright (c) 2019-present, Piotr Skalski
 [11]: https://www.tensorflow.org/lite/models/pose_estimation/overview
 [12]: https://towardsdatascience.com/chess-rolls-or-basketball-lets-create-a-custom-object-detection-model-ef53028eac7d
 [13]: https://github.com/SkalskiP/ILearnDeepLearning.py/tree/master/02_data_science_toolkit/02_yolo_object_detection
+[14]: https://skalskip.github.io/make-sense/
