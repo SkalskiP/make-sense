@@ -29,6 +29,7 @@ nav:
   - Home: index.md
   - Import: import.md
   - Export: export.md
+  - Shortcuts: shortcuts.md
   - Local setup: local-setup.md
 
 # Configuration
