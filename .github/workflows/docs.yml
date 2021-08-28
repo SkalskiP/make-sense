@@ -11,7 +11,7 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs-material
-      - run: mkdir docs
+      - run: mkdir -p docs/img
       - run: cp public/make-sense-ico-transparent.png docs/img/logo.png
       - run: cp public/make-sense-ico.png docs/img/favicon.png
       - run: cp README.md docs/index.md
