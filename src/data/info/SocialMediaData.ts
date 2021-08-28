@@ -28,6 +28,6 @@ export const SocialMediaData: ISocialMedia[] = [
         imageSrc: "/ico/patreon-logo.png",
         imageAlt: "Patreon Logo",
         href: Settings.PATREON_URL,
-        tooltipMessage: "Support MakeSense on Patreon and help it grow"
+        tooltipMessage: "Support Make Sense on Patreon and help it grow"
     },
 ];

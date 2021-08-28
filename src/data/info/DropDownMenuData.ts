@@ -69,14 +69,15 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         children: [
             {
                 name: "Documentation",
-                description: "Coming soon",
+                description: "Read more about Make Sense",
                 imageSrc: "ico/documentation.png",
                 imageAlt: "documentation",
-                disabled: true
+                disabled: false,
+                onClick: () => window.open("https://skalskip.github.io/make-sense", "_blank")
             },
             {
                 name: "Bugs and Features",
-                description: "Coming soon",
+                description: "Report a bug or propose a new feature",
                 imageSrc: "ico/bug.png",
                 imageAlt: "bug",
                 disabled: false,
