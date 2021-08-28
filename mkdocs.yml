@@ -39,7 +39,7 @@ theme:
   name: 'material'
   palette:
     primary: 'black'
-    accent: 'indigo'
+    accent: 'light blue'
   font:
     text: Roboto
     code: Roboto Mono
