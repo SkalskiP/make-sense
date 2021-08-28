@@ -1,7 +1,7 @@
 <h1 align="center">makesense.ai</h1>
 
 <p align="center"> 
-    <img width="600" src="img/favicon.png" alt="Logo">
+    <img width="100" src="img/favicon.png" alt="Logo">
 </p>
 
 ## Description
