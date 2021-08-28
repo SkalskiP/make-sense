@@ -4,15 +4,14 @@ site_url: https://skalskip.github.io/make-sense
 site_author: Piotr Skalski
 site_description: >-
   Free to use online tool for labelling photos
+
 # Repository
 repo_name: 'SkalskiP/make-sense'
 repo_url: 'https://github.com/SkalskiP/make-sense'
 edit_uri: ""
 
-
 # Copyright
 copyright: Copyright &copy; 2019 Piotr Skalski
-
 
 # Customization
 extra:
@@ -25,21 +24,19 @@ extra:
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/piotr-skalski-36b5b4122/
 
-
 # Page tree
 nav:
-  - Home: home.md
+  - Home: index.md
   - Import: import.md
   - Export: export.md
   - Local setup: local-setup.md
-
 
 # Configuration
 theme:
   name: 'material'
   palette:
     primary: 'black'
-    accent: 'light blue'
+    accent: 'indigo'
   font:
     text: Roboto
     code: Roboto Mono
@@ -49,7 +46,6 @@ theme:
     - navigation.expand
   icon:
     repo: fontawesome/brands/github
-
 
 # Extensions
 markdown_extensions:
