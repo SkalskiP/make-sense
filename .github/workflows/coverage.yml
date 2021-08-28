@@ -27,3 +27,9 @@ jobs:
 
       - name: Run the tests
         run: npm test -- --coverage
+
+      - name: Upload coverage to Codecov
+        if: ${{ matrix.node-version == '10.x'}}
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
