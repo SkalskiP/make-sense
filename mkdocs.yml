@@ -16,6 +16,7 @@ copyright: Copyright &copy; 2019 Piotr Skalski
 
 # Customization
 extra:
+  version: 1.7.0-alpha
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/SkalskiP
