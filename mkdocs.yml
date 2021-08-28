@@ -27,10 +27,10 @@ extra:
 
 # Page tree
 nav:
-  - Home: index.md
+  - Home: home.md
   - Import: import.md
   - Export: export.md
-  - Contribution Guide: CONTRIBUTING.md
+  - Local setup: local-setup.md
 
 
 # Configuration
