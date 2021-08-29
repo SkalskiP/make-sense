@@ -8,6 +8,8 @@ import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
 import {ExporterUtil} from "../../utils/ExporterUtil";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {findIndex, findLast} from "lodash";
+import {ISize} from "../../interfaces/ISize";
+import {NumberUtil} from "../../utils/NumberUtil";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -51,7 +53,19 @@ export class RectLabelsExporter {
             // TODO
             throw new Error(error);
         }
+    }
 
+    private static wrapRectLabelIntoYOLO(labelRect: LabelRect, labelNames: LabelName[], imageSize: ISize): string {
+        const classIdx: string = findIndex(labelNames, {id: labelRect.labelId}).toString()
+        const x: string = NumberUtil.snapValueToRange(
+            (labelRect.rect.x + labelRect.rect.width / 2) / imageSize.width, 0, 1).toFixed(6)
+        const y: string = NumberUtil.snapValueToRange(
+            (labelRect.rect.y + labelRect.rect.height / 2) / imageSize.height, 0, 1).toFixed(6)
+        const width: string = NumberUtil.snapValueToRange(
+            labelRect.rect.width / imageSize.width, 0, 1).toFixed(6)
+        const height: string = NumberUtil.snapValueToRange(
+            labelRect.rect.height / imageSize.height, 0, 1).toFixed(6)
+        return [classIdx, x, y, width, height].join(" ")
     }
 
     private static wrapRectLabelsIntoYOLO(imageData: ImageData): string {

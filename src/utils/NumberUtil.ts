@@ -4,7 +4,6 @@ export class NumberUtil {
             return min;
         if (value > max)
             return max;
-
         return value;
     }
 
