@@ -1,5 +1,5 @@
-import {LabelsActionTypes, LabelsState, ImageData} from "./types";
-import {Action} from "../Actions";
+import {LabelsActionTypes, LabelsState, ImageData} from './types';
+import {Action} from '../Actions';
 
 const initialState: LabelsState = {
     activeImageIndex: null,

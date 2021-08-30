@@ -1,29 +1,29 @@
-import {BaseRenderEngine} from "./BaseRenderEngine";
-import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
-import {LabelType} from "../../data/enums/LabelType";
-import {EditorData} from "../../data/EditorData";
-import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
-import {ImageData, LabelLine} from "../../store/labels/types";
-import {IPoint} from "../../interfaces/IPoint";
-import {RectUtil} from "../../utils/RectUtil";
-import {store} from "../../index";
+import {BaseRenderEngine} from './BaseRenderEngine';
+import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {LabelType} from '../../data/enums/LabelType';
+import {EditorData} from '../../data/EditorData';
+import {RenderEngineUtil} from '../../utils/RenderEngineUtil';
+import {ImageData, LabelLine} from '../../store/labels/types';
+import {IPoint} from '../../interfaces/IPoint';
+import {RectUtil} from '../../utils/RectUtil';
+import {store} from '../../index';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
-} from "../../store/labels/actionCreators";
-import {EditorActions} from "../actions/EditorActions";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {DrawUtil} from "../../utils/DrawUtil";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import uuidv4 from "uuid/v4";
-import {ILine} from "../../interfaces/ILine";
-import {LineUtil} from "../../utils/LineUtil";
-import {updateCustomCursorStyle} from "../../store/general/actionCreators";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {LineAnchorType} from "../../data/enums/LineAnchorType";
-import {Settings} from "../../settings/Settings";
+} from '../../store/labels/actionCreators';
+import {EditorActions} from '../actions/EditorActions';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {DrawUtil} from '../../utils/DrawUtil';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import { v4 as uuidv4 } from 'uuid';
+import {ILine} from '../../interfaces/ILine';
+import {LineUtil} from '../../utils/LineUtil';
+import {updateCustomCursorStyle} from '../../store/general/actionCreators';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {LineAnchorType} from '../../data/enums/LineAnchorType';
+import {Settings} from '../../settings/Settings';
 
 export class LineRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -144,9 +144,9 @@ export class LineRenderEngine extends BaseRenderEngine {
                 } else {
                     RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                 }
-                this.canvas.style.cursor = "none";
+                this.canvas.style.cursor = 'none';
             } else {
-                this.canvas.style.cursor = "default";
+                this.canvas.style.cursor = 'default';
             }
         }
     }

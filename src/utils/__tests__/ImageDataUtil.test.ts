@@ -1,14 +1,14 @@
-import {ImageData} from "../../store/labels/types";
-import uuidv4 from 'uuid/v4';
-import {LabelUtil} from "../LabelUtil";
-import {ImageDataUtil} from "../ImageDataUtil";
-import {AcceptedFileType} from "../../data/enums/AcceptedFileType";
+import {ImageData} from '../../store/labels/types';
+import { v4 as uuidv4 } from 'uuid';
+import {LabelUtil} from '../LabelUtil';
+import {ImageDataUtil} from '../ImageDataUtil';
+import {AcceptedFileType} from '../../data/enums/AcceptedFileType';
 
 
 const getDummyImageData = (id: string): ImageData => {
     return {
-        id: id,
-        fileData: new File([""], "filename.txt", { type: AcceptedFileType.TEXT }),
+        id,
+        fileData: new File([''], 'filename.txt', { type: AcceptedFileType.TEXT }),
         loadStatus: true,
         labelRects: [],
         labelPoints: [],
@@ -24,7 +24,7 @@ const getDummyImageData = (id: string): ImageData => {
 describe('ImageDataUtil cleanAnnotation method', () => {
     it('should return new ImageData object without annotations', () => {
         // given
-        let item: ImageData = getDummyImageData(uuidv4());
+        const item: ImageData = getDummyImageData(uuidv4());
         item.labelRects = [
             LabelUtil.createLabelRect('label-id', {x: 1, y: 1, width: 1, height: 1}),
             LabelUtil.createLabelRect('label-id', {x: 1, y: 1, width: 1, height: 1})

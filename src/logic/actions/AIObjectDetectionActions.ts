@@ -1,18 +1,18 @@
-import {DetectedObject} from "@tensorflow-models/coco-ssd";
-import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import uuidv4 from 'uuid/v4';
-import {store} from "../../index";
-import {updateImageDataById} from "../../store/labels/actionCreators";
-import {ObjectDetector} from "../../ai/ObjectDetector";
-import {ImageRepository} from "../imageRepository/ImageRepository";
-import {LabelStatus} from "../../data/enums/LabelStatus";
-import {findLast} from "lodash";
-import {updateSuggestedLabelList} from "../../store/ai/actionCreators";
-import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {updateActivePopupType} from "../../store/general/actionCreators";
-import {AISelector} from "../../store/selectors/AISelector";
-import {AIActions} from "./AIActions";
+import {DetectedObject} from '@tensorflow-models/coco-ssd';
+import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import { v4 as uuidv4 } from 'uuid';
+import {store} from '../../index';
+import {updateImageDataById} from '../../store/labels/actionCreators';
+import {ObjectDetector} from '../../ai/ObjectDetector';
+import {ImageRepository} from '../imageRepository/ImageRepository';
+import {LabelStatus} from '../../data/enums/LabelStatus';
+import {findLast} from 'lodash';
+import {updateSuggestedLabelList} from '../../store/ai/actionCreators';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
+import {updateActivePopupType} from '../../store/general/actionCreators';
+import {AISelector} from '../../store/selectors/AISelector';
+import {AIActions} from './AIActions';
 
 export class AIObjectDetectionActions {
     public static detectRectsForActiveImage(): void {

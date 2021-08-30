@@ -1,19 +1,19 @@
-import {PoseDetector} from "../../ai/PoseDetector";
-import {Keypoint, Pose} from "@tensorflow-models/posenet";
-import {ImageData, LabelName, LabelPoint} from "../../store/labels/types";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageRepository} from "../imageRepository/ImageRepository";
-import {LabelStatus} from "../../data/enums/LabelStatus";
-import uuidv4 from 'uuid/v4';
-import {store} from "../../index";
-import {updateImageDataById} from "../../store/labels/actionCreators";
-import {findLast} from "lodash";
-import {AISelector} from "../../store/selectors/AISelector";
-import {AIActions} from "./AIActions";
-import {updateSuggestedLabelList} from "../../store/ai/actionCreators";
-import {updateActivePopupType} from "../../store/general/actionCreators";
-import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {NumberUtil} from "../../utils/NumberUtil";
+import {PoseDetector} from '../../ai/PoseDetector';
+import {Keypoint, Pose} from '@tensorflow-models/posenet';
+import {ImageData, LabelName, LabelPoint} from '../../store/labels/types';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {ImageRepository} from '../imageRepository/ImageRepository';
+import {LabelStatus} from '../../data/enums/LabelStatus';
+import { v4 as uuidv4 } from 'uuid';
+import {store} from '../../index';
+import {updateImageDataById} from '../../store/labels/actionCreators';
+import {findLast} from 'lodash';
+import {AISelector} from '../../store/selectors/AISelector';
+import {AIActions} from './AIActions';
+import {updateSuggestedLabelList} from '../../store/ai/actionCreators';
+import {updateActivePopupType} from '../../store/general/actionCreators';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
+import {NumberUtil} from '../../utils/NumberUtil';
 
 export class AIPoseDetectionActions {
     public static detectPoseForActiveImage(): void {
@@ -86,7 +86,7 @@ export class AIPoseDetectionActions {
             }, [])
             .map((keypoint: Keypoint) => keypoint.part)
             .reduce((acc: string[], name: string) => {
-                if (!acc.includes(name) && !findLast(labels, {name: name})) {
+                if (!acc.includes(name) && !findLast(labels, {name})) {
                     acc.push(name)
                 }
                 return acc;

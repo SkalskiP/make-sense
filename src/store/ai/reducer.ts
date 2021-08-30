@@ -1,5 +1,5 @@
-import {AIActionTypes, AIState} from "./types";
-import {Action} from "../Actions";
+import {AIActionTypes, AIState} from './types';
+import {Action} from '../Actions';
 
 const initialState: AIState = {
     suggestedLabelList: [],
