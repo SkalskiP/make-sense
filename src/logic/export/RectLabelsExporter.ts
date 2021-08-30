@@ -47,7 +47,7 @@ export class RectLabelsExporter {
 
         try {
             zip.generateAsync({type:'blob'})
-                .then(function(content) {
+                .then((content: Blob) => {
                     saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
                 });
         } catch (error) {

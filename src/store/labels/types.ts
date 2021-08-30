@@ -44,6 +44,7 @@ export type LabelLine = {
 export type LabelName = {
     name: string;
     id: string;
+    color: string;
 }
 
 export type ImageData = {
