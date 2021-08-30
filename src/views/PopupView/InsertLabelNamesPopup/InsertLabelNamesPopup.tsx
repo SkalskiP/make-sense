@@ -1,20 +1,20 @@
 import React, { useState } from 'react'
 import './InsertLabelNamesPopup.scss'
-import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
-import { PopupWindowType } from "../../../data/enums/PopupWindowType";
-import { updateLabelNames } from "../../../store/labels/actionCreators";
-import { updateActivePopupType } from "../../../store/general/actionCreators";
-import { AppState } from "../../../store";
-import { connect } from "react-redux";
+import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
+import { PopupWindowType } from '../../../data/enums/PopupWindowType';
+import { updateLabelNames } from '../../../store/labels/actionCreators';
+import { updateActivePopupType } from '../../../store/general/actionCreators';
+import { AppState } from '../../../store';
+import { connect } from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars';
-import TextInput from "../../Common/TextInput/TextInput";
-import { ImageButton } from "../../Common/ImageButton/ImageButton";
-import uuidv4 from 'uuid/v4';
-import { LabelName } from "../../../store/labels/types";
-import { LabelUtil } from "../../../utils/LabelUtil";
-import { LabelsSelector } from "../../../store/selectors/LabelsSelector";
-import { LabelActions } from "../../../logic/actions/LabelActions";
-import { ProjectType } from "../../../data/enums/ProjectType";
+import TextInput from '../../Common/TextInput/TextInput';
+import { ImageButton } from '../../Common/ImageButton/ImageButton';
+import { v4 as uuidv4 } from 'uuid';
+import { LabelName } from '../../../store/labels/types';
+import { LabelUtil } from '../../../utils/LabelUtil';
+import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
+import { LabelActions } from '../../../logic/actions/LabelActions';
+import { ProjectType } from '../../../data/enums/ProjectType';
 
 interface IProps {
     projectType: ProjectType;
@@ -34,7 +34,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const [labelNames, setLabelNames] = useState(initialLabels);
 
     const addHandle = () => {
-        const newLabelNames = { ...labelNames, [uuidv4()]: "" };
+        const newLabelNames = { ...labelNames, [uuidv4()]: '' };
         setLabelNames(newLabelNames);
     };
 
@@ -51,18 +51,18 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }
 
     const labelInputs = Object.keys(labelNames).map((key: string) => {
-        return <div className="LabelEntry" key={key}>
+        return <div className='LabelEntry' key={key}>
             <TextInput
                 key={key}
                 value={labelNames[key]}
                 isPassword={false}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
-                label={"Insert label"}
+                label={'Insert label'}
                 onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyUp(event)}
             />
             <ImageButton
-                image={"ico/trash.png"}
-                imageAlt={"remove_label"}
+                image={'ico/trash.png'}
+                imageAlt={'remove_label'}
                 buttonSize={{ width: 30, height: 30 }}
                 onClick={() => deleteHandle(key)}
             />
@@ -107,44 +107,44 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const renderContent = () => {
-        return (<div className="InsertLabelNamesPopup">
-            <div className="LeftContainer">
+        return (<div className='InsertLabelNamesPopup'>
+            <div className='LeftContainer'>
                 <ImageButton
-                    image={"ico/plus.png"}
-                    imageAlt={"plus"}
+                    image={'ico/plus.png'}
+                    imageAlt={'plus'}
                     buttonSize={{ width: 40, height: 40 }}
                     padding={25}
                     onClick={addHandle}
                 />
             </div>
-            <div className="RightContainer">
-                <div className="Message">
+            <div className='RightContainer'>
+                <div className='Message'>
                     {
                         isUpdate ?
-                            "You can now edit the label names you use to describe the objects in the photos. Use the + " +
-                            "button to add a new empty text field." :
-                            "Before you start, you can create a list of labels you plan to assign to objects in your " +
-                            "project. You can also choose to skip that part for now and define label names as you go."
+                            'You can now edit the label names you use to describe the objects in the photos. Use the + ' +
+                            'button to add a new empty text field.' :
+                            'Before you start, you can create a list of labels you plan to assign to objects in your ' +
+                            'project. You can also choose to skip that part for now and define label names as you go.'
                     }
                 </div>
-                <div className="LabelsContainer">
+                <div className='LabelsContainer'>
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
                         <div
-                            className="InsertLabelNamesPopupContent"
+                            className='InsertLabelNamesPopupContent'
                         >
                             {labelInputs}
                         </div>
                     </Scrollbars> :
                         <div
-                            className="EmptyList"
+                            className='EmptyList'
                             onClick={addHandle}
                         >
                             <img
                                 draggable={false}
-                                alt={"upload"}
-                                src={"ico/type-writer.png"}
+                                alt={'upload'}
+                                src={'ico/type-writer.png'}
                             />
-                            <p className="extraBold">Your label list is empty</p>
+                            <p className='extraBold'>Your label list is empty</p>
                         </div>}
                 </div>
             </div>
@@ -153,11 +153,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
     return (
         <GenericYesNoPopup
-            title={isUpdate ? "Edit labels" : "Create labels"}
+            title={isUpdate ? 'Edit labels' : 'Create labels'}
             renderContent={renderContent}
-            acceptLabel={isUpdate ? "Accept" : "Start project"}
+            acceptLabel={isUpdate ? 'Accept' : 'Start project'}
             onAccept={isUpdate ? onUpdateAccept : onCreateAccept}
-            rejectLabel={isUpdate ? "Cancel" : "Load labels from file"}
+            rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
             onReject={isUpdate ? onUpdateReject : onCreateReject}
         />)
 };

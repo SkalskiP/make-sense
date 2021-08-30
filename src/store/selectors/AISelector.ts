@@ -1,4 +1,4 @@
-import {store} from "../..";
+import {store} from '../..';
 
 export class AISelector {
     public static getSuggestedLabelList(): string[] {

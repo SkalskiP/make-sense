@@ -1,7 +1,7 @@
-import {GeneralActionTypes, GeneralState} from "./types";
-import {Action} from "../Actions";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {ViewPointSettings} from "../../settings/ViewPointSettings";
+import {GeneralActionTypes, GeneralState} from './types';
+import {Action} from '../Actions';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {ViewPointSettings} from '../../settings/ViewPointSettings';
 
 const initialState: GeneralState = {
     windowSize: null,
@@ -13,7 +13,7 @@ const initialState: GeneralState = {
     crossHairVisible: true,
     projectData: {
         type: null,
-        name: "my-project-name",
+        name: 'my-project-name',
     },
     zoom: ViewPointSettings.MIN_ZOOM
 };

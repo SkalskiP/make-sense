@@ -1,7 +1,7 @@
-import {store} from "../..";
-import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../labels/types";
-import {find} from "lodash";
-import {LabelType} from "../../data/enums/LabelType";
+import {store} from '../..';
+import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../labels/types';
+import {find} from 'lodash';
+import {LabelType} from '../../data/enums/LabelType';
 
 export class LabelsSelector {
     public static getLabelNames(): LabelName[] {
@@ -40,7 +40,7 @@ export class LabelsSelector {
 
     public static getImageDataById(id: string): ImageData {
         const imagesData: ImageData[] = LabelsSelector.getImagesData();
-        return find(imagesData, {id: id});
+        return find(imagesData, {id});
     }
 
     public static getActiveLabelId(): string | null {

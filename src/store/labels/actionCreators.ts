@@ -1,6 +1,6 @@
-import {LabelsActionTypes, ImageData, LabelName} from "./types";
-import {Action} from "../Actions";
-import {LabelType} from "../../data/enums/LabelType";
+import {LabelsActionTypes, ImageData, LabelName} from './types';
+import {Action} from '../Actions';
+import {LabelType} from '../../data/enums/LabelType';
 
 export function updateActiveImageIndex(activeImageIndex: number): LabelsActionTypes {
     return {
@@ -75,7 +75,7 @@ export function updateImageData(imageData: ImageData[]): LabelsActionTypes {
     };
 }
 
-export function updateLabelNames(labels: LabelName[]) {
+export function updateLabelNames(labels: LabelName[]): LabelsActionTypes {
     return {
         type: Action.UPDATE_LABEL_NAMES,
         payload: {
@@ -84,7 +84,7 @@ export function updateLabelNames(labels: LabelName[]) {
     }
 }
 
-export function updateFirstLabelCreatedFlag(firstLabelCreatedFlag: boolean) {
+export function updateFirstLabelCreatedFlag(firstLabelCreatedFlag: boolean): LabelsActionTypes {
     return {
         type: Action.UPDATE_FIRST_LABEL_CREATED_FLAG,
         payload: {

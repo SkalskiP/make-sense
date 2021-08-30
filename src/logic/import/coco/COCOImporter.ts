@@ -1,26 +1,26 @@
-import {ImageData, LabelName} from "../../../store/labels/types";
-import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import {COCOCategory, COCOImage, COCOObject} from "../../../data/labels/COCO";
-import uuidv4 from 'uuid/v4';
-import {ArrayUtil, PartitionResult} from "../../../utils/ArrayUtil";
-import {ImageDataUtil} from "../../../utils/ImageDataUtil";
-import {LabelUtil} from "../../../utils/LabelUtil";
+import {ImageData, LabelName} from '../../../store/labels/types';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import {COCOCategory, COCOImage, COCOObject} from '../../../data/labels/COCO';
+import { v4 as uuidv4 } from 'uuid';
+import {ArrayUtil, PartitionResult} from '../../../utils/ArrayUtil';
+import {ImageDataUtil} from '../../../utils/ImageDataUtil';
+import {LabelUtil} from '../../../utils/LabelUtil';
 import {
     COCOAnnotationDeserializationError,
     COCOAnnotationFileCountError,
     COCOAnnotationReadingError,
     COCOFormatValidationError
-} from "./COCOErrors";
-import {LabelType} from "../../../data/enums/LabelType";
-import {AnnotationImporter, ImportResult} from "../AnnotationImporter";
-import {COCOUtils} from "./COCOUtils";
+} from './COCOErrors';
+import {LabelType} from '../../../data/enums/LabelType';
+import {AnnotationImporter, ImportResult} from '../AnnotationImporter';
+import {COCOUtils} from './COCOUtils';
 
 export type FileNameCOCOIdMap = {[ fileName: string]: number; }
 export type LabelNameMap = { [labelCOCOId: number]: LabelName; }
 export type ImageDataMap = { [imageCOCOId: number]: ImageData; }
 
 export class COCOImporter extends AnnotationImporter {
-    public static requiredKeys = ["images", "annotations", "categories"]
+    public static requiredKeys = ['images', 'annotations', 'categories']
 
     public import(
         filesData: File[],
@@ -40,7 +40,7 @@ export class COCOImporter extends AnnotationImporter {
                 const {imagesData, labelNames} = this.applyLabels(inputImagesData, annotations);
                 onSuccess(imagesData,labelNames);
             } catch (error) {
-                onFailure(error);
+                onFailure(error as Error);
             }
         };
         reader.onerror = () => onFailure(new COCOAnnotationReadingError());
