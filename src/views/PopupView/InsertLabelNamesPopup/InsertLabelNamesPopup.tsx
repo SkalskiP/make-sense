@@ -7,7 +7,6 @@ import { updateActivePopupType } from '../../../store/general/actionCreators';
 import { AppState } from '../../../store';
 import { connect } from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars';
-import TextInput from '../../Common/TextInput/TextInput';
 import { ImageButton } from '../../Common/ImageButton/ImageButton';
 import { v4 as uuidv4 } from 'uuid';
 import { LabelName } from '../../../store/labels/types';
@@ -15,6 +14,33 @@ import { LabelUtil } from '../../../utils/LabelUtil';
 import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
 import { LabelActions } from '../../../logic/actions/LabelActions';
 import { ProjectType } from '../../../data/enums/ProjectType';
+import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
+import TextField from '@material-ui/core/TextField';
+import {Settings} from '../../../settings/Settings';
+import {withStyles} from '@material-ui/core';
+
+const StyledTextField = withStyles({
+    root: {
+        '& .MuiInputBase-root': {
+            color: 'white',
+        },
+        '& label': {
+            color: 'white',
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: 'white',
+        },
+        '& .MuiInput-underline:hover:before': {
+            borderBottomColor: 'white',
+        },
+        '& label.Mui-focused': {
+            color: Settings.SECONDARY_COLOR,
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: Settings.SECONDARY_COLOR,
+        }
+    },
+})(TextField);
 
 interface IProps {
     projectType: ProjectType;
@@ -51,15 +77,23 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }
 
     const labelInputs = Object.keys(labelNames).map((key: string) => {
+        const onChangeWithKey = (event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)
         return <div className='LabelEntry' key={key}>
-            <TextInput
-                key={key}
-                value={labelNames[key]}
-                isPassword={false}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
+            <StyledTextField
+                id={'key'}
+                autoComplete={'off'}
+                type={'text'}
+                margin={'dense'}
                 label={'Insert label'}
-                onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyUp(event)}
+                onKeyUp={handleKeyUp}
+                value={labelNames[key]}
+                onChange={onChangeWithKey}
+                style = {{width: 300}}
+                InputLabelProps={{
+                    shrink: true,
+                }}
             />
+            <ColorSelectorView/>
             <ImageButton
                 image={'ico/trash.png'}
                 imageAlt={'remove_label'}
