@@ -162,4 +162,18 @@ export class RectUtil {
             y: NumberUtil.snapValueToRange(point.y, rect.y, rect.y + rect.height)
         }
     }
+
+    public static getCenter(rect: IRect): IPoint {
+        return {
+            x: rect.x + rect.width / 2,
+            y: rect.y + rect.height / 2
+        }
+    }
+
+    public static getSize(rect: IRect): ISize {
+        return {
+            width: rect.width,
+            height: rect.height
+        }
+    }
 }
