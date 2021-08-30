@@ -10,6 +10,7 @@ import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {findIndex, findLast} from "lodash";
 import {ISize} from "../../interfaces/ISize";
 import {NumberUtil} from "../../utils/NumberUtil";
+import {RectUtil} from "../../utils/RectUtil";
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -55,17 +56,28 @@ export class RectLabelsExporter {
         }
     }
 
-    private static wrapRectLabelIntoYOLO(labelRect: LabelRect, labelNames: LabelName[], imageSize: ISize): string {
+    public static wrapRectLabelIntoYOLO(labelRect: LabelRect, labelNames: LabelName[], imageSize: ISize): string {
+        const snapAndFix = (value: number) => NumberUtil.snapValueToRange(value,0, 1).toFixed(6)
         const classIdx: string = findIndex(labelNames, {id: labelRect.labelId}).toString()
-        const x: string = NumberUtil.snapValueToRange(
-            (labelRect.rect.x + labelRect.rect.width / 2) / imageSize.width, 0, 1).toFixed(6)
-        const y: string = NumberUtil.snapValueToRange(
-            (labelRect.rect.y + labelRect.rect.height / 2) / imageSize.height, 0, 1).toFixed(6)
-        const width: string = NumberUtil.snapValueToRange(
-            labelRect.rect.width / imageSize.width, 0, 1).toFixed(6)
-        const height: string = NumberUtil.snapValueToRange(
-            labelRect.rect.height / imageSize.height, 0, 1).toFixed(6)
-        return [classIdx, x, y, width, height].join(" ")
+        const rectCenter = RectUtil.getCenter(labelRect.rect)
+        const rectSize = RectUtil.getSize(labelRect.rect)
+        const rawBBox: number[] = [
+            rectCenter.x / imageSize.width,
+            rectCenter.y / imageSize.height,
+            rectSize.width / imageSize.width,
+            rectSize.height / imageSize.height
+        ]
+
+        let [x, y, width, height] = rawBBox.map((value: number) => parseFloat(snapAndFix(value)))
+
+        if (x + width / 2 > 1) { width = 2 * (1 - x) }
+        if (x - width / 2 < 0) { width = 2 * x }
+        if (y + height / 2 > 1) { height = 2 * (1 - y) }
+        if (y - height / 2 < 0) { height = 2 * y }
+
+        const processedBBox = [x, y, width, height].map((value: number) => snapAndFix(value))
+
+        return [classIdx, ...processedBBox].join(" ")
     }
 
     private static wrapRectLabelsIntoYOLO(imageData: ImageData): string {
@@ -74,15 +86,9 @@ export class RectLabelsExporter {
 
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+        const imageSize: ISize = {width: image.width, height: image.height}
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelFields = [
-                findIndex(labelNames, {id: labelRect.labelId}).toString(),
-                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6).toString(),
-                ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6).toString(),
-                (labelRect.rect.width / image.width).toFixed(6).toString(),
-                (labelRect.rect.height / image.height).toFixed(6).toString()
-            ];
-            return labelFields.join(" ")
+            return RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
         });
         return labelRectsString.join("\n");
     }
