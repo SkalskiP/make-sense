@@ -66,7 +66,7 @@ npm install
 # serve with hot reload at localhost:3000
 npm start
 ```
-To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v11.x.x` versions are required. More information about this problem is available in the [#16][4].
+To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v12.x.x` versions are required. More information about this problem is available in the [#16][4].
 
 ## 🐳 Docker Setup
 
