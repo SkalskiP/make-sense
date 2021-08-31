@@ -35,28 +35,6 @@ export class LabelUtil {
         }
     }
 
-    public static convertLabelNamesListToMap(labelNames: LabelName[]): any {
-        return labelNames.reduce((map: any, labelNameRecord: LabelName) => {
-            map[labelNameRecord.id] = labelNameRecord.name;
-            return map;
-        }, {})
-    }
-
-    // TODO: implement proper color logic
-    public static convertMapToLabelNamesList(object: any): LabelName[] {
-        const labelNamesList: LabelName[] = [];
-        Object.keys(object).forEach((key) => {
-            if (!!object[key]) {
-                labelNamesList.push({
-                    id: key,
-                    name: object[key],
-                    color: '#000000'
-                })
-            }
-        });
-        return labelNamesList;
-    }
-
     public static labelNamesIdsDiff(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
         return oldLabelNames.reduce((missingIds: string[], labelName: LabelName) => {
             if (!find(newLabelNames, { 'id': labelName.id })) {
