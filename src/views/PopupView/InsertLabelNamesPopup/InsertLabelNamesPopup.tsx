@@ -1,22 +1,23 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
-import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
-import { PopupWindowType } from '../../../data/enums/PopupWindowType';
-import { updateLabelNames } from '../../../store/labels/actionCreators';
-import { updateActivePopupType } from '../../../store/general/actionCreators';
-import { AppState } from '../../../store';
-import { connect } from 'react-redux';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import {updateLabelNames} from '../../../store/labels/actionCreators';
+import {updateActivePopupType} from '../../../store/general/actionCreators';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars';
-import { ImageButton } from '../../Common/ImageButton/ImageButton';
-import { LabelName } from '../../../store/labels/types';
-import { LabelUtil } from '../../../utils/LabelUtil';
-import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
-import { LabelActions } from '../../../logic/actions/LabelActions';
+import {ImageButton} from '../../Common/ImageButton/ImageButton';
+import {LabelName} from '../../../store/labels/types';
+import {LabelUtil} from '../../../utils/LabelUtil';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import {LabelActions} from '../../../logic/actions/LabelActions';
 import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
 import TextField from '@material-ui/core/TextField';
 import {Settings} from '../../../settings/Settings';
 import {withStyles} from '@material-ui/core';
-import { reject } from 'lodash';
+import {reject, sample} from 'lodash';
+import {ProjectType} from '../../../data/enums/ProjectType';
 
 const StyledTextField = withStyles({
     root: {
@@ -45,13 +46,15 @@ interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateLabelNamesAction: (labels: LabelName[]) => any;
     isUpdate: boolean;
+    projectType: ProjectType;
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = (
     {
         updateActivePopupTypeAction,
         updateLabelNamesAction,
-        isUpdate
+        isUpdate,
+        projectType
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
@@ -64,11 +67,18 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const deleteHandle = (id: string) => {
-        const newLabelNames = reject(labelNames, {id})
+        const newLabelNames = reject(labelNames, {id});
         setLabelNames(newLabelNames);
     };
 
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const changeColorHandle = (id: string) => {
+        const newLabelNames = labelNames.map((labelName: LabelName) => {
+            return labelName.id === id ? {...labelName, color: sample(Settings.LABEL_COLORS_PALETTE)} : labelName
+        });
+        setLabelNames(newLabelNames);
+    }
+
+    const keyUpHandle = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             addHandle();
         }
@@ -76,8 +86,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
     const labelInputs = labelNames.map((labelName: LabelName) => {
         const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) =>
-            onChange(labelName.id, event.target.value)
-        const onDeleteCallback = () => deleteHandle(labelName.id)
+            onChange(labelName.id, event.target.value);
+        const onDeleteCallback = () => deleteHandle(labelName.id);
+        const onChangeColorCallback = () => changeColorHandle(labelName.id);
         return <div className='LabelEntry' key={labelName.id}>
             <StyledTextField
                 id={'key'}
@@ -85,7 +96,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                 type={'text'}
                 margin={'dense'}
                 label={'Insert label'}
-                onKeyUp={handleKeyUp}
+                onKeyUp={keyUpHandle}
                 value={labelName.name}
                 onChange={onChangeCallback}
                 style = {{width: 300}}
@@ -93,7 +104,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     shrink: true,
                 }}
             />
-            <ColorSelectorView/>
+            {projectType === ProjectType.OBJECT_DETECTION && <ColorSelectorView
+                color={labelName.color}
+                onClick={onChangeColorCallback}
+            />}
             <ImageButton
                 image={'ico/trash.png'}
                 imageAlt={'remove_label'}
@@ -111,15 +125,20 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const onCreateAccept = () => {
+        const nonEmptyLabelNames: LabelName[] = reject(labelNames,
+            (labelName: LabelName) => labelName.name.length === 0)
         if (labelNames.length > 0) {
-            updateLabelNamesAction(labelNames);
+            updateLabelNamesAction(nonEmptyLabelNames);
         }
         updateActivePopupTypeAction(null);
     };
 
     const onUpdateAccept = () => {
-        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), labelNames);
+        const nonEmptyLabelNames: LabelName[] = reject(labelNames,
+            (labelName: LabelName) => labelName.name.length === 0)
+        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
         LabelActions.removeLabelNames(missingIds);
+        updateLabelNamesAction(nonEmptyLabelNames);
         updateActivePopupTypeAction(null);
     };
 
@@ -192,7 +211,9 @@ const mapDispatchToProps = {
     updateLabelNamesAction: updateLabelNames
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: AppState) => ({
+    projectType: state.general.projectData.type
+});
 
 export default connect(
     mapStateToProps,
