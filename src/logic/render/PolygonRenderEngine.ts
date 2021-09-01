@@ -197,7 +197,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
         DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(RenderEngineSettings.lineActiveColor, 0.2));
         lines.forEach((line: ILine) => {
-            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
+            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.LINE_THICKNESS);
         });
         standardizedPoints.forEach((point: IPoint) => {
             DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);
@@ -234,7 +234,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         if (isActive) {
             DrawUtil.drawPolygonWithFill(this.canvas, standardizedPoints, DrawUtil.hexToRGB(color, 0.2));
         }
-        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, RenderEngineSettings.lineThickness);
+        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
             standardizedPoints.forEach((point: IPoint) => {
                 DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);

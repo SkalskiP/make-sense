@@ -112,7 +112,7 @@ export class LineRenderEngine extends BaseRenderEngine {
     private drawActivelyCreatedLabel(data: EditorData) {
         if (this.isInProgress()) {
             const line = {start: this.lineCreationStartPoint, end: data.mousePositionOnViewPortContent}
-            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
+            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.LINE_THICKNESS);
             DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor)
         }
     }
@@ -156,7 +156,7 @@ export class LineRenderEngine extends BaseRenderEngine {
             start: RenderEngineUtil.setPointBetweenPixels(line.start),
             end: RenderEngineUtil.setPointBetweenPixels(line.end)
         }
-        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, RenderEngineSettings.lineThickness);
+        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
             LineUtil
                 .getPoints(line)

@@ -2,6 +2,10 @@ import {EditorData} from '../../data/EditorData';
 import {MouseEventUtil} from '../../utils/MouseEventUtil';
 import {EventType} from '../../data/enums/EventType';
 import {LabelType} from '../../data/enums/LabelType';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
+import {LabelName} from '../../store/labels/types';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
@@ -37,14 +41,22 @@ export abstract class BaseRenderEngine {
 
     abstract isInProgress(): boolean;
 
-    // protected static resolveLabelLineColor(labelId: string, isActive: boolean): string {
-    //     const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
-    //     if (perClassColor) {
-    //
-    //     } else {
-    //         return isActive ? RenderEngineConfig.ACTIVE_LINE_COLOR : RenderEngineConfig.INACTIVE_LINE_COLOR
-    //     }
-    // }
+    protected static resolveLabelLineColor(labelId: string, isActive: boolean): string {
+        const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
+        if (perClassColor) {
+            const labelName: LabelName | null = LabelsSelector.getLabelNameById(labelId);
+            return labelName ? labelName.color : RenderEngineSettings.DEFAULT_LINE_COLOR;
+        } else {
+            return isActive ? RenderEngineSettings.ACTIVE_LINE_COLOR : RenderEngineSettings.INACTIVE_LINE_COLOR;
+        }
+    }
 
-    // protected static resolveLabelAnchorColor(isActive: boolean): string {}
+    protected static resolveLabelAnchorColor(isActive: boolean): string {
+        const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
+        if (perClassColor) {
+            return RenderEngineSettings.DEFAULT_ANCHOR_COLOR;
+        } else {
+            return isActive ? RenderEngineSettings.ACTIVE_ANCHOR_COLOR : RenderEngineSettings.INACTIVE_ANCHOR_COLOR;
+        }
+    }
 }

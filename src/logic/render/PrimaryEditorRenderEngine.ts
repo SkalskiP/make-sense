@@ -39,7 +39,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
 
         const mouse = RenderEngineUtil.setPointBetweenPixels(data.mousePositionOnViewPortContent);
         const drawLine = (startPoint: IPoint, endPoint: IPoint) => {
-            DrawUtil.drawLine(this.canvas, startPoint, endPoint, RenderEngineSettings.crossHairLineColor, 2)
+            DrawUtil.drawLine(this.canvas, startPoint, endPoint, RenderEngineSettings.CROSS_HAIR_LINE_COLOR, 2)
         }
         drawLine(
             {x: mouse.x, y: 0},

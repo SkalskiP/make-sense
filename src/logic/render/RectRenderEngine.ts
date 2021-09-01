@@ -135,12 +135,10 @@ export class RectRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                const labelName = LabelsSelector.getLabelNameById(labelRect.labelId)
-                const color: string = labelName ? labelName.color : RenderEngineSettings.defaultLineColor
                 if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
-                    this.drawActiveRect(labelRect, data, color)
+                    this.drawActiveRect(labelRect, data)
                 } else {
-                    this.drawInactiveRect(labelRect, data, color);
+                    this.drawInactiveRect(labelRect, data);
                 }
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
@@ -158,18 +156,21 @@ export class RectRenderEngine extends BaseRenderEngine {
                 height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
+            const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, lineColor, RenderEngineSettings.LINE_THICKNESS);
         }
     }
 
-    private drawInactiveRect(labelRect: LabelRect, data: EditorData, color: string) {
-        const rectOnImage: IRect = RenderEngineUtil.transferRectFromViewPortContentToImage(labelRect.rect, data),
-            highlightedLabelId: string = LabelsSelector.getHighlightedLabelId(),
-            displayAsActive: boolean = labelRect.status === LabelStatus.ACCEPTED && labelRect.id === highlightedLabelId;
-        this.renderRect(rectOnImage, displayAsActive, color);
+    private drawInactiveRect(labelRect: LabelRect, data: EditorData) {
+        const rectOnImage: IRect = RenderEngineUtil.transferRectFromViewPortContentToImage(labelRect.rect, data)
+        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId()
+        const displayAsActive: boolean = labelRect.status === LabelStatus.ACCEPTED && labelRect.id === highlightedLabelId;
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelRect.labelId, displayAsActive)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(displayAsActive);
+        this.renderRect(rectOnImage, displayAsActive, lineColor, anchorColor);
     }
 
-    private drawActiveRect(labelRect: LabelRect, data: EditorData, color: string) {
+    private drawActiveRect(labelRect: LabelRect, data: EditorData) {
         let rect: IRect = this.calculateRectRelativeToActiveImage(labelRect.rect, data);
         if (!!this.startResizeRectAnchor) {
             const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position, data.viewPortContentImageRect);
@@ -178,19 +179,21 @@ export class RectRenderEngine extends BaseRenderEngine {
             rect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
         }
         const rectOnImage: IRect = RectUtil.translate(rect, data.viewPortContentImageRect);
-        this.renderRect(rectOnImage, true, color);
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelRect.labelId, true)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true);
+        this.renderRect(rectOnImage, true, lineColor, anchorColor);
     }
 
-    private renderRect(rectOnImage: IRect, isActive: boolean, color: string) {
+    private renderRect(rectOnImage: IRect, isActive: boolean, lineColor: string, anchorColor: string) {
         const rectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(rectOnImage);
-        DrawUtil.drawRectWithFill(this.canvas, rectBetweenPixels, DrawUtil.hexToRGB(color, 0.2));
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, RenderEngineSettings.lineThickness);
+        DrawUtil.drawRectWithFill(this.canvas, rectBetweenPixels, DrawUtil.hexToRGB(lineColor, 0.2));
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
             const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, RenderEngineSettings.anchorSize);
                 const handleRectBetweenPixels: IRect = RenderEngineUtil.setRectBetweenPixels(handleRect);
-                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, RenderEngineSettings.defaultAnchorColor);
+                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, anchorColor);
             })
         }
     }
