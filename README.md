@@ -174,9 +174,7 @@ Please cite Make Sense in your publications if this is useful for your research.
 
 ## 🪧 License
 
-This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
-
-Copyright &copy; 2019 Piotr Skalski
+This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details. Copyright &copy; 2019 Piotr Skalski.
 
 [1]: http://makesense.ai
 [2]: ./LICENSE
