@@ -1,31 +1,31 @@
-import {store} from "../../index";
-import {RectUtil} from "../../utils/RectUtil";
-import {updateCustomCursorStyle} from "../../store/general/actionCreators";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {EditorData} from "../../data/EditorData";
-import {BaseRenderEngine} from "./BaseRenderEngine";
-import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
-import {IPoint} from "../../interfaces/IPoint";
-import {ILine} from "../../interfaces/ILine";
-import {DrawUtil} from "../../utils/DrawUtil";
-import {IRect} from "../../interfaces/IRect";
-import {ImageData, LabelPolygon} from "../../store/labels/types";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
+import {store} from '../../index';
+import {RectUtil} from '../../utils/RectUtil';
+import {updateCustomCursorStyle} from '../../store/general/actionCreators';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {EditorData} from '../../data/EditorData';
+import {BaseRenderEngine} from './BaseRenderEngine';
+import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {IPoint} from '../../interfaces/IPoint';
+import {ILine} from '../../interfaces/ILine';
+import {DrawUtil} from '../../utils/DrawUtil';
+import {IRect} from '../../interfaces/IRect';
+import {ImageData, LabelPolygon} from '../../store/labels/types';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
-} from "../../store/labels/actionCreators";
-import {LineUtil} from "../../utils/LineUtil";
-import {MouseEventUtil} from "../../utils/MouseEventUtil";
-import {EventType} from "../../data/enums/EventType";
-import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
-import {LabelType} from "../../data/enums/LabelType";
-import {EditorActions} from "../actions/EditorActions";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {Settings} from "../../settings/Settings";
-import {LabelUtil} from "../../utils/LabelUtil";
+} from '../../store/labels/actionCreators';
+import {LineUtil} from '../../utils/LineUtil';
+import {MouseEventUtil} from '../../utils/MouseEventUtil';
+import {EventType} from '../../data/enums/EventType';
+import {RenderEngineUtil} from '../../utils/RenderEngineUtil';
+import {LabelType} from '../../data/enums/LabelType';
+import {EditorActions} from '../actions/EditorActions';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {Settings} from '../../settings/Settings';
+import {LabelUtil} from '../../utils/LabelUtil';
 
 export class PolygonRenderEngine extends BaseRenderEngine {
     private config: RenderEngineConfig = new RenderEngineConfig();
@@ -184,9 +184,9 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
                     }
                 }
-                this.canvas.style.cursor = "none";
+                this.canvas.style.cursor = 'none';
             } else {
-                this.canvas.style.cursor = "default";
+                this.canvas.style.cursor = 'default';
             }
         }
     }
@@ -201,7 +201,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
         });
         standardizedPoints.forEach((point: IPoint) => {
-            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
+            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor);
         })
     }
 
@@ -230,7 +230,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private drawPolygon(polygon: IPoint[], isActive: boolean) {
-        const color: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        const color: string = isActive ? this.config.lineActiveColor : this.config.defaultLineColor;
         const standardizedPoints: IPoint[] = polygon.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
         if (isActive) {
             DrawUtil.drawPolygonWithFill(this.canvas, standardizedPoints, DrawUtil.hexToRGB(color, 0.2));
@@ -238,7 +238,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, this.config.lineThickness);
         if (isActive) {
             standardizedPoints.forEach((point: IPoint) => {
-                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor);
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor);
             })
         }
     }
@@ -251,7 +251,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
             if (isMouseOverSuggestedAnchor) {
                 DrawUtil.drawCircleWithFill(
-                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.lineInactiveColor);
+                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultLineColor);
             }
         }
     }

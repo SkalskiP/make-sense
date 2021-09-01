@@ -1,11 +1,11 @@
-import {ISize} from "../interfaces/ISize";
-import {Settings} from "./Settings";
+import {ISize} from '../interfaces/ISize';
+import {Settings} from './Settings';
 
 export class RenderEngineConfig {
     public readonly lineThickness: number = 2;
     public readonly lineActiveColor: string = Settings.PRIMARY_COLOR;
-    public readonly lineInactiveColor: string = "#fff";
-    public readonly crossHairLineColor: string = "#fff";
+    public readonly defaultLineColor: string = '#ffffff';
+    public readonly crossHairLineColor: string = '#ffffff';
     public readonly crossHairPadding: number = 25;
     public readonly anchorSize: ISize = {
         width: Settings.RESIZE_HANDLE_DIMENSION_PX,
@@ -19,6 +19,6 @@ export class RenderEngineConfig {
         width: 100,
         height: 100
     };
-    public readonly activeAnchorColor: string = Settings.SECONDARY_COLOR;
+    public readonly defaultAnchorColor: string = '#ffffff';
     public readonly inactiveAnchorColor: string = Settings.DARK_THEME_SECOND_COLOR;
 }

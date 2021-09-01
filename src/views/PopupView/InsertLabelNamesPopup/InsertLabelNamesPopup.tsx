@@ -3,7 +3,7 @@ import './InsertLabelNamesPopup.scss'
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 import {updateLabelNames} from '../../../store/labels/actionCreators';
-import {updateActivePopupType} from '../../../store/general/actionCreators';
+import {updateActivePopupType, updatePerClassColorationStatus} from '../../../store/general/actionCreators';
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars';
@@ -45,16 +45,20 @@ const StyledTextField = withStyles({
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateLabelNamesAction: (labels: LabelName[]) => any;
+    updatePerClassColorationStatusAction: (updatePerClassColoration: boolean) => any;
     isUpdate: boolean;
     projectType: ProjectType;
+    enablePerClassColoration: boolean;
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = (
     {
         updateActivePopupTypeAction,
         updateLabelNamesAction,
+        updatePerClassColorationStatusAction,
         isUpdate,
-        projectType
+        projectType,
+        enablePerClassColoration
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
@@ -65,6 +69,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         ]
         setLabelNames(newLabelNames);
     };
+
+    const togglePerClassColoration = () => {
+        updatePerClassColorationStatusAction(!enablePerClassColoration)
+    }
 
     const deleteHandle = (id: string) => {
         const newLabelNames = reject(labelNames, {id});
@@ -104,7 +112,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     shrink: true,
                 }}
             />
-            {projectType === ProjectType.OBJECT_DETECTION && <ColorSelectorView
+            {projectType === ProjectType.OBJECT_DETECTION && enablePerClassColoration && <ColorSelectorView
                 color={labelName.color}
                 onClick={onChangeColorCallback}
             />}
@@ -119,7 +127,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
     const onChange = (id: string, value: string) => {
         const newLabelNames = labelNames.map((labelName: LabelName) => {
-            return labelName.id === id ? {...labelName, name: value} : labelName
+            return labelName.id === id ? {
+                ...labelName, name: value
+            } : labelName
         })
         setLabelNames(newLabelNames);
     };
@@ -159,7 +169,17 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     buttonSize={{ width: 40, height: 40 }}
                     padding={25}
                     onClick={addHandle}
+                    externalClassName={'monochrome'}
                 />
+                {labelNames.length > 0 && <ImageButton
+                    image={enablePerClassColoration ? 'ico/colors-on.png' : 'ico/colors-off.png'}
+                    imageAlt={'per-class-coloration'}
+                    buttonSize={{ width: 40, height: 40 }}
+                    padding={15}
+                    onClick={togglePerClassColoration}
+                    isActive={enablePerClassColoration}
+                    externalClassName={enablePerClassColoration ? '' : 'monochrome'}
+                />}
             </div>
             <div className='RightContainer'>
                 <div className='Message'>
@@ -208,11 +228,13 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
-    updateLabelNamesAction: updateLabelNames
+    updateLabelNamesAction: updateLabelNames,
+    updatePerClassColorationStatusAction: updatePerClassColorationStatus
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectType: state.general.projectData.type
+    projectType: state.general.projectData.type,
+    enablePerClassColoration: state.general.enablePerClassColoration
 });
 
 export default connect(

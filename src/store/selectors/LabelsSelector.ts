@@ -8,6 +8,11 @@ export class LabelsSelector {
         return store.getState().labels.labels;
     }
 
+    public static getLabelNameById(id: string): LabelName | undefined {
+        const labelName: LabelName[] = LabelsSelector.getLabelNames()
+        return find(labelName, {id});
+    }
+
     public static getActiveLabelNameId(): string {
         return store.getState().labels.activeLabelNameId;
     }

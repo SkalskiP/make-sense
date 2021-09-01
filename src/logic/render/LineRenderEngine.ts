@@ -114,7 +114,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         if (this.isInProgress()) {
             const line = {start: this.lineCreationStartPoint, end: data.mousePositionOnViewPortContent}
             DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
-            DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor)
+            DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor)
         }
     }
 
@@ -152,7 +152,7 @@ export class LineRenderEngine extends BaseRenderEngine {
     }
 
     private drawLine(line: ILine, isActive: boolean) {
-        const color: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
+        const color: string = isActive ? this.config.lineActiveColor : this.config.defaultLineColor;
         const standardizedLine: ILine = {
             start: RenderEngineUtil.setPointBetweenPixels(line.start),
             end: RenderEngineUtil.setPointBetweenPixels(line.end)
@@ -162,7 +162,7 @@ export class LineRenderEngine extends BaseRenderEngine {
             LineUtil
                 .getPoints(line)
                 .map((point: IPoint) => DrawUtil.drawCircleWithFill(
-                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor))
+                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor))
         }
     }
 

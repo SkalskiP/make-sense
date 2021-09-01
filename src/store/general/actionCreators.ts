@@ -85,3 +85,12 @@ export function updateZoom(zoom: number): GeneralActionTypes {
         },
     };
 }
+
+export function updatePerClassColorationStatus(enablePerClassColoration: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS,
+        payload: {
+            enablePerClassColoration,
+        },
+    };
+}
