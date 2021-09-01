@@ -151,6 +151,12 @@ If you are just starting your adventure with deep learning and would like to lea
 
 ## 🙋 Contribution
 
+<p align="center"> 
+    <a href="https://github.com/SkalskiP/make-sense/graphs/contributors">
+      <img src="https://contrib.rocks/image?repo=SkalskiP/make-sense" />
+    </a>
+</p>
+
 Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pull requests](https://github.com/SkalskiP/make-sense/pulls).  
 
 ## 💬 Citation
