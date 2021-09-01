@@ -104,7 +104,7 @@ export class LineRenderEngine extends BaseRenderEngine {
             const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
             const lineOnCanvas = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data)
             if (!(labelLine.id === activeLabelId && this.isResizeInProgress())) {
-                this.drawLine(lineOnCanvas, isActive)
+                this.drawLine(labelLine.labelId, lineOnCanvas, isActive)
             }
         });
     }
@@ -127,7 +127,7 @@ export class LineRenderEngine extends BaseRenderEngine {
                 start: this.lineUpdateAnchorType === LineAnchorType.START ? snappedMousePosition : lineOnCanvas.start,
                 end: this.lineUpdateAnchorType === LineAnchorType.END ? snappedMousePosition : lineOnCanvas.end
             }
-            this.drawLine(lineToDraw, true)
+            this.drawLine(activeLabelLine.labelId, lineToDraw, true)
         }
     }
 
@@ -150,18 +150,20 @@ export class LineRenderEngine extends BaseRenderEngine {
         }
     }
 
-    private drawLine(line: ILine, isActive: boolean) {
-        const color: string = isActive ? RenderEngineSettings.lineActiveColor : RenderEngineSettings.defaultLineColor;
+    private drawLine(labelId: string, line: ILine, isActive: boolean) {
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelId, isActive)
+        const anchorColor = BaseRenderEngine.resolveLabelAnchorColor(isActive)
         const standardizedLine: ILine = {
             start: RenderEngineUtil.setPointBetweenPixels(line.start),
             end: RenderEngineUtil.setPointBetweenPixels(line.end)
         }
-        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, RenderEngineSettings.LINE_THICKNESS);
+        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, lineColor, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
+
             LineUtil
                 .getPoints(line)
-                .map((point: IPoint) => DrawUtil.drawCircleWithFill(
-                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor))
+                .forEach((point: IPoint) => DrawUtil.drawCircleWithFill(this.canvas, point,
+                    Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor))
         }
     }
 

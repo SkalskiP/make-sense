@@ -194,13 +194,14 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const standardizedPoints: IPoint[] = this.activePath.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
         const path = standardizedPoints.concat(data.mousePositionOnViewPortContent);
         const lines: ILine[] = this.mapPointsToLines(path);
-
-        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(RenderEngineSettings.lineActiveColor, 0.2));
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
+        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(lineColor, 0.2));
         lines.forEach((line: ILine) => {
-            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.LINE_THICKNESS);
+            DrawUtil.drawLine(this.canvas, line.start, line.end, lineColor, RenderEngineSettings.LINE_THICKNESS);
         });
         standardizedPoints.forEach((point: IPoint) => {
-            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);
+            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor);
         })
     }
 
@@ -211,7 +212,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const polygonOnCanvas: IPoint[] = activeLabelPolygon.vertices.map((point: IPoint, index: number) => {
                 return index === this.resizeAnchorIndex ? snappedMousePosition : RenderEngineUtil.transferPointFromImageToViewPortContent(point, data);
             });
-            this.drawPolygon(polygonOnCanvas, true);
+            this.drawPolygon(activeLabelPolygon.labelId, polygonOnCanvas, true);
         }
     }
 
@@ -223,26 +224,28 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
             const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
             if (!(labelPolygon.id === activeLabelId && this.isResizeInProgress())) {
-                this.drawPolygon(pathOnCanvas, isActive);
+                this.drawPolygon(labelPolygon.labelId, pathOnCanvas, isActive);
             }
         });
     }
 
-    private drawPolygon(polygon: IPoint[], isActive: boolean) {
-        const color: string = isActive ? RenderEngineSettings.lineActiveColor : RenderEngineSettings.defaultLineColor;
+    private drawPolygon(labelId: string | null, polygon: IPoint[], isActive: boolean) {
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelId, true)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
         const standardizedPoints: IPoint[] = polygon.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
         if (isActive) {
-            DrawUtil.drawPolygonWithFill(this.canvas, standardizedPoints, DrawUtil.hexToRGB(color, 0.2));
+            DrawUtil.drawPolygonWithFill(this.canvas, standardizedPoints, DrawUtil.hexToRGB(lineColor, 0.2));
         }
-        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, RenderEngineSettings.LINE_THICKNESS);
+        DrawUtil.drawPolygon(this.canvas, standardizedPoints, lineColor, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
             standardizedPoints.forEach((point: IPoint) => {
-                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor);
             })
         }
     }
 
     private drawSuggestedAnchor(data: EditorData) {
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
         if (this.suggestedAnchorPositionOnCanvas) {
             const suggestedAnchorRect: IRect = RectUtil
                 .getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, RenderEngineSettings.suggestedAnchorDetectionSize);
@@ -250,7 +253,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
             if (isMouseOverSuggestedAnchor) {
                 DrawUtil.drawCircleWithFill(
-                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultLineColor);
+                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor);
             }
         }
     }
