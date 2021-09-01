@@ -12,7 +12,7 @@ import {
 } from '../../store/labels/actionCreators';
 import {PointUtil} from '../../utils/PointUtil';
 import {RectAnchor} from '../../data/RectAnchor';
-import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
 import {updateCustomCursorStyle} from '../../store/general/actionCreators';
 import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
@@ -26,7 +26,6 @@ import {LabelStatus} from '../../data/enums/LabelStatus';
 import {LabelUtil} from '../../utils/LabelUtil';
 
 export class RectRenderEngine extends BaseRenderEngine {
-    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -137,7 +136,7 @@ export class RectRenderEngine extends BaseRenderEngine {
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
                 const labelName = LabelsSelector.getLabelNameById(labelRect.labelId)
-                const color: string = labelName ? labelName.color : this.config.defaultLineColor
+                const color: string = labelName ? labelName.color : RenderEngineSettings.defaultLineColor
                 if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
                     this.drawActiveRect(labelRect, data, color)
                 } else {
@@ -159,7 +158,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.lineActiveColor, this.config.lineThickness);
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
         }
     }
 
@@ -185,13 +184,13 @@ export class RectRenderEngine extends BaseRenderEngine {
     private renderRect(rectOnImage: IRect, isActive: boolean, color: string) {
         const rectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(rectOnImage);
         DrawUtil.drawRectWithFill(this.canvas, rectBetweenPixels, DrawUtil.hexToRGB(color, 0.2));
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, this.config.lineThickness);
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, color, RenderEngineSettings.lineThickness);
         if (isActive) {
             const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
-                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, this.config.anchorSize);
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, RenderEngineSettings.anchorSize);
                 const handleRectBetweenPixels: IRect = RenderEngineUtil.setRectBetweenPixels(handleRect);
-                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, this.config.defaultAnchorColor);
+                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, RenderEngineSettings.defaultAnchorColor);
             })
         }
     }
@@ -259,14 +258,14 @@ export class RectRenderEngine extends BaseRenderEngine {
             this.calculateRectRelativeToActiveImage(rect, data), data.viewPortContentImageRect);
 
         const outerRectDelta: IPoint = {
-            x: this.config.anchorHoverSize.width / 2,
-            y: this.config.anchorHoverSize.height / 2
+            x: RenderEngineSettings.anchorHoverSize.width / 2,
+            y: RenderEngineSettings.anchorHoverSize.height / 2
         };
         const outerRect: IRect = RectUtil.expand(rectOnImage, outerRectDelta);
 
         const innerRectDelta: IPoint = {
-            x: - this.config.anchorHoverSize.width / 2,
-            y: - this.config.anchorHoverSize.height / 2
+            x: - RenderEngineSettings.anchorHoverSize.width / 2,
+            y: - RenderEngineSettings.anchorHoverSize.height / 2
         };
         const innerRect: IRect = RectUtil.expand(rectOnImage, innerRectDelta);
 
@@ -277,7 +276,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     private getAnchorUnderMouseByRect(rect: IRect, mousePosition: IPoint, imageRect: IRect): RectAnchor {
         const rectAnchors: RectAnchor[] = RectUtil.mapRectToAnchors(rect);
         for (let i = 0; i < rectAnchors.length; i++) {
-            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].position, this.config.anchorHoverSize), imageRect);
+            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].position, RenderEngineSettings.anchorHoverSize), imageRect);
             if (!!mousePosition && RectUtil.isPointInside(anchorRect, mousePosition)) {
                 return rectAnchors[i];
             }

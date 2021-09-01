@@ -4,7 +4,7 @@ import {updateCustomCursorStyle} from '../../store/general/actionCreators';
 import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
 import {EditorData} from '../../data/EditorData';
 import {BaseRenderEngine} from './BaseRenderEngine';
-import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
 import {IPoint} from '../../interfaces/IPoint';
 import {ILine} from '../../interfaces/ILine';
 import {DrawUtil} from '../../utils/DrawUtil';
@@ -28,7 +28,6 @@ import {Settings} from '../../settings/Settings';
 import {LabelUtil} from '../../utils/LabelUtil';
 
 export class PolygonRenderEngine extends BaseRenderEngine {
-    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -71,7 +70,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         if (isMouseOverCanvas) {
             if (this.isCreationInProgress()) {
                 const isMouseOverStartAnchor: boolean = RenderEngineUtil.isMouseOverAnchor(
-                    data.mousePositionOnViewPortContent, this.activePath[0], this.config.anchorSize);
+                    data.mousePositionOnViewPortContent, this.activePath[0], RenderEngineSettings.anchorSize);
                 if (isMouseOverStartAnchor) {
                     this.addLabelAndFinishCreation(data);
                 } else  {
@@ -128,7 +127,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         const mouseOverLine = RenderEngineUtil.isMouseOverLine(
                             data.mousePositionOnViewPortContent,
                             linesOnCanvas[j],
-                            this.config.anchorHoverSize.width / 2
+                            RenderEngineSettings.anchorHoverSize.width / 2
                         )
                         if (mouseOverLine) {
                             this.suggestedAnchorPositionOnCanvas = LineUtil.getCenter(linesOnCanvas[j]);
@@ -196,12 +195,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const path = standardizedPoints.concat(data.mousePositionOnViewPortContent);
         const lines: ILine[] = this.mapPointsToLines(path);
 
-        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(this.config.lineActiveColor, 0.2));
+        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(RenderEngineSettings.lineActiveColor, 0.2));
         lines.forEach((line: ILine) => {
-            DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
+            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
         });
         standardizedPoints.forEach((point: IPoint) => {
-            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor);
+            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);
         })
     }
 
@@ -230,15 +229,15 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private drawPolygon(polygon: IPoint[], isActive: boolean) {
-        const color: string = isActive ? this.config.lineActiveColor : this.config.defaultLineColor;
+        const color: string = isActive ? RenderEngineSettings.lineActiveColor : RenderEngineSettings.defaultLineColor;
         const standardizedPoints: IPoint[] = polygon.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
         if (isActive) {
             DrawUtil.drawPolygonWithFill(this.canvas, standardizedPoints, DrawUtil.hexToRGB(color, 0.2));
         }
-        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, this.config.lineThickness);
+        DrawUtil.drawPolygon(this.canvas, standardizedPoints, color, RenderEngineSettings.lineThickness);
         if (isActive) {
             standardizedPoints.forEach((point: IPoint) => {
-                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor);
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor);
             })
         }
     }
@@ -246,12 +245,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private drawSuggestedAnchor(data: EditorData) {
         if (this.suggestedAnchorPositionOnCanvas) {
             const suggestedAnchorRect: IRect = RectUtil
-                .getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, this.config.suggestedAnchorDetectionSize);
+                .getRectWithCenterAndSize(this.suggestedAnchorPositionOnCanvas, RenderEngineSettings.suggestedAnchorDetectionSize);
             const isMouseOverSuggestedAnchor: boolean = RectUtil.isPointInside(suggestedAnchorRect, data.mousePositionOnViewPortContent);
 
             if (isMouseOverSuggestedAnchor) {
                 DrawUtil.drawCircleWithFill(
-                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultLineColor);
+                    this.canvas, this.suggestedAnchorPositionOnCanvas, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultLineColor);
             }
         }
     }
@@ -396,7 +395,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     private isMouseOverAnchor(mouse: IPoint, anchor: IPoint): boolean {
         if (!mouse || !anchor) return null;
-        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, this.config.anchorSize), mouse);
+        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, RenderEngineSettings.anchorSize), mouse);
     }
 
     // =================================================================================================================
@@ -425,7 +424,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                 const mouseOverLine = RenderEngineUtil.isMouseOverLine(
                     data.mousePositionOnViewPortContent,
                     linesOnCanvas[j],
-                    this.config.anchorHoverSize.width / 2
+                    RenderEngineSettings.anchorHoverSize.width / 2
                 )
                 if (mouseOverLine)
                     return labelPolygons[i];

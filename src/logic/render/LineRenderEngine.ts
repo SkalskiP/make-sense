@@ -1,5 +1,5 @@
 import {BaseRenderEngine} from './BaseRenderEngine';
-import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
 import {LabelType} from '../../data/enums/LabelType';
 import {EditorData} from '../../data/EditorData';
 import {RenderEngineUtil} from '../../utils/RenderEngineUtil';
@@ -26,7 +26,6 @@ import {LineAnchorType} from '../../data/enums/LineAnchorType';
 import {Settings} from '../../settings/Settings';
 
 export class LineRenderEngine extends BaseRenderEngine {
-    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -113,8 +112,8 @@ export class LineRenderEngine extends BaseRenderEngine {
     private drawActivelyCreatedLabel(data: EditorData) {
         if (this.isInProgress()) {
             const line = {start: this.lineCreationStartPoint, end: data.mousePositionOnViewPortContent}
-            DrawUtil.drawLine(this.canvas, line.start, line.end, this.config.lineActiveColor, this.config.lineThickness);
-            DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor)
+            DrawUtil.drawLine(this.canvas, line.start, line.end, RenderEngineSettings.lineActiveColor, RenderEngineSettings.lineThickness);
+            DrawUtil.drawCircleWithFill(this.canvas, this.lineCreationStartPoint, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor)
         }
     }
 
@@ -152,17 +151,17 @@ export class LineRenderEngine extends BaseRenderEngine {
     }
 
     private drawLine(line: ILine, isActive: boolean) {
-        const color: string = isActive ? this.config.lineActiveColor : this.config.defaultLineColor;
+        const color: string = isActive ? RenderEngineSettings.lineActiveColor : RenderEngineSettings.defaultLineColor;
         const standardizedLine: ILine = {
             start: RenderEngineUtil.setPointBetweenPixels(line.start),
             end: RenderEngineUtil.setPointBetweenPixels(line.end)
         }
-        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, this.config.lineThickness);
+        DrawUtil.drawLine(this.canvas, standardizedLine.start, standardizedLine.end, color, RenderEngineSettings.lineThickness);
         if (isActive) {
             LineUtil
                 .getPoints(line)
                 .map((point: IPoint) => DrawUtil.drawCircleWithFill(
-                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.defaultAnchorColor))
+                    this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, RenderEngineSettings.defaultAnchorColor))
         }
     }
 
@@ -180,7 +179,7 @@ export class LineRenderEngine extends BaseRenderEngine {
 
     private isMouseOverAnchor(mouse: IPoint, anchor: IPoint): boolean {
         if (!mouse || !anchor) return null;
-        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, this.config.anchorSize), mouse);
+        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, RenderEngineSettings.anchorSize), mouse);
     }
 
     // =================================================================================================================
@@ -271,7 +270,7 @@ export class LineRenderEngine extends BaseRenderEngine {
             const mouseOverLine = RenderEngineUtil.isMouseOverLine(
                 data.mousePositionOnViewPortContent,
                 lineOnCanvas,
-                this.config.anchorHoverSize.width / 2
+                RenderEngineSettings.anchorHoverSize.width / 2
             )
             if (mouseOverLine) return labelLines[i]
         }

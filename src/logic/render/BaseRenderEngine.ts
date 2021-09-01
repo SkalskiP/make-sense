@@ -1,7 +1,7 @@
-import {EditorData} from "../../data/EditorData";
-import {MouseEventUtil} from "../../utils/MouseEventUtil";
-import {EventType} from "../../data/enums/EventType";
-import {LabelType} from "../../data/enums/LabelType";
+import {EditorData} from '../../data/EditorData';
+import {MouseEventUtil} from '../../utils/MouseEventUtil';
+import {EventType} from '../../data/enums/EventType';
+import {LabelType} from '../../data/enums/LabelType';
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
@@ -36,4 +36,15 @@ export abstract class BaseRenderEngine {
     abstract render(data: EditorData): void;
 
     abstract isInProgress(): boolean;
+
+    // protected static resolveLabelLineColor(labelId: string, isActive: boolean): string {
+    //     const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
+    //     if (perClassColor) {
+    //
+    //     } else {
+    //         return isActive ? RenderEngineConfig.ACTIVE_LINE_COLOR : RenderEngineConfig.INACTIVE_LINE_COLOR
+    //     }
+    // }
+
+    // protected static resolveLabelAnchorColor(isActive: boolean): string {}
 }
