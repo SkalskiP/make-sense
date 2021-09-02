@@ -142,12 +142,16 @@
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
-        justify-content: space-between;
+        justify-content: start;
         align-items: center;
         align-content: space-between;
 
+        .ColorSelectorView {
+          margin-left: 15px;
+        }
+
         .ImageButton {
-          margin-right: 15px;
+          margin-left: 15px;
 
           img {
             filter: brightness(0) invert(1);

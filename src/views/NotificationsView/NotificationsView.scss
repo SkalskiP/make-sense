@@ -4,8 +4,9 @@ $messageWidth: 400px;
 $messageHeight: 200px;
 $displayTime: 5.0s;
 $wrapperMargin: 10px;
-$baseZIndex: 200;
-$errorColor: #ff0033;
+$baseZIndex: 2000;
+//$errorColor: #ff0033;
+$errorColor: #d42245;
 $successColor: #009944;
 
 .notification-wrapper {
@@ -27,7 +28,7 @@ $successColor: #009944;
     border-radius: 5px;
     user-select: none;
 
-    background-color: white;
+    background-color: #{$darkThemeSecondColor};
 
     box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
 
@@ -48,7 +49,7 @@ $successColor: #009944;
     .content {
       flex: 1;
       padding: 20px;
-      color: #171717;
+      color: #ffffff;
     }
 
     .loader {
@@ -80,6 +81,16 @@ $successColor: #009944;
       }
       .loader {
         background-color: #{$successColor};
+      }
+    }
+
+    &.message {
+      .header {
+        background-color: #{$secondaryColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$secondaryColor};
       }
     }
   }

@@ -107,7 +107,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                 onKeyUp={keyUpHandle}
                 value={labelName.name}
                 onChange={onChangeCallback}
-                style = {{width: 300}}
+                style = {{width: 280}}
                 InputLabelProps={{
                     shrink: true,
                 }}

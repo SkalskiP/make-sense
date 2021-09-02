@@ -12,6 +12,7 @@ import {Settings} from './settings/Settings';
 import {SizeItUpView} from './views/SizeItUpView/SizeItUpView';
 import {PlatformModel} from './staticModels/PlatformModel';
 import classNames from 'classnames';
+import NotificationsView from './views/NotificationsView/NotificationsView';
 
 interface IProps {
     projectType: ProjectType;
@@ -41,6 +42,7 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
         >
             {selectRoute()}
             <PopupView/>
+            <NotificationsView/>
         </div>
       );
 };

@@ -62,7 +62,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         ]
     },
     {
-        name: 'More',
+        name: 'Community',
         imageSrc: 'ico/more.png',
         imageAlt: 'more',
         disabled: false,
