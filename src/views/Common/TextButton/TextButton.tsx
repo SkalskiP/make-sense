@@ -1,6 +1,6 @@
 import * as React from 'react';
 import './TextButton.scss';
-import classNames from "classnames";
+import classNames from 'classnames';
 
 interface IProps {
     key?:string;
@@ -17,18 +17,20 @@ export const TextButton = (props:IProps) => {
 
     const getClassName = () => {
         return classNames(
-            "TextButton",
+            'TextButton',
             externalClassName,
             {
-                "active": isActive,
-                "disabled": isDisabled
+                'active': isActive,
+                'disabled': isDisabled
             }
         );
     };
 
     const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();
-        !!onClick && onClick();
+        if (onClick) {
+            onClick();
+        }
     };
 
     return(
