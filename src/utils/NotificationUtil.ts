@@ -11,4 +11,13 @@ export class NotificationUtil {
             description
         }
     }
+
+    public static createMessageNotification(header: string, description: string): INotification {
+        return {
+            id: uuidv4(),
+            type: NotificationType.MESSAGE,
+            header,
+            description
+        }
+    }
 }
