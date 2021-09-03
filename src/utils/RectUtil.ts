@@ -114,6 +114,15 @@ export class RectUtil {
         return rect;
     }
 
+    public static moveRect(inputRect: IRect, delta): IRect {
+        const rect: IRect = { ...inputRect };
+        return {
+            ...rect,
+            x: rect.x + delta.x,
+            y: rect.y + delta.y
+        }
+    }
+
     public static translate(rect: IRect, delta: IPoint): IRect {
         return {
             ...rect,
