@@ -12,16 +12,12 @@ import {updateActivePopupType, updateProjectData} from '../../../store/general/a
 import {AcceptedFileType} from '../../../data/enums/AcceptedFileType';
 import {ProjectData} from '../../../store/general/types';
 import {ImageDataUtil} from '../../../utils/ImageDataUtil';
-import {submitNewNotification} from '../../../store/notifications/actionCreators';
-import {INotification} from '../../../store/notifications/types';
-import {NotificationUtil} from '../../../utils/NotificationUtil';
 
 interface IProps {
     updateActiveImageIndexAction: (activeImageIndex: number) => any;
     addImageDataAction: (imageData: ImageData[]) => any;
     updateProjectDataAction: (projectData: ProjectData) => any;
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
-    submitNewNotificationAction: (notification: INotification) => any;
     projectData: ProjectData;
 }
 
@@ -32,7 +28,6 @@ const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
 
     const startEditor = (projectType: ProjectType) => {
         if (acceptedFiles.length > 0) {
-            props.submitNewNotificationAction(NotificationUtil.createErrorNotification('test', 'test'))
             props.updateProjectDataAction({
                 ...props.projectData,
                 type: projectType
@@ -107,8 +102,7 @@ const mapDispatchToProps = {
     updateActiveImageIndexAction: updateActiveImageIndex,
     addImageDataAction: addImageData,
     updateProjectDataAction: updateProjectData,
-    updateActivePopupTypeAction: updateActivePopupType,
-    submitNewNotificationAction: submitNewNotification
+    updateActivePopupTypeAction: updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({
