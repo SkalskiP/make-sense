@@ -1,9 +1,9 @@
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from "../../store/labels/types";
-import {filter} from "lodash";
-import {store} from "../../index";
-import {updateImageData, updateImageDataById} from "../../store/labels/actionCreators";
-import {LabelType} from "../../data/enums/LabelType";
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../../store/labels/types';
+import {filter} from 'lodash';
+import {store} from '../../index';
+import {updateImageData, updateImageDataById} from '../../store/labels/actionCreators';
+import {LabelType} from '../../data/enums/LabelType';
 
 export class LabelActions {
     public static deleteActiveLabel() {
@@ -120,7 +120,7 @@ export class LabelActions {
     public static labelExistsInLabelNames(label: string): boolean {
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         return labelNames
-            .map((label: LabelName) => label.name)
+            .map((labelName: LabelName) => labelName.name)
             .includes(label)
     }
 }

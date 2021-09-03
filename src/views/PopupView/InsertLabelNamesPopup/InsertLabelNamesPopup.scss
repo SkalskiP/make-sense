@@ -28,10 +28,6 @@
     .ImageButton {
       transition: transform 0.3s;
 
-      img {
-        filter: brightness(0) invert(1);
-      }
-
       &:hover {
         border-radius: 3px;
         background-color: rgba(0, 0, 0, 0.2);
@@ -40,6 +36,12 @@
       &.active {
         border-radius: 3px;
         background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      &.monochrome {
+        img {
+          filter: brightness(0) invert(1);
+        }
       }
     }
   }

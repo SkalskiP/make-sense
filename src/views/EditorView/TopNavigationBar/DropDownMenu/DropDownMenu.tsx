@@ -1,17 +1,17 @@
-import React, {useState} from "react";
+import React, {useState} from 'react';
 import classNames from 'classnames'
 import './DropDownMenu.scss';
-import {DropDownMenuData, DropDownMenuNode} from "../../../../data/info/DropDownMenuData";
-import {EventType} from "../../../../data/enums/EventType";
-import {updatePreventCustomCursorStatus} from "../../../../store/general/actionCreators";
-import {AppState} from "../../../../store";
-import {connect} from "react-redux";
+import {DropDownMenuData, DropDownMenuNode} from '../../../../data/info/DropDownMenuData';
+import {EventType} from '../../../../data/enums/EventType';
+import {updatePreventCustomCursorStatus} from '../../../../store/general/actionCreators';
+import {AppState} from '../../../../store';
+import {connect} from 'react-redux';
 
 interface IProps {
-    updatePreventCustomCursorStatus: (preventCustomCursor: boolean) => any;
+    updatePreventCustomCursorStatusAction: (preventCustomCursor: boolean) => any;
 }
 
-const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
+const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatusAction}) => {
     const topAnchor = 35;
 
     const [activeTabIdx, setActiveTabIdx] = useState(null);
@@ -32,15 +32,15 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
     }
 
     const onMouseEnterWindow = (event) => {
-        updatePreventCustomCursorStatus(true);
+        updatePreventCustomCursorStatusAction(true);
     }
 
     const onMouseLeaveWindow = (event) => {
-        updatePreventCustomCursorStatus(false);
+        updatePreventCustomCursorStatusAction(false);
     }
 
     const onMouseDownBeyondDropDown = (event) => {
-        if (event.target.classList.contains("DropDownMenuTab") || event.target.classList.contains("DropDownMenuContentOption")) {
+        if (event.target.classList.contains('DropDownMenuTab') || event.target.classList.contains('DropDownMenuContentOption')) {
             return;
         }
         setActiveTabIdx(null);
@@ -56,15 +56,15 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
 
     const getDropDownMenuTabClassName = (tabIdx: number) => {
         return classNames(
-            "DropDownMenuTab",
-            {"active": tabIdx === activeTabIdx}
+            'DropDownMenuTab',
+            {'active': tabIdx === activeTabIdx}
         );
     };
 
     const getDropDownMenuContentOption = (disabled: boolean) => {
         return classNames(
-            "DropDownMenuContentOption",
-            {"active": !disabled}
+            'DropDownMenuContentOption',
+            {'active': !disabled}
         );
     }
 
@@ -77,7 +77,7 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
             if (!!disabled) return;
             if (!!onClick) onClick();
             setActiveTabIdx(null);
-            updatePreventCustomCursorStatus(false);
+            updatePreventCustomCursorStatusAction(false);
             document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
         }
     }
@@ -106,7 +106,7 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
                 height: 40 * data.children.length + 10
             }
             return <div
-                className={"DropDownMenuContent"}
+                className={'DropDownMenuContent'}
                 style={style}
                 onMouseEnter={onMouseEnterWindow}
                 onMouseLeave={onMouseLeaveWindow}
@@ -116,7 +116,7 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
                         onClick={wrapOnClick(element.onClick, element.disabled)}
                         key={index}
                     >
-                        <div className="Marker"/>
+                        <div className='Marker'/>
                         <img src={element.imageSrc} alt={element.imageAlt}/>
                         {element.name}
                     </div>})}
@@ -126,7 +126,7 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
         }
     }
 
-    return(<div className="DropDownMenuWrapper">
+    return(<div className='DropDownMenuWrapper'>
         <>
             {getDropDownContent()}
             {getDropDownWindow(DropDownMenuData[activeTabIdx])}
@@ -135,7 +135,7 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatus}) => {
 }
 
 const mapDispatchToProps = {
-    updatePreventCustomCursorStatus,
+    updatePreventCustomCursorStatusAction: updatePreventCustomCursorStatus,
 };
 
 const mapStateToProps = (state: AppState) => ({});

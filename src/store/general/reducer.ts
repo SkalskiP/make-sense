@@ -11,6 +11,7 @@ const initialState: GeneralState = {
     preventCustomCursor: false,
     imageDragMode: false,
     crossHairVisible: true,
+    enablePerClassColoration: true,
     projectData: {
         type: null,
         name: 'my-project-name',
@@ -75,6 +76,12 @@ export function generalReducer(
             return {
                 ...state,
                 zoom: action.payload.zoom
+            }
+        }
+        case Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS: {
+            return {
+                ...state,
+                enablePerClassColoration: action.payload.enablePerClassColoration
             }
         }
         default:

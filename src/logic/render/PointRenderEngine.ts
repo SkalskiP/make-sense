@@ -1,5 +1,5 @@
 import {IRect} from '../../interfaces/IRect';
-import {RenderEngineConfig} from '../../settings/RenderEngineConfig';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
 import {IPoint} from '../../interfaces/IPoint';
 import {CanvasUtil} from '../../utils/CanvasUtil';
 import {store} from '../../index';
@@ -27,7 +27,6 @@ import {LabelStatus} from '../../data/enums/LabelStatus';
 import {Settings} from '../../settings/Settings';
 
 export class PointRenderEngine extends BaseRenderEngine {
-    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -51,7 +50,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             if (!!labelPoint) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
-                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, RenderEngineSettings.anchorHoverSize);
                 if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateActiveLabelId(labelPoint.id));
                     EditorActions.setViewPortActionsDisabledStatus(true);
@@ -119,7 +118,8 @@ export class PointRenderEngine extends BaseRenderEngine {
                     if (this.isInProgress()) {
                         const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
                         const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
-                        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, this.config.activeAnchorColor)
+                        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true);
+                        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor)
                     } else {
                         this.renderPoint(labelPoint, true, data);
                     }
@@ -134,8 +134,8 @@ export class PointRenderEngine extends BaseRenderEngine {
     private renderPoint(labelPoint: LabelPoint, isActive: boolean, data: EditorData) {
         const pointOnImage: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
         const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnImage);
-        const handleColor: string = isActive ? this.config.activeAnchorColor : this.config.inactiveAnchorColor;
-        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, handleColor)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(isActive);
+        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor)
     }
 
     private updateCursorStyle(data: EditorData) {
@@ -144,7 +144,7 @@ export class PointRenderEngine extends BaseRenderEngine {
             if (!!labelPoint && labelPoint.status === LabelStatus.ACCEPTED) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
-                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, this.config.anchorHoverSize);
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, RenderEngineSettings.anchorHoverSize);
                 if (RectUtil.isPointInside(handleRect, data.mousePositionOnViewPortContent)) {
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     return;
@@ -175,7 +175,7 @@ export class PointRenderEngine extends BaseRenderEngine {
         const labelPoints: LabelPoint[] = LabelsSelector.getActiveImageData().labelPoints;
         for (let i = 0; i < labelPoints.length; i++) {
             const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoints[i].point, data);
-            const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointOnCanvas, this.config.anchorHoverSize);
+            const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointOnCanvas, RenderEngineSettings.anchorHoverSize);
             if (RectUtil.isPointInside(handleRect, mousePosition)) {
                 return labelPoints[i];
             }

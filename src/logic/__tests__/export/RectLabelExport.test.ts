@@ -1,7 +1,7 @@
-import {LabelName, LabelRect} from "../../../store/labels/types";
-import {LabelStatus} from "../../../data/enums/LabelStatus";
-import {ISize} from "../../../interfaces/ISize";
-import {RectLabelsExporter} from "../../export/RectLabelsExporter";
+import {LabelName, LabelRect} from '../../../store/labels/types';
+import {LabelStatus} from '../../../data/enums/LabelStatus';
+import {ISize} from '../../../interfaces/ISize';
+import {RectLabelsExporter} from '../../export/RectLabelsExporter';
 
 const imageSize: ISize = {
     width: 1920,
@@ -9,20 +9,24 @@ const imageSize: ISize = {
 }
 const labelNames: LabelName[] = [
     {
-        id: "label-000",
-        name: "label-name-000"
+        id: 'label-000',
+        name: 'label-name-000',
+        color: '#000000'
     },
     {
-        id: "label-001",
-        name: "label-name-001"
+        id: 'label-001',
+        name: 'label-name-001',
+        color: '#000000'
     },
     {
-        id: "label-002",
-        name: "label-name-002"
+        id: 'label-002',
+        name: 'label-name-002',
+        color: '#000000'
     },
     {
-        id: "label-003",
-        name: "label-name-003"
+        id: 'label-003',
+        name: 'label-name-003',
+        color: '#000000'
     },
 ]
 
@@ -30,8 +34,8 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
     it('should produce correct single label entry given issue #171 example 1', () => {
         // given
         const labelRect: LabelRect = {
-            id: "label-rect-000",
-            labelId: "label-002",
+            id: 'label-rect-000',
+            labelId: 'label-002',
             rect: {
                 x: 444,
                 y: 998,
@@ -40,12 +44,12 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
             },
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
-            suggestedLabel: "label-000"
+            suggestedLabel: 'label-000'
         }
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
         // then
-        let [classIdx, x, y, width, height] = result.split(" ").map((value: string) => parseFloat(value))
+        const [classIdx, x, y, width, height] = result.split(' ').map((value: string) => parseFloat(value))
         expect(classIdx).toBe(2)
         expect(x + width / 2 <= 1).toBeTruthy()
         expect(x - width / 2 >= 0).toBeTruthy()
@@ -56,8 +60,8 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
     it('should produce correct single label entry given issue #171 example 2', () => {
         // given
         const labelRect: LabelRect = {
-            id: "label-rect-000",
-            labelId: "label-002",
+            id: 'label-rect-000',
+            labelId: 'label-002',
             rect: {
                 x: 1828,
                 y: 710,
@@ -66,12 +70,12 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
             },
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
-            suggestedLabel: "label-000"
+            suggestedLabel: 'label-000'
         }
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
         // then
-        let [classIdx, x, y, width, height] = result.split(" ").map((value: string) => parseFloat(value))
+        const [classIdx, x, y, width, height] = result.split(' ').map((value: string) => parseFloat(value))
         expect(classIdx).toBe(2)
         expect(x + width / 2 <= 1).toBeTruthy()
         expect(x - width / 2 >= 0).toBeTruthy()
@@ -82,8 +86,8 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
     it('should produce correct single label entry given issue #171 example 3', () => {
         // given
         const labelRect: LabelRect = {
-            id: "label-rect-000",
-            labelId: "label-002",
+            id: 'label-rect-000',
+            labelId: 'label-002',
             rect: {
                 x: 0,
                 y: 138,
@@ -92,12 +96,12 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
             },
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
-            suggestedLabel: "label-000"
+            suggestedLabel: 'label-000'
         }
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
         // then
-        let [classIdx, x, y, width, height] = result.split(" ").map((value: string) => parseFloat(value))
+        const [classIdx, x, y, width, height] = result.split(' ').map((value: string) => parseFloat(value))
         expect(classIdx).toBe(2)
         expect(x + width / 2 <= 1).toBeTruthy()
         expect(x - width / 2 >= 0).toBeTruthy()

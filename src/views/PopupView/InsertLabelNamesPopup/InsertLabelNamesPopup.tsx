@@ -1,109 +1,163 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import './InsertLabelNamesPopup.scss'
-import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
-import { PopupWindowType } from '../../../data/enums/PopupWindowType';
-import { updateLabelNames } from '../../../store/labels/actionCreators';
-import { updateActivePopupType } from '../../../store/general/actionCreators';
-import { AppState } from '../../../store';
-import { connect } from 'react-redux';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import {updateLabelNames} from '../../../store/labels/actionCreators';
+import {updateActivePopupType, updatePerClassColorationStatus} from '../../../store/general/actionCreators';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars';
-import TextInput from '../../Common/TextInput/TextInput';
-import { ImageButton } from '../../Common/ImageButton/ImageButton';
-import { v4 as uuidv4 } from 'uuid';
-import { LabelName } from '../../../store/labels/types';
-import { LabelUtil } from '../../../utils/LabelUtil';
-import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
-import { LabelActions } from '../../../logic/actions/LabelActions';
-import { ProjectType } from '../../../data/enums/ProjectType';
+import {ImageButton} from '../../Common/ImageButton/ImageButton';
+import {LabelName} from '../../../store/labels/types';
+import {LabelUtil} from '../../../utils/LabelUtil';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import {LabelActions} from '../../../logic/actions/LabelActions';
+import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
+import TextField from '@material-ui/core/TextField';
+import {Settings} from '../../../settings/Settings';
+import {withStyles} from '@material-ui/core';
+import {reject, sample} from 'lodash';
+import {ProjectType} from '../../../data/enums/ProjectType';
+
+const StyledTextField = withStyles({
+    root: {
+        '& .MuiInputBase-root': {
+            color: 'white',
+        },
+        '& label': {
+            color: 'white',
+        },
+        '& .MuiInput-underline:before': {
+            borderBottomColor: 'white',
+        },
+        '& .MuiInput-underline:hover:before': {
+            borderBottomColor: 'white',
+        },
+        '& label.Mui-focused': {
+            color: Settings.SECONDARY_COLOR,
+        },
+        '& .MuiInput-underline:after': {
+            borderBottomColor: Settings.SECONDARY_COLOR,
+        }
+    },
+})(TextField);
 
 interface IProps {
-    projectType: ProjectType;
-    updateActivePopupType: (activePopupType: PopupWindowType) => any;
-    updateLabelNames: (labels: LabelName[]) => any;
+    updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
+    updateLabelNamesAction: (labels: LabelName[]) => any;
+    updatePerClassColorationStatusAction: (updatePerClassColoration: boolean) => any;
     isUpdate: boolean;
+    projectType: ProjectType;
+    enablePerClassColoration: boolean;
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = (
     {
+        updateActivePopupTypeAction,
+        updateLabelNamesAction,
+        updatePerClassColorationStatusAction,
+        isUpdate,
         projectType,
-        updateActivePopupType,
-        updateLabelNames,
-        isUpdate
+        enablePerClassColoration
     }) => {
-    const initialLabels = LabelUtil.convertLabelNamesListToMap(LabelsSelector.getLabelNames());
-    const [labelNames, setLabelNames] = useState(initialLabels);
+    const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
     const addHandle = () => {
-        const newLabelNames = { ...labelNames, [uuidv4()]: '' };
+        const newLabelNames = [
+            ...labelNames,
+            LabelUtil.createLabelName('')
+        ]
         setLabelNames(newLabelNames);
     };
 
-    const deleteHandle = (key: string) => {
-        const newLabelNames = { ...labelNames };
-        delete newLabelNames[key];
+    const togglePerClassColoration = () => {
+        updatePerClassColorationStatusAction(!enablePerClassColoration)
+    }
+
+    const deleteHandle = (id: string) => {
+        const newLabelNames = reject(labelNames, {id});
         setLabelNames(newLabelNames);
     };
 
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const changeColorHandle = (id: string) => {
+        const newLabelNames = labelNames.map((labelName: LabelName) => {
+            return labelName.id === id ? {...labelName, color: sample(Settings.LABEL_COLORS_PALETTE)} : labelName
+        });
+        setLabelNames(newLabelNames);
+    }
+
+    const keyUpHandle = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             addHandle();
         }
     }
 
-    const labelInputs = Object.keys(labelNames).map((key: string) => {
-        return <div className='LabelEntry' key={key}>
-            <TextInput
-                key={key}
-                value={labelNames[key]}
-                isPassword={false}
-                onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(key, event.target.value)}
+    const labelInputs = labelNames.map((labelName: LabelName) => {
+        const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) =>
+            onChange(labelName.id, event.target.value);
+        const onDeleteCallback = () => deleteHandle(labelName.id);
+        const onChangeColorCallback = () => changeColorHandle(labelName.id);
+        return <div className='LabelEntry' key={labelName.id}>
+            <StyledTextField
+                id={'key'}
+                autoComplete={'off'}
+                type={'text'}
+                margin={'dense'}
                 label={'Insert label'}
-                onKeyUp={(event: React.KeyboardEvent<HTMLInputElement>) => handleKeyUp(event)}
+                onKeyUp={keyUpHandle}
+                value={labelName.name}
+                onChange={onChangeCallback}
+                style = {{width: 300}}
+                InputLabelProps={{
+                    shrink: true,
+                }}
             />
+            {projectType === ProjectType.OBJECT_DETECTION && enablePerClassColoration && <ColorSelectorView
+                color={labelName.color}
+                onClick={onChangeColorCallback}
+            />}
             <ImageButton
                 image={'ico/trash.png'}
                 imageAlt={'remove_label'}
                 buttonSize={{ width: 30, height: 30 }}
-                onClick={() => deleteHandle(key)}
+                onClick={onDeleteCallback}
             />
         </div>
     });
 
-    const onChange = (key: string, value: string) => {
-        const newLabelNames = { ...labelNames, [key]: value };
+    const onChange = (id: string, value: string) => {
+        const newLabelNames = labelNames.map((labelName: LabelName) => {
+            return labelName.id === id ? {
+                ...labelName, name: value
+            } : labelName
+        })
         setLabelNames(newLabelNames);
     };
 
     const onCreateAccept = () => {
-        const labelNamesList: string[] = extractLabelNamesList();
-        if (labelNamesList.length > 0) {
-            updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
+        const nonEmptyLabelNames: LabelName[] = reject(labelNames,
+            (labelName: LabelName) => labelName.name.length === 0)
+        if (labelNames.length > 0) {
+            updateLabelNamesAction(nonEmptyLabelNames);
         }
-        updateActivePopupType(null);
+        updateActivePopupTypeAction(null);
     };
 
     const onUpdateAccept = () => {
-        const labelNamesList: string[] = extractLabelNamesList();
-        const updatedLabelNamesList: LabelName[] = LabelUtil.convertMapToLabelNamesList(labelNames);
-        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), updatedLabelNamesList);
+        const nonEmptyLabelNames: LabelName[] = reject(labelNames,
+            (labelName: LabelName) => labelName.name.length === 0)
+        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
         LabelActions.removeLabelNames(missingIds);
-        if (labelNamesList.length > 0) {
-            updateLabelNames(LabelUtil.convertMapToLabelNamesList(labelNames));
-            updateActivePopupType(null);
-        }
+        updateLabelNamesAction(nonEmptyLabelNames);
+        updateActivePopupTypeAction(null);
     };
 
     const onCreateReject = () => {
-        updateActivePopupType(PopupWindowType.LOAD_LABEL_NAMES);
+        updateActivePopupTypeAction(PopupWindowType.LOAD_LABEL_NAMES);
     };
 
     const onUpdateReject = () => {
-        updateActivePopupType(null);
-    };
-
-
-    const extractLabelNamesList = (): string[] => {
-        return Object.values(labelNames).filter((value => !!value)) as string[];
+        updateActivePopupTypeAction(null);
     };
 
     const renderContent = () => {
@@ -115,14 +169,24 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     buttonSize={{ width: 40, height: 40 }}
                     padding={25}
                     onClick={addHandle}
+                    externalClassName={'monochrome'}
                 />
+                {labelNames.length > 0 && <ImageButton
+                    image={enablePerClassColoration ? 'ico/colors-on.png' : 'ico/colors-off.png'}
+                    imageAlt={'per-class-coloration'}
+                    buttonSize={{ width: 40, height: 40 }}
+                    padding={15}
+                    onClick={togglePerClassColoration}
+                    isActive={enablePerClassColoration}
+                    externalClassName={enablePerClassColoration ? '' : 'monochrome'}
+                />}
             </div>
             <div className='RightContainer'>
                 <div className='Message'>
                     {
                         isUpdate ?
-                            'You can now edit the label names you use to describe the objects in the photos. Use the + ' +
-                            'button to add a new empty text field.' :
+                            'You can now edit the label names you use to describe the objects in the photos. Use the ' +
+                            '+ button to add a new empty text field.' :
                             'Before you start, you can create a list of labels you plan to assign to objects in your ' +
                             'project. You can also choose to skip that part for now and define label names as you go.'
                     }
@@ -163,12 +227,14 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 };
 
 const mapDispatchToProps = {
-    updateActivePopupType,
-    updateLabelNames
+    updateActivePopupTypeAction: updateActivePopupType,
+    updateLabelNamesAction: updateLabelNames,
+    updatePerClassColorationStatusAction: updatePerClassColorationStatus
 };
 
 const mapStateToProps = (state: AppState) => ({
-    projectType: state.general.projectData.type
+    projectType: state.general.projectData.type,
+    enablePerClassColoration: state.general.enablePerClassColoration
 });
 
 export default connect(

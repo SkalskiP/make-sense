@@ -11,6 +11,8 @@ import {LabelName} from '../../../store/labels/types';
 import {updateLabelNames} from '../../../store/labels/actionCreators';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import { v4 as uuidv4 } from 'uuid';
+import {ArrayUtil} from '../../../utils/ArrayUtil';
+import {Settings} from '../../../settings/Settings';
 
 interface SelectableName {
     name: string;
@@ -43,10 +45,11 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     const [labelNames, setLabelNames] = useState(mapNamesToSelectableNames(AISelector.getSuggestedLabelList()));
 
     const onAccept = () => {
-        updateLabelNames(extractSelectedNames().reduce((acc: LabelName[], entry: string) => {
+        updateLabelNames(extractSelectedNames().reduce((acc: LabelName[], entry: string, index: number) => {
             acc.push({
                 name: entry,
-                id: uuidv4()
+                id: uuidv4(),
+                color: ArrayUtil.getByInfiniteIndex(Settings.LABEL_COLORS_PALETTE, index)
             });
             return acc;
         }, LabelsSelector.getLabelNames()));

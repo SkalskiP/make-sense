@@ -40,4 +40,8 @@ export class GeneralSelector {
     public static getZoom(): number {
         return store.getState().general.zoom;
     }
+
+    public static getEnablePerClassColorationStatus(): boolean {
+        return store.getState().general.enablePerClassColoration
+    }
 }
