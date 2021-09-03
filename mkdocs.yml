@@ -47,6 +47,11 @@ theme:
     - navigation.expand
   icon:
     repo: fontawesome/brands/github
+    
+# Google Analytics
+google_analytics:
+  - 'UA-155837750-2'
+  - 'auto'
 
 # Extensions
 markdown_extensions:

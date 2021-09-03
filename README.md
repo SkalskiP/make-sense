@@ -66,7 +66,7 @@ npm install
 # serve with hot reload at localhost:3000
 npm start
 ```
-To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v11.x.x` versions are required. More information about this problem is available in the [#16][4].
+To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v12.x.x` versions are required. More information about this problem is available in the [#16][4].
 
 ## 🐳 Docker Setup
 
@@ -151,6 +151,12 @@ If you are just starting your adventure with deep learning and would like to lea
 
 ## 🙋 Contribution
 
+<p align="center"> 
+    <a href="https://github.com/SkalskiP/make-sense/graphs/contributors">
+      <img src="https://contrib.rocks/image?repo=SkalskiP/make-sense" />
+    </a>
+</p>
+
 Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pull requests](https://github.com/SkalskiP/make-sense/pulls).  
 
 ## 💬 Citation
@@ -168,9 +174,7 @@ Please cite Make Sense in your publications if this is useful for your research.
 
 ## 🪧 License
 
-This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details
-
-Copyright &copy; 2019 Piotr Skalski
+This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file for details. Copyright &copy; 2019 Piotr Skalski.
 
 [1]: http://makesense.ai
 [2]: ./LICENSE

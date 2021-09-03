@@ -129,6 +129,7 @@ const MainView: React.FC = () => {
                 {!projectInProgress && <TextButton
                     label={'Get Started'}
                     onClick={startProject}
+                    externalClassName={'get-started-button'}
                 />}
             </div>
         </div>
