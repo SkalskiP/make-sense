@@ -101,6 +101,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             <StyledTextField
                 id={'key'}
                 autoComplete={'off'}
+                autoFocus={true}
                 type={'text'}
                 margin={'dense'}
                 label={'Insert label'}

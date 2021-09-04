@@ -66,6 +66,7 @@ const NotificationsView: React.FC<IProps> = (props) => {
             'error': notification.type === NotificationType.ERROR,
             'success': notification.type === NotificationType.SUCCESS,
             'message': notification.type === NotificationType.MESSAGE,
+            'warning': notification.type === NotificationType.WARNING
         })
     }
 

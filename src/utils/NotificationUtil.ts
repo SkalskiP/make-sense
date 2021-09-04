@@ -20,4 +20,13 @@ export class NotificationUtil {
             description
         }
     }
+
+    public static createWarningNotification(header: string, description: string): INotification {
+        return {
+            id: uuidv4(),
+            type: NotificationType.WARNING,
+            header,
+            description
+        }
+    }
 }

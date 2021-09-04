@@ -27,6 +27,8 @@ const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     } as DropzoneOptions);
 
     const startEditor = (projectType: ProjectType) => {
+        // tslint:disable-next-line:no-console
+        console.log(acceptedFiles)
         if (acceptedFiles.length > 0) {
             props.updateProjectDataAction({
                 ...props.projectData,
