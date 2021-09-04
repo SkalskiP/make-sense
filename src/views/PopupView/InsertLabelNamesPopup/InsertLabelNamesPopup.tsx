@@ -16,8 +16,13 @@ import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
 import TextField from '@material-ui/core/TextField';
 import {Settings} from '../../../settings/Settings';
 import {withStyles} from '@material-ui/core';
-import {reject, sample} from 'lodash';
+import {reject, sample, filter} from 'lodash';
 import {ProjectType} from '../../../data/enums/ProjectType';
+import {submitNewNotification} from '../../../store/notifications/actionCreators';
+import {INotification} from '../../../store/notifications/types';
+import {NotificationUtil} from '../../../utils/NotificationUtil';
+import {NotificationsDataMap} from '../../../data/info/NotificationsData';
+import {Notification} from '../../../data/enums/Notification';
 
 const StyledTextField = withStyles({
     root: {
@@ -46,6 +51,7 @@ interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateLabelNamesAction: (labels: LabelName[]) => any;
     updatePerClassColorationStatusAction: (updatePerClassColoration: boolean) => any;
+    submitNewNotificationAction: (notification: INotification) => any;
     isUpdate: boolean;
     projectType: ProjectType;
     enablePerClassColoration: boolean;
@@ -56,6 +62,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction,
         updateLabelNamesAction,
         updatePerClassColorationStatusAction,
+        submitNewNotificationAction,
         isUpdate,
         projectType,
         enablePerClassColoration
@@ -69,6 +76,20 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         ]
         setLabelNames(newLabelNames);
     };
+
+    const validateEmptyLabelNames = (): boolean => {
+        const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '')
+        return emptyLabelNames.length === 0
+    }
+
+    const safeAddHandle = () => {
+        if (validateEmptyLabelNames()) {
+            addHandle()
+        } else {
+            submitNewNotificationAction(NotificationUtil
+                .createErrorNotification(NotificationsDataMap[Notification.EMPTY_LABEL_NAME_ERROR]))
+        }
+    }
 
     const togglePerClassColoration = () => {
         updatePerClassColorationStatusAction(!enablePerClassColoration)
@@ -88,7 +109,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
     const keyUpHandle = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            addHandle();
+            safeAddHandle()
         }
     }
 
@@ -169,7 +190,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     imageAlt={'plus'}
                     buttonSize={{ width: 40, height: 40 }}
                     padding={25}
-                    onClick={addHandle}
+                    onClick={safeAddHandle}
                     externalClassName={'monochrome'}
                 />
                 {labelNames.length > 0 && <ImageButton
@@ -230,7 +251,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
     updateLabelNamesAction: updateLabelNames,
-    updatePerClassColorationStatusAction: updatePerClassColorationStatus
+    updatePerClassColorationStatusAction: updatePerClassColorationStatus,
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({

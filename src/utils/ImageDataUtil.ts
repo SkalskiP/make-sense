@@ -41,8 +41,8 @@ export class ImageDataUtil {
             const missingImages = images.filter((i: ImageData) => !i.loadStatus);
             const missingImagesFiles = missingImages.map((i: ImageData) => i.fileData);
             FileUtil.loadImages(missingImagesFiles)
-                .then((images:HTMLImageElement[]) => {
-                    ImageRepository.storeImages(missingImages.map((i: ImageData) => i.id), images);
+                .then((htmlImageElements:HTMLImageElement[]) => {
+                    ImageRepository.storeImages(missingImages.map((i: ImageData) => i.id), htmlImageElements);
                     resolve()
                 })
                 .catch((error: Error) => reject(error));

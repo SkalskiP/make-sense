@@ -12,6 +12,7 @@ import {updateActivePopupType, updateProjectData} from '../../../store/general/a
 import {AcceptedFileType} from '../../../data/enums/AcceptedFileType';
 import {ProjectData} from '../../../store/general/types';
 import {ImageDataUtil} from '../../../utils/ImageDataUtil';
+import { sortBy } from 'lodash';
 
 interface IProps {
     updateActiveImageIndexAction: (activeImageIndex: number) => any;
@@ -27,16 +28,15 @@ const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     } as DropzoneOptions);
 
     const startEditor = (projectType: ProjectType) => {
-        // tslint:disable-next-line:no-console
-        console.log(acceptedFiles)
         if (acceptedFiles.length > 0) {
+            const files = sortBy(acceptedFiles, (item: File) => item.name)
             props.updateProjectDataAction({
                 ...props.projectData,
                 type: projectType
             });
             props.updateActiveImageIndexAction(0);
-            props.addImageDataAction(acceptedFiles.map((fileData:File) => ImageDataUtil
-                .createImageDataFromFileData(fileData)));
+            props.addImageDataAction(files.map((file:File) => ImageDataUtil
+                .createImageDataFromFileData(file)));
             props.updateActivePopupTypeAction(PopupWindowType.INSERT_LABEL_NAMES);
         }
     };
