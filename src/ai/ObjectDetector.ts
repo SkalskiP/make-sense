@@ -1,3 +1,4 @@
+import '@tensorflow/tfjs-backend-cpu';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import {DetectedObject, ObjectDetection} from '@tensorflow-models/coco-ssd';
 import {store} from '../index';

@@ -1,3 +1,4 @@
+import '@tensorflow/tfjs-backend-webgl';
 import * as posenet from '@tensorflow-models/posenet';
 import {PoseNet} from '@tensorflow-models/posenet';
 import {Pose} from '@tensorflow-models/posenet';
