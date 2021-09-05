@@ -16,8 +16,13 @@ import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
 import TextField from '@material-ui/core/TextField';
 import {Settings} from '../../../settings/Settings';
 import {withStyles} from '@material-ui/core';
-import {reject, sample} from 'lodash';
+import {reject, sample, filter, uniq} from 'lodash';
 import {ProjectType} from '../../../data/enums/ProjectType';
+import {submitNewNotification} from '../../../store/notifications/actionCreators';
+import {INotification} from '../../../store/notifications/types';
+import {NotificationUtil} from '../../../utils/NotificationUtil';
+import {NotificationsDataMap} from '../../../data/info/NotificationsData';
+import {Notification} from '../../../data/enums/Notification';
 
 const StyledTextField = withStyles({
     root: {
@@ -46,6 +51,7 @@ interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateLabelNamesAction: (labels: LabelName[]) => any;
     updatePerClassColorationStatusAction: (updatePerClassColoration: boolean) => any;
+    submitNewNotificationAction: (notification: INotification) => any;
     isUpdate: boolean;
     projectType: ProjectType;
     enablePerClassColoration: boolean;
@@ -56,13 +62,40 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction,
         updateLabelNamesAction,
         updatePerClassColorationStatusAction,
+        submitNewNotificationAction,
         isUpdate,
         projectType,
         enablePerClassColoration
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
-    const addHandle = () => {
+    const validateEmptyLabelNames = (): boolean => {
+        const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '')
+        return emptyLabelNames.length === 0
+    }
+
+    const validateNonUniqueLabelNames = (): boolean => {
+        const uniqueLabelNames = uniq(labelNames.map((labelName: LabelName) => labelName.name))
+        return uniqueLabelNames.length === labelNames.length
+    }
+
+    const callbackWithLabelNamesValidation = (callback: () => any): () => any => {
+        return () => {
+            if (!validateEmptyLabelNames()) {
+                submitNewNotificationAction(NotificationUtil
+                    .createErrorNotification(NotificationsDataMap[Notification.EMPTY_LABEL_NAME_ERROR]))
+                return
+            }
+            if (validateNonUniqueLabelNames()) {
+                callback()
+            } else {
+                submitNewNotificationAction(NotificationUtil
+                    .createErrorNotification(NotificationsDataMap[Notification.NON_UNIQUE_LABEL_NAMES_ERROR]))
+            }
+        }
+    }
+
+    const addLabelNameCallback = () => {
         const newLabelNames = [
             ...labelNames,
             LabelUtil.createLabelName('')
@@ -70,41 +103,44 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         setLabelNames(newLabelNames);
     };
 
-    const togglePerClassColoration = () => {
-        updatePerClassColorationStatusAction(!enablePerClassColoration)
-    }
+    const safeAddLabelNameCallback = () => callbackWithLabelNamesValidation(addLabelNameCallback)()
 
-    const deleteHandle = (id: string) => {
+    const deleteLabelNameCallback = (id: string) => {
         const newLabelNames = reject(labelNames, {id});
         setLabelNames(newLabelNames);
     };
 
-    const changeColorHandle = (id: string) => {
+    const togglePerClassColorationCallback = () => {
+        updatePerClassColorationStatusAction(!enablePerClassColoration)
+    }
+
+    const changeLabelNameColorCallback = (id: string) => {
         const newLabelNames = labelNames.map((labelName: LabelName) => {
             return labelName.id === id ? {...labelName, color: sample(Settings.LABEL_COLORS_PALETTE)} : labelName
         });
         setLabelNames(newLabelNames);
     }
 
-    const keyUpHandle = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const onKeyUpCallback = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            addHandle();
+            safeAddLabelNameCallback()
         }
     }
 
     const labelInputs = labelNames.map((labelName: LabelName) => {
         const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) =>
             onChange(labelName.id, event.target.value);
-        const onDeleteCallback = () => deleteHandle(labelName.id);
-        const onChangeColorCallback = () => changeColorHandle(labelName.id);
+        const onDeleteCallback = () => deleteLabelNameCallback(labelName.id);
+        const onChangeColorCallback = () => changeLabelNameColorCallback(labelName.id);
         return <div className='LabelEntry' key={labelName.id}>
             <StyledTextField
                 id={'key'}
                 autoComplete={'off'}
+                autoFocus={true}
                 type={'text'}
                 margin={'dense'}
                 label={'Insert label'}
-                onKeyUp={keyUpHandle}
+                onKeyUp={onKeyUpCallback}
                 value={labelName.name}
                 onChange={onChangeCallback}
                 style = {{width: 280}}
@@ -134,7 +170,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         setLabelNames(newLabelNames);
     };
 
-    const onCreateAccept = () => {
+    const onCreateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
             (labelName: LabelName) => labelName.name.length === 0)
         if (labelNames.length > 0) {
@@ -143,7 +179,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction(null);
     };
 
-    const onUpdateAccept = () => {
+    const safeOnCreateAcceptCallback = () => callbackWithLabelNamesValidation(onCreateAcceptCallback)();
+
+    const onUpdateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
             (labelName: LabelName) => labelName.name.length === 0)
         const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
@@ -152,11 +190,13 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction(null);
     };
 
-    const onCreateReject = () => {
+    const safeOnUpdateAcceptCallback = () => callbackWithLabelNamesValidation(onUpdateAcceptCallback)();
+
+    const onCreateRejectCallback = () => {
         updateActivePopupTypeAction(PopupWindowType.LOAD_LABEL_NAMES);
     };
 
-    const onUpdateReject = () => {
+    const onUpdateRejectCallback = () => {
         updateActivePopupTypeAction(null);
     };
 
@@ -168,7 +208,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     imageAlt={'plus'}
                     buttonSize={{ width: 40, height: 40 }}
                     padding={25}
-                    onClick={addHandle}
+                    onClick={safeAddLabelNameCallback}
                     externalClassName={'monochrome'}
                 />
                 {labelNames.length > 0 && <ImageButton
@@ -176,7 +216,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     imageAlt={'per-class-coloration'}
                     buttonSize={{ width: 40, height: 40 }}
                     padding={15}
-                    onClick={togglePerClassColoration}
+                    onClick={togglePerClassColorationCallback}
                     isActive={enablePerClassColoration}
                     externalClassName={enablePerClassColoration ? '' : 'monochrome'}
                 />}
@@ -201,7 +241,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     </Scrollbars> :
                         <div
                             className='EmptyList'
-                            onClick={addHandle}
+                            onClick={addLabelNameCallback}
                         >
                             <img
                                 draggable={false}
@@ -220,16 +260,17 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             title={isUpdate ? 'Edit labels' : 'Create labels'}
             renderContent={renderContent}
             acceptLabel={isUpdate ? 'Accept' : 'Start project'}
-            onAccept={isUpdate ? onUpdateAccept : onCreateAccept}
+            onAccept={isUpdate ? safeOnUpdateAcceptCallback : safeOnCreateAcceptCallback}
             rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
-            onReject={isUpdate ? onUpdateReject : onCreateReject}
+            onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
         />)
 };
 
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
     updateLabelNamesAction: updateLabelNames,
-    updatePerClassColorationStatusAction: updatePerClassColorationStatus
+    updatePerClassColorationStatusAction: updatePerClassColorationStatus,
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({

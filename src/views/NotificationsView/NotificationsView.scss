@@ -8,6 +8,7 @@ $baseZIndex: 2000;
 //$errorColor: #ff0033;
 $errorColor: #d42245;
 $successColor: #009944;
+$warningColor: #eed202;
 
 .notification-wrapper {
   position: fixed;
@@ -91,6 +92,16 @@ $successColor: #009944;
       }
       .loader {
         background-color: #{$secondaryColor};
+      }
+    }
+
+    &.warning {
+      .header {
+        background-color: #{$warningColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$warningColor};
       }
     }
   }
