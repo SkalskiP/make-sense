@@ -56,15 +56,15 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 description: 'Load our pre-trained annotation models',
                 imageSrc: 'ico/ai.png',
                 imageAlt: 'load-ai-model',
-                disabled: false,
+                disabled: true,
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.LOAD_AI_MODEL))
             },
         ]
     },
     {
         name: 'Community',
-        imageSrc: 'ico/more.png',
-        imageAlt: 'more',
+        imageSrc: 'ico/heart.png',
+        imageAlt: 'community',
         disabled: false,
         children: [
             {
