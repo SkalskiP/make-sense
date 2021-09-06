@@ -1,6 +1,4 @@
-import {ArrayUtil, ArrayUtilAmbiguousMatchError} from "../ArrayUtil";
-import {YOLOUtils} from "../../logic/import/yolo/YOLOUtils";
-import {AnnotationsParsingError} from "../../logic/import/yolo/YOLOErrors";
+import {ArrayUtil, ArrayUtilAmbiguousMatchError, EmptyArrayError, NegativeIndexError} from '../ArrayUtil';
 
 describe('ArrayUtil partition method', () => {
     it('should return empty PartitionResult if array is empty', () => {
@@ -72,8 +70,8 @@ describe('ArrayUtil match method', () => {
 
     it('should return correct array when number of keys smaller than values', () => {
         // given
-        const array1 = ["aa", "bb", "cc",];
-        const array2 = ["bb1", "aa2", "cc4", "cc3", "aa1", "bb2", "aa3"];
+        const array1 = ['aa', 'bb', 'cc',];
+        const array2 = ['bb1', 'aa2', 'cc4', 'cc3', 'aa1', 'bb2', 'aa3'];
         const predicate = (k, v) => v.startsWith(k);
 
         function wrapper() {
@@ -82,3 +80,24 @@ describe('ArrayUtil match method', () => {
         expect(wrapper).toThrowError(new ArrayUtilAmbiguousMatchError());
     });
 });
+
+describe('ArrayUtil getByInfiniteIndex method', () => {
+    it('should throw EmptyArrayError', () => {
+        // then
+        expect(() => { ArrayUtil.getByInfiniteIndex([], 0); }).toThrowError(new EmptyArrayError())
+    })
+
+    it('should throw NegativeIndexError', () => {
+        // then
+        expect(() => { ArrayUtil.getByInfiniteIndex([1], -1); }).toThrowError(new NegativeIndexError())
+    })
+
+    it('should return correct element', () => {
+        // given
+        const array = [1, 2, 3, 4, 5];
+        // when
+        const result = ArrayUtil.getByInfiniteIndex(array, 11)
+        // then
+        expect(result).toBe(2);
+    })
+})

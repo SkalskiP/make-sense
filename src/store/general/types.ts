@@ -1,9 +1,9 @@
-import {ISize} from "../../interfaces/ISize";
-import {Action} from "../Actions";
-import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {ContextType} from "../../data/enums/ContextType";
-import {ProjectType} from "../../data/enums/ProjectType";
+import {ISize} from '../../interfaces/ISize';
+import {Action} from '../Actions';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {ContextType} from '../../data/enums/ContextType';
+import {ProjectType} from '../../data/enums/ProjectType';
 
 export type ProjectData = {
     type: ProjectType;
@@ -17,6 +17,7 @@ export type GeneralState = {
     preventCustomCursor: boolean;
     imageDragMode: boolean;
     crossHairVisible: boolean;
+    enablePerClassColoration: boolean;
     activeContext: ContextType;
     projectData: ProjectData;
     zoom: number;
@@ -85,6 +86,13 @@ interface UpdateZoom {
     }
 }
 
+interface UpdatePerClassColoration {
+    type: typeof Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS,
+    payload: {
+        enablePerClassColoration: boolean;
+    }
+}
+
 export type GeneralActionTypes = UpdateProjectData
     | UpdateWindowSize
     | UpdateActivePopupType
@@ -94,3 +102,4 @@ export type GeneralActionTypes = UpdateProjectData
     | UpdateImageDragModeStatus
     | UpdateCrossHairVisibleStatus
     | UpdateZoom
+    | UpdatePerClassColoration

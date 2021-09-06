@@ -5,8 +5,22 @@ export type PartitionResult<T> = {
 
 export class ArrayUtilAmbiguousMatchError extends Error {
     constructor() {
-        super("Given predicate results in more than one value being matched.");
-        this.name = "ArrayUtilAmbiguousMatchError";
+        super('Given predicate results in more than one value being matched.');
+        this.name = 'ArrayUtilAmbiguousMatchError';
+    }
+}
+
+export class EmptyArrayError extends Error {
+    constructor() {
+        super('Given array is empty.');
+        this.name = 'EmptyArrayError';
+    }
+}
+
+export class NegativeIndexError extends Error {
+    constructor() {
+        super('Index can not be negative.');
+        this.name = 'NegativeIndexError';
     }
 }
 
@@ -39,5 +53,16 @@ export class ArrayUtil {
             acc[1].push(i[1]);
             return acc;
         }, [[], []])
+    }
+
+    public static getByInfiniteIndex<T>(array: T[], index: number): T {
+        if (array.length === 0) {
+            throw new EmptyArrayError()
+        }
+        if (index < 0) {
+            throw new NegativeIndexError()
+        }
+        const boundedIndex: number = index % array.length
+        return array[boundedIndex]
     }
 }

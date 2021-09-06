@@ -1,5 +1,5 @@
-import {Action} from "../Actions";
-import {AIActionTypes} from "./types";
+import {Action} from '../Actions';
+import {AIActionTypes} from './types';
 
 export function updateSuggestedLabelList(labelList: string[]): AIActionTypes {
     return {

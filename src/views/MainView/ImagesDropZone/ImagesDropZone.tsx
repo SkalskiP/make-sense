@@ -1,40 +1,43 @@
-import React from "react";
+import React, {PropsWithChildren} from 'react';
 import './ImagesDropZone.scss';
-import {useDropzone,DropzoneOptions} from "react-dropzone";
-import {TextButton} from "../../Common/TextButton/TextButton";
-import {ImageData} from "../../../store/labels/types";
-import {connect} from "react-redux";
-import {addImageData, updateActiveImageIndex} from "../../../store/labels/actionCreators";
-import {AppState} from "../../../store";
-import {ProjectType} from "../../../data/enums/ProjectType";
-import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActivePopupType, updateProjectData} from "../../../store/general/actionCreators";
-import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
-import {ProjectData} from "../../../store/general/types";
-import {ImageDataUtil} from "../../../utils/ImageDataUtil";
+import {useDropzone,DropzoneOptions} from 'react-dropzone';
+import {TextButton} from '../../Common/TextButton/TextButton';
+import {ImageData} from '../../../store/labels/types';
+import {connect} from 'react-redux';
+import {addImageData, updateActiveImageIndex} from '../../../store/labels/actionCreators';
+import {AppState} from '../../../store';
+import {ProjectType} from '../../../data/enums/ProjectType';
+import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import {updateActivePopupType, updateProjectData} from '../../../store/general/actionCreators';
+import {AcceptedFileType} from '../../../data/enums/AcceptedFileType';
+import {ProjectData} from '../../../store/general/types';
+import {ImageDataUtil} from '../../../utils/ImageDataUtil';
+import { sortBy } from 'lodash';
 
 interface IProps {
-    updateActiveImageIndex: (activeImageIndex: number) => any;
-    addImageData: (imageData: ImageData[]) => any;
-    updateProjectData: (projectData: ProjectData) => any;
-    updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    updateActiveImageIndexAction: (activeImageIndex: number) => any;
+    addImageDataAction: (imageData: ImageData[]) => any;
+    updateProjectDataAction: (projectData: ProjectData) => any;
+    updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     projectData: ProjectData;
 }
 
-const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData, updateProjectData, updateActivePopupType, projectData}) => {
+const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
         accept: AcceptedFileType.IMAGE
     } as DropzoneOptions);
 
     const startEditor = (projectType: ProjectType) => {
         if (acceptedFiles.length > 0) {
-            updateProjectData({
-                ...projectData,
+            const files = sortBy(acceptedFiles, (item: File) => item.name)
+            props.updateProjectDataAction({
+                ...props.projectData,
                 type: projectType
             });
-            updateActiveImageIndex(0);
-            addImageData(acceptedFiles.map((fileData:File) => ImageDataUtil.createImageDataFromFileData(fileData)));
-            updateActivePopupType(PopupWindowType.INSERT_LABEL_NAMES);
+            props.updateActiveImageIndexAction(0);
+            props.addImageDataAction(files.map((file:File) => ImageDataUtil
+                .createImageDataFromFileData(file)));
+            props.updateActivePopupTypeAction(PopupWindowType.INSERT_LABEL_NAMES);
         }
     };
 
@@ -44,21 +47,21 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
                 <input {...getInputProps()} />
                 <img
                     draggable={false}
-                    alt={"upload"}
-                    src={"ico/box-opened.png"}
+                    alt={'upload'}
+                    src={'ico/box-opened.png'}
                 />
-                <p className="extraBold">Drop images</p>
+                <p className='extraBold'>Drop images</p>
                 <p>or</p>
-                <p className="extraBold">Click here to select them</p>
+                <p className='extraBold'>Click here to select them</p>
             </>;
         else if (acceptedFiles.length === 1)
             return <>
                 <img
                     draggable={false}
-                    alt={"uploaded"}
-                    src={"ico/box-closed.png"}
+                    alt={'uploaded'}
+                    src={'ico/box-closed.png'}
                 />
-                <p className="extraBold">1 image loaded</p>
+                <p className='extraBold'>1 image loaded</p>
             </>;
         else
             return <>
@@ -66,28 +69,31 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
                 <img
                     draggable={false}
                     key={1}
-                    alt={"uploaded"}
-                    src={"ico/box-closed.png"}
+                    alt={'uploaded'}
+                    src={'ico/box-closed.png'}
                 />
-                <p key={2} className="extraBold">{acceptedFiles.length} images loaded</p>
+                <p key={2} className='extraBold'>{acceptedFiles.length} images loaded</p>
             </>;
     };
 
+    const startEditorWithObjectDetection = () => startEditor(ProjectType.OBJECT_DETECTION)
+    const startEditorWithImageRecognition = () => startEditor(ProjectType.IMAGE_RECOGNITION)
+
     return(
-        <div className="ImagesDropZone">
+        <div className='ImagesDropZone'>
             <div {...getRootProps({className: 'DropZone'})}>
                 {getDropZoneContent()}
             </div>
-            <div className="DropZoneButtons">
+            <div className='DropZoneButtons'>
                 <TextButton
-                    label={"Object Detection"}
+                    label={'Object Detection'}
                     isDisabled={!acceptedFiles.length}
-                    onClick={() => startEditor(ProjectType.OBJECT_DETECTION)}
+                    onClick={startEditorWithObjectDetection}
                 />
                 <TextButton
-                    label={"Image recognition"}
+                    label={'Image recognition'}
                     isDisabled={!acceptedFiles.length}
-                    onClick={() => startEditor(ProjectType.IMAGE_RECOGNITION)}
+                    onClick={startEditorWithImageRecognition}
                 />
             </div>
         </div>
@@ -95,10 +101,10 @@ const ImagesDropZone: React.FC<IProps> = ({updateActiveImageIndex, addImageData,
 };
 
 const mapDispatchToProps = {
-    updateActiveImageIndex,
-    addImageData,
-    updateProjectData,
-    updateActivePopupType
+    updateActiveImageIndexAction: updateActiveImageIndex,
+    addImageDataAction: addImageData,
+    updateProjectDataAction: updateProjectData,
+    updateActivePopupTypeAction: updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({

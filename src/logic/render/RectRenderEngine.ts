@@ -1,32 +1,31 @@
-import {IPoint} from "../../interfaces/IPoint";
-import {IRect} from "../../interfaces/IRect";
-import {RectUtil} from "../../utils/RectUtil";
-import {DrawUtil} from "../../utils/DrawUtil";
-import {store} from "../..";
-import {ImageData, LabelRect} from "../../store/labels/types";
+import {IPoint} from '../../interfaces/IPoint';
+import {IRect} from '../../interfaces/IRect';
+import {RectUtil} from '../../utils/RectUtil';
+import {DrawUtil} from '../../utils/DrawUtil';
+import {store} from '../..';
+import {ImageData, LabelRect} from '../../store/labels/types';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
-} from "../../store/labels/actionCreators";
-import {PointUtil} from "../../utils/PointUtil";
-import {RectAnchor} from "../../data/RectAnchor";
-import {RenderEngineConfig} from "../../settings/RenderEngineConfig";
-import {updateCustomCursorStyle} from "../../store/general/actionCreators";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {EditorData} from "../../data/EditorData";
-import {BaseRenderEngine} from "./BaseRenderEngine";
-import {RenderEngineUtil} from "../../utils/RenderEngineUtil";
-import {LabelType} from "../../data/enums/LabelType";
-import {EditorActions} from "../actions/EditorActions";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {LabelStatus} from "../../data/enums/LabelStatus";
-import {LabelUtil} from "../../utils/LabelUtil";
+} from '../../store/labels/actionCreators';
+import {PointUtil} from '../../utils/PointUtil';
+import {RectAnchor} from '../../data/RectAnchor';
+import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
+import {updateCustomCursorStyle} from '../../store/general/actionCreators';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {EditorData} from '../../data/EditorData';
+import {BaseRenderEngine} from './BaseRenderEngine';
+import {RenderEngineUtil} from '../../utils/RenderEngineUtil';
+import {LabelType} from '../../data/enums/LabelType';
+import {EditorActions} from '../actions/EditorActions';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {LabelStatus} from '../../data/enums/LabelStatus';
+import {LabelUtil} from '../../utils/LabelUtil';
 
 export class RectRenderEngine extends BaseRenderEngine {
-    private config: RenderEngineConfig = new RenderEngineConfig();
 
     // =================================================================================================================
     // STATE
@@ -134,12 +133,13 @@ export class RectRenderEngine extends BaseRenderEngine {
     public render(data: EditorData) {
         const activeLabelId: string = LabelsSelector.getActiveLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
-
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                const displayAsActive: boolean =
-                    labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId;
-                displayAsActive ? this.drawActiveRect(labelRect, data) : this.drawInactiveRect(labelRect, data);
+                if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
+                    this.drawActiveRect(labelRect, data)
+                } else {
+                    this.drawInactiveRect(labelRect, data);
+                }
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             this.updateCursorStyle(data);
@@ -156,15 +156,18 @@ export class RectRenderEngine extends BaseRenderEngine {
                 height: mousePositionSnapped.y - this.startCreateRectPoint.y
             };
             const activeRectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(activeRect);
-            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, this.config.lineActiveColor, this.config.lineThickness);
+            const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
+            DrawUtil.drawRect(this.canvas, activeRectBetweenPixels, lineColor, RenderEngineSettings.LINE_THICKNESS);
         }
     }
 
     private drawInactiveRect(labelRect: LabelRect, data: EditorData) {
-        const rectOnImage: IRect = RenderEngineUtil.transferRectFromViewPortContentToImage(labelRect.rect, data);
-        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
+        const rectOnImage: IRect = RenderEngineUtil.transferRectFromViewPortContentToImage(labelRect.rect, data)
+        const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId()
         const displayAsActive: boolean = labelRect.status === LabelStatus.ACCEPTED && labelRect.id === highlightedLabelId;
-        this.renderRect(rectOnImage, displayAsActive);
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelRect.labelId, displayAsActive)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(displayAsActive);
+        this.renderRect(rectOnImage, displayAsActive, lineColor, anchorColor);
     }
 
     private drawActiveRect(labelRect: LabelRect, data: EditorData) {
@@ -176,19 +179,21 @@ export class RectRenderEngine extends BaseRenderEngine {
             rect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
         }
         const rectOnImage: IRect = RectUtil.translate(rect, data.viewPortContentImageRect);
-        this.renderRect(rectOnImage, true);
+        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(labelRect.labelId, true)
+        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true);
+        this.renderRect(rectOnImage, true, lineColor, anchorColor);
     }
 
-    private renderRect(rectOnImage: IRect, isActive: boolean) {
+    private renderRect(rectOnImage: IRect, isActive: boolean, lineColor: string, anchorColor: string) {
         const rectBetweenPixels = RenderEngineUtil.setRectBetweenPixels(rectOnImage);
-        const lineColor: string = isActive ? this.config.lineActiveColor : this.config.lineInactiveColor;
-        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, this.config.lineThickness);
+        DrawUtil.drawRectWithFill(this.canvas, rectBetweenPixels, DrawUtil.hexToRGB(lineColor, 0.2));
+        DrawUtil.drawRect(this.canvas, rectBetweenPixels, lineColor, RenderEngineSettings.LINE_THICKNESS);
         if (isActive) {
             const handleCenters: IPoint[] = RectUtil.mapRectToAnchors(rectOnImage).map((rectAnchor: RectAnchor) => rectAnchor.position);
             handleCenters.forEach((center: IPoint) => {
-                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, this.config.anchorSize);
+                const handleRect: IRect = RectUtil.getRectWithCenterAndSize(center, RenderEngineSettings.anchorSize);
                 const handleRectBetweenPixels: IRect = RenderEngineUtil.setRectBetweenPixels(handleRect);
-                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, this.config.activeAnchorColor);
+                DrawUtil.drawRectWithFill(this.canvas, handleRectBetweenPixels, anchorColor);
             })
         }
     }
@@ -206,9 +211,9 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                 else
                     RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
-                this.canvas.style.cursor = "none";
+                this.canvas.style.cursor = 'none';
             } else {
-                this.canvas.style.cursor = "default";
+                this.canvas.style.cursor = 'default';
             }
         }
     }
@@ -256,14 +261,14 @@ export class RectRenderEngine extends BaseRenderEngine {
             this.calculateRectRelativeToActiveImage(rect, data), data.viewPortContentImageRect);
 
         const outerRectDelta: IPoint = {
-            x: this.config.anchorHoverSize.width / 2,
-            y: this.config.anchorHoverSize.height / 2
+            x: RenderEngineSettings.anchorHoverSize.width / 2,
+            y: RenderEngineSettings.anchorHoverSize.height / 2
         };
         const outerRect: IRect = RectUtil.expand(rectOnImage, outerRectDelta);
 
         const innerRectDelta: IPoint = {
-            x: - this.config.anchorHoverSize.width / 2,
-            y: - this.config.anchorHoverSize.height / 2
+            x: - RenderEngineSettings.anchorHoverSize.width / 2,
+            y: - RenderEngineSettings.anchorHoverSize.height / 2
         };
         const innerRect: IRect = RectUtil.expand(rectOnImage, innerRectDelta);
 
@@ -274,7 +279,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     private getAnchorUnderMouseByRect(rect: IRect, mousePosition: IPoint, imageRect: IRect): RectAnchor {
         const rectAnchors: RectAnchor[] = RectUtil.mapRectToAnchors(rect);
         for (let i = 0; i < rectAnchors.length; i++) {
-            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].position, this.config.anchorHoverSize), imageRect);
+            const anchorRect: IRect = RectUtil.translate(RectUtil.getRectWithCenterAndSize(rectAnchors[i].position, RenderEngineSettings.anchorHoverSize), imageRect);
             if (!!mousePosition && RectUtil.isPointInside(anchorRect, mousePosition)) {
                 return rectAnchors[i];
             }

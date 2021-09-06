@@ -1,0 +1,62 @@
+# Project information
+site_name: Make Sense
+site_url: https://skalskip.github.io/make-sense
+site_author: Piotr Skalski
+site_description: >-
+  Free to use online tool for labelling photos
+
+# Repository
+repo_name: 'SkalskiP/make-sense'
+repo_url: 'https://github.com/SkalskiP/make-sense'
+edit_uri: ""
+
+# Copyright
+copyright: Copyright &copy; 2019 Piotr Skalski
+
+# Customization
+extra:
+  version: 1.7.0-alpha
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/SkalskiP
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/PiotrSkalski92
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/piotr-skalski-36b5b4122/
+
+# Page tree
+nav:
+  - Home: index.md
+  - Import: import.md
+  - Export: export.md
+  - Shortcuts: shortcuts.md
+  - Local setup: local-setup.md
+
+# Configuration
+theme:
+  name: 'material'
+  palette:
+    primary: 'black'
+    accent: 'indigo'
+  font:
+    text: Roboto
+    code: Roboto Mono
+  logo: 'img/logo.png'
+  favicon: 'img/favicon.png'
+  features:
+    - navigation.expand
+  icon:
+    repo: fontawesome/brands/github
+    
+# Google Analytics
+google_analytics:
+  - 'UA-155837750-2'
+  - 'auto'
+
+# Extensions
+markdown_extensions:
+  - attr_list
+  - def_list
+  - footnotes
+  - pymdownx.highlight
+  - pymdownx.superfences

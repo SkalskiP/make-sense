@@ -1,17 +1,18 @@
 import React from 'react';
 import './App.scss';
-import EditorView from "./views/EditorView/EditorView";
-import MainView from "./views/MainView/MainView";
-import {ProjectType} from "./data/enums/ProjectType";
-import {AppState} from "./store";
-import {connect} from "react-redux";
-import PopupView from "./views/PopupView/PopupView";
-import MobileMainView from "./views/MobileMainView/MobileMainView";
-import {ISize} from "./interfaces/ISize";
-import {Settings} from "./settings/Settings";
-import {SizeItUpView} from "./views/SizeItUpView/SizeItUpView";
-import {PlatformModel} from "./staticModels/PlatformModel";
-import classNames from "classnames";
+import EditorView from './views/EditorView/EditorView';
+import MainView from './views/MainView/MainView';
+import {ProjectType} from './data/enums/ProjectType';
+import {AppState} from './store';
+import {connect} from 'react-redux';
+import PopupView from './views/PopupView/PopupView';
+import MobileMainView from './views/MobileMainView/MobileMainView';
+import {ISize} from './interfaces/ISize';
+import {Settings} from './settings/Settings';
+import {SizeItUpView} from './views/SizeItUpView/SizeItUpView';
+import {PlatformModel} from './staticModels/PlatformModel';
+import classNames from 'classnames';
+import NotificationsView from './views/NotificationsView/NotificationsView';
 
 interface IProps {
     projectType: ProjectType;
@@ -36,11 +37,12 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
     };
 
       return (
-        <div className={classNames("App", {"AI": ObjectDetectorLoaded || PoseDetectionLoaded})}
+        <div className={classNames('App', {'AI': ObjectDetectorLoaded || PoseDetectionLoaded})}
             draggable={false}
         >
             {selectRoute()}
             <PopupView/>
+            <NotificationsView/>
         </div>
       );
 };

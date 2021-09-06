@@ -1,0 +1,179 @@
+@import 'src/settings/Settings';
+
+$messageWidth: 400px;
+$messageHeight: 200px;
+$displayTime: 5.0s;
+$wrapperMargin: 10px;
+$baseZIndex: 2000;
+//$errorColor: #ff0033;
+$errorColor: #d42245;
+$successColor: #009944;
+$warningColor: #eed202;
+
+.notification-wrapper {
+  position: fixed;
+  height: calc(#{$messageHeight} + 2 * #{$wrapperMargin});
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: #{$baseZIndex};
+
+  .notification {
+    position: relative;
+    width: #{$messageWidth};
+    height: #{$messageHeight};
+    left: #{$wrapperMargin};
+    top: #{$wrapperMargin};
+    overflow: hidden;
+
+    border-radius: 5px;
+    user-select: none;
+
+    background-color: #{$darkThemeSecondColor};
+
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+
+    .header {
+      height: 35px;
+      font-size: 18px;
+      line-height: 35px;
+      text-align: center;
+      font-weight: 900;
+    }
+
+    .content {
+      flex: 1;
+      padding: 20px;
+      color: #ffffff;
+    }
+
+    .loader {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 5px;
+      z-index: calc(#{$baseZIndex} + 1);
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &.error {
+      .header {
+        background-color: #{$errorColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$errorColor};
+      }
+    }
+
+    &.success {
+      .header {
+        background-color: #{$successColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$successColor};
+      }
+    }
+
+    &.message {
+      .header {
+        background-color: #{$secondaryColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$secondaryColor};
+      }
+    }
+
+    &.warning {
+      .header {
+        background-color: #{$warningColor};
+        color: white;
+      }
+      .loader {
+        background-color: #{$warningColor};
+      }
+    }
+  }
+
+  &.in {
+    animation-duration: 0.5s;
+    animation-name: animation-in;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  &.display {
+    animation-duration: #{$displayTime};
+    animation-name: animation-display;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+
+    .loader {
+      animation-duration: #{$displayTime};
+      animation-name: loader-animation;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+    }
+
+    &:hover {
+      animation-play-state: paused;
+      .loader {
+        animation-play-state: paused;
+      }
+    }
+  }
+
+  &.out {
+    animation-duration: 0.5s;
+    animation-name: animation-out;
+    animation-timing-function: ease-in;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes animation-in {
+  0%   {
+    width: 0;
+  }
+  100%  {
+    width: calc(#{$messageWidth} + 2 * #{$wrapperMargin});
+  }
+}
+
+@keyframes animation-display {
+  0%   {
+    width: calc(#{$messageWidth} + 2 * #{$wrapperMargin});
+  }
+  100%  {
+    width: calc(#{$messageWidth} + 2 * #{$wrapperMargin});
+  }
+}
+
+@keyframes animation-out {
+  0%   {
+    width: calc(#{$messageWidth} + 2 * #{$wrapperMargin});
+  }
+  100%  {
+    width: 0;
+  }
+}
+
+@keyframes loader-animation {
+  0%   {
+    width: 0;
+  }
+  100%  {
+    width: 100%;
+  }
+}

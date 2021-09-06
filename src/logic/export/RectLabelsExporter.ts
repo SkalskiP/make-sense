@@ -1,13 +1,16 @@
-import {AnnotationFormatType} from "../../data/enums/AnnotationFormatType";
-import {ImageData, LabelName, LabelRect} from "../../store/labels/types";
-import {ImageRepository} from "../imageRepository/ImageRepository";
+import {AnnotationFormatType} from '../../data/enums/AnnotationFormatType';
+import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
+import {ImageRepository} from '../imageRepository/ImageRepository';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {XMLSanitizerUtil} from "../../utils/XMLSanitizerUtil";
-import {ExporterUtil} from "../../utils/ExporterUtil";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {findIndex, findLast} from "lodash";
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {XMLSanitizerUtil} from '../../utils/XMLSanitizerUtil';
+import {ExporterUtil} from '../../utils/ExporterUtil';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {findIndex, findLast} from 'lodash';
+import {ISize} from '../../interfaces/ISize';
+import {NumberUtil} from '../../utils/NumberUtil';
+import {RectUtil} from '../../utils/RectUtil';
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -27,31 +30,54 @@ export class RectLabelsExporter {
     }
 
     private static exportAsYOLO(): void {
-        let zip = new JSZip();
+        const zip = new JSZip();
         LabelsSelector.getImagesData()
             .forEach((imageData: ImageData) => {
                 const fileContent: string = RectLabelsExporter.wrapRectLabelsIntoYOLO(imageData);
                 if (fileContent) {
-                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, ".txt");
+                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, '.txt');
                     try {
                         zip.file(fileName, fileContent);
                     } catch (error) {
                         // TODO
-                        throw new Error(error);
+                        throw new Error(error as string);
                     }
                 }
             });
 
         try {
-            zip.generateAsync({type:"blob"})
-                .then(function(content) {
+            zip.generateAsync({type:'blob'})
+                .then((content: Blob) => {
                     saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
                 });
         } catch (error) {
             // TODO
-            throw new Error(error);
+            throw new Error(error as string);
         }
+    }
 
+    public static wrapRectLabelIntoYOLO(labelRect: LabelRect, labelNames: LabelName[], imageSize: ISize): string {
+        const snapAndFix = (value: number) => NumberUtil.snapValueToRange(value,0, 1).toFixed(6)
+        const classIdx: string = findIndex(labelNames, {id: labelRect.labelId}).toString()
+        const rectCenter = RectUtil.getCenter(labelRect.rect)
+        const rectSize = RectUtil.getSize(labelRect.rect)
+        const rawBBox: number[] = [
+            rectCenter.x / imageSize.width,
+            rectCenter.y / imageSize.height,
+            rectSize.width / imageSize.width,
+            rectSize.height / imageSize.height
+        ]
+
+        let [x, y, width, height] = rawBBox.map((value: number) => parseFloat(snapAndFix(value)))
+
+        if (x + width / 2 > 1) { width = 2 * (1 - x) }
+        if (x - width / 2 < 0) { width = 2 * x }
+        if (y + height / 2 > 1) { height = 2 * (1 - y) }
+        if (y - height / 2 < 0) { height = 2 * y }
+
+        const processedBBox = [x, y, width, height].map((value: number) => snapAndFix(value))
+
+        return [classIdx, ...processedBBox].join(' ')
     }
 
     private static wrapRectLabelsIntoYOLO(imageData: ImageData): string {
@@ -60,42 +86,36 @@ export class RectLabelsExporter {
 
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+        const imageSize: ISize = {width: image.width, height: image.height}
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelFields = [
-                findIndex(labelNames, {id: labelRect.labelId}).toString(),
-                ((labelRect.rect.x + labelRect.rect.width / 2) / image.width).toFixed(6).toString(),
-                ((labelRect.rect.y + labelRect.rect.height / 2) / image.height).toFixed(6).toString(),
-                (labelRect.rect.width / image.width).toFixed(6).toString(),
-                (labelRect.rect.height / image.height).toFixed(6).toString()
-            ];
-            return labelFields.join(" ")
+            return RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
         });
-        return labelRectsString.join("\n");
+        return labelRectsString.join('\n');
     }
 
     private static exportAsVOC(): void {
-        let zip = new JSZip();
+        const zip = new JSZip();
         LabelsSelector.getImagesData().forEach((imageData: ImageData) => {
                 const fileContent: string = RectLabelsExporter.wrapImageIntoVOC(imageData);
                 if (fileContent) {
-                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, ".xml");
+                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, '.xml');
                     try {
                         zip.file(fileName, fileContent);
                     } catch (error) {
                         // TODO
-                        throw new Error(error);
+                        throw new Error(error as string);
                     }
                 }
             });
 
         try {
-            zip.generateAsync({type:"blob"})
+            zip.generateAsync({type:'blob'})
                 .then(function(content) {
                     saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
                 });
         } catch (error) {
             // TODO
-            throw new Error(error);
+            throw new Error(error as string);
         }
     }
 
@@ -120,9 +140,9 @@ export class RectLabelsExporter {
                 `\t\t</bndbox>`,
                 `\t</object>`
             ] : [];
-            return labelFields.join("\n")
+            return labelFields.join('\n')
         });
-        return labelRectsString.join("\n");
+        return labelRectsString.join('\n');
     }
 
     private static wrapImageIntoVOC(imageData: ImageData): string {
@@ -146,7 +166,7 @@ export class RectLabelsExporter {
                 `\t</size>`,
                 labels,
                 `</annotation>`
-            ].join("\n");
+            ].join('\n');
         }
         return null;
     }
@@ -158,7 +178,7 @@ export class RectLabelsExporter {
                 return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
             .filter((imageLabelData: string) => {
                 return !!imageLabelData})
-            .join("\n");
+            .join('\n');
         const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
         ExporterUtil.saveAs(content, fileName);
     }
@@ -181,8 +201,8 @@ export class RectLabelsExporter {
                 image.width.toString(),
                 image.height.toString()
             ] : [];
-            return labelFields.join(",")
+            return labelFields.join(',')
         });
-        return labelRectsString.join("\n");
+        return labelRectsString.join('\n');
     }
 }

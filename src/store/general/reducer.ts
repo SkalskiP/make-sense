@@ -1,7 +1,7 @@
-import {GeneralActionTypes, GeneralState} from "./types";
-import {Action} from "../Actions";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {ViewPointSettings} from "../../settings/ViewPointSettings";
+import {GeneralActionTypes, GeneralState} from './types';
+import {Action} from '../Actions';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {ViewPointSettings} from '../../settings/ViewPointSettings';
 
 const initialState: GeneralState = {
     windowSize: null,
@@ -11,9 +11,10 @@ const initialState: GeneralState = {
     preventCustomCursor: false,
     imageDragMode: false,
     crossHairVisible: true,
+    enablePerClassColoration: true,
     projectData: {
         type: null,
-        name: "my-project-name",
+        name: 'my-project-name',
     },
     zoom: ViewPointSettings.MIN_ZOOM
 };
@@ -75,6 +76,12 @@ export function generalReducer(
             return {
                 ...state,
                 zoom: action.payload.zoom
+            }
+        }
+        case Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS: {
+            return {
+                ...state,
+                enablePerClassColoration: action.payload.enablePerClassColoration
             }
         }
         default:

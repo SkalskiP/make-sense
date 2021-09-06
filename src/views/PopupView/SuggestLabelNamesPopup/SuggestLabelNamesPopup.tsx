@@ -1,16 +1,18 @@
 import React, {useState} from 'react'
 import './SuggestLabelNamesPopup.scss'
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {updateRejectedSuggestedLabelList, updateSuggestedLabelList} from "../../../store/ai/actionCreators";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupActions} from "../../../logic/actions/PopupActions";
-import {AISelector} from "../../../store/selectors/AISelector";
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
+import {updateRejectedSuggestedLabelList, updateSuggestedLabelList} from '../../../store/ai/actionCreators';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {PopupActions} from '../../../logic/actions/PopupActions';
+import {AISelector} from '../../../store/selectors/AISelector';
 import Scrollbars from 'react-custom-scrollbars';
-import {LabelName} from "../../../store/labels/types";
-import {updateLabelNames} from "../../../store/labels/actionCreators";
-import {LabelsSelector} from "../../../store/selectors/LabelsSelector";
-import uuidv4 from 'uuid/v4';
+import {LabelName} from '../../../store/labels/types';
+import {updateLabelNames} from '../../../store/labels/actionCreators';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import { v4 as uuidv4 } from 'uuid';
+import {ArrayUtil} from '../../../utils/ArrayUtil';
+import {Settings} from '../../../settings/Settings';
 
 interface SelectableName {
     name: string;
@@ -33,7 +35,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     const mapNamesToSelectableNames = (names: string[]): SelectableName[] => {
         return names.map((name: string) => {
             return {
-                name: name,
+                name,
                 flag: false
             }
         })
@@ -43,10 +45,11 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     const [labelNames, setLabelNames] = useState(mapNamesToSelectableNames(AISelector.getSuggestedLabelList()));
 
     const onAccept = () => {
-        updateLabelNames(extractSelectedNames().reduce((acc: LabelName[], entry: string) => {
+        updateLabelNames(extractSelectedNames().reduce((acc: LabelName[], entry: string, index: number) => {
             acc.push({
                 name: entry,
-                id: uuidv4()
+                id: uuidv4(),
+                color: ArrayUtil.getByInfiniteIndex(Settings.LABEL_COLORS_PALETTE, index)
             });
             return acc;
         }, LabelsSelector.getLabelNames()));
@@ -124,20 +127,20 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     const getOptions = () => {
         return labelNames.map((entry: SelectableName, index: number) => {
             return <div
-                className="OptionsItem"
+                className='OptionsItem'
                 onClick={() => toggleSelectableNameByIndex(index)}
                 key={index}
             >
                 {entry.flag ?
                     <img
                         draggable={false}
-                        src={"ico/checkbox-checked.png"}
-                        alt={"checked"}
+                        src={'ico/checkbox-checked.png'}
+                        alt={'checked'}
                     /> :
                     <img
                         draggable={false}
-                        src={"ico/checkbox-unchecked.png"}
-                        alt={"unchecked"}
+                        src={'ico/checkbox-unchecked.png'}
+                        alt={'unchecked'}
                     />}
                 {entry.name}
             </div>
@@ -145,34 +148,34 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     };
 
     const renderContent = () => {
-        return(<div className="SuggestLabelNamesPopupContent">
-            <div className="Message">
+        return(<div className='SuggestLabelNamesPopupContent'>
+            <div className='Message'>
                 We found objects of classes that are not yet included in the list of labels. Select the names you
                 would like to add. This will help to speed up the labeling process.
             </div>
-            <div className="AllToggle">
+            <div className='AllToggle'>
                 <div
-                    className="OptionsItem"
+                    className='OptionsItem'
                     onClick={() => selectAllFlag ? deselectAll() : selectAll()}
                 >
                     {selectAllFlag ?
                         <img
                             draggable={false}
-                            src={"ico/checkbox-checked.png"}
-                            alt={"checked"}
+                            src={'ico/checkbox-checked.png'}
+                            alt={'checked'}
                         /> :
                         <img
                             draggable={false}
-                            src={"ico/checkbox-unchecked.png"}
-                            alt={"unchecked"}
+                            src={'ico/checkbox-unchecked.png'}
+                            alt={'unchecked'}
                         />}
-                    {selectAllFlag ? "Deselect all" : "Select all"}
+                    {selectAllFlag ? 'Deselect all' : 'Select all'}
                 </div>
             </div>
-            <div className="LabelNamesContainer">
+            <div className='LabelNamesContainer'>
                 <Scrollbars autoHeight={true}>
                     <div
-                        className="LabelNamesContent"
+                        className='LabelNamesContent'
                     >
                         {getOptions()}
                     </div>
@@ -183,11 +186,11 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
 
     return(
         <GenericYesNoPopup
-            title={"New classes found"}
+            title={'New classes found'}
             renderContent={renderContent}
-            acceptLabel={"Accept"}
+            acceptLabel={'Accept'}
             onAccept={onAccept}
-            rejectLabel={"Reject"}
+            rejectLabel={'Reject'}
             onReject={onReject}
         />
     );

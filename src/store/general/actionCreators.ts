@@ -1,9 +1,9 @@
-import {ISize} from "../../interfaces/ISize";
-import {GeneralActionTypes, ProjectData} from "./types";
-import {Action} from "../Actions";
-import {PopupWindowType} from "../../data/enums/PopupWindowType";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {ContextType} from "../../data/enums/ContextType";
+import {ISize} from '../../interfaces/ISize';
+import {GeneralActionTypes, ProjectData} from './types';
+import {Action} from '../Actions';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {ContextType} from '../../data/enums/ContextType';
 
 export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
@@ -82,6 +82,15 @@ export function updateZoom(zoom: number): GeneralActionTypes {
         type: Action.UPDATE_ZOOM,
         payload: {
             zoom,
+        },
+    };
+}
+
+export function updatePerClassColorationStatus(enablePerClassColoration: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS,
+        payload: {
+            enablePerClassColoration,
         },
     };
 }

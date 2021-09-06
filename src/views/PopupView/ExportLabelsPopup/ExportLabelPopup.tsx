@@ -1,18 +1,18 @@
 import React, {useState} from 'react'
 import './ExportLabelPopup.scss'
-import {AnnotationFormatType} from "../../../data/enums/AnnotationFormatType";
-import {RectLabelsExporter} from "../../../logic/export/RectLabelsExporter";
-import {LabelType} from "../../../data/enums/LabelType";
-import {ILabelFormatData} from "../../../interfaces/ILabelFormatData";
-import {PointLabelsExporter} from "../../../logic/export/PointLabelsExport";
-import {PolygonLabelsExporter} from "../../../logic/export/polygon/PolygonLabelsExporter";
-import {PopupActions} from "../../../logic/actions/PopupActions";
-import {LineLabelsExporter} from "../../../logic/export/LineLabelExport";
-import {TagLabelsExporter} from "../../../logic/export/TagLabelsExport";
-import GenericLabelTypePopup from "../GenericLabelTypePopup/GenericLabelTypePopup";
-import {ExportFormatData} from "../../../data/ExportFormatData";
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
+import {AnnotationFormatType} from '../../../data/enums/AnnotationFormatType';
+import {RectLabelsExporter} from '../../../logic/export/RectLabelsExporter';
+import {LabelType} from '../../../data/enums/LabelType';
+import {ILabelFormatData} from '../../../interfaces/ILabelFormatData';
+import {PointLabelsExporter} from '../../../logic/export/PointLabelsExport';
+import {PolygonLabelsExporter} from '../../../logic/export/polygon/PolygonLabelsExporter';
+import {PopupActions} from '../../../logic/actions/PopupActions';
+import {LineLabelsExporter} from '../../../logic/export/LineLabelExport';
+import {TagLabelsExporter} from '../../../logic/export/TagLabelsExport';
+import GenericLabelTypePopup from '../GenericLabelTypePopup/GenericLabelTypePopup';
+import {ExportFormatData} from '../../../data/ExportFormatData';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
 
 interface IProps {
     activeLabelType: LabelType,
@@ -54,20 +54,20 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
     const getOptions = (exportFormatData: ILabelFormatData[]) => {
         return exportFormatData.map((entry: ILabelFormatData) => {
             return <div
-                className="OptionsItem"
+                className='OptionsItem'
                 onClick={() => onSelect(entry.type)}
                 key={entry.type}
             >
                 {entry.type === exportFormatType ?
                     <img
                         draggable={false}
-                        src={"ico/checkbox-checked.png"}
-                        alt={"checked"}
+                        src={'ico/checkbox-checked.png'}
+                        alt={'checked'}
                     /> :
                     <img
                         draggable={false}
-                        src={"ico/checkbox-unchecked.png"}
-                        alt={"unchecked"}
+                        src={'ico/checkbox-unchecked.png'}
+                        alt={'unchecked'}
                     />}
                 {entry.label}
             </div>
@@ -76,10 +76,10 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
 
     const renderInternalContent = (labelType: LabelType) => {
         return [
-            <div className="Message">
+            <div className='Message'>
                 Select label type and the file format you would like to use to export labels.
             </div>,
-            <div className="Options">
+            <div className='Options'>
                 {getOptions(ExportFormatData[labelType])}
             </div>
         ]
@@ -95,10 +95,10 @@ const ExportLabelPopup: React.FC <IProps> = ({activeLabelType}) => {
             activeLabelType={labelType}
             title={`Export ${labelType.toLowerCase()} annotations`}
             onLabelTypeChange={onLabelTypeChange}
-            acceptLabel={"Export"}
+            acceptLabel={'Export'}
             onAccept={onAccept}
             disableAcceptButton={!exportFormatType}
-            rejectLabel={"Cancel"}
+            rejectLabel={'Cancel'}
             onReject={onReject}
             renderInternalContent={renderInternalContent}
         />
