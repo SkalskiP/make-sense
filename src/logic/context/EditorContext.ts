@@ -167,6 +167,24 @@ export class EditorContext extends BaseContext {
                 ImageActions.setActiveLabelOnActiveImage(9);
                 EditorActions.fullRender();
             }
+        },
+        {
+            keyCombo: ["h"],
+            action: (event: KeyboardEvent) =>{
+                document.getElementById("imageDragOnClick").click();
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "v"] : ["Control", "v"],
+            action: (event: KeyboardEvent)=>{
+                EditorModel.supportRenderingEngine.pasteHandler();
+            }
+        },
+        {
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Alt", "v"] : ["Control", "c"],
+            action: (event: KeyboardEvent)=>{
+                EditorModel.supportRenderingEngine.copyHandler();
+            }
         }
     ];
 }

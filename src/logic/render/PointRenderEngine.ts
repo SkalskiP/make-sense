@@ -7,6 +7,7 @@ import {ImageData, LabelPoint} from '../../store/labels/types';
 import { v4 as uuidv4 } from 'uuid';
 import {
     updateActiveLabelId,
+    updateActiveLabelNameId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
@@ -101,6 +102,15 @@ export class PointRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateHighlightedLabelId(null))
                 }
             }
+        }
+    }
+    
+    public pasteHandler(): void {
+        if(this.imageDataCache && this.imageDataCache.labelPoints){
+            this.imageDataCache.labelPoints.forEach((pointLabel) => {
+                store.dispatch(updateActiveLabelNameId(pointLabel.labelId));
+                this.addPointLabel(pointLabel.point);
+            });
         }
     }
 
