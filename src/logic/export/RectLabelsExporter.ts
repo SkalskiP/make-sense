@@ -129,7 +129,7 @@ export class RectLabelsExporter {
             const labelFields = !!labelName ? [
                 `\t<object>`,
                 `\t\t<name>${labelName.name}</name>`,
-                `\t\t<pose>0</pose>`,
+                `\t\t<pose>Unspecified</pose>`,
                 `\t\t<truncated>0</truncated>`,
                 `\t\t<difficult>0</difficult>`,
                 `\t\t<bndbox>`,
