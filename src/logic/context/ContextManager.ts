@@ -1,12 +1,12 @@
-import {ContextType} from "../../data/enums/ContextType";
-import {HotKeyAction} from "../../data/HotKeyAction";
-import {store} from "../../index";
-import {updateActiveContext} from "../../store/general/actionCreators";
-import {xor, isEmpty} from "lodash";
-import {EditorContext} from "./EditorContext";
-import {PopupContext} from "./PopupContext";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {EventType} from "../../data/enums/EventType";
+import {ContextType} from '../../data/enums/ContextType';
+import {HotKeyAction} from '../../data/HotKeyAction';
+import {store} from '../../index';
+import {updateActiveContext} from '../../store/general/actionCreators';
+import {xor, isEmpty} from 'lodash';
+import {EditorContext} from './EditorContext';
+import {PopupContext} from './PopupContext';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {EventType} from '../../data/enums/EventType';
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -33,6 +33,8 @@ export class ContextManager {
     }
 
     private static updateCtx(context: ContextType): void {
+        // tslint:disable-next-line:no-console
+        console.log(context)
         store.dispatch(updateActiveContext(context));
         switch (context) {
             case ContextType.EDITOR:
