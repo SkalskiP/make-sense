@@ -1,4 +1,4 @@
-FROM node:12.10-slim
+FROM node:14.18.0
 
 RUN apt-get update && apt-get -y install git && rm -rf /var/lib/apt/lists/*
 
