@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { PopupActions } from "../../../logic/actions/PopupActions";
 import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
 import { ObjectDetector } from "../../../ai/ObjectDetector";
+import { ObjectDetectorYolov5 } from "../../../ai/ObjectDetectorYOLO";
 import './LoadModelPopup.scss'
 import { ClipLoader } from "react-spinners";
 import { AIModel } from "../../../data/enums/AIModel";
@@ -22,6 +23,11 @@ const models: SelectableModel[] = [
         flag: false
     },
     {
+        model: AIModel.OBJECT_DETECTION_YOLOv5,
+        name: "YOLO v5 - object detection using bounding boxes",
+        flag: false
+    },
+    {
         model: AIModel.POSE_DETECTION,
         name: "POSE-NET - pose estimation using points",
         flag: false
@@ -37,6 +43,11 @@ export const LoadModelPopup: React.FC = () => {
         switch (extractSelectedModel()) {
             case AIModel.POSE_DETECTION:
                 PoseDetector.loadModel(() => {
+                    PopupActions.close();
+                });
+                break;
+            case AIModel.OBJECT_DETECTION_YOLOv5:
+                ObjectDetectorYolov5.loadModel(() => {
                     PopupActions.close();
                 });
                 break;

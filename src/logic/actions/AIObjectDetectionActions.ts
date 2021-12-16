@@ -13,8 +13,10 @@ import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {updateActivePopupType} from '../../store/general/actionCreators';
 import {AISelector} from '../../store/selectors/AISelector';
 import {AIActions} from './AIActions';
-
+import {ObjectDetectorYolov5} from "../../ai/ObjectDetectorYOLO";
+import { AIModel } from '../../data/enums/AIModel';
 export class AIObjectDetectionActions {
+
     public static detectRectsForActiveImage(): void {
         const activeImageData: ImageData = LabelsSelector.getActiveImageData();
         AIObjectDetectionActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
@@ -25,18 +27,43 @@ export class AIObjectDetectionActions {
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
-            const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
-            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
-            if (newlySuggestedNames.length > 0) {
-                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
-                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
-            } else {
-                store.dispatch(updateActivePopupType(null));
+        switch (ObjectDetectorYolov5.AIModel) {
+            case AIModel.OBJECT_DETECTION_YOLOv5: {
+                ObjectDetectorYolov5.predict(image, (predictions: DetectedObject[]) => {
+                    const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+                    const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
+                    const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+                    if (newlySuggestedNames.length > 0) {
+                        store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+                        store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+                    } else {
+                        store.dispatch(updateActivePopupType(null));
+                    }
+                    AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
+                })
+                break;
             }
-            AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
-        })
+            case AIModel.OBJECT_DETECTION: {
+                ObjectDetectorYolov5.predict(image, (predictions: DetectedObject[]) => {
+                    const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+                    const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
+                    const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+                    if (newlySuggestedNames.length > 0) {
+                        store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+                        store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+                    } else {
+                        store.dispatch(updateActivePopupType(null));
+                    }
+                    AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
+                })
+                break;
+            }
+            default: {
+                throw new Error('Unknown model');
+                break;
+            }
+        }
+
     }
 
     public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
