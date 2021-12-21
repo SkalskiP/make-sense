@@ -4,7 +4,8 @@ import {Action} from '../Actions';
 const initialState: AIState = {
     suggestedLabelList: [],
     rejectedSuggestedLabelList: [],
-    isObjectDetectorLoaded: false,
+    isSSDObjectDetectorLoaded: false,
+    isYOLOObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
     isAIDisabled: false
 };
@@ -26,10 +27,16 @@ export function aiReducer(
                 rejectedSuggestedLabelList: action.payload.labelList
             }
         }
-        case Action.UPDATE_OBJECT_DETECTOR_STATUS: {
+        case Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS: {
             return {
                 ...state,
-                isObjectDetectorLoaded: action.payload.isObjectDetectorLoaded
+                isSSDObjectDetectorLoaded: action.payload.isSSDObjectDetectorLoaded
+            }
+        }
+        case Action.UPDATE_YOLO_OBJECT_DETECTOR_STATUS: {
+            return {
+                ...state,
+                isYOLOObjectDetectorLoaded: action.payload.isYOLOObjectDetectorLoaded
             }
         }
         case Action.UPDATE_POSE_DETECTOR_STATUS: {

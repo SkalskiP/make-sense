@@ -2,7 +2,7 @@ import '@tensorflow/tfjs-backend-cpu';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import {DetectedObject, ObjectDetection} from '@tensorflow-models/coco-ssd';
 import {store} from '../index';
-import {updateObjectDetectorStatus} from '../store/ai/actionCreators';
+import {updateSSDObjectDetectorStatus} from '../store/ai/actionCreators';
 import {LabelType} from '../data/enums/LabelType';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
 import {AISSDObjectDetectionActions} from '../logic/actions/AISSDObjectDetectionActions';
@@ -16,7 +16,7 @@ export class SSDObjectDetector {
             .load()
             .then((model: ObjectDetection) => {
                 SSDObjectDetector.model = model;
-                store.dispatch(updateObjectDetectorStatus(true));
+                store.dispatch(updateSSDObjectDetectorStatus(true));
                 store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 if (activeLabelType === LabelType.RECT) {

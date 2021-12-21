@@ -2,7 +2,10 @@ import {Action} from '../Actions';
 
 export type AIState = {
     // SSD
-    isObjectDetectorLoaded: boolean;
+    isSSDObjectDetectorLoaded: boolean;
+
+    // YOLO
+    isYOLOObjectDetectorLoaded: boolean;
 
     // POSE NET
     isPoseDetectorLoaded: boolean;
@@ -27,10 +30,17 @@ interface UpdateRejectedSuggestedLabelList {
     }
 }
 
-interface UpdateObjectDetectorStatus {
-    type: typeof Action.UPDATE_OBJECT_DETECTOR_STATUS;
+interface UpdateSSDObjectDetectorStatus {
+    type: typeof Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS;
     payload: {
-        isObjectDetectorLoaded: boolean;
+        isSSDObjectDetectorLoaded: boolean;
+    }
+}
+
+interface UpdateYOLOObjectDetectorStatus {
+    type: typeof Action.UPDATE_YOLO_OBJECT_DETECTOR_STATUS;
+    payload: {
+        isYOLOObjectDetectorLoaded: boolean;
     }
 }
 
@@ -50,6 +60,7 @@ interface UpdateDisabledAIFlag {
 
 export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
-    | UpdateObjectDetectorStatus
+    | UpdateSSDObjectDetectorStatus
+    | UpdateYOLOObjectDetectorStatus
     | UpdatePoseDetectorStatus
     | UpdateDisabledAIFlag

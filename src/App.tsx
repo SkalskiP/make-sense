@@ -50,7 +50,7 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
-    ObjectDetectorLoaded: state.ai.isObjectDetectorLoaded,
+    ObjectDetectorLoaded: state.ai.isSSDObjectDetectorLoaded,
     PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
 });
 

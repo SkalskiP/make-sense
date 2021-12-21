@@ -21,7 +21,7 @@ export class AISSDObjectDetectionActions {
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector || !AISelector.isAIObjectDetectorModelLoaded())
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector || !AISelector.isAISSDObjectDetectorModelLoaded())
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));

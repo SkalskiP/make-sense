@@ -19,11 +19,20 @@ export function updateRejectedSuggestedLabelList(labelList: string[]): AIActionT
     }
 }
 
-export function updateObjectDetectorStatus(isObjectDetectorLoaded: boolean): AIActionTypes {
+export function updateSSDObjectDetectorStatus(isSSDObjectDetectorLoaded: boolean): AIActionTypes {
     return {
-        type: Action.UPDATE_OBJECT_DETECTOR_STATUS,
+        type: Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS,
         payload: {
-            isObjectDetectorLoaded,
+            isSSDObjectDetectorLoaded,
+        }
+    }
+}
+
+export function updateYOLOObjectDetectorStatus(isYOLOObjectDetectorLoaded: boolean): AIActionTypes {
+    return {
+        type: Action.UPDATE_YOLO_OBJECT_DETECTOR_STATUS,
+        payload: {
+            isYOLOObjectDetectorLoaded,
         }
     }
 }
