@@ -1,6 +1,6 @@
 import {LabelName} from '../../../store/labels/types';
 import {DetectedObject} from '@tensorflow-models/coco-ssd';
-import {AIObjectDetectionActions} from '../../actions/AIObjectDetectionActions';
+import {AISSDObjectDetectionActions} from '../../actions/AISSDObjectDetectionActions';
 
 describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => {
     const mockLabelNames: LabelName[] = [
@@ -43,7 +43,7 @@ describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => 
         ];
 
         // WHEN
-        const suggestedLabels: string[] = AIObjectDetectionActions
+        const suggestedLabels: string[] = AISSDObjectDetectionActions
             .extractNewSuggestedLabelNames(labelNames, predictions);
 
         // THEN
@@ -67,7 +67,7 @@ describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => 
         ];
 
         // WHEN
-        const suggestedLabels: string[] = AIObjectDetectionActions
+        const suggestedLabels: string[] = AISSDObjectDetectionActions
             .extractNewSuggestedLabelNames(labelNames, predictions);
 
         // THEN

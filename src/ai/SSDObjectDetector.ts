@@ -5,22 +5,22 @@ import {store} from '../index';
 import {updateObjectDetectorStatus} from '../store/ai/actionCreators';
 import {LabelType} from '../data/enums/LabelType';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
-import {AIObjectDetectionActions} from '../logic/actions/AIObjectDetectionActions';
+import {AISSDObjectDetectionActions} from '../logic/actions/AISSDObjectDetectionActions';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
 
-export class ObjectDetector {
+export class SSDObjectDetector {
     private static model: ObjectDetection;
 
     public static loadModel(callback?: () => any) {
         cocoSsd
             .load()
             .then((model: ObjectDetection) => {
-                ObjectDetector.model = model;
+                SSDObjectDetector.model = model;
                 store.dispatch(updateObjectDetectorStatus(true));
                 store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 if (activeLabelType === LabelType.RECT) {
-                    AIObjectDetectionActions.detectRectsForActiveImage();
+                    AISSDObjectDetectionActions.detectRectsForActiveImage();
                 }
                 if (callback) {
                     callback();
@@ -33,9 +33,9 @@ export class ObjectDetector {
     }
 
     public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
-        if (!ObjectDetector.model) return;
+        if (!SSDObjectDetector.model) return;
 
-        ObjectDetector.model
+        SSDObjectDetector.model
             .detect(image)
             .then((predictions: DetectedObject[]) => {
                 if (callback) {

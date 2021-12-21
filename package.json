@@ -31,7 +31,8 @@
     "react-spinners": "^0.11.0",
     "redux": "^4.1.1",
     "typescript": "4.4.2",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yolov5-js": "file:../yolov5-js"
   },
   "scripts": {
     "start": "react-scripts start",

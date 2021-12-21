@@ -4,7 +4,7 @@ import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import { v4 as uuidv4 } from 'uuid';
 import {store} from '../../index';
 import {updateImageDataById} from '../../store/labels/actionCreators';
-import {ObjectDetector} from '../../ai/ObjectDetector';
+import {SSDObjectDetector} from '../../ai/SSDObjectDetector';
 import {ImageRepository} from '../imageRepository/ImageRepository';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {findLast} from 'lodash';
@@ -14,10 +14,10 @@ import {updateActivePopupType} from '../../store/general/actionCreators';
 import {AISelector} from '../../store/selectors/AISelector';
 import {AIActions} from './AIActions';
 
-export class AIObjectDetectionActions {
+export class AISSDObjectDetectionActions {
     public static detectRectsForActiveImage(): void {
         const activeImageData: ImageData = LabelsSelector.getActiveImageData();
-        AIObjectDetectionActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
+        AISSDObjectDetectionActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
@@ -25,8 +25,8 @@ export class AIObjectDetectionActions {
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+        SSDObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+            const suggestedLabelNames = AISSDObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
             const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
             if (newlySuggestedNames.length > 0) {
@@ -35,13 +35,13 @@ export class AIObjectDetectionActions {
             } else {
                 store.dispatch(updateActivePopupType(null));
             }
-            AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
+            AISSDObjectDetectionActions.saveRectPredictions(imageId, predictions);
         })
     }
 
     public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = AIObjectDetectionActions.mapPredictionsToRectLabels(predictions);
+        const predictedLabels: LabelRect[] = AISSDObjectDetectionActions.mapPredictionsToRectLabels(predictions);
         const nextImageData: ImageData = {
             ...imageData,
             labelRects: imageData.labelRects.concat(predictedLabels),
