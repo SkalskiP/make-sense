@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { PopupActions } from '../../../logic/actions/PopupActions';
-import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
-import { SSDObjectDetector } from '../../../ai/SSDObjectDetector';
+import React, {useState} from 'react';
+import {PopupActions} from '../../../logic/actions/PopupActions';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {SSDObjectDetector} from '../../../ai/SSDObjectDetector';
 import './LoadModelPopup.scss'
-import { ClipLoader } from 'react-spinners';
-import { AIModel } from '../../../data/enums/AIModel';
-import { PoseDetector } from '../../../ai/PoseDetector';
-import { findLast } from 'lodash';
-import { CSSHelper } from '../../../logic/helpers/CSSHelper';
+import {ClipLoader} from 'react-spinners';
+import {AIModel} from '../../../data/enums/AIModel';
+import {PoseDetector} from '../../../ai/PoseDetector';
+import {findLast} from 'lodash';
+import {CSSHelper} from '../../../logic/helpers/CSSHelper';
+import {YOLOObjectDetector} from '../../../ai/YOLOObjectDetector';
 
 interface SelectableModel {
     model: AIModel,
@@ -16,6 +17,11 @@ interface SelectableModel {
 }
 
 const models: SelectableModel[] = [
+    {
+        model: AIModel.YOLO_OBJECT_DETECTION,
+        name: 'COCO YOLO - object detection using rectangles',
+        flag: false
+    },
     {
         model: AIModel.SSD_OBJECT_DETECTION,
         name: 'COCO SSD - object detection using rectangles',
@@ -45,6 +51,10 @@ export const LoadModelPopup: React.FC = () => {
                     PopupActions.close();
                 });
                 break;
+            case AIModel.YOLO_OBJECT_DETECTION:
+                YOLOObjectDetector.loadModel(() => {
+                    PopupActions.close();
+                })
         }
     };
 

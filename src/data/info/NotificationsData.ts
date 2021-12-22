@@ -17,5 +17,10 @@ export const NotificationsDataMap = {
         header: 'Non unique label names',
         description: 'Looks like not all your label names are unique. Unique names are necessary to guarantee correct' +
             ' data export when you complete your work. Make your names unique and try again.'
+    },
+    [Notification.MODEL_COULD_NOT_BE_LOADED]: {
+        header: 'Model could not be loaded',
+        description: 'Looks like we ware unable to download tensorflow model from external server. Make sure that ' +
+            'you are connected to internet and try again.'
     }
 }
