@@ -21,12 +21,14 @@ export class AISSDObjectDetectionActions {
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector || !AISelector.isAISSDObjectDetectorModelLoaded())
+        if (LabelsSelector.getImageDataById(imageId).isVisitedBySSDObjectDetector
+            || !AISelector.isAISSDObjectDetectorModelLoaded())
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
         SSDObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AISSDObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+            const suggestedLabelNames = AISSDObjectDetectionActions
+                .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
             const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
             if (newlySuggestedNames.length > 0) {
@@ -45,7 +47,7 @@ export class AISSDObjectDetectionActions {
         const nextImageData: ImageData = {
             ...imageData,
             labelRects: imageData.labelRects.concat(predictedLabels),
-            isVisitedByObjectDetector: true
+            isVisitedBySSDObjectDetector: true
         };
         store.dispatch(updateImageDataById(imageData.id, nextImageData));
     }

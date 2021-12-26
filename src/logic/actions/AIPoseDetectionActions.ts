@@ -22,12 +22,14 @@ export class AIPoseDetectionActions {
     }
 
     public static detectPoses(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByPoseDetector || !AISelector.isAIPoseDetectorModelLoaded())
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByPoseDetector
+            || !AISelector.isAIPoseDetectorModelLoaded())
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
         PoseDetector.predict(image, (poses: Pose[]) => {
-            const suggestedLabelNames = AIPoseDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), poses);
+            const suggestedLabelNames = AIPoseDetectionActions
+                .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), poses);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
             const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
             if (newlySuggestedNames.length > 0) {

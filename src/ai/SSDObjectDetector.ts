@@ -7,6 +7,10 @@ import {LabelType} from '../data/enums/LabelType';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
 import {AISSDObjectDetectionActions} from '../logic/actions/AISSDObjectDetectionActions';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
+import {submitNewNotification} from '../store/notifications/actionCreators';
+import {NotificationUtil} from '../utils/NotificationUtil';
+import {NotificationsDataMap} from '../data/info/NotificationsData';
+import {Notification} from '../data/enums/Notification';
 
 export class SSDObjectDetector {
     private static model: ObjectDetection;
@@ -27,8 +31,14 @@ export class SSDObjectDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
+                        )
+                    )
+                )
             })
     }
 
