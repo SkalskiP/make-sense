@@ -176,6 +176,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                 }
             </div>
             {((activeLabelType === LabelType.RECT && AISelector.isAISSDObjectDetectorModelLoaded()) ||
+                (activeLabelType === LabelType.RECT && AISelector.isAIYOLOObjectDetectorModelLoaded()) ||
                 (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className='ButtonWrapper'>
                 {
                     getButtonWithTooltip(

@@ -1,5 +1,4 @@
-import '@tensorflow/tfjs-backend-cpu';
-import {DetectedObject, load, YOLOv5, YOLO_V5_S_COCO_MODEL_CONFIG} from 'yolov5-js'
+import {DetectedObject, load, YOLOv5, YOLO_V5_N_COCO_MODEL_CONFIG} from 'yolov5-js'
 import {store} from '../index';
 import {updateYOLOObjectDetectorStatus} from '../store/ai/actionCreators';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
@@ -15,7 +14,7 @@ export class YOLOObjectDetector {
     private static model: YOLOv5;
 
     public static loadModel(callback?: () => any) {
-        load(YOLO_V5_S_COCO_MODEL_CONFIG)
+        load(YOLO_V5_N_COCO_MODEL_CONFIG)
             .then((model: YOLOv5) => {
                 YOLOObjectDetector.model = model;
                 store.dispatch(updateYOLOObjectDetectorStatus(true));
@@ -51,8 +50,14 @@ export class YOLOObjectDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_INFERENCE_ERROR]
+                        )
+                    )
+                )
             })
     }
 }

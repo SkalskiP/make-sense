@@ -22,5 +22,10 @@ export const NotificationsDataMap = {
         header: 'Model could not be loaded',
         description: 'Looks like we ware unable to download tensorflow model from external server. Make sure that ' +
             'you are connected to internet and try again.'
+    },
+    [Notification.MODEL_INFERENCE_ERROR]: {
+        header: 'Inference failed',
+        description: 'Looks like we were unable to run inference of your image. Please help us improve Make Sense ' +
+            'and let us know.'
     }
 }

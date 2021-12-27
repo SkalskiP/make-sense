@@ -1,4 +1,3 @@
-import '@tensorflow/tfjs-backend-webgl';
 import * as posenet from '@tensorflow-models/posenet';
 import {PoseNet} from '@tensorflow-models/posenet';
 import {Pose} from '@tensorflow-models/posenet';
@@ -59,8 +58,14 @@ export class PoseDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_INFERENCE_ERROR]
+                        )
+                    )
+                )
             })
     }
 }

@@ -1,4 +1,3 @@
-import '@tensorflow/tfjs-backend-cpu';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import {DetectedObject, ObjectDetection} from '@tensorflow-models/coco-ssd';
 import {store} from '../index';
@@ -53,8 +52,14 @@ export class SSDObjectDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_INFERENCE_ERROR]
+                        )
+                    )
+                )
             })
     }
 }
