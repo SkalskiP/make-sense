@@ -4,7 +4,10 @@ import React from 'react';
 import classNames from 'classnames';
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
-import {updateCrossHairVisibleStatus, updateImageDragModeStatus} from '../../../store/general/actionCreators';
+import {
+    updateCrossHairVisibleStatus,
+    updateImageDragModeStatus
+} from '../../../store/general/actionCreators';
 import {GeneralSelector} from '../../../store/selectors/GeneralSelector';
 import {ViewPointSettings} from '../../../settings/ViewPointSettings';
 import {ImageButton} from '../../Common/ImageButton/ImageButton';
@@ -21,7 +24,7 @@ import Fade from '@material-ui/core/Fade';
 const BUTTON_SIZE: ISize = {width: 30, height: 30};
 const BUTTON_PADDING: number = 10;
 
-const StyledTooltip = withStyles(theme => ({
+const StyledTooltip = withStyles((theme) => ({
     tooltip: {
         backgroundColor: '#171717',
         color: '#ffffff',
@@ -29,7 +32,7 @@ const StyledTooltip = withStyles(theme => ({
         fontSize: 12,
         maxWidth: 200,
         textAlign: 'center'
-    },
+    }
 }))(Tooltip);
 
 const getButtonWithTooltip = (
@@ -38,30 +41,31 @@ const getButtonWithTooltip = (
     imageSrc: string,
     imageAlt: string,
     isActive: boolean,
-    href?:string,
-    onClick?:() => any
+    href?: string,
+    onClick?: () => any
 ): React.ReactElement => {
-    return <StyledTooltip
-        key={key}
-        disableFocusListener={true}
-        title={tooltipMessage}
-        TransitionComponent={Fade}
-        TransitionProps={{ timeout: 600 }}
-        placement='bottom'
-    >
-        <div>
-            <ImageButton
-                buttonSize={BUTTON_SIZE}
-                padding={BUTTON_PADDING}
-                image={imageSrc}
-                imageAlt={imageAlt}
-                href={href}
-                onClick={onClick}
-                isActive={isActive}
-            />
-        </div>
-    </StyledTooltip>
-}
+    return (
+        <StyledTooltip
+            key={key}
+            disableFocusListener={true}
+            title={tooltipMessage}
+            TransitionComponent={Fade}
+            TransitionProps={{timeout: 600}}
+            placement="bottom">
+            <div>
+                <ImageButton
+                    buttonSize={BUTTON_SIZE}
+                    padding={BUTTON_PADDING}
+                    image={imageSrc}
+                    imageAlt={imageAlt}
+                    href={href}
+                    onClick={onClick}
+                    isActive={isActive}
+                />
+            </div>
+        </StyledTooltip>
+    );
+};
 
 interface IProps {
     activeContext: ContextType;
@@ -72,136 +76,129 @@ interface IProps {
     activeLabelType: LabelType;
 }
 
-const EditorTopNavigationBar: React.FC<IProps> = (
-    {
-        activeContext,
-        updateImageDragModeStatusAction,
-        updateCrossHairVisibleStatusAction,
-        imageDragMode,
-        crossHairVisible,
-        activeLabelType
-    }) => {
+const EditorTopNavigationBar: React.FC<IProps> = ({
+    activeContext,
+    updateImageDragModeStatusAction,
+    updateCrossHairVisibleStatusAction,
+    imageDragMode,
+    crossHairVisible,
+    activeLabelType
+}) => {
     const getClassName = () => {
-        return classNames(
-            'EditorTopNavigationBar',
-            {
-                'with-context': activeContext === ContextType.EDITOR
-            }
-        );
+        return classNames('EditorTopNavigationBar', {
+            'with-context': activeContext === ContextType.EDITOR
+        });
     };
 
     const imageDragOnClick = () => {
         if (imageDragMode) {
             updateImageDragModeStatusAction(!imageDragMode);
-        }
-        else if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
+        } else if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
             updateImageDragModeStatusAction(!imageDragMode);
         }
     };
 
     const crossHairOnClick = () => {
         updateCrossHairVisibleStatusAction(!crossHairVisible);
-    }
+    };
 
     return (
         <div className={getClassName()}>
-            <div className='ButtonWrapper'>
-                {
-                    getButtonWithTooltip(
-                        'zoom-in',
-                        'zoom in',
-                        'ico/zoom-in.png',
-                        'zoom-in',
-                        false,
-                        undefined,
-                        () => ViewPortActions.zoomIn()
-                    )
-                }
-                {
-                    getButtonWithTooltip(
-                        'zoom-out',
-                        'zoom out',
-                        'ico/zoom-out.png',
-                        'zoom-out',
-                        false,
-                        undefined,
-                        () => ViewPortActions.zoomOut()
-                    )
-                }
-                {
-                    getButtonWithTooltip(
-                        'zoom-fit',
-                        'fit image to available space',
-                        'ico/zoom-fit.png',
-                        'zoom-fit',
-                        false,
-                        undefined,
-                        () => ViewPortActions.setDefaultZoom()
-                    )
-                }
-                {
-                    getButtonWithTooltip(
-                        'zoom-max',
-                        'maximum allowed image zoom',
-                        'ico/zoom-max.png',
-                        'zoom-max',
-                        false,
-                        undefined,
-                        () => ViewPortActions.setOneForOneZoom()
-                    )
-                }
+            <div className="ButtonWrapper">
+                {getButtonWithTooltip(
+                    'zoom-in',
+                    'zoom in',
+                    'ico/zoom-in.png',
+                    'zoom-in',
+                    false,
+                    undefined,
+                    () => ViewPortActions.zoomIn()
+                )}
+                {getButtonWithTooltip(
+                    'zoom-out',
+                    'zoom out',
+                    'ico/zoom-out.png',
+                    'zoom-out',
+                    false,
+                    undefined,
+                    () => ViewPortActions.zoomOut()
+                )}
+                {getButtonWithTooltip(
+                    'zoom-fit',
+                    'fit image to available space',
+                    'ico/zoom-fit.png',
+                    'zoom-fit',
+                    false,
+                    undefined,
+                    () => ViewPortActions.setDefaultZoom()
+                )}
+                {getButtonWithTooltip(
+                    'zoom-max',
+                    'maximum allowed image zoom',
+                    'ico/zoom-max.png',
+                    'zoom-max',
+                    false,
+                    undefined,
+                    () => ViewPortActions.setOneForOneZoom()
+                )}
             </div>
-            <div className='ButtonWrapper'>
-                {
-                    getButtonWithTooltip(
-                        'image-drag-mode',
-                        imageDragMode ? 'turn-off image drag mode' : 'turn-on image drag mode - works only when image is zoomed',
-                        'ico/hand.png',
-                        'image-drag-mode',
-                        imageDragMode,
-                        undefined,
-                        imageDragOnClick
-                    )
-                }
-                {
-                    getButtonWithTooltip(
-                        'cursor-cross-hair',
-                        crossHairVisible ? 'turn-off cursor cross-hair' : 'turn-on cursor cross-hair',
-                        'ico/cross-hair.png',
-                        'cross-hair',
-                        crossHairVisible,
-                        undefined,
-                        crossHairOnClick
-                    )
-                }
+            <div className="ButtonWrapper">
+                {getButtonWithTooltip(
+                    'image-drag-mode',
+                    imageDragMode
+                        ? 'turn-off image drag mode'
+                        : 'turn-on image drag mode - works only when image is zoomed',
+                    'ico/hand.png',
+                    'image-drag-mode',
+                    imageDragMode,
+                    undefined,
+                    imageDragOnClick
+                )}
+                {getButtonWithTooltip(
+                    'cursor-cross-hair',
+                    crossHairVisible
+                        ? 'turn-off cursor cross-hair'
+                        : 'turn-on cursor cross-hair',
+                    'ico/cross-hair.png',
+                    'cross-hair',
+                    crossHairVisible,
+                    undefined,
+                    crossHairOnClick
+                )}
             </div>
-            {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
-                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className='ButtonWrapper'>
-                {
-                    getButtonWithTooltip(
+            {((activeLabelType === LabelType.RECT &&
+                AISelector.isAIObjectDetectorModelLoaded()) ||
+                (activeLabelType === LabelType.POINT &&
+                    AISelector.isAIPoseDetectorModelLoaded())) && (
+                <div className="ButtonWrapper">
+                    {getButtonWithTooltip(
                         'accept-all',
                         'accept all proposed detections',
                         'ico/accept-all.png',
                         'accept-all',
                         false,
                         undefined,
-                        () => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    )
-                }
-                {
-                    getButtonWithTooltip(
+                        () =>
+                            AIActions.acceptAllSuggestedLabels(
+                                LabelsSelector.getActiveImageData()
+                            )
+                    )}
+                    {getButtonWithTooltip(
                         'reject-all',
                         'reject all proposed detections',
                         'ico/reject-all.png',
                         'reject-all',
                         false,
                         undefined,
-                        () => AIActions.rejectAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    )
-                }
-            </div>}
+                        () =>
+                            AIActions.rejectAllSuggestedLabels(
+                                LabelsSelector.getActiveImageData()
+                            )
+                    )}
+                </div>
+            )}
         </div>
-    )
+    );
 };
 
 const mapDispatchToProps = {
