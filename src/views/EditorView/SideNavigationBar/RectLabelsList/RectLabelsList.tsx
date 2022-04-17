@@ -1,20 +1,20 @@
 import React from 'react';
-import {ISize} from "../../../../interfaces/ISize";
+import {ISize} from '../../../../interfaces/ISize';
 import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelRect} from "../../../../store/labels/types";
+import {ImageData, LabelName, LabelRect} from '../../../../store/labels/types';
 import './RectLabelsList.scss';
 import {
     updateActiveLabelId,
     updateActiveLabelNameId,
     updateImageDataById
-} from "../../../../store/labels/actionCreators";
-import {AppState} from "../../../../store";
-import {connect} from "react-redux";
-import LabelInputField from "../LabelInputField/LabelInputField";
-import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
-import {LabelActions} from "../../../../logic/actions/LabelActions";
-import {LabelStatus} from "../../../../data/enums/LabelStatus";
-import {findLast} from "lodash";
+} from '../../../../store/labels/actionCreators';
+import {AppState} from '../../../../store';
+import {connect} from 'react-redux';
+import LabelInputField from '../LabelInputField/LabelInputField';
+import EmptyLabelList from '../EmptyLabelList/EmptyLabelList';
+import {LabelActions} from '../../../../logic/actions/LabelActions';
+import {LabelStatus} from '../../../../data/enums/LabelStatus';
+import {findLast} from 'lodash';
 
 interface IProps {
     size: ISize;
@@ -27,7 +27,16 @@ interface IProps {
     updateActiveLabelId: (activeLabelId: string) => any;
 }
 
-const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameId, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
+const RectLabelsList: React.FC<IProps> = ({
+    size,
+    imageData,
+    updateImageDataById,
+    labelNames,
+    updateActiveLabelNameId,
+    activeLabelId,
+    highlightedLabelId,
+    updateActiveLabelId
+}) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -45,16 +54,15 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
     const updateRectLabel = (labelRectId: string, labelNameId: string) => {
         const newImageData = {
             ...imageData,
-            labelRects: imageData.labelRects
-                .map((labelRect: LabelRect) => {
+            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
                 if (labelRect.id === labelRectId) {
                     return {
                         ...labelRect,
                         labelId: labelNameId,
                         status: LabelStatus.ACCEPTED
-                    }
+                    };
                 } else {
-                    return labelRect
+                    return labelRect;
                 }
             })
         };
@@ -68,45 +76,57 @@ const RectLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById,
 
     const getChildren = () => {
         return imageData.labelRects
-            .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
+            .filter(
+                (labelRect: LabelRect) =>
+                    labelRect.status === LabelStatus.ACCEPTED
+            )
             .map((labelRect: LabelRect) => {
-            return <LabelInputField
-                size={{
-                    width: size.width,
-                    height: labelInputFieldHeight
-                }}
-                isActive={labelRect.id === activeLabelId}
-                isHighlighted={labelRect.id === highlightedLabelId}
-                id={labelRect.id}
-                key={labelRect.id}
-                onDelete={deleteRectLabelById}
-                value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
-                options={labelNames}
-                onSelectLabel={updateRectLabel}
-            />
-        });
+                return (
+                    <LabelInputField
+                        size={{
+                            width: size.width,
+                            height: labelInputFieldHeight
+                        }}
+                        isActive={labelRect.id === activeLabelId}
+                        isHighlighted={labelRect.id === highlightedLabelId}
+                        id={labelRect.id}
+                        key={labelRect.id}
+                        onDelete={deleteRectLabelById}
+                        value={
+                            labelRect.labelId !== null
+                                ? findLast(labelNames, {id: labelRect.labelId})
+                                : null
+                        }
+                        options={labelNames}
+                        onSelectLabel={updateRectLabel}
+                    />
+                );
+            });
     };
 
     return (
         <div
             className="RectLabelsList"
             style={listStyle}
-            onClickCapture={onClickHandler}
-        >
-            {imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length === 0 ?
+            onClickCapture={onClickHandler}>
+            {imageData.labelRects.filter(
+                (labelRect: LabelRect) =>
+                    labelRect.status === LabelStatus.ACCEPTED
+            ).length === 0 ? (
                 <EmptyLabelList
-                    labelBefore={"draw your first bounding box"}
-                    labelAfter={"no labels created for this image yet"}
-                /> :
+                    labelBefore={'draw your first bounding box'}
+                    labelAfter={'no labels created for this image yet'}
+                />
+            ) : (
                 <Scrollbars>
                     <div
                         className="RectLabelsListContent"
-                        style={listStyleContent}
-                    >
+                        style={listStyleContent}>
+                        Hello!
                         {getChildren()}
                     </div>
                 </Scrollbars>
-            }
+            )}
         </div>
     );
 };
@@ -120,10 +140,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state: AppState) => ({
     activeLabelId: state.labels.activeLabelId,
     highlightedLabelId: state.labels.highlightedLabelId,
-    labelNames : state.labels.labels
+    labelNames: state.labels.labels
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(RectLabelsList);
+export default connect(mapStateToProps, mapDispatchToProps)(RectLabelsList);
