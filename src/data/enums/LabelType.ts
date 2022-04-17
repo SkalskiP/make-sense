@@ -5,3 +5,8 @@ export enum LabelType {
     POLYGON = 'POLYGON',
     LINE = 'LINE'
 }
+
+export enum LableModeType {
+    HUMAN = 'HUMAN',
+    ITEM = 'ITEM'
+}
