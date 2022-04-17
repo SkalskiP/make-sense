@@ -15,6 +15,8 @@ import EmptyLabelList from '../EmptyLabelList/EmptyLabelList';
 import {LabelActions} from '../../../../logic/actions/LabelActions';
 import {LabelStatus} from '../../../../data/enums/LabelStatus';
 import {findLast} from 'lodash';
+import {updateActivePopupType} from '../../../../store/general/actionCreators';
+import {PopupWindowType} from '../../../../data/enums/PopupWindowType';
 
 interface IProps {
     size: ISize;
@@ -25,6 +27,7 @@ interface IProps {
     updateActiveLabelNameId: (activeLabelId: string) => any;
     labelNames: LabelName[];
     updateActiveLabelId: (activeLabelId: string) => any;
+    updateActivePopupTypeAction: (popupType: PopupWindowType) => any;
 }
 
 const RectLabelsList: React.FC<IProps> = ({
@@ -35,7 +38,8 @@ const RectLabelsList: React.FC<IProps> = ({
     updateActiveLabelNameId,
     activeLabelId,
     highlightedLabelId,
-    updateActiveLabelId
+    updateActiveLabelId,
+    updateActivePopupTypeAction
 }) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
@@ -70,6 +74,11 @@ const RectLabelsList: React.FC<IProps> = ({
         updateActiveLabelNameId(labelNameId);
     };
 
+    const showInfo = (labelRectId: string) => {
+        updateActiveLabelId(labelRectId);
+        updateActivePopupTypeAction(PopupWindowType.LABEL_INFO);
+    };
+
     const onClickHandler = () => {
         updateActiveLabelId(null);
     };
@@ -89,6 +98,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         }}
                         isActive={labelRect.id === activeLabelId}
                         isHighlighted={labelRect.id === highlightedLabelId}
+                        mode={labelRect.mode}
                         id={labelRect.id}
                         key={labelRect.id}
                         onDelete={deleteRectLabelById}
@@ -99,6 +109,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         }
                         options={labelNames}
                         onSelectLabel={updateRectLabel}
+                        onSelectInfo={showInfo}
                     />
                 );
             });
@@ -122,7 +133,6 @@ const RectLabelsList: React.FC<IProps> = ({
                     <div
                         className="RectLabelsListContent"
                         style={listStyleContent}>
-                        Hello!
                         {getChildren()}
                     </div>
                 </Scrollbars>
@@ -134,11 +144,13 @@ const RectLabelsList: React.FC<IProps> = ({
 const mapDispatchToProps = {
     updateImageDataById,
     updateActiveLabelNameId,
-    updateActiveLabelId
+    updateActiveLabelId,
+    updateActivePopupTypeAction: updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({
     activeLabelId: state.labels.activeLabelId,
+    activeLabelMode: state.labels.activeLabelMode,
     highlightedLabelId: state.labels.highlightedLabelId,
     labelNames: state.labels.labels
 });

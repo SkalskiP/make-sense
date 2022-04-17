@@ -14,7 +14,7 @@ import {
     updateImageData,
     updateImageDataById
 } from '../../store/labels/actionCreators';
-import {LabelType, LableModeType} from '../../data/enums/LabelType';
+import {LabelType, LabelModeType} from '../../data/enums/LabelType';
 
 export class LabelActions {
     public static deleteActiveLabel() {
@@ -162,7 +162,7 @@ export class LabelActions {
             .includes(label);
     }
 
-    public static selectLabelMode(mode: LableModeType) {
+    public static selectLabelMode(mode: LabelModeType) {
         store.dispatch(updateActiveLabelMode(mode));
     }
 }

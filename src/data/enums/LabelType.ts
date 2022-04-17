@@ -6,7 +6,7 @@ export enum LabelType {
     LINE = 'LINE'
 }
 
-export enum LableModeType {
+export enum LabelModeType {
     HUMAN = 'HUMAN',
     ITEM = 'ITEM'
 }
