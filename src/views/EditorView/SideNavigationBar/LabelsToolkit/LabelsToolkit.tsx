@@ -8,7 +8,7 @@ import {
 } from '../../../../store/labels/actionCreators';
 import {AppState} from '../../../../store';
 import {connect} from 'react-redux';
-import {LabelType, LableModeType} from '../../../../data/enums/LabelType';
+import {LabelType, LabelModeType} from '../../../../data/enums/LabelType';
 import {ProjectType} from '../../../../data/enums/ProjectType';
 import {ISize} from '../../../../interfaces/ISize';
 import classNames from 'classnames';
@@ -80,7 +80,7 @@ const getButtonWithTooltip = (
 interface IProps {
     activeImageIndex: number;
     activeLabelType: LabelType;
-    activeLabelMode: LableModeType;
+    activeLabelMode: LabelModeType;
     imagesData: ImageData[];
     projectType: ProjectType;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
@@ -265,18 +265,18 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         'human select mode',
                         'ico/user.png',
                         'human select mode',
-                        activeLabelMode === LableModeType.HUMAN,
+                        activeLabelMode === LabelModeType.HUMAN,
                         undefined,
-                        () => LabelActions.selectLabelMode(LableModeType.HUMAN)
+                        () => LabelActions.selectLabelMode(LabelModeType.HUMAN)
                     )}
                     {getButtonWithTooltip(
                         'item',
                         'item select mode',
                         'ico/box.png',
                         'item select mode',
-                        activeLabelMode === LableModeType.ITEM,
+                        activeLabelMode === LabelModeType.ITEM,
                         undefined,
-                        () => LabelActions.selectLabelMode(LableModeType.ITEM)
+                        () => LabelActions.selectLabelMode(LabelModeType.ITEM)
                     )}
                 </div>
                 {this.state.size && this.renderChildren()}

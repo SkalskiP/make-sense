@@ -1,6 +1,6 @@
 import {LabelsActionTypes, ImageData, LabelName} from './types';
 import {Action} from '../Actions';
-import {LabelType, LableModeType} from '../../data/enums/LabelType';
+import {LabelType, LabelModeType} from '../../data/enums/LabelType';
 
 export function updateActiveImageIndex(
     activeImageIndex: number
@@ -106,7 +106,7 @@ export function updateFirstLabelCreatedFlag(
     };
 }
 
-export function updateActiveLabelMode(mode: LableModeType): LabelsActionTypes {
+export function updateActiveLabelMode(mode: LabelModeType): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_LABEL_MODE,
         payload: {

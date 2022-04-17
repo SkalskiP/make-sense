@@ -1,5 +1,5 @@
 import {ImageData} from '../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {FileUtil} from './FileUtil';
 import {ImageRepository} from '../logic/imageRepository/ImageRepository';
 
@@ -15,8 +15,10 @@ export class ImageDataUtil {
             labelPolygons: [],
             labelNameIds: [],
             isVisitedByObjectDetector: false,
-            isVisitedByPoseDetector: false
-        }
+            isVisitedByPoseDetector: false,
+            humans: [],
+            items: []
+        };
     }
 
     public static cleanAnnotations(item: ImageData): ImageData {
@@ -26,24 +28,36 @@ export class ImageDataUtil {
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],
-            labelNameIds: []
-        }
+            labelNameIds: [],
+            humans: [],
+            items: []
+        };
     }
 
-    public static arrange(items: ImageData[], idArrangement: string[]): ImageData[] {
+    public static arrange(
+        items: ImageData[],
+        idArrangement: string[]
+    ): ImageData[] {
         return items.sort((a: ImageData, b: ImageData) => {
-            return idArrangement.indexOf(a.id) - idArrangement.indexOf(b.id)
-        })
+            return idArrangement.indexOf(a.id) - idArrangement.indexOf(b.id);
+        });
     }
 
     public static loadMissingImages(images: ImageData[]): Promise<void> {
         return new Promise((resolve, reject) => {
-            const missingImages = images.filter((i: ImageData) => !i.loadStatus);
-            const missingImagesFiles = missingImages.map((i: ImageData) => i.fileData);
+            const missingImages = images.filter(
+                (i: ImageData) => !i.loadStatus
+            );
+            const missingImagesFiles = missingImages.map(
+                (i: ImageData) => i.fileData
+            );
             FileUtil.loadImages(missingImagesFiles)
-                .then((htmlImageElements:HTMLImageElement[]) => {
-                    ImageRepository.storeImages(missingImages.map((i: ImageData) => i.id), htmlImageElements);
-                    resolve()
+                .then((htmlImageElements: HTMLImageElement[]) => {
+                    ImageRepository.storeImages(
+                        missingImages.map((i: ImageData) => i.id),
+                        htmlImageElements
+                    );
+                    resolve();
                 })
                 .catch((error: Error) => reject(error));
         });

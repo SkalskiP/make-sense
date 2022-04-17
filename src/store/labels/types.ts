@@ -1,6 +1,6 @@
 import {IRect} from '../../interfaces/IRect';
 import {Action} from '../Actions';
-import {LabelType, LableModeType} from '../../data/enums/LabelType';
+import {LabelType, LabelModeType} from '../../data/enums/LabelType';
 import {IPoint} from '../../interfaces/IPoint';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {ILine} from '../../interfaces/ILine';
@@ -10,6 +10,9 @@ export type LabelRect = {
     id: string;
     labelId: string;
     rect: IRect;
+
+    // Custom by mj
+    mode?: LabelModeType;
 
     // AI
     isCreatedByAI: boolean;
@@ -47,6 +50,26 @@ export type LabelName = {
     color: string;
 };
 
+export type HumanInfo = {
+    id: number;
+    gender: number;
+    type: number;
+    boundingBox: IRect;
+    style: string[];
+};
+
+export type ItemInfo = {
+    id: number;
+    humanId: number;
+    gender: number;
+    topCategory: number;
+    subCategory: number;
+    color: number;
+    pattern: number;
+    boundingBox: IRect;
+    style: string[];
+};
+
 export type ImageData = {
     id: string;
     fileData: File;
@@ -56,6 +79,8 @@ export type ImageData = {
     labelLines: LabelLine[];
     labelPolygons: LabelPolygon[];
     labelNameIds: string[];
+    humans: HumanInfo[];
+    items: ItemInfo[];
 
     // SSD
     isVisitedByObjectDetector: boolean;
@@ -73,7 +98,7 @@ export type LabelsState = {
     imagesData: ImageData[];
     firstLabelCreatedFlag: boolean;
     labels: LabelName[];
-    activeLabelMode: LableModeType;
+    activeLabelMode: LabelModeType;
 };
 
 interface UpdateActiveImageIndex {
@@ -150,7 +175,7 @@ interface UpdateFirstLabelCreatedFlag {
 interface UpdateActiveLabelMode {
     type: typeof Action.UPDATE_ACTIVE_LABEL_MODE;
     payload: {
-        mode: LableModeType;
+        mode: LabelModeType;
     };
 }
 

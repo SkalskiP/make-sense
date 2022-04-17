@@ -1,5 +1,6 @@
 import {LabelsActionTypes, LabelsState, ImageData} from './types';
 import {Action} from '../Actions';
+import {LabelModeType} from '../../data/enums/LabelType';
 
 const initialState: LabelsState = {
     activeImageIndex: null,
@@ -10,7 +11,7 @@ const initialState: LabelsState = {
     imagesData: [],
     firstLabelCreatedFlag: false,
     labels: [],
-    activeLabelMode: null
+    activeLabelMode: LabelModeType.HUMAN
 };
 
 export function labelsReducer(

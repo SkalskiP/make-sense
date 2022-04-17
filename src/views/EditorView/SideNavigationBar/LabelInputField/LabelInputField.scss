@@ -1,61 +1,15 @@
 @import '../../../../settings/Settings';
 
 .LabelInputField {
-  background-color: transparent;
-  position: relative;
-  overflow: hidden;
-  cursor: pointer;
+    background-color: transparent;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
 
-  .LabelInputFieldWrapper {
-    position: absolute;
-    left: calc(-100% - 5px);
-    transition: left 0.3s ease-in-out;
-
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    align-items: center;
-    align-content: space-between;
-
-    .Marker {
-      width: 5px;
-      height: calc(100% - 4px);
-      background-color: $darkThemeThirdColor;
-    }
-
-    .Content {
-      flex: 1;
-      height: 100%;
-      padding: 0 10px;
-
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      justify-content: space-between;
-      align-items: center;
-      align-content: space-between;
-
-      .ContentWrapper {
-        align-self: stretch;
-
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-      }
-
-      .DropdownLabel {
-        position: relative;
-        font-size: 14px;
-        cursor: pointer;
-        user-select: none;
-        min-width: 160px;
-        height: 30px;
-        padding: 0 5px;
-        color: white;
+    .LabelInputFieldWrapper {
+        position: absolute;
+        left: calc(-100% - 5px);
+        transition: left 0.3s ease-in-out;
 
         display: flex;
         flex-direction: row;
@@ -64,108 +18,167 @@
         align-items: center;
         align-content: space-between;
 
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.05);
+        .Marker {
+            width: 5px;
+            height: calc(100% - 4px);
+            background-color: $darkThemeThirdColor;
+        }
+        .Mode {
+            // background-color: aqua;
+            margin-top: 6px;
+            margin-left: 10px;
+            width: 20px;
+            img {
+                filter: brightness(0) invert(1);
+                width: 20px;
+                height: 20px;
+            }
+        }
 
-          &::after {
+        .Content {
+            flex: 1;
+            height: 100%;
+            padding: 0 10px;
+
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            align-items: center;
+            align-content: space-between;
+
+            .ContentWrapper {
+                align-self: stretch;
+
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+            }
+
+            .DropdownLabel {
+                position: relative;
+                font-size: 14px;
+                cursor: pointer;
+                user-select: none;
+                min-width: 160px;
+                height: 30px;
+                padding: 0 5px;
+                color: white;
+
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+                align-items: center;
+                align-content: space-between;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.05);
+
+                    &::after {
+                        background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+                        background-color: var(--leading-color);
+                    }
+                }
+
+                &::after {
+                    background: $darkThemeThirdColor;
+                    width: 100%;
+                    position: absolute;
+                    bottom: 0;
+                    height: 1px; // <- adjust
+                    left: 0;
+                    z-index: 100;
+                    display: block;
+                    content: '';
+                }
+            }
+
+            .Dropdown {
+                position: fixed;
+                z-index: 1000;
+                background-color: $darkThemeFirstColor;
+
+                display: flex;
+                flex-direction: column;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: center;
+                align-content: center;
+
+                .DropdownOption {
+                    align-self: stretch;
+
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    justify-content: flex-start;
+                    align-items: center;
+                    align-content: flex-start;
+
+                    font-size: 14px;
+                    cursor: pointer;
+                    user-select: none;
+                    padding: 0 5px;
+                    color: white;
+
+                    &:hover {
+                        background-color: $darkThemeThirdColor;
+                    }
+                }
+            }
+
+            .ImageButton {
+                transition: transform 0.3s;
+
+                img {
+                    filter: brightness(0) invert(1);
+                }
+
+                &:hover {
+                    background-color: transparent;
+                }
+
+                &.trash:not(.disabled):hover {
+                    filter: brightness(35%) sepia(100%) hue-rotate(172deg)
+                        saturate(2000%); // fallback if new css variables are not supported by browser
+                    filter: brightness(35%) sepia(100%)
+                        hue-rotate(var(--hue-value)) saturate(2000%);
+                }
+            }
+        }
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+            .Marker {
+                background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+                background-color: var(--leading-color);
+            }
+        }
+    }
+
+    &.active {
+        background-color: rgba(0, 0, 0, 0.05);
+        .Marker {
             background-color: $secondaryColor; // fallback if new css variables are not supported by browser
             background-color: var(--leading-color);
-          }
         }
-
-        &::after {
-          background: $darkThemeThirdColor;
-          width: 100%;
-          position: absolute;
-          bottom: 0;
-          height: 1px;    // <- adjust
-          left: 0;
-          z-index: 100;
-          display: block;
-          content: "";
-        }
-      }
-
-      .Dropdown {
-        position: fixed;
-        z-index: 1000;
-        background-color: $darkThemeFirstColor;
-
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-
-        .DropdownOption {
-          align-self: stretch;
-
-          display: flex;
-          flex-direction: row;
-          flex-wrap: nowrap;
-          justify-content: flex-start;
-          align-items: center;
-          align-content: flex-start;
-
-          font-size: 14px;
-          cursor: pointer;
-          user-select: none;
-          padding: 0 5px;
-          color: white;
-
-          &:hover {
-            background-color: $darkThemeThirdColor;
-          }
-        }
-      }
-
-      .ImageButton {
-        transition: transform 0.3s;
-
-        img {
-          filter: brightness(0) invert(1);
-        }
-
-        &:hover {
-          background-color: transparent;
-        }
-
-        &.trash:not(.disabled):hover {
-          filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
-          filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
-        }
-      }
     }
 
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      .Marker {
-        background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-        background-color: var(--leading-color);
-      }
+    &.loaded {
+        .LabelInputFieldWrapper {
+            left: 0;
+        }
     }
-  }
 
-  &.active {
-    background-color: rgba(0, 0, 0, 0.05);
-    .Marker {
-      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-      background-color: var(--leading-color);
+    &.highlighted {
+        background-color: rgba(0, 0, 0, 0.05);
+        .Marker {
+            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+            background-color: var(--leading-color);
+        }
     }
-  }
-
-  &.loaded {
-    .LabelInputFieldWrapper {
-      left: 0;
-    }
-  }
-
-  &.highlighted {
-    background-color: rgba(0, 0, 0, 0.05);
-    .Marker {
-      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-      background-color: var(--leading-color);
-    }
-  }
 }
