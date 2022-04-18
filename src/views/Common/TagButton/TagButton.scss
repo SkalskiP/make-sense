@@ -1,0 +1,34 @@
+@import '../../../settings/Settings';
+
+.TagButton {
+    display: block;
+    cursor: pointer;
+    user-select: none;
+    line-height: 0;
+    word-wrap: break-word;
+    padding: 10px 15px;
+    text-decoration: none;
+    box-shadow: black 0 0 0 2px inset;
+    color: black;
+    margin: initial;
+    border-radius: 12px;
+    transition: 0.3s ease-in-out;
+    background: transparent;
+    font-weight: 700;
+
+    > a {
+        text-decoration: none;
+        color: black;
+    }
+
+    &:hover {
+        box-shadow: inherit;
+        color: white;
+        background-color: black;
+
+        > a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+}
