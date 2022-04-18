@@ -9,8 +9,9 @@ import {updateActivePopupType} from '../../../store/general/actionCreators';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {TagButton} from '../../Common/TagButton/TagButton';
-import {FASHION_STYLE_MAN} from '../../../data/enums/ItemType';
+import {ATTRIBUTE_TYPE, FASHION_STYLE_MAN} from '../../../data/enums/ItemType';
 import {LabelModeType} from '../../../data/enums/LabelType';
+import {AttributeSelect} from '../../Common/AttributeSelect/AttributeSelect';
 
 interface IProps {
     labelRectId: string;
@@ -24,6 +25,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
     updateActivePopupTypeAction
 }) => {
     const labelRect = LabelsSelector.getActiveRectLabel();
+    const onSelect = (code: number, type: ATTRIBUTE_TYPE) =>
+        console.log('selected code = ', code, type);
     const renderContent = () => {
         return labelRect.mode === LabelModeType.HUMAN ? (
             <div className="LabelInfoPopupContent">
@@ -54,7 +57,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
         ) : (
             <div className="LabelInfoPopupContent">
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Human ID</div>
+                    <div className="AttributeName">Item UUID</div>
+                    <div className="AttributeSelector">
+                        <div className="title">{labelRectId}</div>
+                    </div>
+                </div>
+
+                <div className="AttributeContainer">
+                    <div className="AttributeName">Linked Human ID</div>
                     <div className="AttributeSelector">
                         {imageData.humans.map((human, idx) => (
                             <TagButton
@@ -67,29 +77,43 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 <div className="AttributeContainer">
                     <div className="AttributeName">Gender</div>
                     <div className="AttributeSelector">
-                        <TagButton label="Male" isActive={false} />
-                        <TagButton label="Female" isActive={false} />
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.GENDER}
+                            onSelect={onSelect}
+                        />
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Main Category</div>
-                    <div className="AttributeSelector"></div>
-                </div>
-                <div className="AttributeContainer">
-                    <div className="AttributeName">Sub Category</div>
-                    <div className="AttributeSelector"></div>
-                </div>
-                <div className="AttributeContainer">
-                    <div className="AttributeName">Item ID</div>
-                    <div className="AttributeSelector"></div>
+                    <div className="AttributeName">Category</div>
+                    <div className="AttributeSelector">
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
+                            onSelect={onSelect}
+                        />
+                        <div style={{width: '10px'}} />
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.SUB_CATEGORY}
+                            onSelect={onSelect}
+                        />
+                    </div>
                 </div>
                 <div className="AttributeContainer">
                     <div className="AttributeName">Color</div>
-                    <div className="AttributeSelector"></div>
+                    <div className="AttributeSelector">
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.ITEM_COLOR}
+                            onSelect={onSelect}
+                        />
+                    </div>
                 </div>
                 <div className="AttributeContainer">
                     <div className="AttributeName">Pattern</div>
-                    <div className="AttributeSelector"></div>
+                    <div className="AttributeSelector">
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.ITEM_PATTERN}
+                            onSelect={onSelect}
+                        />
+                    </div>
                 </div>
 
                 <div className="AttributeContainer">
