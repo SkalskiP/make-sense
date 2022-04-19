@@ -1,56 +1,156 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './LabelInfoPopup.scss';
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
-import {ImageButton} from '../../Common/ImageButton/ImageButton';
-import {ImageData} from '../../../store/labels/types';
+import {HumanInfo, ImageData, ItemInfo} from '../../../store/labels/types';
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
 import {updateActivePopupType} from '../../../store/general/actionCreators';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {TagButton} from '../../Common/TagButton/TagButton';
-import {ATTRIBUTE_TYPE, FASHION_STYLE_MAN} from '../../../data/enums/ItemType';
+import {
+    ATTRIBUTE_TYPE,
+    FASHION_STYLE_MAN,
+    FASHION_STYLE_WOMAN,
+    GENDER,
+    SOURCE
+} from '../../../data/enums/ItemType';
 import {LabelModeType} from '../../../data/enums/LabelType';
 import {AttributeSelect} from '../../Common/AttributeSelect/AttributeSelect';
+import _ from 'lodash';
+import {updateImageDataById} from '../../../store/labels/actionCreators';
 
 interface IProps {
     labelRectId: string;
     imageData: ImageData;
     updateActivePopupTypeAction: (popupType: PopupWindowType) => any;
+    updateImageDataByIdAction: (id: string, newImageData: ImageData) => any;
+}
+
+interface ISelectedItem {
+    [key: string]: any;
 }
 
 const LabelInfoPopup: React.FC<IProps> = ({
     labelRectId,
     imageData,
-    updateActivePopupTypeAction
+    updateActivePopupTypeAction,
+    updateImageDataByIdAction
 }) => {
     const labelRect = LabelsSelector.getActiveRectLabel();
-    const onSelect = (code: number, type: ATTRIBUTE_TYPE) =>
-        console.log('selected code = ', code, type);
+    const {id, mode} = labelRect;
+    const [humanInfo, setHumanInfo] = useState<HumanInfo>();
+    const [itemInfo, setItemInfo] = useState<ItemInfo>();
+    const [selectedItems, setSelectedItems] = useState<ISelectedItem>({});
+    const [gender, setGender] = useState<number>();
+
+    useEffect(() => {
+        if (mode === LabelModeType.HUMAN) {
+            const found = _.find(imageData.humans, {uuid: id});
+            setHumanInfo(found);
+            const fashionStyles =
+                found.gender === GENDER.MAN
+                    ? FASHION_STYLE_MAN
+                    : FASHION_STYLE_WOMAN;
+            setGender(found.gender);
+            setSelectedItems({
+                [ATTRIBUTE_TYPE.GENDER]: {
+                    value: found.gender,
+                    label: Object.keys(GENDER).find(
+                        (key) => GENDER[key] === found.gender
+                    )
+                },
+                [ATTRIBUTE_TYPE.SOURCE]: {
+                    value: found.type,
+                    label: Object.keys(SOURCE).find(
+                        (key) => SOURCE[key] === found.type
+                    )
+                },
+                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
+                    value: style,
+                    label: fashionStyles[style]
+                }))
+            });
+        } else {
+            setItemInfo(_.find(imageData.items, {uuid: id}));
+        }
+
+        return () => {
+            // nothing
+        };
+    }, [mode]);
+
+    const onSelect = (
+        item: {value: any; label: string},
+        type: ATTRIBUTE_TYPE
+    ) => {
+        console.log('selectedItem = ', item, type);
+        switch (type) {
+            case ATTRIBUTE_TYPE.GENDER: {
+                setGender(item.value);
+                break;
+            }
+        }
+        setSelectedItems({...selectedItems, [type]: item});
+    };
+
+    const save = () => {
+        if (mode === LabelModeType.HUMAN) {
+            const updatedHumanInfo = {
+                ...humanInfo,
+                gender: selectedItems[ATTRIBUTE_TYPE.GENDER].value,
+                type: selectedItems[ATTRIBUTE_TYPE.SOURCE].value,
+                styles: selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE].map(
+                    (item) => item.value
+                )
+            };
+            imageData.humans = imageData.humans.map((human) =>
+                human.uuid === humanInfo.uuid ? updatedHumanInfo : human
+            );
+            console.log('next = ', updatedHumanInfo, imageData);
+            updateImageDataByIdAction(imageData.id, imageData);
+        }
+    };
+
     const renderContent = () => {
-        return labelRect.mode === LabelModeType.HUMAN ? (
+        console.log('humanInfo', humanInfo);
+        console.log('itemInfo', itemInfo);
+        console.log('selectedItems', selectedItems);
+        if (!humanInfo && !itemInfo) {
+            return null;
+        }
+        return mode === LabelModeType.HUMAN ? (
             <div className="LabelInfoPopupContent">
                 <div className="AttributeContainer">
                     <div className="AttributeName">Gender</div>
                     <div className="AttributeSelector">
-                        <TagButton label="Male" />
-                        <TagButton label="Female" />
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.GENDER}
+                            onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.GENDER]}
+                        />
                     </div>
                 </div>
                 <div className="AttributeContainer">
                     <div className="AttributeName">Human type</div>
                     <div className="AttributeSelector">
-                        <TagButton label="Human" />
-                        <TagButton label="Mannequin" />
-                        <TagButton label="Stylebook" />
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.SOURCE}
+                            onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.SOURCE]}
+                        />
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Style</div>
+                    <div className="AttributeName">Styles</div>
                     <div className="AttributeSelector">
-                        <TagButton label={FASHION_STYLE_MAN.GENTLEMAN} />
-                        <TagButton label={FASHION_STYLE_MAN.SPORTY} />
-                        <TagButton label={FASHION_STYLE_MAN.PUNK} />
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.FASHION_STYLE}
+                            gender={gender}
+                            onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]}
+                            isMulti={true}
+                        />
                     </div>
                 </div>
             </div>
@@ -80,6 +180,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.GENDER}
                             onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.GENDER]}
                         />
                     </div>
                 </div>
@@ -89,11 +190,13 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
                             onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]}
                         />
                         <div style={{width: '10px'}} />
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY]}
                         />
                     </div>
                 </div>
@@ -103,6 +206,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_COLOR}
                             onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.ITEM_COLOR]}
                         />
                     </div>
                 </div>
@@ -112,13 +216,21 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_PATTERN}
                             onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.ITEM_PATTERN]}
                         />
                     </div>
                 </div>
 
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Style</div>
-                    <div className="AttributeSelector"></div>
+                    <div className="AttributeName">Styles</div>
+                    <div className="AttributeSelector">
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.FASHION_STYLE}
+                            onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]}
+                            isMulti={true}
+                        />
+                    </div>
                 </div>
             </div>
         );
@@ -126,10 +238,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
 
     return (
         <GenericYesNoPopup
-            title={`${labelRect.mode} Label Info`}
+            title={`${mode} Label Info`}
             renderContent={renderContent}
             acceptLabel={'Save'}
-            onAccept={() => updateActivePopupTypeAction(null)}
+            onAccept={save}
             rejectLabel={'Cancel'}
             onReject={() => updateActivePopupTypeAction(null)}
         />
@@ -137,7 +249,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
 };
 
 const mapDispatchToProps = {
-    updateActivePopupTypeAction: updateActivePopupType
+    updateActivePopupTypeAction: updateActivePopupType,
+    updateImageDataByIdAction: updateImageDataById
 };
 
 const mapStateToProps = (state: AppState) => ({

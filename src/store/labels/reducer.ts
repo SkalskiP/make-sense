@@ -1,6 +1,7 @@
 import {LabelsActionTypes, LabelsState, ImageData} from './types';
 import {Action} from '../Actions';
 import {LabelModeType} from '../../data/enums/LabelType';
+import {GENDER, SOURCE} from '../../data/enums/ItemType';
 
 const initialState: LabelsState = {
     activeImageIndex: null,
@@ -11,7 +12,13 @@ const initialState: LabelsState = {
     imagesData: [],
     firstLabelCreatedFlag: false,
     labels: [],
-    activeLabelMode: LabelModeType.HUMAN
+    activeLabelMode: LabelModeType.HUMAN,
+    activeGender: GENDER.UNKNOWN,
+    activeHumanType: SOURCE.UNKNOWN,
+    activeStyles: [],
+    activeHumanID: -1,
+    activeMainCategory: -1,
+    activeSubCategory: -1
 };
 
 export function labelsReducer(
@@ -87,6 +94,54 @@ export function labelsReducer(
             return {
                 ...state,
                 activeLabelMode: action.payload.mode
+            };
+        }
+        case Action.UPDATE_ACTIVE_GENDER: {
+            return {
+                ...state,
+                activeGender: action.payload.gender
+            };
+        }
+        case Action.UPDATE_ACTIVE_HUMAN_TYPE: {
+            return {
+                ...state,
+                activeHumanType: action.payload.humanType
+            };
+        }
+        case Action.UPDATE_ACTIVE_STYLES: {
+            return {
+                ...state,
+                activeStyles: action.payload.styles
+            };
+        }
+        case Action.UPDATE_ACTIVE_HUMAN_ID: {
+            return {
+                ...state,
+                activeHumanID: action.payload.humanId
+            };
+        }
+        case Action.UPDATE_ACTIVE_MAIN_CATEGORY: {
+            return {
+                ...state,
+                activeMainCategory: action.payload.mainCategory
+            };
+        }
+        case Action.UPDATE_ACTIVE_SUB_CATEGORY: {
+            return {
+                ...state,
+                activeSubCategory: action.payload.subCategory
+            };
+        }
+        case Action.UPDATE_ACTIVE_COLOR: {
+            return {
+                ...state,
+                activeColor: action.payload.color
+            };
+        }
+        case Action.UPDATE_ACTIVE_PATTERN: {
+            return {
+                ...state,
+                activePattern: action.payload.pattern
             };
         }
         default:

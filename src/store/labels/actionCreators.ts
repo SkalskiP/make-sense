@@ -114,3 +114,79 @@ export function updateActiveLabelMode(mode: LabelModeType): LabelsActionTypes {
         }
     };
 }
+
+export function updateActiveGender(gender: number): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_GENDER,
+        payload: {
+            gender
+        }
+    };
+}
+
+export function updateActiveHumanType(humanType: number): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_HUMAN_TYPE,
+        payload: {
+            humanType
+        }
+    };
+}
+
+export function updateActiveStyles(styles: string[]): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_STYLES,
+        payload: {
+            styles
+        }
+    };
+}
+
+export function updateActiveHumanID(humanId: number): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_HUMAN_ID,
+        payload: {
+            humanId
+        }
+    };
+}
+
+export function updateActiveMainCategory(
+    mainCategory: number
+): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_MAIN_CATEGORY,
+        payload: {
+            mainCategory
+        }
+    };
+}
+
+export function updateActiveSubCategory(
+    subCategory: number
+): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_SUB_CATEGORY,
+        payload: {
+            subCategory
+        }
+    };
+}
+
+export function updateActiveColor(color: number): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_COLOR,
+        payload: {
+            color
+        }
+    };
+}
+
+export function updateActivePattern(pattern: number): LabelsActionTypes {
+    return {
+        type: Action.UPDATE_ACTIVE_PATTERN,
+        payload: {
+            pattern
+        }
+    };
+}

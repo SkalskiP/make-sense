@@ -1,4 +1,9 @@
-import {LabelName, LabelPolygon, LabelRect} from '../store/labels/types';
+import {
+    HumanInfo,
+    LabelName,
+    LabelPolygon,
+    LabelRect
+} from '../store/labels/types';
 import {v4 as uuidv4} from 'uuid';
 import {find} from 'lodash';
 import {IRect} from '../interfaces/IRect';
