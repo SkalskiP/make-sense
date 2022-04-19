@@ -1,7 +1,12 @@
 import {LabelsActionTypes, LabelsState, ImageData} from './types';
 import {Action} from '../Actions';
 import {LabelModeType} from '../../data/enums/LabelType';
-import {GENDER, SOURCE} from '../../data/enums/ItemType';
+import {
+    GENDER,
+    ITEM_COLOR,
+    ITEM_PATTERN,
+    SOURCE
+} from '../../data/enums/ItemType';
 
 const initialState: LabelsState = {
     activeImageIndex: null,
@@ -15,6 +20,8 @@ const initialState: LabelsState = {
     activeLabelMode: LabelModeType.HUMAN,
     activeGender: GENDER.UNKNOWN,
     activeHumanType: SOURCE.UNKNOWN,
+    activeColor: ITEM_COLOR.UNKNOWN,
+    activePattern: ITEM_PATTERN.UNKNOWN,
     activeStyles: [],
     activeHumanID: -1,
     activeMainCategory: -1,

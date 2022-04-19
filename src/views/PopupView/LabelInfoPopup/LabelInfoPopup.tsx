@@ -13,18 +13,40 @@ import {
     FASHION_STYLE_MAN,
     FASHION_STYLE_WOMAN,
     GENDER,
-    SOURCE
+    ITEM_COLOR,
+    ITEM_PATTERN,
+    MAIN_CATEGORY_CODE,
+    SOURCE,
+    SUB_CATEGORY_CODE
 } from '../../../data/enums/ItemType';
 import {LabelModeType} from '../../../data/enums/LabelType';
 import {AttributeSelect} from '../../Common/AttributeSelect/AttributeSelect';
 import _ from 'lodash';
-import {updateImageDataById} from '../../../store/labels/actionCreators';
+import {
+    updateActiveColor,
+    updateActiveGender,
+    updateActiveHumanID,
+    updateActiveHumanType,
+    updateActiveMainCategory,
+    updateActivePattern,
+    updateActiveStyles,
+    updateActiveSubCategory,
+    updateImageDataById
+} from '../../../store/labels/actionCreators';
 
 interface IProps {
     labelRectId: string;
     imageData: ImageData;
     updateActivePopupTypeAction: (popupType: PopupWindowType) => any;
     updateImageDataByIdAction: (id: string, newImageData: ImageData) => any;
+    updateActiveGenderAction: (gender: number) => any;
+    updateActiveHumanTypeAction: (humanType: number) => any;
+    updateActiveStylesAction: (styles: string[]) => any;
+    updateActiveHumanIDAction: (humanId: number) => any;
+    updateActiveMainCategoryAction: (mainCategory: number) => any;
+    updateActiveSubCategoryAction: (subCategory: number) => any;
+    updateActiveColorAction: (color: number) => any;
+    updateActivePatternAction: (pattern: number) => any;
 }
 
 interface ISelectedItem {
@@ -35,7 +57,15 @@ const LabelInfoPopup: React.FC<IProps> = ({
     labelRectId,
     imageData,
     updateActivePopupTypeAction,
-    updateImageDataByIdAction
+    updateImageDataByIdAction,
+    updateActiveGenderAction,
+    updateActiveHumanTypeAction,
+    updateActiveStylesAction,
+    updateActiveHumanIDAction,
+    updateActiveMainCategoryAction,
+    updateActiveSubCategoryAction,
+    updateActiveColorAction,
+    updateActivePatternAction
 }) => {
     const labelRect = LabelsSelector.getActiveRectLabel();
     const {id, mode} = labelRect;
@@ -72,7 +102,42 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 }))
             });
         } else {
-            setItemInfo(_.find(imageData.items, {uuid: id}));
+            const found = _.find(imageData.items, {uuid: id});
+            setItemInfo(found);
+            const fashionStyles =
+                found.gender === GENDER.MAN
+                    ? FASHION_STYLE_MAN
+                    : FASHION_STYLE_WOMAN;
+            setGender(found.gender);
+            setSelectedItems({
+                [ATTRIBUTE_TYPE.GENDER]: {
+                    value: found.gender,
+                    label: Object.keys(GENDER).find(
+                        (key) => GENDER[key] === found.gender
+                    )
+                },
+                [ATTRIBUTE_TYPE.MAIN_CATEGORY]: {
+                    value: found.mainCategory,
+                    label: MAIN_CATEGORY_CODE[found.mainCategory]
+                },
+                [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
+                    value: found.subCategory,
+                    label: SUB_CATEGORY_CODE[found.subCategory]
+                },
+                [ATTRIBUTE_TYPE.ITEM_COLOR]: {
+                    value: found.color,
+                    label: ITEM_COLOR[found.color]
+                },
+                [ATTRIBUTE_TYPE.ITEM_PATTERN]: {
+                    value: found.pattern,
+                    label: ITEM_PATTERN[found.pattern]
+                },
+
+                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
+                    value: style,
+                    label: fashionStyles[style]
+                }))
+            });
         }
 
         return () => {
@@ -104,12 +169,46 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     (item) => item.value
                 )
             };
+            // update active*
+            updateActiveGenderAction(updatedHumanInfo.gender);
+            updateActiveHumanTypeAction(updatedHumanInfo.type);
+            updateActiveStylesAction(updatedHumanInfo.styles);
+
+            // update imageData
             imageData.humans = imageData.humans.map((human) =>
                 human.uuid === humanInfo.uuid ? updatedHumanInfo : human
             );
             console.log('next = ', updatedHumanInfo, imageData);
             updateImageDataByIdAction(imageData.id, imageData);
         }
+        if (mode === LabelModeType.ITEM) {
+            const updateItemInfo: ItemInfo = {
+                ...itemInfo,
+                gender: selectedItems[ATTRIBUTE_TYPE.GENDER].value,
+                mainCategory: selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY].value,
+                subCategory: selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY].value,
+                color: selectedItems[ATTRIBUTE_TYPE.ITEM_COLOR].value,
+                pattern: selectedItems[ATTRIBUTE_TYPE.ITEM_PATTERN].value,
+                styles: selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE].map(
+                    (item) => item.value
+                )
+            };
+
+            // update active*
+            updateActiveGenderAction(updateItemInfo.gender);
+            updateActiveMainCategoryAction(updateItemInfo.mainCategory);
+            updateActiveSubCategoryAction(updateItemInfo.subCategory);
+            updateActiveColorAction(updateItemInfo.color);
+            updateActivePatternAction(updateItemInfo.pattern);
+            updateActiveStylesAction(updateItemInfo.styles);
+
+            // update imageData
+            imageData.items = imageData.items.map((item) =>
+                item.uuid === itemInfo.uuid ? updateItemInfo : item
+            );
+            updateImageDataByIdAction(imageData.id, imageData);
+        }
+        updateActivePopupTypeAction(null);
     };
 
     const renderContent = () => {
@@ -250,7 +349,15 @@ const LabelInfoPopup: React.FC<IProps> = ({
 
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
-    updateImageDataByIdAction: updateImageDataById
+    updateImageDataByIdAction: updateImageDataById,
+    updateActiveGenderAction: updateActiveGender,
+    updateActiveHumanTypeAction: updateActiveHumanType,
+    updateActiveStylesAction: updateActiveStyles,
+    updateActiveHumanIDAction: updateActiveHumanID,
+    updateActiveMainCategoryAction: updateActiveMainCategory,
+    updateActiveSubCategoryAction: updateActiveSubCategory,
+    updateActiveColorAction: updateActiveColor,
+    updateActivePatternAction: updateActivePattern
 };
 
 const mapStateToProps = (state: AppState) => ({
