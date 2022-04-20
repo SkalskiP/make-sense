@@ -7,6 +7,10 @@ export type ExportFormatDataMap = Record<LabelType, ILabelFormatData[]>;
 export const ExportFormatData: ExportFormatDataMap = {
     [LabelType.RECT]: [
         {
+            type: AnnotationFormatType.JSON,
+            label: 'A .zip package containing files in Custom JSON format.'
+        },
+        {
             type: AnnotationFormatType.YOLO,
             label: 'A .zip package containing files in YOLO format.'
         },
@@ -51,4 +55,4 @@ export const ExportFormatData: ExportFormatDataMap = {
             label: 'Single JSON file.'
         }
     ]
-}
+};

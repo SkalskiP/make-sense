@@ -116,7 +116,7 @@ export class LabelsSelector {
     public static getActiveStyles(): string[] | null {
         return store.getState().labels.activeStyles;
     }
-    public static getActiveHumanID(): number | null {
+    public static getActiveHumanID(): string | null {
         return store.getState().labels.activeHumanID;
     }
     public static getActiveMainCategory(): number | null {

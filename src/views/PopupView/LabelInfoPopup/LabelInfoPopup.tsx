@@ -42,7 +42,7 @@ interface IProps {
     updateActiveGenderAction: (gender: number) => any;
     updateActiveHumanTypeAction: (humanType: number) => any;
     updateActiveStylesAction: (styles: string[]) => any;
-    updateActiveHumanIDAction: (humanId: number) => any;
+    updateActiveHumanIDAction: (humanId: string) => any;
     updateActiveMainCategoryAction: (mainCategory: number) => any;
     updateActiveSubCategoryAction: (subCategory: number) => any;
     updateActiveColorAction: (color: number) => any;
@@ -109,7 +109,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     ? FASHION_STYLE_MAN
                     : FASHION_STYLE_WOMAN;
             setGender(found.gender);
+            const humanIndex = imageData.humans.findIndex(
+                (human) => human.uuid === found.humanId
+            );
             setSelectedItems({
+                [ATTRIBUTE_TYPE.HUMAN_ID]: {
+                    value: found.humanId,
+                    label: humanIndex === -1 ? 'UNKNOWN' : humanIndex
+                },
                 [ATTRIBUTE_TYPE.GENDER]: {
                     value: found.gender,
                     label: Object.keys(GENDER).find(
@@ -184,6 +191,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
         if (mode === LabelModeType.ITEM) {
             const updateItemInfo: ItemInfo = {
                 ...itemInfo,
+                humanId: selectedItems[ATTRIBUTE_TYPE.HUMAN_ID].value,
                 gender: selectedItems[ATTRIBUTE_TYPE.GENDER].value,
                 mainCategory: selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY].value,
                 subCategory: selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY].value,
@@ -201,6 +209,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
             updateActiveColorAction(updateItemInfo.color);
             updateActivePatternAction(updateItemInfo.pattern);
             updateActiveStylesAction(updateItemInfo.styles);
+            updateActiveHumanIDAction(updateItemInfo.humanId);
 
             // update imageData
             imageData.items = imageData.items.map((item) =>
@@ -265,12 +274,11 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 <div className="AttributeContainer">
                     <div className="AttributeName">Linked Human ID</div>
                     <div className="AttributeSelector">
-                        {imageData.humans.map((human, idx) => (
-                            <TagButton
-                                key={String(human.id)}
-                                label={String(idx)}
-                            />
-                        ))}
+                        <AttributeSelect
+                            type={ATTRIBUTE_TYPE.HUMAN_ID}
+                            onSelect={onSelect}
+                            value={selectedItems[ATTRIBUTE_TYPE.HUMAN_ID]}
+                        />
                     </div>
                 </div>
                 <div className="AttributeContainer">

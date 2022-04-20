@@ -10,6 +10,7 @@ import {
     LabelRect
 } from '../../store/labels/types';
 import {
+    updateActiveHumanID,
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
@@ -414,6 +415,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                 styles: LabelsSelector.getActiveStyles()
             };
             imageData.humans.push(humanInfo);
+            store.dispatch(updateActiveHumanID(labelRect.id));
         } else {
             const itemInfo: ItemInfo = {
                 uuid: labelRect.id,

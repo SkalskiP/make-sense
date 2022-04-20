@@ -14,6 +14,8 @@ import {
     SUB_CATEGORY_CODE
 } from '../../../data/enums/ItemType';
 import Select from 'react-select';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import {string} from '@tensorflow/tfjs';
 
 interface IProps {
     key?: string;
@@ -104,6 +106,13 @@ export const AttributeSelect = (props: IProps) => {
                         value: styles[key],
                         label: key.toString()
                     }));
+            }
+            case ATTRIBUTE_TYPE.HUMAN_ID: {
+                const imageData = LabelsSelector.getActiveImageData();
+                return imageData.humans.map((human, index) => ({
+                    value: human.uuid,
+                    label: index.toString()
+                }));
             }
             default:
                 return [];

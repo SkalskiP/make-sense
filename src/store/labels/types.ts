@@ -62,7 +62,7 @@ export type HumanInfo = {
 export type ItemInfo = {
     uuid: string;
     id: number;
-    humanId: number;
+    humanId: string;
     gender: number;
     mainCategory: number;
     subCategory: number;
@@ -90,6 +90,32 @@ export type ImageData = {
     isVisitedByPoseDetector: boolean;
 };
 
+export type RectJSON = {
+    img_path: string;
+    writer_id: string;
+    version: number;
+    human_info: {
+        human_id: string;
+        bounding_box: {
+            lt_x: number;
+            lt_y: number;
+            rb_x: number;
+            rb_y: number;
+        };
+        style: string[];
+    }[];
+    item_info: {
+        item_id: string;
+        bounding_box: {
+            lt_x: number;
+            lt_y: number;
+            rb_x: number;
+            rb_y: number;
+        };
+        style: string[];
+    }[];
+};
+
 export type LabelsState = {
     activeImageIndex: number;
     activeLabelNameId: string;
@@ -103,7 +129,7 @@ export type LabelsState = {
     activeGender: number;
     activeHumanType: number;
     activeStyles?: string[];
-    activeHumanID?: number;
+    activeHumanID?: string;
     activeMainCategory?: number;
     activeSubCategory?: number;
     activeColor?: number;
@@ -212,7 +238,7 @@ interface UpdateActiveStyles {
 interface UpdateActiveHumanID {
     type: typeof Action.UPDATE_ACTIVE_HUMAN_ID;
     payload: {
-        humanId: number;
+        humanId: string;
     };
 }
 

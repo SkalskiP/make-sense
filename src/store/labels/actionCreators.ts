@@ -142,7 +142,7 @@ export function updateActiveStyles(styles: string[]): LabelsActionTypes {
     };
 }
 
-export function updateActiveHumanID(humanId: number): LabelsActionTypes {
+export function updateActiveHumanID(humanId: string): LabelsActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_HUMAN_ID,
         payload: {

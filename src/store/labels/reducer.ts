@@ -23,7 +23,7 @@ const initialState: LabelsState = {
     activeColor: ITEM_COLOR.UNKNOWN,
     activePattern: ITEM_PATTERN.UNKNOWN,
     activeStyles: [],
-    activeHumanID: -1,
+    activeHumanID: null,
     activeMainCategory: -1,
     activeSubCategory: -1
 };
