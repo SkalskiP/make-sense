@@ -162,6 +162,20 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 setGender(item.value);
                 break;
             }
+            case ATTRIBUTE_TYPE.MAIN_CATEGORY: {
+                console.log('subcategory = ', {
+                    value: SUB_CATEGORY_CODE.UNKNOWN,
+                    label: SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
+                });
+                setSelectedItems({
+                    ...selectedItems,
+                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
+                        value: SUB_CATEGORY_CODE.UNKNOWN,
+                        label: SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
+                    }
+                });
+                break;
+            }
         }
         setSelectedItems({...selectedItems, [type]: item});
     };
@@ -301,6 +315,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         />
                         <div style={{width: '10px'}} />
                         <AttributeSelect
+                            mainCategory={
+                                selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
+                                    .value
+                            }
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}
                             value={selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY]}

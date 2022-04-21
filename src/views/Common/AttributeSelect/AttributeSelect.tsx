@@ -44,6 +44,7 @@ export const AttributeSelect = (props: IProps) => {
         isActive,
         isDisabled,
         externalClassName,
+        mainCategory,
         gender,
         isMulti
     } = props;
@@ -74,13 +75,22 @@ export const AttributeSelect = (props: IProps) => {
                         value: MAIN_CATEGORY_CODE[key],
                         label: key.toString()
                     }));
-            case ATTRIBUTE_TYPE.SUB_CATEGORY:
-                return Object.values(SUB_CATEGORY_CODE)
-                    .filter((value) => typeof value === 'string')
-                    .map((key) => ({
-                        value: SUB_CATEGORY_CODE[key],
-                        label: key.toString()
-                    }));
+            case ATTRIBUTE_TYPE.SUB_CATEGORY: {
+                let keys = Object.values(SUB_CATEGORY_CODE).filter(
+                    (value) => typeof value === 'string'
+                );
+                if (mainCategory !== MAIN_CATEGORY_CODE.UNKNOWN) {
+                    const subCategoryCodes =
+                        ITEM_CATEGORY[MAIN_CATEGORY_CODE[mainCategory]];
+                    keys = keys.filter((key) =>
+                        subCategoryCodes.includes(SUB_CATEGORY_CODE[key])
+                    );
+                }
+                return keys.map((key) => ({
+                    value: SUB_CATEGORY_CODE[key],
+                    label: key.toString()
+                }));
+            }
             case ATTRIBUTE_TYPE.ITEM_COLOR:
                 return Object.values(ITEM_COLOR)
                     .filter((value) => typeof value === 'string')
@@ -119,7 +129,10 @@ export const AttributeSelect = (props: IProps) => {
         }
     };
 
-    const options = React.useMemo(() => selectOptions(), [type, gender]);
+    const options = React.useMemo(
+        () => selectOptions(),
+        [type, gender, mainCategory]
+    );
 
     return (
         <Select
