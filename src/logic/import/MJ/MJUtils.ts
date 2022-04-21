@@ -15,18 +15,19 @@ import {LabelStatus} from '../../../data/enums/LabelStatus';
 
 export class MJUtils {
     public static parseLabelsNamesFromString(content: string): LabelName[] {
-        const labelNames: string[] = content
-            .split(/[\r\n]/)
-            .filter(Boolean)
-            .map((name: string) => name.replace(/\s/g, ''));
+        return [];
+        // const labelNames: string[] = content
+        //     .split(/[\r\n]/)
+        //     .filter(Boolean)
+        //     .map((name: string) => name.replace(/\s/g, ''));
 
-        if (uniq(labelNames).length !== labelNames.length) {
-            throw new LabelNamesNotUniqueError();
-        }
+        // if (uniq(labelNames).length !== labelNames.length) {
+        //     throw new LabelNamesNotUniqueError();
+        // }
 
-        return labelNames.map((name: string) =>
-            LabelUtil.createLabelName(name)
-        );
+        // return labelNames.map((name: string) =>
+        //     LabelUtil.createLabelName(name)
+        // );
     }
 
     public static loadLabelsList(

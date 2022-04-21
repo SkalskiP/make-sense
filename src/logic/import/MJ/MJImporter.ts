@@ -35,11 +35,13 @@ export class MJImporter extends AnnotationImporter {
                     sourceImagesData,
                     annotationFiles
                 );
-            const labelNamesPromise: Promise<LabelName[]> = FileUtil.readFile(
-                labelNameFile
-            ).then((fileContent: string) =>
-                MJUtils.parseLabelsNamesFromString(fileContent)
-            );
+            const labelNamesPromise: Promise<LabelName[]> = Promise.resolve([]);
+            // Cause we do not use label name in mj import
+            // FileUtil.readFile(
+            //     labelNameFile
+            // ).then((fileContent: string) =>
+            //     MJUtils.parseLabelsNamesFromString(fileContent)
+            // );
             const missingImagesPromise: Promise<void> =
                 ImageDataUtil.loadMissingImages(relevantImageData);
             const annotationFilesPromise: Promise<string[]> =
@@ -83,9 +85,9 @@ export class MJImporter extends AnnotationImporter {
             filesData,
             (i: File) => i.name === MJImporter.labelsFileName
         );
-        if (functionalityPartitionResult.pass.length !== 1) {
-            throw new NoLabelNamesFileProvidedError();
-        }
+        // if (functionalityPartitionResult.pass.length !== 1) {
+        //     throw new NoLabelNamesFileProvidedError();
+        // }
         const imageIdentifiers: string[] = imagesData
             .map((i: ImageData) => i.fileData.name)
             .map((i: string) => FileUtil.extractFileName(i));
