@@ -10,7 +10,8 @@ import {AppState} from '../../../../store';
 import {connect} from 'react-redux';
 import {
     updateActiveLabelId,
-    updateHighlightedLabelId
+    updateHighlightedLabelId,
+    updateActiveHumanID
 } from '../../../../store/labels/actionCreators';
 import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from '../../../../data/enums/EventType';
@@ -34,6 +35,7 @@ interface IProps {
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
     updateActiveLabelId: (highlightedLabelId: string) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
+    updateActiveHumanID: (humanId: string) => any;
 }
 
 interface IState {
@@ -158,6 +160,10 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     private onClickHandler = () => {
         this.props.updateActiveLabelId(this.props.id);
+        if (this.props.mode === LabelModeType.HUMAN) {
+            console.log('this.props.id', this.props.id);
+            this.props.updateActiveHumanID(this.props.id);
+        }
     };
 
     public render() {
@@ -238,7 +244,8 @@ class LabelInputField extends React.Component<IProps, IState> {
 const mapDispatchToProps = {
     updateHighlightedLabelId,
     updateActiveLabelId,
-    updateActivePopupType
+    updateActivePopupType,
+    updateActiveHumanID
 };
 
 const mapStateToProps = (state: AppState) => ({});

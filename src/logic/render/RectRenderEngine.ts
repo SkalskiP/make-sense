@@ -71,18 +71,25 @@ export class RectRenderEngine extends BaseRenderEngine {
                     rectUnderMouse.status === LabelStatus.ACCEPTED
                 ) {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
+                    store.dispatch(updateActiveHumanID(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    if (!!LabelsSelector.getHighlightedLabelId())
+                    if (!!LabelsSelector.getHighlightedLabelId()) {
                         store.dispatch(
                             updateActiveLabelId(
                                 LabelsSelector.getHighlightedLabelId()
                             )
                         );
-                    else
+                        store.dispatch(
+                            updateActiveHumanID(
+                                LabelsSelector.getHighlightedLabelId()
+                            )
+                        );
+                    } else {
                         this.startRectCreation(
                             data.mousePositionOnViewPortContent
                         );
+                    }
                 }
             } else if (isMouseOverImage) {
                 this.startRectCreation(data.mousePositionOnViewPortContent);
