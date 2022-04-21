@@ -2,10 +2,14 @@ import {LabelType} from './enums/LabelType';
 import {ILabelFormatData} from '../interfaces/ILabelFormatData';
 import {AnnotationFormatType} from './enums/AnnotationFormatType';
 
-export type ImportFormatDataMap = Record<LabelType, ILabelFormatData[]>
+export type ImportFormatDataMap = Record<LabelType, ILabelFormatData[]>;
 
 export const ImportFormatData: ImportFormatDataMap = {
     [LabelType.RECT]: [
+        {
+            type: AnnotationFormatType.MJ,
+            label: 'Multiple files in MJ JSON format.'
+        },
         {
             type: AnnotationFormatType.COCO,
             label: 'Single file in COCO JSON format.'
@@ -24,4 +28,4 @@ export const ImportFormatData: ImportFormatDataMap = {
         }
     ],
     [LabelType.IMAGE_RECOGNITION]: []
-}
+};
