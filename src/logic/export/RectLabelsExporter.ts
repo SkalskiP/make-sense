@@ -1,8 +1,14 @@
 import {AnnotationFormatType} from '../../data/enums/AnnotationFormatType';
-import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
+import {
+    HumanInfo,
+    ImageData,
+    LabelName,
+    LabelRect,
+    RectJSON
+} from '../../store/labels/types';
 import {ImageRepository} from '../imageRepository/ImageRepository';
 import JSZip from 'jszip';
-import { saveAs } from 'file-saver';
+import {saveAs} from 'file-saver';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {XMLSanitizerUtil} from '../../utils/XMLSanitizerUtil';
 import {ExporterUtil} from '../../utils/ExporterUtil';
@@ -11,6 +17,7 @@ import {findIndex, findLast} from 'lodash';
 import {ISize} from '../../interfaces/ISize';
 import {NumberUtil} from '../../utils/NumberUtil';
 import {RectUtil} from '../../utils/RectUtil';
+import {IRect} from '../../interfaces/IRect';
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -24,6 +31,9 @@ export class RectLabelsExporter {
             case AnnotationFormatType.CSV:
                 RectLabelsExporter.exportAsCSV();
                 break;
+            case AnnotationFormatType.JSON:
+                RectLabelsExporter.exportAsJSON();
+                break;
             default:
                 return;
         }
@@ -31,53 +41,74 @@ export class RectLabelsExporter {
 
     private static exportAsYOLO(): void {
         const zip = new JSZip();
-        LabelsSelector.getImagesData()
-            .forEach((imageData: ImageData) => {
-                const fileContent: string = RectLabelsExporter.wrapRectLabelsIntoYOLO(imageData);
-                if (fileContent) {
-                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, '.txt');
-                    try {
-                        zip.file(fileName, fileContent);
-                    } catch (error) {
-                        // TODO
-                        throw new Error(error as string);
-                    }
+        LabelsSelector.getImagesData().forEach((imageData: ImageData) => {
+            const fileContent: string =
+                RectLabelsExporter.wrapRectLabelsIntoYOLO(imageData);
+            if (fileContent) {
+                const fileName: string = imageData.fileData.name.replace(
+                    /\.[^/.]+$/,
+                    '.txt'
+                );
+                try {
+                    zip.file(fileName, fileContent);
+                } catch (error) {
+                    // TODO
+                    throw new Error(error as string);
                 }
-            });
+            }
+        });
 
         try {
-            zip.generateAsync({type:'blob'})
-                .then((content: Blob) => {
-                    saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
-                });
+            zip.generateAsync({type: 'blob'}).then((content: Blob) => {
+                saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
+            });
         } catch (error) {
             // TODO
             throw new Error(error as string);
         }
     }
 
-    public static wrapRectLabelIntoYOLO(labelRect: LabelRect, labelNames: LabelName[], imageSize: ISize): string {
-        const snapAndFix = (value: number) => NumberUtil.snapValueToRange(value,0, 1).toFixed(6)
-        const classIdx: string = findIndex(labelNames, {id: labelRect.labelId}).toString()
-        const rectCenter = RectUtil.getCenter(labelRect.rect)
-        const rectSize = RectUtil.getSize(labelRect.rect)
+    public static wrapRectLabelIntoYOLO(
+        labelRect: LabelRect,
+        labelNames: LabelName[],
+        imageSize: ISize
+    ): string {
+        const snapAndFix = (value: number) =>
+            NumberUtil.snapValueToRange(value, 0, 1).toFixed(6);
+        const classIdx: string = findIndex(labelNames, {
+            id: labelRect.labelId
+        }).toString();
+        const rectCenter = RectUtil.getCenter(labelRect.rect);
+        const rectSize = RectUtil.getSize(labelRect.rect);
         const rawBBox: number[] = [
             rectCenter.x / imageSize.width,
             rectCenter.y / imageSize.height,
             rectSize.width / imageSize.width,
             rectSize.height / imageSize.height
-        ]
+        ];
 
-        let [x, y, width, height] = rawBBox.map((value: number) => parseFloat(snapAndFix(value)))
+        let [x, y, width, height] = rawBBox.map((value: number) =>
+            parseFloat(snapAndFix(value))
+        );
 
-        if (x + width / 2 > 1) { width = 2 * (1 - x) }
-        if (x - width / 2 < 0) { width = 2 * x }
-        if (y + height / 2 > 1) { height = 2 * (1 - y) }
-        if (y - height / 2 < 0) { height = 2 * y }
+        if (x + width / 2 > 1) {
+            width = 2 * (1 - x);
+        }
+        if (x - width / 2 < 0) {
+            width = 2 * x;
+        }
+        if (y + height / 2 > 1) {
+            height = 2 * (1 - y);
+        }
+        if (y - height / 2 < 0) {
+            height = 2 * y;
+        }
 
-        const processedBBox = [x, y, width, height].map((value: number) => snapAndFix(value))
+        const processedBBox = [x, y, width, height].map((value: number) =>
+            snapAndFix(value)
+        );
 
-        return [classIdx, ...processedBBox].join(' ')
+        return [classIdx, ...processedBBox].join(' ');
     }
 
     private static wrapRectLabelsIntoYOLO(imageData: ImageData): string {
@@ -86,33 +117,42 @@ export class RectLabelsExporter {
 
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        const imageSize: ISize = {width: image.width, height: image.height}
-        const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            return RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
-        });
+        const imageSize: ISize = {width: image.width, height: image.height};
+        const labelRectsString: string[] = imageData.labelRects.map(
+            (labelRect: LabelRect) => {
+                return RectLabelsExporter.wrapRectLabelIntoYOLO(
+                    labelRect,
+                    labelNames,
+                    imageSize
+                );
+            }
+        );
         return labelRectsString.join('\n');
     }
 
     private static exportAsVOC(): void {
         const zip = new JSZip();
         LabelsSelector.getImagesData().forEach((imageData: ImageData) => {
-                const fileContent: string = RectLabelsExporter.wrapImageIntoVOC(imageData);
-                if (fileContent) {
-                    const fileName : string = imageData.fileData.name.replace(/\.[^/.]+$/, '.xml');
-                    try {
-                        zip.file(fileName, fileContent);
-                    } catch (error) {
-                        // TODO
-                        throw new Error(error as string);
-                    }
+            const fileContent: string =
+                RectLabelsExporter.wrapImageIntoVOC(imageData);
+            if (fileContent) {
+                const fileName: string = imageData.fileData.name.replace(
+                    /\.[^/.]+$/,
+                    '.xml'
+                );
+                try {
+                    zip.file(fileName, fileContent);
+                } catch (error) {
+                    // TODO
+                    throw new Error(error as string);
                 }
-            });
+            }
+        });
 
         try {
-            zip.generateAsync({type:'blob'})
-                .then(function(content) {
-                    saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
-                });
+            zip.generateAsync({type: 'blob'}).then(function (content) {
+                saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
+            });
         } catch (error) {
             // TODO
             throw new Error(error as string);
@@ -124,33 +164,48 @@ export class RectLabelsExporter {
             return null;
 
         const labelNamesList: LabelName[] = LabelsSelector.getLabelNames();
-        const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelName: LabelName = findLast(labelNamesList, {id: labelRect.labelId});
-            const labelFields = !!labelName ? [
-                `\t<object>`,
-                `\t\t<name>${labelName.name}</name>`,
-                `\t\t<pose>Unspecified</pose>`,
-                `\t\t<truncated>0</truncated>`,
-                `\t\t<difficult>0</difficult>`,
-                `\t\t<bndbox>`,
-                `\t\t\t<xmin>${Math.round(labelRect.rect.x)}</xmin>`,
-                `\t\t\t<ymin>${Math.round(labelRect.rect.y)}</ymin>`,
-                `\t\t\t<xmax>${Math.round(labelRect.rect.x + labelRect.rect.width)}</xmax>`,
-                `\t\t\t<ymax>${Math.round(labelRect.rect.y + labelRect.rect.height)}</ymax>`,
-                `\t\t</bndbox>`,
-                `\t</object>`
-            ] : [];
-            return labelFields.join('\n')
-        });
+        const labelRectsString: string[] = imageData.labelRects.map(
+            (labelRect: LabelRect) => {
+                const labelName: LabelName = findLast(labelNamesList, {
+                    id: labelRect.labelId
+                });
+                const labelFields = !!labelName
+                    ? [
+                          `\t<object>`,
+                          `\t\t<name>${labelName.name}</name>`,
+                          `\t\t<pose>Unspecified</pose>`,
+                          `\t\t<truncated>0</truncated>`,
+                          `\t\t<difficult>0</difficult>`,
+                          `\t\t<bndbox>`,
+                          `\t\t\t<xmin>${Math.round(labelRect.rect.x)}</xmin>`,
+                          `\t\t\t<ymin>${Math.round(labelRect.rect.y)}</ymin>`,
+                          `\t\t\t<xmax>${Math.round(
+                              labelRect.rect.x + labelRect.rect.width
+                          )}</xmax>`,
+                          `\t\t\t<ymax>${Math.round(
+                              labelRect.rect.y + labelRect.rect.height
+                          )}</ymax>`,
+                          `\t\t</bndbox>`,
+                          `\t</object>`
+                      ]
+                    : [];
+                return labelFields.join('\n');
+            }
+        );
         return labelRectsString.join('\n');
     }
 
     private static wrapImageIntoVOC(imageData: ImageData): string {
-        const labels: string = RectLabelsExporter.wrapRectLabelsIntoVOC(imageData);
-        const projectName: string = XMLSanitizerUtil.sanitize(GeneralSelector.getProjectName());
+        const labels: string =
+            RectLabelsExporter.wrapRectLabelsIntoVOC(imageData);
+        const projectName: string = XMLSanitizerUtil.sanitize(
+            GeneralSelector.getProjectName()
+        );
 
         if (labels) {
-            const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+            const image: HTMLImageElement = ImageRepository.getById(
+                imageData.id
+            );
             return [
                 `<annotation>`,
                 `\t<folder>${projectName}</folder>`,
@@ -170,14 +225,97 @@ export class RectLabelsExporter {
         }
         return null;
     }
+    private static exportAsJSON(): void {
+        const zip = new JSZip();
+        LabelsSelector.getImagesData().forEach((imageData: ImageData) => {
+            const content =
+                RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
+            if (content) {
+                const fileName: string = imageData.fileData.name.replace(
+                    /\.[^/.]+$/,
+                    '.json'
+                );
+                try {
+                    zip.file(fileName, JSON.stringify(content));
+                } catch (error) {
+                    // TODO
+                    throw new Error(error as string);
+                }
+            }
+        });
+        try {
+            zip.generateAsync({type: 'blob'}).then((content: Blob) => {
+                saveAs(content, `${ExporterUtil.getExportFileName()}.zip`);
+            });
+        } catch (error) {
+            // TODO
+            throw new Error(error as string);
+        }
+    }
 
+    private static wrapRectLabelsIntoJSON(imageData: ImageData): RectJSON {
+        if (imageData.labelRects.length === 0 || !imageData.loadStatus)
+            return null;
+
+        const convertRect = (rect: IRect) => ({
+            lt_x: Math.round(rect.x),
+            lt_y: Math.round(rect.y),
+            rb_x: Math.round(rect.x + rect.width),
+            rb_y: Math.round(rect.y + rect.height)
+        });
+
+        const convertHumanId = (humanId: string) => {
+            const human = imageData.humans.find(
+                (human) => human.uuid === humanId
+            );
+            const humanIndex = imageData.humans.findIndex(
+                (human) => human.uuid === humanId
+            );
+            return `${humanIndex}:${human.gender}:${human.type}`;
+        };
+
+        const getHumanIndex = (uuid: string) =>
+            imageData.humans.findIndex((human) => human.uuid === uuid);
+
+        const json: RectJSON = {
+            //@ts-ignore
+            img_path: imageData.fileData.path,
+            writer_id: 'userID',
+            version: 1,
+            human_info: imageData.humans.map((human) => ({
+                human_id: convertHumanId(human.uuid),
+                bounding_box: convertRect(
+                    imageData.labelRects.find(
+                        (labelRect) => labelRect.id === human.uuid
+                    ).rect
+                ),
+                style: human.styles
+            })),
+            item_info: imageData.items.map((item) => ({
+                item_id: `${getHumanIndex(item.humanId)}:${item.gender}:${
+                    item.mainCategory
+                }:${item.subCategory}:${item.uuid}:${item.color}:${
+                    item.pattern
+                }`,
+                bounding_box: convertRect(
+                    imageData.labelRects.find(
+                        (labelRect) => labelRect.id === item.uuid
+                    ).rect
+                ),
+                style: item.styles
+            }))
+        };
+        return json;
+    }
 
     private static exportAsCSV(): void {
         const content: string = LabelsSelector.getImagesData()
             .map((imageData: ImageData) => {
-                return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
+                return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData);
+            })
             .filter((imageLabelData: string) => {
-                return !!imageLabelData})
+                return !!imageLabelData;
+            })
             .join('\n');
         const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
         ExporterUtil.saveAs(content, fileName);
@@ -189,20 +327,26 @@ export class RectLabelsExporter {
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
         const labelNames: LabelName[] = LabelsSelector.getLabelNames();
-        const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
-            const labelName: LabelName = findLast(labelNames, {id: labelRect.labelId});
-            const labelFields = !!labelName ? [
-                labelName.name,
-                Math.round(labelRect.rect.x).toString(),
-                Math.round(labelRect.rect.y).toString(),
-                Math.round(labelRect.rect.width).toString(),
-                Math.round(labelRect.rect.height).toString(),
-                imageData.fileData.name,
-                image.width.toString(),
-                image.height.toString()
-            ] : [];
-            return labelFields.join(',')
-        });
+        const labelRectsString: string[] = imageData.labelRects.map(
+            (labelRect: LabelRect) => {
+                const labelName: LabelName = findLast(labelNames, {
+                    id: labelRect.labelId
+                });
+                const labelFields = !!labelName
+                    ? [
+                          labelName.name,
+                          Math.round(labelRect.rect.x).toString(),
+                          Math.round(labelRect.rect.y).toString(),
+                          Math.round(labelRect.rect.width).toString(),
+                          Math.round(labelRect.rect.height).toString(),
+                          imageData.fileData.name,
+                          image.width.toString(),
+                          image.height.toString()
+                      ]
+                    : [];
+                return labelFields.join(',');
+            }
+        );
         return labelRectsString.join('\n');
     }
 }

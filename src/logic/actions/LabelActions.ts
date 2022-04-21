@@ -1,6 +1,8 @@
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {
+    HumanInfo,
     ImageData,
+    ItemInfo,
     LabelLine,
     LabelName,
     LabelPoint,
@@ -38,14 +40,23 @@ export class LabelActions {
     }
 
     public static deleteRectLabelById(imageId: string, labelRectId: string) {
+        console.log('labelRectId: ', labelRectId);
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const newImageData = {
+        const newImageData: ImageData = {
             ...imageData,
             labelRects: filter(
                 imageData.labelRects,
                 (currentLabel: LabelRect) => {
                     return currentLabel.id !== labelRectId;
                 }
+            ),
+            humans: filter(
+                imageData.humans,
+                (human: HumanInfo) => human.uuid !== labelRectId
+            ),
+            items: filter(
+                imageData.items,
+                (item: ItemInfo) => item.uuid !== labelRectId
             )
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));

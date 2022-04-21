@@ -4,6 +4,7 @@ import {LabelType, LabelModeType} from '../../data/enums/LabelType';
 import {IPoint} from '../../interfaces/IPoint';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {ILine} from '../../interfaces/ILine';
+import {GENDER} from '../../data/enums/ItemType';
 
 export type LabelRect = {
     // GENERAL
@@ -51,23 +52,23 @@ export type LabelName = {
 };
 
 export type HumanInfo = {
+    uuid: string;
     id: number;
     gender: number;
     type: number;
-    boundingBox: IRect;
-    style: string[];
+    styles: string[];
 };
 
 export type ItemInfo = {
+    uuid: string;
     id: number;
-    humanId: number;
+    humanId: string;
     gender: number;
-    topCategory: number;
+    mainCategory: number;
     subCategory: number;
     color: number;
     pattern: number;
-    boundingBox: IRect;
-    style: string[];
+    styles: string[];
 };
 
 export type ImageData = {
@@ -89,6 +90,32 @@ export type ImageData = {
     isVisitedByPoseDetector: boolean;
 };
 
+export type RectJSON = {
+    img_path: string;
+    writer_id: string;
+    version: number;
+    human_info: {
+        human_id: string;
+        bounding_box: {
+            lt_x: number;
+            lt_y: number;
+            rb_x: number;
+            rb_y: number;
+        };
+        style: string[];
+    }[];
+    item_info: {
+        item_id: string;
+        bounding_box: {
+            lt_x: number;
+            lt_y: number;
+            rb_x: number;
+            rb_y: number;
+        };
+        style: string[];
+    }[];
+};
+
 export type LabelsState = {
     activeImageIndex: number;
     activeLabelNameId: string;
@@ -99,6 +126,14 @@ export type LabelsState = {
     firstLabelCreatedFlag: boolean;
     labels: LabelName[];
     activeLabelMode: LabelModeType;
+    activeGender: number;
+    activeHumanType: number;
+    activeStyles?: string[];
+    activeHumanID?: string;
+    activeMainCategory?: number;
+    activeSubCategory?: number;
+    activeColor?: number;
+    activePattern?: number;
 };
 
 interface UpdateActiveImageIndex {
@@ -179,6 +214,62 @@ interface UpdateActiveLabelMode {
     };
 }
 
+interface UpdateActiveGender {
+    type: typeof Action.UPDATE_ACTIVE_GENDER;
+    payload: {
+        gender: number;
+    };
+}
+
+interface UpdateActiveHumanType {
+    type: typeof Action.UPDATE_ACTIVE_HUMAN_TYPE;
+    payload: {
+        humanType: number;
+    };
+}
+
+interface UpdateActiveStyles {
+    type: typeof Action.UPDATE_ACTIVE_STYLES;
+    payload: {
+        styles: string[];
+    };
+}
+
+interface UpdateActiveHumanID {
+    type: typeof Action.UPDATE_ACTIVE_HUMAN_ID;
+    payload: {
+        humanId: string;
+    };
+}
+
+interface UpdateActiveMainCategory {
+    type: typeof Action.UPDATE_ACTIVE_MAIN_CATEGORY;
+    payload: {
+        mainCategory: number;
+    };
+}
+
+interface UpdateActiveSubCategory {
+    type: typeof Action.UPDATE_ACTIVE_SUB_CATEGORY;
+    payload: {
+        subCategory: number;
+    };
+}
+
+interface UpdateActiveColor {
+    type: typeof Action.UPDATE_ACTIVE_COLOR;
+    payload: {
+        color: number;
+    };
+}
+
+interface UpdateActivePattern {
+    type: typeof Action.UPDATE_ACTIVE_PATTERN;
+    payload: {
+        pattern: number;
+    };
+}
+
 export type LabelsActionTypes =
     | UpdateActiveImageIndex
     | UpdateActiveLabelNameId
@@ -190,4 +281,12 @@ export type LabelsActionTypes =
     | UpdateActiveLabelId
     | UpdateHighlightedLabelId
     | UpdateFirstLabelCreatedFlag
-    | UpdateActiveLabelMode;
+    | UpdateActiveLabelMode
+    | UpdateActiveGender
+    | UpdateActiveHumanType
+    | UpdateActiveStyles
+    | UpdateActiveHumanID
+    | UpdateActiveMainCategory
+    | UpdateActiveSubCategory
+    | UpdateActiveColor
+    | UpdateActivePattern;

@@ -106,4 +106,29 @@ export class LabelsSelector {
     public static getActiveLabelMode(): LabelModeType | null {
         return store.getState().labels.activeLabelMode;
     }
+
+    public static getActiveGender(): number | null {
+        return store.getState().labels.activeGender;
+    }
+    public static getActiveHumanType(): number | null {
+        return store.getState().labels.activeHumanType;
+    }
+    public static getActiveStyles(): string[] | null {
+        return store.getState().labels.activeStyles;
+    }
+    public static getActiveHumanID(): string | null {
+        return store.getState().labels.activeHumanID;
+    }
+    public static getActiveMainCategory(): number | null {
+        return store.getState().labels.activeMainCategory;
+    }
+    public static getActiveSubCategory(): number | null {
+        return store.getState().labels.activeSubCategory;
+    }
+    public static getActiveColor(): number | null {
+        return store.getState().labels.activeColor;
+    }
+    public static getActivePattern(): number | null {
+        return store.getState().labels.activePattern;
+    }
 }
