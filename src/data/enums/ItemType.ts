@@ -67,6 +67,37 @@ export const FASHION_STYLE_WOMAN = {
     UNKNOWN: 'UNKNOWN'
 };
 
+export enum FASHION_STYLE_CODE_FOR_MAN {
+    GENTLEMAN = 1,
+    BOHEMIAN,
+    MINIMALIST,
+    VACATION,
+    SPORTY,
+    TECH,
+    RETRO,
+    STREET,
+    PUNK,
+    BASIC,
+    ETC
+}
+
+export enum FASHION_STYLE_CODE_FOR_WOMAN {
+    OFFICE = 1,
+    ELEGANCE,
+    BOHEMIAN,
+    MINIMALIST,
+    VACATION,
+    GIRLY,
+    SEXY,
+    SPORTY,
+    TECH,
+    RETRO,
+    STREET,
+    PUNK,
+    BASIC,
+    ETC
+}
+
 export enum MAIN_CATEGORY_CODE {
     OUTER = 1,
     TOP,

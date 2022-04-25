@@ -16,6 +16,11 @@ import {ContextType} from '../../../data/enums/ContextType';
 import EditorBottomNavigationBar from '../EditorBottomNavigationBar/EditorBottomNavigationBar';
 import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigationBar';
 import {ProjectType} from '../../../data/enums/ProjectType';
+import {
+    FASHION_STYLE_CODE_FOR_MAN,
+    FASHION_STYLE_CODE_FOR_WOMAN
+} from '../../../data/enums/ItemType';
+import _ from 'lodash';
 
 interface IProps {
     windowSize: ISize;
@@ -34,6 +39,7 @@ const EditorContainer: React.FC<IProps> = ({
 }) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
+    const [guideTabStatus, setGuideTabStatus] = useState(true);
 
     const calculateEditorSize = (): ISize => {
         if (windowSize) {
@@ -43,8 +49,15 @@ const EditorContainer: React.FC<IProps> = ({
             const rightTabWidth = rightTabStatus
                 ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
                 : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
+            const guideTabWidth = guideTabStatus
+                ? Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
+                : Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
             return {
-                width: windowSize.width - leftTabWidth - rightTabWidth,
+                width:
+                    windowSize.width -
+                    leftTabWidth -
+                    rightTabWidth -
+                    guideTabWidth,
                 height:
                     windowSize.height -
                     Settings.TOP_NAVIGATION_BAR_HEIGHT_PX -
@@ -106,6 +119,44 @@ const EditorContainer: React.FC<IProps> = ({
         return <LabelsToolkit />;
     };
 
+    const guideSideBarButtonOnClick = () => {
+        if (!guideTabStatus) ContextManager.switchCtx(ContextType.GUIDE_NAVBAR);
+        else if (guideTabStatus && activeContext === ContextType.GUIDE_NAVBAR)
+            ContextManager.restoreCtx();
+
+        setGuideTabStatus(!guideTabStatus);
+    };
+    const guideSideBarCompanionRender = () => {
+        return (
+            <>
+                <VerticalEditorButton
+                    label="Guides"
+                    image={'/ico/small_window.png'}
+                    imageAlt={'guides'}
+                    onClick={guideSideBarButtonOnClick}
+                    isActive={rightTabStatus}
+                />
+            </>
+        );
+    };
+
+    const renderGuide = (
+        gender: number,
+        style: FASHION_STYLE_CODE_FOR_MAN | FASHION_STYLE_CODE_FOR_WOMAN
+    ) => {
+        const folderName = `guides/${gender + 1}_${style}`;
+        return (
+            <div>
+                {_.range(5).map((i) => (
+                    <img
+                        src={`${folderName}/${i + 1}.jpg`}
+                        style={{width: 84, height: 105}}
+                    />
+                ))}
+            </div>
+        );
+    };
+
     return (
         <div className="EditorContainer">
             <SideNavigationBar
@@ -115,6 +166,15 @@ const EditorContainer: React.FC<IProps> = ({
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
                 key="left-side-navigation-bar"
+            />
+            <SideNavigationBar
+                direction={Direction.RIGHT}
+                isOpen={guideTabStatus}
+                isGuide={true}
+                isWithContext={activeContext === ContextType.LEFT_NAVBAR}
+                renderCompanion={guideSideBarCompanionRender}
+                renderContent={() => renderGuide(1, 1)}
+                key="guide-navigation-bar"
             />
             <div
                 className="EditorWrapper"

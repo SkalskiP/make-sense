@@ -1,72 +1,79 @@
 @import '../../../settings/Settings';
 
 .SideNavigationBar {
-  align-self: stretch;
-  background-color: $darkThemeSecondColor;
-
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: flex-start;
-
-  &.with-context {
-    .NavigationBarContentWrapper {
-      background-color: $darkThemeForthColor;
-    }
-  }
-
-  .CompanionBar {
     align-self: stretch;
-    min-width: $sideNavigationBarCompanionWidth;
-    width: $sideNavigationBarCompanionWidth;
+    background-color: $darkThemeSecondColor;
+
     display: flex;
-    flex-direction: column;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
-  }
 
-  .NavigationBarContentWrapper {
-    align-self: stretch;
-    min-width: $sideNavigationBarContentWidth;
-    width: $sideNavigationBarContentWidth;
-    flex-direction: column;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-items: center;
-    align-content: flex-end;
-  }
+    &.with-context {
+        .NavigationBarContentWrapper {
+            background-color: $darkThemeForthColor;
+        }
+    }
 
-  &.left {
-    flex-direction: row;
-    border-right: solid 1px $darkThemeFirstColor;
+    &.is-guide {
+        .NavigationBarContentWrapper {
+            min-width: $sideNavigationBarContentWidthForGuide;
+            width: $sideNavigationBarContentWidthForGuide;
+        }
+    }
 
     .CompanionBar {
-      border-right: solid 1px $darkThemeFirstColor;
-
-      .VerticalEditorButton {
-        transform: rotate(-90deg) translateY(-2px);
-      }
+        align-self: stretch;
+        min-width: $sideNavigationBarCompanionWidth;
+        width: $sideNavigationBarCompanionWidth;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: flex-start;
     }
-  }
 
-  &.right {
-    flex-direction: row-reverse;
-    border-left: solid 1px $darkThemeFirstColor;
-
-    .CompanionBar {
-      border-left: solid 1px $darkThemeFirstColor;
-
-      .VerticalEditorButton {
-        transform: rotate(-90deg) translateY(-1px);
-      }
+    .NavigationBarContentWrapper {
+        align-self: stretch;
+        min-width: $sideNavigationBarContentWidth;
+        width: $sideNavigationBarContentWidth;
+        flex-direction: column;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-end;
+        align-items: center;
+        align-content: flex-end;
     }
-  }
 
-  &.closed {
-    border: none;
-  }
+    &.left {
+        flex-direction: row;
+        border-right: solid 1px $darkThemeFirstColor;
+
+        .CompanionBar {
+            border-right: solid 1px $darkThemeFirstColor;
+
+            .VerticalEditorButton {
+                transform: rotate(-90deg) translateY(-2px);
+            }
+        }
+    }
+
+    &.right {
+        flex-direction: row-reverse;
+        border-left: solid 1px $darkThemeFirstColor;
+
+        .CompanionBar {
+            border-left: solid 1px $darkThemeFirstColor;
+
+            .VerticalEditorButton {
+                transform: rotate(-90deg) translateY(-1px);
+            }
+        }
+    }
+
+    &.closed {
+        border: none;
+    }
 }
