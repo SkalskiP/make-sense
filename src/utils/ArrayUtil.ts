@@ -24,6 +24,13 @@ export class NegativeIndexError extends Error {
     }
 }
 
+export class IndexOutOfRangeError extends Error {
+    constructor() {
+        super('Index out of range.');
+        this.name = 'IndexOutOfRangeError';
+    }
+}
+
 export class ArrayUtil {
     public static partition<T>(array: T[], predicate: (T) => boolean): PartitionResult<T> {
         return array.reduce((acc: PartitionResult<T>, item: T) => {
@@ -64,5 +71,25 @@ export class ArrayUtil {
         }
         const boundedIndex: number = index % array.length
         return array[boundedIndex]
+    }
+
+    public static removeByIndex<T>(array: T[], index: number): T[] {
+        if (index >= array.length) {
+            throw new IndexOutOfRangeError()
+        }
+        if (index < 0) {
+            throw new NegativeIndexError()
+        }
+        return [...array.slice(0, index), ...array.slice(index + 1)]
+    }
+
+    public static insertByIndex<T>(array: T[], index: number, item: T): T[] {
+        if (index > array.length) {
+            throw new IndexOutOfRangeError()
+        }
+        if (index < 0) {
+            throw new NegativeIndexError()
+        }
+        return [...array.slice(0, index), item, ...array.slice(index)]
     }
 }

@@ -1,4 +1,10 @@
-import {ArrayUtil, ArrayUtilAmbiguousMatchError, EmptyArrayError, NegativeIndexError} from '../ArrayUtil';
+import {
+    ArrayUtil,
+    ArrayUtilAmbiguousMatchError,
+    EmptyArrayError,
+    NegativeIndexError,
+    IndexOutOfRangeError
+} from '../ArrayUtil';
 
 describe('ArrayUtil partition method', () => {
     it('should return empty PartitionResult if array is empty', () => {
@@ -85,12 +91,12 @@ describe('ArrayUtil getByInfiniteIndex method', () => {
     it('should throw EmptyArrayError', () => {
         // then
         expect(() => { ArrayUtil.getByInfiniteIndex([], 0); }).toThrowError(new EmptyArrayError())
-    })
+    });
 
     it('should throw NegativeIndexError', () => {
         // then
         expect(() => { ArrayUtil.getByInfiniteIndex([1], -1); }).toThrowError(new NegativeIndexError())
-    })
+    });
 
     it('should return correct element', () => {
         // given
@@ -99,5 +105,49 @@ describe('ArrayUtil getByInfiniteIndex method', () => {
         const result = ArrayUtil.getByInfiniteIndex(array, 11)
         // then
         expect(result).toBe(2);
-    })
-})
+    });
+});
+
+describe('ArrayUtil removeByIndex method', () => {
+    it('should throw IndexOutOfRangeError', () => {
+        // then
+        expect(() => { ArrayUtil.removeByIndex([1, 2, 3, 4, 5], 5) }).toThrowError(new IndexOutOfRangeError())
+    });
+
+    it('should throw NegativeIndexError', () => {
+        // then
+        expect(() => { ArrayUtil.removeByIndex([1], -1); }).toThrowError(new NegativeIndexError())
+    });
+
+    it('should remove first element', () => {
+        // given
+        const array = [1, 2, 3, 4, 5];
+        const index: number = 0;
+        // when
+        const result = ArrayUtil.removeByIndex(array, index)
+        // then
+        expect(JSON.stringify(result)).toEqual(JSON.stringify([2, 3, 4, 5]));
+    });
+
+    it('should remove last element', () => {
+        // given
+        const array = [1, 2, 3, 4, 5];
+        const index: number = 4;
+        // when
+        const result = ArrayUtil.removeByIndex(array, index)
+        // then
+        expect(JSON.stringify(result)).toEqual(JSON.stringify([1, 2, 3, 4]));
+    });
+});
+
+describe('ArrayUtil insertByIndex method', () => {
+    it('should throw IndexOutOfRangeError', () => {
+        // then
+        expect(() => { ArrayUtil.insertByIndex([], 1, 0) }).toThrowError(new IndexOutOfRangeError())
+    });
+
+    it('should throw NegativeIndexError', () => {
+        // then
+        expect(() => { ArrayUtil.insertByIndex([1], -1, 0); }).toThrowError(new NegativeIndexError())
+    });
+});

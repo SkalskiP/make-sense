@@ -26,6 +26,7 @@ import {EditorActions} from '../actions/EditorActions';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {Settings} from '../../settings/Settings';
 import {LabelUtil} from '../../utils/LabelUtil';
+import {ArrayUtil} from "../../utils/ArrayUtil";
 
 export class PolygonRenderEngine extends BaseRenderEngine {
 
@@ -120,7 +121,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     if (LabelsSelector.getHighlightedLabelId() !== labelPolygon.id) {
                         store.dispatch(updateHighlightedLabelId(labelPolygon.id))
                     }
-                    const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
+                    const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(
+                        labelPolygon.vertices, data);
                     const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
 
                     for (let j = 0; j < linesOnCanvas.length; j++) {
@@ -380,6 +382,18 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         this.discardSuggestedPoint();
     }
 
+    private removeAnchorFromPolygonLabel(polygon: LabelPolygon, anchorIndex: number): LabelPolygon {
+        return {
+            ...polygon,
+            vertices: ArrayUtil.removeByIndex(polygon.vertices, anchorIndex)
+        }
+    }
+
+    private removeAnchorFromActivePolygonLabel(data: EditorData) {
+        const imageData: ImageData = LabelsSelector.getActiveImageData();
+        const activeLabel: LabelPolygon = LabelsSelector.getActivePolygonLabel();
+    }
+
     // =================================================================================================================
     // VALIDATORS
     // =================================================================================================================
@@ -440,10 +454,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         return null;
     }
 
-    private getAnchorUnderMouse(data: EditorData): IPoint {
+    private getAnchorUnderMouse(data: EditorData): IPoint | null {
         const labelPolygons: LabelPolygon[] = LabelsSelector.getActiveImageData().labelPolygons;
         for (let i = 0; i < labelPolygons.length; i++) {
-            const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygons[i].vertices, data);
+            const pathOnCanvas: IPoint[] = RenderEngineUtil
+                .transferPolygonFromImageToViewPortContent(labelPolygons[i].vertices, data);
             for (let j = 0; j < pathOnCanvas.length; j ++) {
                 if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, pathOnCanvas[j]))
                     return pathOnCanvas[j];
