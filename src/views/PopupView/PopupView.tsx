@@ -14,6 +14,7 @@ import {ClipLoader} from 'react-spinners';
 import ImportLabelPopup from './ImportLabelPopup/ImportLabelPopup';
 import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
 import LabelInfoPopup from './LabelInfoPopup/LabelInfoPopup';
+import LoginPopup from './LoginPopup/LoginPopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -22,6 +23,8 @@ interface IProps {
 const PopupView: React.FC<IProps> = ({activePopupType}) => {
     const selectPopup = () => {
         switch (activePopupType) {
+            case PopupWindowType.LOGIN:
+                return <LoginPopup />;
             case PopupWindowType.LOAD_LABEL_NAMES:
                 return <LoadLabelsPopup />;
             case PopupWindowType.EXPORT_ANNOTATIONS:

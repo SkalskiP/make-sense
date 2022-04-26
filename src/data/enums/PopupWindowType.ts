@@ -9,5 +9,6 @@ export enum PopupWindowType {
     INSERT_LABEL_NAMES = 'INSERT_LABEL_NAMES',
     EXIT_PROJECT = 'EXIT_PROJECT',
     LOADER = 'LOADER',
-    LABEL_INFO = 'LABEL_INFO'
+    LABEL_INFO = 'LABEL_INFO',
+    LOGIN = 'LOGIN'
 }

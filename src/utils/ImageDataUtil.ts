@@ -2,12 +2,32 @@ import {ImageData} from '../store/labels/types';
 import {v4 as uuidv4} from 'uuid';
 import {FileUtil} from './FileUtil';
 import {ImageRepository} from '../logic/imageRepository/ImageRepository';
+import {APIImageData} from '../services/types';
 
 export class ImageDataUtil {
     public static createImageDataFromFileData(fileData: File): ImageData {
         return {
             id: uuidv4(),
             fileData,
+            loadStatus: false,
+            labelRects: [],
+            labelPoints: [],
+            labelLines: [],
+            labelPolygons: [],
+            labelNameIds: [],
+            isVisitedByObjectDetector: false,
+            isVisitedByPoseDetector: false,
+            humans: [],
+            items: []
+        };
+    }
+    public static createImageDataFromAPIData(apiData: APIImageData): ImageData {
+        return {
+            id: apiData.image_id,
+            fileData: {
+                //@ts-ignore
+                path: apiData.image_url
+            },
             loadStatus: false,
             labelRects: [],
             labelPoints: [],

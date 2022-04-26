@@ -18,6 +18,7 @@ import {ISize} from '../../interfaces/ISize';
 import {NumberUtil} from '../../utils/NumberUtil';
 import {RectUtil} from '../../utils/RectUtil';
 import {IRect} from '../../interfaces/IRect';
+import {AuthSelector} from '../../store/selectors/AuthSelector';
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -253,7 +254,7 @@ export class RectLabelsExporter {
         }
     }
 
-    private static wrapRectLabelsIntoJSON(imageData: ImageData): RectJSON {
+    public static wrapRectLabelsIntoJSON(imageData: ImageData): RectJSON {
         if (imageData.labelRects.length === 0 || !imageData.loadStatus)
             return null;
 
@@ -280,7 +281,7 @@ export class RectLabelsExporter {
         const json: RectJSON = {
             //@ts-ignore
             img_path: imageData.fileData.path,
-            writer_id: 'userID',
+            writer_id: AuthSelector.getUserID(),
             version: 1,
             human_info: imageData.humans.map((human) => ({
                 human_id: convertHumanId(human.uuid),

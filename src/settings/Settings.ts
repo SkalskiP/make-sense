@@ -69,4 +69,7 @@ export class Settings {
         '#ff95c8',
         '#ff37c7'
     ];
+
+    public static readonly API_PREFIX =
+        'https://dev.ocmg.vn/fs-app/api/backoffice';
 }
