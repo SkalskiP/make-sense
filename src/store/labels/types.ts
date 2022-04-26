@@ -82,6 +82,7 @@ export type ImageData = {
     labelNameIds: string[];
     humans: HumanInfo[];
     items: ItemInfo[];
+    guideStyles?: {seq: string; name: string}[];
 
     // SSD
     isVisitedByObjectDetector: boolean;

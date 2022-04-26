@@ -3,6 +3,7 @@ import {v4 as uuidv4} from 'uuid';
 import {FileUtil} from './FileUtil';
 import {ImageRepository} from '../logic/imageRepository/ImageRepository';
 import {APIImageData} from '../services/types';
+import {MJImporter} from '../logic/import/MJ/MJImporter';
 
 export class ImageDataUtil {
     public static createImageDataFromFileData(fileData: File): ImageData {
@@ -22,7 +23,7 @@ export class ImageDataUtil {
         };
     }
     public static createImageDataFromAPIData(apiData: APIImageData): ImageData {
-        return {
+        const data: ImageData = {
             id: apiData.image_id,
             fileData: {
                 //@ts-ignore
@@ -37,8 +38,14 @@ export class ImageDataUtil {
             isVisitedByObjectDetector: false,
             isVisitedByPoseDetector: false,
             humans: [],
-            items: []
+            items: [],
+            guideStyles: apiData.style_list
         };
+
+        // if json data is available, apply annotations
+        return apiData.json
+            ? MJImporter.applyAnnotations(data, apiData.json, [])
+            : data;
     }
 
     public static cleanAnnotations(item: ImageData): ImageData {

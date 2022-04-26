@@ -66,6 +66,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                     ImageDataUtil.createImageDataFromAPIData(file)
                 )
             );
+
             // props.updateActivePopupTypeAction(
             //     PopupWindowType.INSERT_LABEL_NAMES
             // );
@@ -108,7 +109,9 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                             loading={true}
                         />
                     ) : null}
-                    <Button onClick={loadImages}>Load</Button>
+                    <Button onClick={loadImages}>
+                        Load Images from Server
+                    </Button>
                 </>
             );
         else if (acceptedImages.length === 1)

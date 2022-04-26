@@ -18,9 +18,11 @@ import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigatio
 import {ProjectType} from '../../../data/enums/ProjectType';
 import {
     FASHION_STYLE_CODE_FOR_MAN,
-    FASHION_STYLE_CODE_FOR_WOMAN
+    FASHION_STYLE_CODE_FOR_WOMAN,
+    GENDER
 } from '../../../data/enums/ItemType';
 import _ from 'lodash';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 
 interface IProps {
     windowSize: ISize;
@@ -140,21 +142,44 @@ const EditorContainer: React.FC<IProps> = ({
         );
     };
 
-    const renderGuide = (
-        gender: number,
-        style: FASHION_STYLE_CODE_FOR_MAN | FASHION_STYLE_CODE_FOR_WOMAN
-    ) => {
-        const folderName = `guides/${gender + 1}_${style}`;
-        return (
-            <div>
-                {_.range(5).map((i) => (
-                    <img
-                        src={`${folderName}/${i + 1}.jpg`}
-                        style={{width: 84, height: 105}}
-                    />
-                ))}
-            </div>
-        );
+    const renderGuide = () => {
+        const activeImageData = LabelsSelector.getActiveImageData();
+        const activeGender =
+            LabelsSelector.getActiveGender() === GENDER.MAN
+                ? GENDER.MAN
+                : GENDER.WOMAN;
+        if (activeImageData.guideStyles) {
+            console.log('Guide styles = ', activeImageData.guideStyles);
+            return (
+                <div>
+                    {activeImageData.guideStyles
+                        .map(
+                            (guide) =>
+                                parseInt(guide.seq) %
+                                (activeGender === GENDER.WOMAN
+                                    ? FASHION_STYLE_CODE_FOR_WOMAN.ETC
+                                    : FASHION_STYLE_CODE_FOR_MAN.ETC)
+                        )
+                        .map((style) =>
+                            _.range(5).map((i) => {
+                                const src = `guides/${
+                                    activeGender + 1
+                                }_${style}/${i + 1}.jpg`;
+                                console.log('src', src);
+
+                                return (
+                                    <img
+                                        src={src}
+                                        style={{width: 84, height: 105}}
+                                    />
+                                );
+                            })
+                        )}
+                </div>
+            );
+        } else {
+            return <div></div>;
+        }
     };
 
     return (
@@ -173,7 +198,7 @@ const EditorContainer: React.FC<IProps> = ({
                 isGuide={true}
                 isWithContext={activeContext === ContextType.LEFT_NAVBAR}
                 renderCompanion={guideSideBarCompanionRender}
-                renderContent={() => renderGuide(1, 1)}
+                renderContent={() => renderGuide()}
                 key="guide-navigation-bar"
             />
             <div
