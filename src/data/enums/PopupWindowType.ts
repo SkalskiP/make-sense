@@ -10,5 +10,6 @@ export enum PopupWindowType {
     EXIT_PROJECT = 'EXIT_PROJECT',
     LOADER = 'LOADER',
     LABEL_INFO = 'LABEL_INFO',
-    LOGIN = 'LOGIN'
+    LOGIN = 'LOGIN',
+    LOGOUT = 'LOGOUT'
 }

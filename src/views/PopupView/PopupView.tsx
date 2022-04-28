@@ -15,6 +15,7 @@ import ImportLabelPopup from './ImportLabelPopup/ImportLabelPopup';
 import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
 import LabelInfoPopup from './LabelInfoPopup/LabelInfoPopup';
 import LoginPopup from './LoginPopup/LoginPopup';
+import LogoutPopup from './LogoutPopup/LogoutPopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -25,6 +26,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
         switch (activePopupType) {
             case PopupWindowType.LOGIN:
                 return <LoginPopup />;
+            case PopupWindowType.LOGOUT:
+                return <LogoutPopup />;
             case PopupWindowType.LOAD_LABEL_NAMES:
                 return <LoadLabelsPopup />;
             case PopupWindowType.EXPORT_ANNOTATIONS:
