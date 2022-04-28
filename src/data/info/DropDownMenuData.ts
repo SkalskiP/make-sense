@@ -99,7 +99,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         disabled: false,
         children: [
             {
-                name: `Logout (${store.getState().auth.authData.displayName})`,
+                name: `Logout`,
                 description: 'Clear current authentication',
                 imageSrc: 'ico/user.png',
                 imageAlt: 'logout',

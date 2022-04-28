@@ -13,9 +13,13 @@ import {connect} from 'react-redux';
 import {ImageData, LabelName} from '../../../store/labels/types';
 import {PopupActions} from '../../../logic/actions/PopupActions';
 import {ProjectData} from '../../../store/general/types';
-import {updateProjectData} from '../../../store/general/actionCreators';
+import {
+    updateActivePopupType,
+    updateProjectData
+} from '../../../store/general/actionCreators';
 import {updateAuthData} from '../../../store/auth/actionCreators';
 import {AuthData} from '../../../store/auth/types';
+import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
@@ -25,6 +29,7 @@ interface IProps {
     updateFirstLabelCreatedFlag: (firstLabelCreatedFlag: boolean) => any;
     updateProjectData: (projectData: ProjectData) => any;
     updateAuthData: (authData: AuthData) => any;
+    updateActivePopupType: (type: PopupWindowType) => any;
 }
 
 const LogoutPopup: React.FC<IProps> = (props) => {
@@ -58,6 +63,7 @@ const LogoutPopup: React.FC<IProps> = (props) => {
         updateImageData([]);
         updateFirstLabelCreatedFlag(false);
         PopupActions.close();
+        updateActivePopupType(PopupWindowType.LOGIN);
     };
 
     const onReject = () => {
@@ -83,7 +89,8 @@ const mapDispatchToProps = {
     updateActiveImageIndex,
     updateImageData,
     updateFirstLabelCreatedFlag,
-    updateAuthData
+    updateAuthData,
+    updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({});
