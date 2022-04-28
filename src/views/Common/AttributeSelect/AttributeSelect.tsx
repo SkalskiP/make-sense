@@ -83,7 +83,7 @@ export const AttributeSelect = (props: IProps) => {
                     const subCategoryCodes =
                         ITEM_CATEGORY[MAIN_CATEGORY_CODE[mainCategory]];
                     keys = keys.filter((key) =>
-                        subCategoryCodes.includes(SUB_CATEGORY_CODE[key])
+                        subCategoryCodes?.includes(SUB_CATEGORY_CODE[key])
                     );
                 }
                 return keys.map((key) => ({
@@ -135,11 +135,15 @@ export const AttributeSelect = (props: IProps) => {
     );
 
     return (
-        <Select
-            value={value}
-            isMulti={isMulti}
-            options={options}
-            onChange={(selectedItem) => onSelect(selectedItem, type)}
-        />
+        <div style={{width: '80%'}}>
+            <Select
+                menuPlacement="auto"
+                menuPosition="fixed"
+                value={value}
+                isMulti={isMulti}
+                options={options}
+                onChange={(selectedItem) => onSelect(selectedItem, type)}
+            />
+        </div>
     );
 };

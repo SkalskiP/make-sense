@@ -17,7 +17,8 @@ import {
     ITEM_PATTERN,
     MAIN_CATEGORY_CODE,
     SOURCE,
-    SUB_CATEGORY_CODE
+    SUB_CATEGORY_CODE,
+    SUB_CATEGORY_TO_MAIN
 } from '../../../data/enums/ItemType';
 import {LabelModeType} from '../../../data/enums/LabelType';
 import {AttributeSelect} from '../../Common/AttributeSelect/AttributeSelect';
@@ -160,6 +161,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
         switch (type) {
             case ATTRIBUTE_TYPE.GENDER: {
                 setGender(item.value);
+                setSelectedItems({...selectedItems, [type]: item});
                 break;
             }
             case ATTRIBUTE_TYPE.MAIN_CATEGORY: {
@@ -169,6 +171,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 });
                 setSelectedItems({
                     ...selectedItems,
+                    [ATTRIBUTE_TYPE.MAIN_CATEGORY]: item,
                     [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
                         value: SUB_CATEGORY_CODE.UNKNOWN,
                         label: SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
@@ -176,8 +179,24 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 });
                 break;
             }
+            case ATTRIBUTE_TYPE.SUB_CATEGORY: {
+                const mainItem = {
+                    value: SUB_CATEGORY_TO_MAIN[item.label],
+                    label: MAIN_CATEGORY_CODE[SUB_CATEGORY_TO_MAIN[item.label]]
+                };
+
+                console.log('mainITem = ', mainItem);
+                setSelectedItems({
+                    ...selectedItems,
+                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: item,
+                    [ATTRIBUTE_TYPE.MAIN_CATEGORY]: mainItem
+                });
+                break;
+            }
+            default: {
+                setSelectedItems({...selectedItems, [type]: item});
+            }
         }
-        setSelectedItems({...selectedItems, [type]: item});
     };
 
     const save = () => {
@@ -203,6 +222,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
             updateImageDataByIdAction(imageData.id, imageData);
         }
         if (mode === LabelModeType.ITEM) {
+            console.log('selectedItems', selectedItems);
             const updateItemInfo: ItemInfo = {
                 ...itemInfo,
                 humanId: selectedItems[ATTRIBUTE_TYPE.HUMAN_ID].value,
@@ -308,16 +328,17 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 <div className="AttributeContainer">
                     <div className="AttributeName">Category</div>
                     <div className="AttributeSelector">
-                        <AttributeSelect
+                        {/* <AttributeSelect
                             type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
                             onSelect={onSelect}
                             value={selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]}
                         />
-                        <div style={{width: '10px'}} />
+                        <div style={{width: '10px'}} /> */}
                         <AttributeSelect
                             mainCategory={
-                                selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
-                                    .value
+                                // selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
+                                //     .value
+                                MAIN_CATEGORY_CODE.UNKNOWN
                             }
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}
