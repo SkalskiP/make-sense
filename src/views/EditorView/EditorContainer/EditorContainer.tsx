@@ -149,7 +149,7 @@ const EditorContainer: React.FC<IProps> = ({
                 ? GENDER.MAN
                 : GENDER.WOMAN;
         if (activeImageData.guideStyles) {
-            console.log('Guide styles = ', activeImageData.guideStyles);
+            // console.log('Guide styles = ', activeImageData.guideStyles);
             return (
                 <div
                     style={{
@@ -163,12 +163,12 @@ const EditorContainer: React.FC<IProps> = ({
                                     ? FASHION_STYLE_CODE_FOR_WOMAN.ETC
                                     : FASHION_STYLE_CODE_FOR_MAN.ETC)
                         )
-                        .map((style) =>
-                            _.range(5).map((i) => {
+                        .map((style) => {
+                            const images = _.range(5).map((i) => {
                                 const src = `guides/${
                                     activeGender + 1
                                 }_${style}/${i + 1}.jpg`;
-                                console.log('src', src);
+                                // console.log('src', src);
 
                                 return (
                                     <img
@@ -176,8 +176,28 @@ const EditorContainer: React.FC<IProps> = ({
                                         style={{width: 84, height: 105}}
                                     />
                                 );
-                            })
-                        )}
+                            });
+                            const styleString =
+                                activeGender === GENDER.WOMAN
+                                    ? Object.values(
+                                          FASHION_STYLE_CODE_FOR_WOMAN
+                                      ).filter(
+                                          (value) => typeof value === 'string'
+                                      )[style]
+                                    : Object.values(
+                                          FASHION_STYLE_CODE_FOR_MAN
+                                      ).filter(
+                                          (value) => typeof value === 'string'
+                                      )[style];
+                            return (
+                                <div>
+                                    <div className="styleLabel">
+                                        {styleString}
+                                    </div>
+                                    {images}
+                                </div>
+                            );
+                        })}
                 </div>
             );
         } else {
