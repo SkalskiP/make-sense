@@ -6,8 +6,6 @@ import {AuthSelector} from '../store/selectors/AuthSelector';
 export class APIService {
     private static token = null;
 
-    public static setToken = (token: string) => (this.token = token);
-
     public static login = async ({
         email,
         password
@@ -36,14 +34,15 @@ export class APIService {
         offset: number;
         limit: number;
     }) => {
-        if (!this.token) {
+        const token = AuthSelector.getToken();
+        if (!token) {
             throw Error('Token is required');
         }
         return await axios({
             method: 'get',
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${this.token}`
+                Authorization: `Bearer ${token}`
             },
             url: `${Settings.API_PREFIX}/labeler/images`,
             params: {limit, offset}

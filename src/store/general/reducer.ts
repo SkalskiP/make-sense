@@ -6,7 +6,7 @@ import {PopupWindowType} from '../../data/enums/PopupWindowType';
 
 const initialState: GeneralState = {
     windowSize: null,
-    activePopupType: PopupWindowType.LOGIN,
+    activePopupType: null,
     customCursorStyle: CustomCursorStyle.DEFAULT,
     activeContext: null,
     preventCustomCursor: false,

@@ -80,7 +80,10 @@ const LoginPopup: React.FC<IProps> = ({
                     authToken,
                     role
                 });
-                APIService.setToken(authToken);
+                window.localStorage.setItem(
+                    '@@auth',
+                    JSON.stringify({email, displayName, authToken, role})
+                );
                 updateActivePopupTypeAction(null);
             } else if (data.errors) {
                 setMessage(data.errors.map((error) => error.error).join('\n'));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.scss';
 import EditorView from './views/EditorView/EditorView';
 import MainView from './views/MainView/MainView';
@@ -13,38 +13,79 @@ import {SizeItUpView} from './views/SizeItUpView/SizeItUpView';
 import {PlatformModel} from './staticModels/PlatformModel';
 import classNames from 'classnames';
 import NotificationsView from './views/NotificationsView/NotificationsView';
+import {updateActivePopupType} from './store/general/actionCreators';
+import {PopupWindowType} from './data/enums/PopupWindowType';
+import {updateAuthData} from './store/auth/actionCreators';
+import {AuthData} from './store/auth/types';
 
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
     ObjectDetectorLoaded: boolean;
     PoseDetectionLoaded: boolean;
+    updateAuthDataAction: (authData: AuthData) => any;
+    updateActivePopupTypeAction: (type: PopupWindowType) => void;
 }
 
-const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, PoseDetectionLoaded}) => {
+const App: React.FC<IProps> = ({
+    projectType,
+    windowSize,
+    ObjectDetectorLoaded,
+    PoseDetectionLoaded,
+    updateAuthDataAction,
+    updateActivePopupTypeAction
+}) => {
+    useEffect(() => {
+        const auth: AuthData = JSON.parse(
+            window.localStorage.getItem('@@auth')
+        );
+        console.log('auth = ', auth);
+        if (!auth) {
+            updateActivePopupTypeAction(PopupWindowType.LOGIN);
+        } else {
+            updateAuthDataAction(auth);
+        }
+
+        return () => {
+            // second
+        };
+    }, []);
+
     const selectRoute = () => {
-        if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
-            return <MobileMainView/>;
-        if (!projectType)
-            return <MainView/>;
+        if (
+            !!PlatformModel.mobileDeviceData.manufacturer &&
+            !!PlatformModel.mobileDeviceData.os
+        )
+            return <MobileMainView />;
+        if (!projectType) return <MainView />;
         else {
-            if (windowSize.height < Settings.EDITOR_MIN_HEIGHT || windowSize.width < Settings.EDITOR_MIN_WIDTH) {
-                return <SizeItUpView/>;
+            if (
+                windowSize.height < Settings.EDITOR_MIN_HEIGHT ||
+                windowSize.width < Settings.EDITOR_MIN_WIDTH
+            ) {
+                return <SizeItUpView />;
             } else {
-                return <EditorView/>;
+                return <EditorView />;
             }
         }
     };
 
-      return (
-        <div className={classNames('App', {'AI': ObjectDetectorLoaded || PoseDetectionLoaded})}
-            draggable={false}
-        >
+    return (
+        <div
+            className={classNames('App', {
+                AI: ObjectDetectorLoaded || PoseDetectionLoaded
+            })}
+            draggable={false}>
             {selectRoute()}
-            <PopupView/>
-            <NotificationsView/>
+            <PopupView />
+            <NotificationsView />
         </div>
-      );
+    );
+};
+
+const mapDispatchToProps = {
+    updateAuthDataAction: updateAuthData,
+    updateActivePopupTypeAction: updateActivePopupType
 };
 
 const mapStateToProps = (state: AppState) => ({
@@ -54,6 +95,4 @@ const mapStateToProps = (state: AppState) => ({
     PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
 });
 
-export default connect(
-    mapStateToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

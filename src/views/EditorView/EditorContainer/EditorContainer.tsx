@@ -151,7 +151,10 @@ const EditorContainer: React.FC<IProps> = ({
         if (activeImageData.guideStyles) {
             console.log('Guide styles = ', activeImageData.guideStyles);
             return (
-                <div>
+                <div
+                    style={{
+                        overflowY: 'scroll'
+                    }}>
                     {activeImageData.guideStyles
                         .map(
                             (guide) =>
