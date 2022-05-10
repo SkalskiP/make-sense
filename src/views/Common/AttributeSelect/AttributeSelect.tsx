@@ -110,12 +110,10 @@ export const AttributeSelect = (props: IProps) => {
                     gender === GENDER.MAN
                         ? FASHION_STYLE_MAN
                         : FASHION_STYLE_WOMAN;
-                return Object.values(styles)
-                    .filter((value) => typeof value === 'string')
-                    .map((key) => ({
-                        value: styles[key],
-                        label: key.toString()
-                    }));
+                return styles.map((item) => ({
+                    value: item.name.toUpperCase(),
+                    label: item.name.toUpperCase()
+                }));
             }
             case ATTRIBUTE_TYPE.HUMAN_ID: {
                 const imageData = LabelsSelector.getActiveImageData();

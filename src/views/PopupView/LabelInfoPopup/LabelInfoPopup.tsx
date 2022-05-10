@@ -10,8 +10,6 @@ import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {TagButton} from '../../Common/TagButton/TagButton';
 import {
     ATTRIBUTE_TYPE,
-    FASHION_STYLE_MAN,
-    FASHION_STYLE_WOMAN,
     GENDER,
     ITEM_COLOR,
     ITEM_PATTERN,
@@ -79,10 +77,6 @@ const LabelInfoPopup: React.FC<IProps> = ({
         if (mode === LabelModeType.HUMAN) {
             const found = _.find(imageData.humans, {uuid: id});
             setHumanInfo(found);
-            const fashionStyles =
-                found.gender === GENDER.MAN
-                    ? FASHION_STYLE_MAN
-                    : FASHION_STYLE_WOMAN;
             setGender(found.gender);
             setSelectedItems({
                 [ATTRIBUTE_TYPE.GENDER]: {
@@ -98,17 +92,13 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     )
                 },
                 [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
-                    value: style,
-                    label: fashionStyles[style]
+                    value: style.toUpperCase(),
+                    label: style.toUpperCase()
                 }))
             });
         } else {
             const found = _.find(imageData.items, {uuid: id});
             setItemInfo(found);
-            const fashionStyles =
-                found.gender === GENDER.MAN
-                    ? FASHION_STYLE_MAN
-                    : FASHION_STYLE_WOMAN;
             setGender(found.gender);
             const humanIndex = imageData.humans.findIndex(
                 (human) => human.uuid === found.humanId
@@ -142,8 +132,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 },
 
                 [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
-                    value: style,
-                    label: fashionStyles[style]
+                    value: style.toUpperCase(),
+                    label: style.toUpperCase()
                 }))
             });
         }

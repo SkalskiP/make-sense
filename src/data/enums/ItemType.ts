@@ -1,3 +1,5 @@
+import _ from 'lodash';
+
 export enum ATTRIBUTE_TYPE {
     GENDER = 'GENDER',
     SOURCE = 'SOURCE',
@@ -20,52 +22,115 @@ export const SOURCE = {
     STYLEBOOK: 2,
     UNKNOWN: -1
 };
-export const FASHION_STYLE_MAN = {
-    GENTLEMAN: 'GENTLEMAN',
-    BOHEMIAN: 'BOHEMIAN',
-    MINIMALIST: 'MINIMALIST',
-    GENDERLESS: 'GENDERLESS',
-    VACATION: 'VACATION',
-    SPORTY: 'SPORTY',
-    TECH: 'TECH',
-    RETRO: 'RETRO',
-    STREET: 'STREET',
-    HIPHOP: 'HIPHOP',
-    KITSCH: 'KITSCH',
-    PUNK: 'PUNK',
-    BASIC: 'BASIC',
-    PREPPY: 'PREPPY',
-    WESTERN: 'WESTERN',
-    ETC: 'ETC',
-    UNKNOWN: 'UNKNOWN'
-};
 
-export const FASHION_STYLE_WOMAN = {
-    OFFICE: 'OFFICE',
-    ELEGANCE: 'ELEGANCE',
-    SOPHISTICATED: 'SOPHISTICATED',
-    BOHEMIAN: 'BOHEMIAN',
-    HIPPIE: 'HIPPIE',
-    MINIMALIST: 'MINIMALIST',
-    MANNISH: 'MANNISH',
-    TOMBOY: 'TOMBOY',
-    GENDERLESS: 'GENDERLESS',
-    VACATION: 'VACATION',
-    GIRLY: 'GIRLY',
-    SEXY: 'SEXY',
-    SPORTY: 'SPORTY',
-    TECH: 'TECH',
-    RETRO: 'RETRO',
-    STREET: 'STREET',
-    HIPHOP: 'HIPHOP',
-    KITSCH: 'KITSCH',
-    PUNK: 'PUNK',
-    BASIC: 'BASIC',
-    PREPPY: 'PREPPY',
-    WESTERN: 'WESTERN',
-    ETC: 'ETC',
-    UNKNOWN: 'UNKNOWN'
-};
+export const FASHION_STYLE = [
+    {
+        seq: 18,
+        name: 'Basic',
+        slug: 'basic',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 19,
+        name: 'Elegance',
+        slug: 'elegance',
+        gender: 'F',
+        status: 'A'
+    },
+    {
+        seq: 20,
+        name: 'Office',
+        slug: 'office',
+        gender: 'F',
+        status: 'A'
+    },
+    {
+        seq: 21,
+        name: 'Minimalist',
+        slug: 'minimalist',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 22,
+        name: 'Vacation',
+        slug: 'vacation',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 23,
+        name: 'Street',
+        slug: 'street',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 24,
+        name: 'Sporty',
+        slug: 'sporty',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 25,
+        name: 'Girly',
+        slug: 'girly',
+        gender: 'F',
+        status: 'A'
+    },
+    {
+        seq: 26,
+        name: 'Sexy',
+        slug: 'sexy',
+        gender: 'F',
+        status: 'A'
+    },
+    {
+        seq: 27,
+        name: 'Gentleman',
+        slug: 'gentleman',
+        gender: 'M',
+        status: 'A'
+    },
+    {
+        seq: 28,
+        name: 'Punk',
+        slug: 'punk',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 29,
+        name: 'Tech',
+        slug: 'techwear',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 30,
+        name: 'Retro',
+        slug: 'retro',
+        gender: 'A',
+        status: 'A'
+    },
+    {
+        seq: 31,
+        name: 'Bohemian',
+        slug: 'bohemian',
+        gender: 'A',
+        status: 'A'
+    }
+];
+
+export const FASHION_STYLE_MAN = FASHION_STYLE.filter(
+    (item) => item.gender === 'A' || item.gender === 'M'
+);
+
+export const FASHION_STYLE_WOMAN = FASHION_STYLE.filter(
+    (item) => item.gender === 'A' || item.gender === 'F'
+);
 
 export enum FASHION_STYLE_CODE_FOR_MAN {
     GENTLEMAN = 1,

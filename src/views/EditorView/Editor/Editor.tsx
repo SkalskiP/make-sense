@@ -28,10 +28,6 @@ import {RenderEngineUtil} from '../../../utils/RenderEngineUtil';
 import {LabelStatus} from '../../../data/enums/LabelStatus';
 import _, {isEqual} from 'lodash';
 import {AIActions} from '../../../logic/actions/AIActions';
-import {
-    FASHION_STYLE_CODE_FOR_MAN,
-    FASHION_STYLE_CODE_FOR_WOMAN
-} from '../../../data/enums/ItemType';
 
 interface IProps {
     size: ISize;
