@@ -27,7 +27,9 @@ export class ImageDataUtil {
             id: apiData.image_id,
             fileData: {
                 //@ts-ignore
-                path: apiData.image_url
+                path: apiData.image_url,
+                width: parseInt(apiData.image_width),
+                height: parseInt(apiData.image_height)
             },
             loadStatus: false,
             labelRects: [],
@@ -42,9 +44,9 @@ export class ImageDataUtil {
             guideStyles: apiData.style_list
         };
 
-        // if json data is available, apply annotations
-        return apiData.json
-            ? MJImporter.applyAnnotations(data, apiData.json, [])
+        // if labeling_json data is available, apply annotations
+        return apiData.labeling_json
+            ? MJImporter.applyAnnotations(data, apiData.labeling_json, [])
             : data;
     }
 

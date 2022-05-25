@@ -5,5 +5,7 @@ export type APIImageData = {
         seq: string;
         name: string;
     }[];
-    json?: string;
+    labeling_json?: string;
+    image_width: string;
+    image_height: string;
 };

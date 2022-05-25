@@ -134,33 +134,31 @@ export const FASHION_STYLE_WOMAN = FASHION_STYLE.filter(
 
 export enum FASHION_STYLE_CODE_FOR_MAN {
     GENTLEMAN = 1,
-    BOHEMIAN,
-    MINIMALIST,
-    VACATION,
-    SPORTY,
-    TECH,
-    RETRO,
-    STREET,
-    PUNK,
-    BASIC,
-    ETC
+    BOHEMIAN = 2,
+    MINIMALIST = 3,
+    VACATION = 4,
+    SPORTY = 5,
+    TECH = 6,
+    RETRO = 7,
+    STREET = 8,
+    PUNK = 9,
+    BASIC = 10
 }
 
 export enum FASHION_STYLE_CODE_FOR_WOMAN {
-    OFFICE = 1,
-    ELEGANCE,
-    BOHEMIAN,
-    MINIMALIST,
-    VACATION,
-    GIRLY,
-    SEXY,
-    SPORTY,
-    TECH,
-    RETRO,
-    STREET,
-    PUNK,
-    BASIC,
-    ETC
+    BASIC = 18,
+    ELEGANCE = 19,
+    OFFICE = 20,
+    MINIMALIST = 21,
+    VACATION = 22,
+    STREET = 23,
+    SPORTY = 24,
+    GIRLY = 25,
+    SEXY = 26,
+    PUNK = 28,
+    TECH = 29,
+    RETRO = 30,
+    BOHEMIAN = 31
 }
 
 export enum MAIN_CATEGORY_CODE {

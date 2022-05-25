@@ -156,39 +156,37 @@ const EditorContainer: React.FC<IProps> = ({
                         overflowY: 'scroll'
                     }}>
                     {activeImageData.guideStyles
-                        .map(
-                            (guide) =>
-                                parseInt(guide.seq) %
-                                (activeGender === GENDER.WOMAN
-                                    ? FASHION_STYLE_CODE_FOR_WOMAN.ETC
-                                    : FASHION_STYLE_CODE_FOR_MAN.ETC)
-                        )
+                        .map((guide) => {
+                            if (guide?.seq) {
+                                return parseInt(guide.seq);
+                            } else {
+                                return activeGender === GENDER.WOMAN
+                                    ? FASHION_STYLE_CODE_FOR_WOMAN.BASIC
+                                    : FASHION_STYLE_CODE_FOR_MAN.GENTLEMAN;
+                            }
+                        })
                         .map((style) => {
+                            console.log('style == ', style);
                             const images = _.range(5).map((i) => {
-                                const src = `guides/${
+                                const src = `guides/${activeGender + 1}/${
                                     activeGender + 1
                                 }_${style}/${i + 1}.jpg`;
                                 // console.log('src', src);
 
                                 return (
                                     <img
+                                        key={src}
+                                        alt="sample images"
                                         src={src}
                                         style={{width: 84, height: 105}}
                                     />
                                 );
                             });
-                            const styleString =
-                                activeGender === GENDER.WOMAN
-                                    ? Object.values(
-                                          FASHION_STYLE_CODE_FOR_WOMAN
-                                      ).filter(
-                                          (value) => typeof value === 'string'
-                                      )[style]
-                                    : Object.values(
-                                          FASHION_STYLE_CODE_FOR_MAN
-                                      ).filter(
-                                          (value) => typeof value === 'string'
-                                      )[style];
+
+                            const {name: styleString = 'unknown'} = _.find(
+                                activeImageData.guideStyles,
+                                {seq: `${style}`}
+                            ) as {seq: string; name: string};
                             return (
                                 <div>
                                     <div className="styleLabel">

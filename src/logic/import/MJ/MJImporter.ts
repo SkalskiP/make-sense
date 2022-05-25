@@ -122,7 +122,37 @@ export class MJImporter extends AnnotationImporter {
         rawAnnotations: string,
         labelNames: LabelName[]
     ): ImageData {
+        console.log('rawAnnotation = ', rawAnnotations);
+
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+
+        const {labelRects, humans, items} = MJUtils.parseMJAnnotationsFromJSON(
+            rawAnnotations,
+            labelNames,
+            {
+                //@ts-ignore
+                width: imageData.fileData.width,
+                //@ts-ignore
+                height: imageData.fileData.height
+            },
+            imageData.fileData.name
+        );
+        imageData.labelRects = labelRects;
+        imageData.humans = humans;
+        imageData.items = items;
+
+        console.log('imageData = ', imageData);
+        return imageData;
+    }
+    public static applyAnnotationsFromFile(
+        imageData: ImageData,
+        rawAnnotations: string,
+        labelNames: LabelName[]
+    ): ImageData {
+        console.log('rawAnnotation = ', rawAnnotations);
+
+        const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+
         const {labelRects, humans, items} = MJUtils.parseMJAnnotationsFromJSON(
             rawAnnotations,
             labelNames,
@@ -136,7 +166,6 @@ export class MJImporter extends AnnotationImporter {
         console.log('imageData = ', imageData);
         return imageData;
     }
-
     public static injectImageDataWithAnnotations(
         sourceImageData: ImageData[],
         annotatedImageData: ImageData[]

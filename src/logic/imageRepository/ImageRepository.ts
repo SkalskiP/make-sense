@@ -1,6 +1,6 @@
-import {zip} from "lodash";
+import {zip} from 'lodash';
 
-export type ImageMap = { [s: string]: HTMLImageElement; };
+export type ImageMap = {[s: string]: HTMLImageElement};
 
 export class ImageRepository {
     private static repository: ImageMap = {};
@@ -12,10 +12,15 @@ export class ImageRepository {
     public static storeImages(ids: string[], images: HTMLImageElement[]) {
         zip(ids, images).forEach((pair: [string, HTMLImageElement]) => {
             ImageRepository.storeImage(...pair);
-        })
+        });
     }
 
     public static getById(uuid: string): HTMLImageElement {
+        console.log(
+            'ImageRepository.repository = ',
+            ImageRepository.repository
+        );
+
         return ImageRepository.repository[uuid];
     }
 }
