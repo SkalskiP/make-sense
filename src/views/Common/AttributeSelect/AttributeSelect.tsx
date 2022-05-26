@@ -73,14 +73,13 @@ export const AttributeSelect = (props: IProps) => {
                     .filter((value) => typeof value === 'string')
                     .map((key) => ({
                         value: MAIN_CATEGORY_CODE[key],
-                        label: `${
-                            lang.MAIN_CATEGORY[MAIN_CATEGORY_CODE[key]]
-                        } (${MAIN_CATEGORY_CODE[key]})`
+                        label: `${lang.MAIN_CATEGORY[key]} (${key})`
                     }));
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
                 let keys = Object.values(SUB_CATEGORY_CODE).filter(
                     (value) => typeof value === 'string'
                 );
+                console.log('mainCategory = ', mainCategory);
                 if (mainCategory !== MAIN_CATEGORY_CODE.UNKNOWN) {
                     const subCategoryCodes =
                         ITEM_CATEGORY[MAIN_CATEGORY_CODE[mainCategory]];
@@ -90,9 +89,7 @@ export const AttributeSelect = (props: IProps) => {
                 }
                 return keys.map((key) => ({
                     value: SUB_CATEGORY_CODE[key],
-                    label: `${lang.SUB_CATEGORY[SUB_CATEGORY_CODE[key]]} (${
-                        SUB_CATEGORY_CODE[key]
-                    })`
+                    label: `${lang.SUB_CATEGORY[key]} (${key})`
                 }));
             }
             case ATTRIBUTE_TYPE.ITEM_COLOR:

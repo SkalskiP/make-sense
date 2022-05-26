@@ -180,31 +180,33 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 break;
             }
             case ATTRIBUTE_TYPE.MAIN_CATEGORY: {
-                console.log('subcategory = ', {
-                    value: SUB_CATEGORY_CODE.UNKNOWN,
-                    label: lang.SUB_CATEGORY.UNKNOWN
-                });
                 setSelectedItems({
                     ...selectedItems,
                     [ATTRIBUTE_TYPE.MAIN_CATEGORY]: item,
                     [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
                         value: SUB_CATEGORY_CODE.UNKNOWN,
-                        label: lang.SUB_CATEGORY.UNKNOWN
+                        label: `${lang.SUB_CATEGORY.UNKNOWN} (${
+                            SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
+                        })`
                     }
                 });
                 break;
             }
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
-                const mainItem = {
-                    value: SUB_CATEGORY_TO_MAIN[item.label],
-                    label: lang.MAIN_CATEGORY[SUB_CATEGORY_TO_MAIN[item.label]]
-                };
+                // const mainCode =
+                //     SUB_CATEGORY_TO_MAIN[SUB_CATEGORY_CODE[item.value]];
+                // const mainItem = {
+                //     value: mainCode,
+                //     label: `${
+                //         lang.MAIN_CATEGORY[MAIN_CATEGORY_CODE[mainCode]]
+                //     } (${MAIN_CATEGORY_CODE[mainCode]})`
+                // };
 
-                console.log('mainItem = ', mainItem);
+                // console.log('mainItem = ', mainItem);
                 setSelectedItems({
                     ...selectedItems,
-                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: item,
-                    [ATTRIBUTE_TYPE.MAIN_CATEGORY]: mainItem
+                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: item
+                    // [ATTRIBUTE_TYPE.MAIN_CATEGORY]: mainItem
                 });
                 break;
             }
@@ -341,19 +343,23 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Category</div>
+                    <div className="AttributeName">Main Category</div>
                     <div className="AttributeSelector">
-                        {/* <AttributeSelect
+                        <AttributeSelect
                             type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
                             onSelect={onSelect}
                             value={selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]}
                         />
-                        <div style={{width: '10px'}} /> */}
+                        <div style={{width: '10px'}} />
+                    </div>
+                </div>
+                <div className="AttributeContainer">
+                    <div className="AttributeName">Sub Category</div>
+                    <div className="AttributeSelector">
                         <AttributeSelect
                             mainCategory={
-                                // selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
-                                //     .value
-                                MAIN_CATEGORY_CODE.UNKNOWN
+                                selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
+                                    .value
                             }
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}

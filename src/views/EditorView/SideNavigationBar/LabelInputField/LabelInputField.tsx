@@ -194,7 +194,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                         )}
                     </div>
                     <div className="Content">
-                        <div className="ContentWrapper">
+                        {/* <div className="ContentWrapper">
                             <div
                                 className="DropdownLabel"
                                 ref={(ref) => (this.dropdownLabel = ref)}
@@ -217,12 +217,12 @@ class LabelInputField extends React.Component<IProps, IState> {
                                     </Scrollbars>
                                 </div>
                             )}
-                        </div>
+                        </div> */}
                         <div className="ContentWrapper">
                             <ImageButton
                                 externalClassName={'trash'}
                                 image={'ico/info.png'}
-                                imageAlt={'remove_rect'}
+                                imageAlt={'info'}
                                 buttonSize={{width: 30, height: 30}}
                                 onClick={() => onSelectInfo(id)}
                             />
