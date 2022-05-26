@@ -15,7 +15,7 @@ import {
 } from '../../../data/enums/ItemType';
 import Select from 'react-select';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
-import {string} from '@tensorflow/tfjs';
+import {vi as lang} from '../../../lang';
 
 interface IProps {
     key?: string;
@@ -61,19 +61,21 @@ export const AttributeSelect = (props: IProps) => {
             case ATTRIBUTE_TYPE.GENDER:
                 return Object.keys(GENDER).map((key) => ({
                     value: GENDER[key],
-                    label: key
+                    label: `${lang.GENDER[key]} (${key})`
                 }));
             case ATTRIBUTE_TYPE.SOURCE:
                 return Object.keys(SOURCE).map((key) => ({
                     value: SOURCE[key],
-                    label: key
+                    label: `${lang.SOURCE[key]} (${key})`
                 }));
             case ATTRIBUTE_TYPE.MAIN_CATEGORY:
                 return Object.values(MAIN_CATEGORY_CODE)
                     .filter((value) => typeof value === 'string')
                     .map((key) => ({
                         value: MAIN_CATEGORY_CODE[key],
-                        label: key.toString()
+                        label: `${
+                            lang.MAIN_CATEGORY[MAIN_CATEGORY_CODE[key]]
+                        } (${MAIN_CATEGORY_CODE[key]})`
                     }));
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
                 let keys = Object.values(SUB_CATEGORY_CODE).filter(
@@ -88,7 +90,9 @@ export const AttributeSelect = (props: IProps) => {
                 }
                 return keys.map((key) => ({
                     value: SUB_CATEGORY_CODE[key],
-                    label: key.toString()
+                    label: `${lang.SUB_CATEGORY[SUB_CATEGORY_CODE[key]]} (${
+                        SUB_CATEGORY_CODE[key]
+                    })`
                 }));
             }
             case ATTRIBUTE_TYPE.ITEM_COLOR:
@@ -96,14 +100,14 @@ export const AttributeSelect = (props: IProps) => {
                     .filter((value) => typeof value === 'string')
                     .map((key) => ({
                         value: ITEM_COLOR[key],
-                        label: key.toString()
+                        label: `${lang.ITEM_COLOR[key]} (${key})`
                     }));
             case ATTRIBUTE_TYPE.ITEM_PATTERN:
                 return Object.values(ITEM_PATTERN)
                     .filter((value) => typeof value === 'string')
                     .map((key) => ({
                         value: ITEM_PATTERN[key],
-                        label: key.toString()
+                        label: `${lang.ITEM_PATTERN[key]} (${key})`
                     }));
             case ATTRIBUTE_TYPE.FASHION_STYLE: {
                 const styles =
@@ -112,7 +116,7 @@ export const AttributeSelect = (props: IProps) => {
                         : FASHION_STYLE_WOMAN;
                 return styles.map((item) => ({
                     value: item.name.toUpperCase(),
-                    label: item.name.toUpperCase()
+                    label: `${lang.FASHION_STYLE[item.slug]} (${item.slug})`
                 }));
             }
             case ATTRIBUTE_TYPE.HUMAN_ID: {
@@ -133,7 +137,7 @@ export const AttributeSelect = (props: IProps) => {
     );
 
     return (
-        <div style={{width: '80%'}}>
+        <div style={{width: '90%'}}>
             <Select
                 menuPlacement="auto"
                 menuPosition="fixed"

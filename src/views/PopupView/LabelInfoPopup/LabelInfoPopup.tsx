@@ -10,6 +10,7 @@ import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {TagButton} from '../../Common/TagButton/TagButton';
 import {
     ATTRIBUTE_TYPE,
+    FASHION_STYLE,
     GENDER,
     ITEM_COLOR,
     ITEM_PATTERN,
@@ -32,6 +33,8 @@ import {
     updateActiveSubCategory,
     updateImageDataById
 } from '../../../store/labels/actionCreators';
+
+import {vi as lang} from '../../../lang';
 
 interface IProps {
     labelRectId: string;
@@ -78,23 +81,29 @@ const LabelInfoPopup: React.FC<IProps> = ({
             const found = _.find(imageData.humans, {uuid: id});
             setHumanInfo(found);
             setGender(found.gender);
+            const genderKey = Object.keys(GENDER).find(
+                (key) => GENDER[key] === found.gender
+            );
+            const sourceKey = Object.keys(SOURCE).find(
+                (key) => SOURCE[key] === found.type
+            );
             setSelectedItems({
                 [ATTRIBUTE_TYPE.GENDER]: {
                     value: found.gender,
-                    label: Object.keys(GENDER).find(
-                        (key) => GENDER[key] === found.gender
-                    )
+                    label: `${lang.GENDER[genderKey]} (${genderKey})`
                 },
                 [ATTRIBUTE_TYPE.SOURCE]: {
                     value: found.type,
-                    label: Object.keys(SOURCE).find(
-                        (key) => SOURCE[key] === found.type
-                    )
+                    label: `${lang.SOURCE[sourceKey]} (${sourceKey})`
                 },
-                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
-                    value: style.toUpperCase(),
-                    label: style.toUpperCase()
-                }))
+                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => {
+                    return {
+                        value: style.toUpperCase(),
+                        label: `${
+                            lang.FASHION_STYLE[style.toLowerCase()]
+                        } (${style.toUpperCase()})`
+                    };
+                })
             });
         } else {
             const found = _.find(imageData.items, {uuid: id});
@@ -103,6 +112,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
             const humanIndex = imageData.humans.findIndex(
                 (human) => human.uuid === found.humanId
             );
+            const genderKey = Object.keys(GENDER).find(
+                (key) => GENDER[key] === found.gender
+            );
+
             setSelectedItems({
                 [ATTRIBUTE_TYPE.HUMAN_ID]: {
                     value: found.humanId,
@@ -110,31 +123,43 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 },
                 [ATTRIBUTE_TYPE.GENDER]: {
                     value: found.gender,
-                    label: Object.keys(GENDER).find(
-                        (key) => GENDER[key] === found.gender
-                    )
+                    label: `${lang.GENDER[genderKey]} (${genderKey})`
                 },
                 [ATTRIBUTE_TYPE.MAIN_CATEGORY]: {
                     value: found.mainCategory,
-                    label: MAIN_CATEGORY_CODE[found.mainCategory]
+                    label: `${
+                        lang.MAIN_CATEGORY[
+                            MAIN_CATEGORY_CODE[found.mainCategory]
+                        ]
+                    } (${MAIN_CATEGORY_CODE[found.mainCategory]})`
                 },
                 [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
                     value: found.subCategory,
-                    label: SUB_CATEGORY_CODE[found.subCategory]
+                    label: `${
+                        lang.SUB_CATEGORY[SUB_CATEGORY_CODE[found.subCategory]]
+                    } (${SUB_CATEGORY_CODE[found.subCategory]})`
                 },
                 [ATTRIBUTE_TYPE.ITEM_COLOR]: {
                     value: found.color,
-                    label: ITEM_COLOR[found.color]
+                    label: `${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
+                        ITEM_COLOR[found.color]
+                    })`
                 },
                 [ATTRIBUTE_TYPE.ITEM_PATTERN]: {
                     value: found.pattern,
-                    label: ITEM_PATTERN[found.pattern]
+                    label: `${
+                        lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
+                    } (${ITEM_PATTERN[found.pattern]})`
                 },
 
-                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => ({
-                    value: style.toUpperCase(),
-                    label: style.toUpperCase()
-                }))
+                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => {
+                    return {
+                        value: style.toUpperCase(),
+                        label: `${
+                            lang.FASHION_STYLE[style.toLowerCase()]
+                        } (${style.toUpperCase()})`
+                    };
+                })
             });
         }
 
@@ -157,14 +182,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
             case ATTRIBUTE_TYPE.MAIN_CATEGORY: {
                 console.log('subcategory = ', {
                     value: SUB_CATEGORY_CODE.UNKNOWN,
-                    label: SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
+                    label: lang.SUB_CATEGORY.UNKNOWN
                 });
                 setSelectedItems({
                     ...selectedItems,
                     [ATTRIBUTE_TYPE.MAIN_CATEGORY]: item,
                     [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
                         value: SUB_CATEGORY_CODE.UNKNOWN,
-                        label: SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
+                        label: lang.SUB_CATEGORY.UNKNOWN
                     }
                 });
                 break;
@@ -172,10 +197,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
                 const mainItem = {
                     value: SUB_CATEGORY_TO_MAIN[item.label],
-                    label: MAIN_CATEGORY_CODE[SUB_CATEGORY_TO_MAIN[item.label]]
+                    label: lang.MAIN_CATEGORY[SUB_CATEGORY_TO_MAIN[item.label]]
                 };
 
-                console.log('mainITem = ', mainItem);
+                console.log('mainItem = ', mainItem);
                 setSelectedItems({
                     ...selectedItems,
                     [ATTRIBUTE_TYPE.SUB_CATEGORY]: item,
