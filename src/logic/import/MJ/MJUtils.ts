@@ -119,8 +119,9 @@ export class MJUtils {
             return {
                 uuid,
                 id: itemIdx,
-                humanId: humans.find((human) => human.id === parseInt(humanIdx))
-                    .uuid,
+                humanId:
+                    humans.find((human) => human.id === parseInt(humanIdx))
+                        ?.uuid || '-1',
                 gender: parseInt(gender),
                 mainCategory: parseInt(mainCategory),
                 subCategory: parseInt(subCategory),

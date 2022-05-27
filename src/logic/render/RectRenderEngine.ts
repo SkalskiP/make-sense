@@ -215,6 +215,7 @@ export class RectRenderEngine extends BaseRenderEngine {
     public render(data: EditorData) {
         const activeLabelId: string = LabelsSelector.getActiveLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
+        if (!data.realImageSize) return null;
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
                 if (

@@ -188,7 +188,7 @@ const EditorContainer: React.FC<IProps> = ({
                                 {seq: `${style}`}
                             ) as {seq: string; name: string};
                             return (
-                                <div>
+                                <div key={styleString}>
                                     <div className="styleLabel">
                                         {styleString}
                                     </div>
