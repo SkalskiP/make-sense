@@ -26,14 +26,14 @@ export type DropDownMenuNode = {
 
 export const DropDownMenuData: DropDownMenuNode[] = [
     {
-        name: 'Actions',
+        name: 'Hành động(Actions)',
         imageSrc: 'ico/actions.png',
         imageAlt: 'actions',
         disabled: false,
         children: [
             {
-                name: 'Edit Labels',
-                description: 'Modify labels list',
+                name: 'Sửa Nhãn(Edit Labels)',
+                description: 'Sửa danh sách nhãn(Modify labels list)',
                 imageSrc: 'ico/tags.png',
                 imageAlt: 'labels',
                 disabled: false,
@@ -43,8 +43,8 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                     )
             },
             {
-                name: 'Import Images',
-                description: 'Load more images',
+                name: 'Nhập hình ảnh(Import Images)',
+                description: 'Tải thêm hình ảnh(Load more images)',
                 imageSrc: 'ico/camera.png',
                 imageAlt: 'images',
                 disabled: false,
@@ -54,8 +54,9 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                     )
             },
             {
-                name: 'Import Annotations',
-                description: 'Import annotations from file',
+                name: 'Nhập chú thích(Import Annotations)',
+                description:
+                    'Nhập chú thích từ tệp(Import annotations from file)',
                 imageSrc: 'ico/import-labels.png',
                 imageAlt: 'import-labels',
                 disabled: false,
@@ -67,8 +68,9 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                     )
             },
             {
-                name: 'Export Annotations',
-                description: 'Export annotations to file',
+                name: 'Xuất chú thích(Export Annotations)',
+                description:
+                    'Xuất chú thích sang tệp(Export annotations to file)',
                 imageSrc: 'ico/export-labels.png',
                 imageAlt: 'export-labels',
                 disabled: false,
@@ -80,8 +82,9 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                     )
             },
             {
-                name: 'Load AI Model',
-                description: 'Load our pre-trained annotation models',
+                name: 'Tải mô hình AI(Load AI Model)',
+                description:
+                    'Tải mô hình AI được đào tạo trước(Load our pre-trained annotation models)',
                 imageSrc: 'ico/ai.png',
                 imageAlt: 'load-ai-model',
                 disabled: false,
@@ -93,14 +96,15 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         ]
     },
     {
-        name: 'User',
+        name: 'Người dùng(User)',
         imageSrc: 'ico/user.png',
         imageAlt: 'user',
         disabled: false,
         children: [
             {
-                name: `Logout`,
-                description: 'Clear current authentication',
+                name: `Đăng xuất(Logout)`,
+                description:
+                    'Xóa xác thực hiện tại(Clear current authentication)',
                 imageSrc: 'ico/user.png',
                 imageAlt: 'logout',
                 disabled: false,
@@ -113,14 +117,15 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         ]
     },
     {
-        name: 'Community',
+        name: 'Cộng đồng(Community)',
         imageSrc: 'ico/plant.png',
         imageAlt: 'community',
         disabled: false,
         children: [
             {
-                name: 'Documentation',
-                description: 'Read more about Make Sense',
+                name: 'Tài liệu(Documentation)',
+                description:
+                    'Đọc thêm về Make Sense(Read more about Make Sense)',
                 imageSrc: 'ico/documentation.png',
                 imageAlt: 'documentation',
                 disabled: false,
@@ -131,8 +136,9 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                     )
             },
             {
-                name: 'Bugs and Features',
-                description: 'Report a bug or propose a new feature',
+                name: 'Lỗi và Chức năng(Bugs and Features)',
+                description:
+                    'Báo cáo lỗi hoặc đề xuất một chức năng mới(Report a bug or propose a new feature)',
                 imageSrc: 'ico/bug.png',
                 imageAlt: 'bug',
                 disabled: false,

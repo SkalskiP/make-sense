@@ -23,7 +23,7 @@ import {
 } from '../../../data/enums/ItemType';
 import _ from 'lodash';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
-
+import {vi as lang} from '../../../lang';
 interface IProps {
     windowSize: ISize;
     activeImageIndex: number;
@@ -190,7 +190,12 @@ const EditorContainer: React.FC<IProps> = ({
                             return (
                                 <div key={styleString}>
                                     <div className="styleLabel">
-                                        {styleString}
+                                        {
+                                            lang.FASHION_STYLE[
+                                                styleString.toLowerCase()
+                                            ]
+                                        }
+                                        ({styleString})
                                     </div>
                                     {images}
                                 </div>
