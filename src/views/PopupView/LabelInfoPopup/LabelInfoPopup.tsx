@@ -96,14 +96,26 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     value: found.type,
                     label: `${lang.SOURCE[sourceKey]} (${sourceKey})`
                 },
-                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => {
-                    return {
-                        value: style.toUpperCase(),
-                        label: `${
-                            lang.FASHION_STYLE[style.toLowerCase()]
-                        } (${style.toUpperCase()})`
-                    };
-                })
+                [ATTRIBUTE_TYPE.FASHION_STYLE]:
+                    found.styles.length > 0
+                        ? found.styles.map((style) => {
+                              return {
+                                  value: style.toUpperCase(),
+                                  label: `${
+                                      lang.FASHION_STYLE[style.toLowerCase()]
+                                  } (${style.toUpperCase()})`
+                              };
+                          })
+                        : imageData.guideStyles.map((style) => {
+                              return {
+                                  value: style.name.toUpperCase(),
+                                  label: `${
+                                      lang.FASHION_STYLE[
+                                          style.name.toLocaleLowerCase()
+                                      ]
+                                  } (${style.name.toUpperCase()})`
+                              };
+                          })
             });
         } else {
             const found = _.find(imageData.items, {uuid: id});
@@ -152,14 +164,26 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     } (${ITEM_PATTERN[found.pattern]})`
                 },
 
-                [ATTRIBUTE_TYPE.FASHION_STYLE]: found.styles.map((style) => {
-                    return {
-                        value: style.toUpperCase(),
-                        label: `${
-                            lang.FASHION_STYLE[style.toLowerCase()]
-                        } (${style.toUpperCase()})`
-                    };
-                })
+                [ATTRIBUTE_TYPE.FASHION_STYLE]:
+                    found.styles.length > 0
+                        ? found.styles.map((style) => {
+                              return {
+                                  value: style.toUpperCase(),
+                                  label: `${
+                                      lang.FASHION_STYLE[style.toLowerCase()]
+                                  } (${style.toUpperCase()})`
+                              };
+                          })
+                        : imageData.guideStyles.map((style) => {
+                              return {
+                                  value: style.name.toUpperCase(),
+                                  label: `${
+                                      lang.FASHION_STYLE[
+                                          style.name.toLocaleLowerCase()
+                                      ]
+                                  } (${style.name.toUpperCase()})`
+                              };
+                          })
             });
         }
 
