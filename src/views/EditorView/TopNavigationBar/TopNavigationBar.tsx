@@ -3,7 +3,7 @@ import './TopNavigationBar.scss';
 import StateBar from '../StateBar/StateBar';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 import {AppState} from '../../../store';
-import {connect} from 'react-redux';
+import {connect, RootStateOrAny, useSelector} from 'react-redux';
 import {
     updateActivePopupType,
     updateProjectData
@@ -27,6 +27,7 @@ interface IProps {
 }
 
 const TopNavigationBar: React.FC<IProps> = (props) => {
+    const {authData} = useSelector((state: RootStateOrAny) => state.auth);
     const [isLoading, setIsLoading] = useState(false);
     const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         event.target.setSelectionRange(0, event.target.value.length);
@@ -78,13 +79,13 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     <DropDownMenu />
                 </div>
                 <div className="NavigationBarGroupWrapper middle">
-                    <div className="ProjectName">Project Name:</div>
-                    <TextInput
+                    <div className="ProjectName">{authData.email}</div>
+                    {/* <TextInput
                         isPassword={false}
                         value={props.projectData.name}
                         onChange={onChange}
                         onFocus={onFocus}
-                    />
+                    /> */}
                 </div>
                 <div className="NavigationBarGroupWrapper">
                     {isLoading ? (
@@ -97,7 +98,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         <ImageButton
                             image={'ico/cloud-upload.png'}
                             imageAlt={'cloud-upload.png'}
-                            buttonSize={{width: 30, height: 30}}
+                            buttonSize={{width: 50, height: 50}}
                             onClick={uploadJson}
                         />
                     )}

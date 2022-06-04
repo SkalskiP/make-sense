@@ -157,7 +157,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                 />
                 <TextButton
                     label={'Image recognition'}
-                    isDisabled={!acceptedImages.length}
+                    isDisabled={true}
                     onClick={startEditorWithImageRecognition}
                 />
             </div>

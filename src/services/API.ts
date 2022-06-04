@@ -19,10 +19,6 @@ export class APIService {
                 'Content-Type': 'application/json'
             },
             url: `${Settings.API_PREFIX}/login`,
-            // data: JSON.stringify({
-            //     id: 'test002@showniq.com',
-            //     password: 'ocmg123@'
-            // })
             data: {id: email, password}
         });
     };
