@@ -140,11 +140,12 @@ class Editor extends React.Component<IProps, IState> {
                 EditorActions.setLoadingStatus(true);
                 const saveLoadedImagePartial = (image: HTMLImageElement) =>
                     this.saveLoadedImage(image, imageData);
-                FileUtil.loadImage(imageData.fileData)
+                //@ts-ignore
+                FileUtil.loadImageFromURL(imageData.fileData.path)
                     .then((image: HTMLImageElement) =>
                         saveLoadedImagePartial(image)
                     )
-                    .catch((error) => this.handleLoadImageError());
+                    .catch((error) => this.handleLoadImageError(error));
             }
         }
     };
@@ -162,7 +163,9 @@ class Editor extends React.Component<IProps, IState> {
         this.updateModelAndRender();
     };
 
-    private handleLoadImageError = () => {};
+    private handleLoadImageError = (error: any) => {
+        console.error('loading image error: ', error);
+    };
 
     // =================================================================================================================
     // HELPER METHODS
