@@ -118,10 +118,13 @@ export const AttributeSelect = (props: IProps) => {
             }
             case ATTRIBUTE_TYPE.HUMAN_ID: {
                 const imageData = LabelsSelector.getActiveImageData();
-                return imageData.humans.map((human, index) => ({
-                    value: human.uuid,
-                    label: index.toString()
-                }));
+                return [
+                    ...imageData.humans.map((human, index) => ({
+                        value: human.uuid,
+                        label: index.toString()
+                    })),
+                    {value: '-1', label: 'UNKNOWN'}
+                ];
             }
             default:
                 return [];
