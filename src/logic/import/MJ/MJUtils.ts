@@ -46,12 +46,15 @@ export class MJUtils {
     }
 
     public static parseMJAnnotationsFromJSON(
-        rawAnnotation: string,
+        rawAnnotation: string | object,
         labelNames: LabelName[],
         imageSize: ISize,
         imageName: string
     ): {labelRects: LabelRect[]; humans: HumanInfo[]; items: ItemInfo[]} {
-        const annotation = JSON.parse(rawAnnotation) as RectJSON;
+        let annotation = rawAnnotation as RectJSON;
+        if (typeof rawAnnotation === 'string') {
+            annotation = JSON.parse(rawAnnotation) as RectJSON;
+        }
         console.log('annotation', annotation);
         const humansLabelRects: LabelRect[] = annotation.human_info.map(
             (human) => {
