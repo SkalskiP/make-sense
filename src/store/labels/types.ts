@@ -8,7 +8,7 @@ import {ILine} from '../../interfaces/ILine';
 export type LabelRect = {
     // GENERAL
     id: string;
-    labelId: string;
+    labelId: string | null;
     rect: IRect;
 
     // AI
@@ -68,7 +68,7 @@ export type LabelsState = {
     activeImageIndex: number;
     activeLabelNameId: string;
     activeLabelType: LabelType;
-    activeLabelId: string;
+    activeLabelId: string | null;
     highlightedLabelId: string;
     imagesData: ImageData[];
     firstLabelCreatedFlag: boolean;
