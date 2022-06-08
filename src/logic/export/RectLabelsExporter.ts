@@ -197,12 +197,14 @@ export class RectLabelsExporter {
 
     private static exportAsCSV(): void {
         try {
-            const content: string = LabelsSelector.getImagesData()
+            const contentEntries: string[] = LabelsSelector.getImagesData()
                 .map((imageData: ImageData) => {
                     return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
                 .filter((imageLabelData: string) => {
                     return !!imageLabelData})
-                .join('\n');
+            contentEntries.unshift(Settings.RECT_LABELS_EXPORT_CSV_COLUMN_NAMES)
+
+            const content: string = contentEntries.join('\n');
             const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
             ExporterUtil.saveAs(content, fileName);
         } catch (error) {
@@ -222,7 +224,6 @@ export class RectLabelsExporter {
             .filter((labelRect: LabelRect) => labelRect.labelId !== null)
             .map((labelRect: LabelRect) => RectLabelsExporter.wrapRectLabelIntoCSV(
                 labelRect, labelNames, imageSize, imageData.fileData.name));
-        labelRectsString.unshift(Settings.RECT_LABELS_EXPORT_CSV_COLUMN_NAMES)
         return labelRectsString.join('\n');
     }
 }
