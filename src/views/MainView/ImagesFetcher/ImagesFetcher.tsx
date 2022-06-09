@@ -52,10 +52,11 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
 
     const startEditor = (projectType: ProjectType) => {
         if (acceptedImages.length > 0) {
-            const files = sortBy(
-                acceptedImages,
-                (item: APIImageData) => item.image_id
-            );
+            const files = acceptedImages;
+            // const files = sortBy(
+            //     acceptedImages,
+            //     (item: APIImageData) => item.image_id
+            // );
             props.updateProjectDataAction({
                 ...props.projectData,
                 type: projectType
