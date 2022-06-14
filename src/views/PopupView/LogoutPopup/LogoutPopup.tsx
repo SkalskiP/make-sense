@@ -63,7 +63,6 @@ const LogoutPopup: React.FC<IProps> = (props) => {
         updateImageData([]);
         updateFirstLabelCreatedFlag(false);
         PopupActions.close();
-        updateActivePopupType(PopupWindowType.LOGIN);
     };
 
     const onReject = () => {

@@ -14,13 +14,30 @@ import Fade from '@material-ui/core/Fade';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ImagesDropZone from './ImagesDropZone/ImagesDropZone';
 import ImagesFetcher from './ImagesFetcher/ImagesFetcher';
+import {connect, RootStateOrAny, useSelector} from 'react-redux';
+import {updateActivePopupType} from '../../store/general/actionCreators';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
+import {AppState} from '../../store';
+import {AuthData} from '../../store/auth/types';
 
-const MainView: React.FC = () => {
+interface IProps {
+    authData: AuthData;
+    updateActivePopupTypeAction: (type: PopupWindowType) => void;
+}
+
+const MainView: React.FC<IProps> = ({
+    authData,
+    updateActivePopupTypeAction
+}) => {
     const [projectInProgress, setProjectInProgress] = useState(false);
     const [projectCanceled, setProjectCanceled] = useState(false);
 
     const startProject = () => {
         setProjectInProgress(true);
+    };
+
+    const logout = () => {
+        updateActivePopupTypeAction(PopupWindowType.LOGOUT);
     };
 
     const endProject = () => {
@@ -133,9 +150,23 @@ const MainView: React.FC = () => {
                         externalClassName={'get-started-button'}
                     />
                 )}
+                {!projectInProgress && authData.authToken && (
+                    <TextButton
+                        style={{bottom: 80}}
+                        label={'Log out'}
+                        onClick={logout}
+                        externalClassName={'get-started-button'}
+                    />
+                )}
             </div>
         </div>
     );
 };
+const mapDispatchToProps = {
+    updateActivePopupTypeAction: updateActivePopupType
+};
+const mapStateToProps = (state: AppState) => ({
+    authData: state.auth.authData
+});
 
-export default MainView;
+export default connect(mapStateToProps, mapDispatchToProps)(MainView);
