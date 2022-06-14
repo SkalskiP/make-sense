@@ -36,6 +36,8 @@ export const GenericYesNoPopupDraggable: React.FC<IProps> = ({
             ContextManager.switchCtx(ContextType.POPUP);
             setMountStatus(true);
         }
+
+        console.log('viewPortSize = ', window.innerWidth);
     }, [status]);
 
     return (
@@ -43,6 +45,7 @@ export const GenericYesNoPopupDraggable: React.FC<IProps> = ({
             className="GenericYesNoPopupDraggable"
             initWidth={600}
             initHeight={600}
+            left={window.innerWidth - 610}
             onFocus={() => console.log('on focused')}
             isOpen={true}
             onRequestClose={() => console.group('on request close')}>
