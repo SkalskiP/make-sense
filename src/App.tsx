@@ -39,7 +39,7 @@ const App: React.FC<IProps> = ({
         const auth: AuthData = JSON.parse(
             window.localStorage.getItem('@@auth')
         );
-        console.log('auth = ', auth);
+        // console.log('auth = ', auth);
         if (!auth) {
             updateActivePopupTypeAction(PopupWindowType.LOGIN);
         } else {

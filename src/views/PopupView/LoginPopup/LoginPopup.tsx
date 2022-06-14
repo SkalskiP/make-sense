@@ -71,7 +71,7 @@ const LoginPopup: React.FC<IProps> = ({
         try {
             setIsLoadingStatus(true);
             const {data} = await APIService.login({email, password});
-            console.log('result.data', data);
+            // console.log('result.data', data);
             if (data.code === 200) {
                 const {displayName, role, token: authToken} = data.data;
                 updateAuthDataAction({

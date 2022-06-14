@@ -41,7 +41,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         try {
             setIsLoading(true);
             const {data} = await APIService.fetchImages({offset, limit});
-            console.log('data.data = ', data.data);
+            // console.log('data.data = ', data.data);
             setAcceptedImages(data.data.image_list);
         } catch (error) {
             console.error('Failed to loadImages: ', error);

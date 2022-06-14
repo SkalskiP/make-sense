@@ -122,7 +122,7 @@ export class MJImporter extends AnnotationImporter {
         rawAnnotations: string,
         labelNames: LabelName[]
     ): ImageData {
-        console.log('rawAnnotation = ', rawAnnotations);
+        // console.log('rawAnnotation = ', rawAnnotations);
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
 
@@ -149,7 +149,7 @@ export class MJImporter extends AnnotationImporter {
         rawAnnotations: string,
         labelNames: LabelName[]
     ): ImageData {
-        console.log('rawAnnotation = ', rawAnnotations);
+        // console.log('rawAnnotation = ', rawAnnotations);
 
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
 

@@ -40,7 +40,7 @@ export class LabelActions {
     }
 
     public static deleteRectLabelById(imageId: string, labelRectId: string) {
-        console.log('labelRectId: ', labelRectId);
+        // console.log('labelRectId: ', labelRectId);
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData: ImageData = {
             ...imageData,

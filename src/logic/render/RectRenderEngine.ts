@@ -276,7 +276,6 @@ export class RectRenderEngine extends BaseRenderEngine {
         const lineColor: string = BaseRenderEngine.resolveLineColorByMode(
             labelRect.mode
         );
-        console.log('color = ', lineColor);
         const anchorColor: string =
             BaseRenderEngine.resolveLabelAnchorColor(displayAsActive);
         this.renderRect(rectOnImage, displayAsActive, lineColor, anchorColor);

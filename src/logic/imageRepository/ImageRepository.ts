@@ -16,10 +16,10 @@ export class ImageRepository {
     }
 
     public static getById(uuid: string): HTMLImageElement {
-        console.log(
-            'ImageRepository.repository = ',
-            ImageRepository.repository
-        );
+        // console.log(
+        //     'ImageRepository.repository = ',
+        //     ImageRepository.repository
+        // );
 
         return ImageRepository.repository[uuid];
     }

@@ -197,7 +197,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
         item: {value: any; label: string},
         type: ATTRIBUTE_TYPE
     ) => {
-        console.log('selectedItem = ', item, type);
+        // console.log('selectedItem = ', item, type);
         switch (type) {
             case ATTRIBUTE_TYPE.GENDER: {
                 setGender(item.value);
@@ -260,11 +260,11 @@ const LabelInfoPopup: React.FC<IProps> = ({
             imageData.humans = imageData.humans.map((human) =>
                 human.uuid === humanInfo.uuid ? updatedHumanInfo : human
             );
-            console.log('next = ', updatedHumanInfo, imageData);
+            // console.log('next = ', updatedHumanInfo, imageData);
             updateImageDataByIdAction(imageData.id, imageData);
         }
         if (mode === LabelModeType.ITEM) {
-            console.log('selectedItems', selectedItems);
+            // console.log('selectedItems', selectedItems);
             const updateItemInfo: ItemInfo = {
                 ...itemInfo,
                 humanId: selectedItems[ATTRIBUTE_TYPE.HUMAN_ID].value,
@@ -297,9 +297,9 @@ const LabelInfoPopup: React.FC<IProps> = ({
     };
 
     const renderContent = () => {
-        console.log('humanInfo', humanInfo);
-        console.log('itemInfo', itemInfo);
-        console.log('selectedItems', selectedItems);
+        // console.log('humanInfo', humanInfo);
+        // console.log('itemInfo', itemInfo);
+        // console.log('selectedItems', selectedItems);
         if (!humanInfo && !itemInfo) {
             return null;
         }

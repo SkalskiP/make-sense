@@ -53,9 +53,9 @@ export class APIService {
         json: string;
     }) => {
         const token = AuthSelector.getToken();
-        console.log('token = ', token);
-        console.log('json = ', json);
-        console.log('imageId = ', imageId);
+        // console.log('token = ', token);
+        // console.log('json = ', json);
+        // console.log('imageId = ', imageId);
         if (!token) {
             throw Error('Token is required');
         }

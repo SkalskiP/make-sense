@@ -161,7 +161,7 @@ class LabelInputField extends React.Component<IProps, IState> {
     private onClickHandler = () => {
         this.props.updateActiveLabelId(this.props.id);
         if (this.props.mode === LabelModeType.HUMAN) {
-            console.log('this.props.id', this.props.id);
+            // console.log('this.props.id', this.props.id);
             this.props.updateActiveHumanID(this.props.id);
         }
     };

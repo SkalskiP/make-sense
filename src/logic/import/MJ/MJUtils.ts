@@ -55,7 +55,7 @@ export class MJUtils {
         if (typeof rawAnnotation === 'string') {
             annotation = JSON.parse(rawAnnotation) as RectJSON;
         }
-        console.log('annotation', annotation);
+        // console.log('annotation', annotation);
         const humansLabelRects: LabelRect[] = annotation.human_info.map(
             (human) => {
                 const {lt_x, lt_y, rb_x, rb_y} = human.bounding_box;
@@ -63,7 +63,7 @@ export class MJUtils {
                 const rectY: number = lt_y;
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
-                console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
+                // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
                     x: rectX,
                     y: rectY,
@@ -82,7 +82,7 @@ export class MJUtils {
                 const rectY: number = lt_y;
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
-                console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
+                // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
                     x: rectX,
                     y: rectY,

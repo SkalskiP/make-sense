@@ -166,7 +166,7 @@ const EditorContainer: React.FC<IProps> = ({
                             }
                         })
                         .map((style) => {
-                            console.log('style == ', style);
+                            // console.log('style == ', style);
                             const images = _.range(5).map((i) => {
                                 const src = `guides/${activeGender + 1}/${
                                     activeGender + 1

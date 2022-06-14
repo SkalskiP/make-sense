@@ -79,7 +79,7 @@ export const AttributeSelect = (props: IProps) => {
                 let keys = Object.values(SUB_CATEGORY_CODE).filter(
                     (value) => typeof value === 'string'
                 );
-                console.log('mainCategory = ', mainCategory);
+                // console.log('mainCategory = ', mainCategory);
                 if (mainCategory !== MAIN_CATEGORY_CODE.UNKNOWN) {
                     const subCategoryCodes =
                         ITEM_CATEGORY[MAIN_CATEGORY_CODE[mainCategory]];
