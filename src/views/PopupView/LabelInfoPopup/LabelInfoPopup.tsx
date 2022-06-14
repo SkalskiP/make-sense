@@ -35,6 +35,7 @@ import {
 } from '../../../store/labels/actionCreators';
 
 import {vi as lang} from '../../../lang';
+import {GenericYesNoPopupDraggable} from '../GenericYesNoPopupDraggable/GenericYesNoPopupDraggable';
 
 interface IProps {
     labelRectId: string;
@@ -428,7 +429,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
     };
 
     return (
-        <GenericYesNoPopup
+        <GenericYesNoPopupDraggable
             title={`${mode} Label Info`}
             renderContent={renderContent}
             acceptLabel={'Save'}

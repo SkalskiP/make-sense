@@ -38,37 +38,4 @@
     .title {
         color: white;
     }
-
-    // .TagButton {
-    //     margin-left: 20px;
-    //     margin-bottom: 5px;
-    //     color: white; // fallback if new css variables are not supported by browser
-    //     color: var(--button-text-color);
-
-    //     &:hover {
-    //         background-color: transparent;
-    //         color: $secondaryColor; // fallback if new css variables are not supported by browser
-    //         color: var(--leading-color);
-    //     }
-
-    //     &.active {
-    //         background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-    //         background-color: var(--leading-color);
-    //         box-shadow: $secondaryColor 0 0 0 2px inset; // fallback if new css variables are not supported by browser
-    //         box-shadow: var(--leading-color) 0 0 0 2px inset;
-    //     }
-
-    //     &.disabled {
-    //         box-shadow: $darkThemeThirdColor 0 0 0 2px inset;
-    //         background-color: $darkThemeThirdColor;
-    //         cursor: default;
-    //         opacity: 0.6;
-
-    //         &:hover {
-    //             box-shadow: $darkThemeThirdColor 0 0 0 2px inset;
-    //             background-color: $darkThemeThirdColor;
-    //             color: white;
-    //         }
-    //     }
-    // }
 }
