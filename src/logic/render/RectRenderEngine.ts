@@ -273,10 +273,10 @@ export class RectRenderEngine extends BaseRenderEngine {
         const displayAsActive: boolean =
             labelRect.status === LabelStatus.ACCEPTED &&
             labelRect.id === highlightedLabelId;
-        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(
-            labelRect.labelId,
-            displayAsActive
+        const lineColor: string = BaseRenderEngine.resolveLineColorByMode(
+            labelRect.mode
         );
+        console.log('color = ', lineColor);
         const anchorColor: string =
             BaseRenderEngine.resolveLabelAnchorColor(displayAsActive);
         this.renderRect(rectOnImage, displayAsActive, lineColor, anchorColor);

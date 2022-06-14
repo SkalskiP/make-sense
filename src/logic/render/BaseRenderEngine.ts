@@ -41,22 +41,40 @@ export abstract class BaseRenderEngine {
 
     abstract isInProgress(): boolean;
 
-    protected static resolveLabelLineColor(labelId: string, isActive: boolean): string {
-        const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
+    protected static resolveLabelLineColor(
+        labelId: string,
+        isActive: boolean
+    ): string {
+        const perClassColor: boolean =
+            GeneralSelector.getEnablePerClassColorationStatus();
         if (perClassColor) {
-            const labelName: LabelName | null = LabelsSelector.getLabelNameById(labelId);
-            return labelName ? labelName.color : RenderEngineSettings.DEFAULT_LINE_COLOR;
+            const labelName: LabelName | null =
+                LabelsSelector.getLabelNameById(labelId);
+            return labelName
+                ? labelName.color
+                : RenderEngineSettings.DEFAULT_LINE_COLOR;
         } else {
-            return isActive ? RenderEngineSettings.ACTIVE_LINE_COLOR : RenderEngineSettings.INACTIVE_LINE_COLOR;
+            return isActive
+                ? RenderEngineSettings.ACTIVE_LINE_COLOR
+                : RenderEngineSettings.INACTIVE_LINE_COLOR;
         }
     }
 
     protected static resolveLabelAnchorColor(isActive: boolean): string {
-        const perClassColor: boolean = GeneralSelector.getEnablePerClassColorationStatus();
+        const perClassColor: boolean =
+            GeneralSelector.getEnablePerClassColorationStatus();
         if (perClassColor) {
             return RenderEngineSettings.DEFAULT_ANCHOR_COLOR;
         } else {
-            return isActive ? RenderEngineSettings.ACTIVE_ANCHOR_COLOR : RenderEngineSettings.INACTIVE_ANCHOR_COLOR;
+            return isActive
+                ? RenderEngineSettings.ACTIVE_ANCHOR_COLOR
+                : RenderEngineSettings.INACTIVE_ANCHOR_COLOR;
         }
+    }
+
+    protected static resolveLineColorByMode(mode: string): string {
+        return mode === 'HUMAN'
+            ? RenderEngineSettings.DEFAULT_HUMAN_LINE_COLOR
+            : RenderEngineSettings.DEFAULT_ITEM_LINE_COLOR;
     }
 }

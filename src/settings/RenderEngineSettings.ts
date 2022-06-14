@@ -20,13 +20,19 @@ export class RenderEngineSettings {
         height: 100
     };
     public static readonly defaultAnchorColor: string = '#ffffff';
-    public static readonly inactiveAnchorColor: string = Settings.DARK_THEME_SECOND_COLOR;
+    public static readonly inactiveAnchorColor: string =
+        Settings.DARK_THEME_SECOND_COLOR;
 
     public static readonly DEFAULT_ANCHOR_COLOR: string = '#ffffff';
-    public static readonly ACTIVE_ANCHOR_COLOR: string = Settings.SECONDARY_COLOR;
-    public static readonly INACTIVE_ANCHOR_COLOR: string = Settings.DARK_THEME_SECOND_COLOR;
+    public static readonly ACTIVE_ANCHOR_COLOR: string =
+        Settings.SECONDARY_COLOR;
+    public static readonly INACTIVE_ANCHOR_COLOR: string =
+        Settings.DARK_THEME_SECOND_COLOR;
 
-    public static readonly DEFAULT_LINE_COLOR: string = '#ffffff';
+    public static readonly DEFAULT_LINE_COLOR: string = '#00ff00';
     public static readonly ACTIVE_LINE_COLOR: string = Settings.PRIMARY_COLOR;
     public static readonly INACTIVE_LINE_COLOR: string = '#ffffff';
+
+    public static readonly DEFAULT_HUMAN_LINE_COLOR: string = '#0000cc';
+    public static readonly DEFAULT_ITEM_LINE_COLOR: string = '#cc0000';
 }
