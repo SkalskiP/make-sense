@@ -13,16 +13,16 @@ export class Settings {
     public static readonly EDITOR_TOP_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX: number = 23 + 1;
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX: number =
-        Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 300 + 1;
+        Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 200 + 1;
     public static readonly GUIDE_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX: number =
         23 + 1;
     public static readonly GUIDE_SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX: number =
-        Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 100 + 1;
+        Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 200 + 1;
 
     public static readonly TOOLKIT_TAB_HEIGHT_PX: number = 40;
     public static readonly TOOLBOX_PANEL_WIDTH_PX: number = 50 + 1;
 
-    public static readonly EDITOR_MIN_WIDTH: number = 900;
+    public static readonly EDITOR_MIN_WIDTH: number = 400;
     public static readonly EDITOR_MIN_HEIGHT: number = 500;
 
     public static readonly PRIMARY_COLOR: string = '#2af598';

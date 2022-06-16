@@ -178,7 +178,7 @@ const EditorContainer: React.FC<IProps> = ({
                                         key={src}
                                         alt="sample images"
                                         src={src}
-                                        style={{width: 84, height: 105}}
+                                        style={{width: 84 * 2, height: 105 * 2}}
                                     />
                                 );
                             });

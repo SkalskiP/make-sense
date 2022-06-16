@@ -1,17 +1,17 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {LabelType} from "../../../../data/enums/LabelType";
-import {ISize} from "../../../../interfaces/ISize";
-import {AppState} from "../../../../store";
-import {ImageData, LabelPoint, LabelRect} from "../../../../store/labels/types";
-import {VirtualList} from "../../../Common/VirtualList/VirtualList";
-import ImagePreview from "../ImagePreview/ImagePreview";
+import {connect} from 'react-redux';
+import {LabelType} from '../../../../data/enums/LabelType';
+import {ISize} from '../../../../interfaces/ISize';
+import {AppState} from '../../../../store';
+import {ImageData, LabelPoint, LabelRect} from '../../../../store/labels/types';
+import {VirtualList} from '../../../Common/VirtualList/VirtualList';
+import ImagePreview from '../ImagePreview/ImagePreview';
 import './ImagesList.scss';
-import {ContextManager} from "../../../../logic/context/ContextManager";
-import {ContextType} from "../../../../data/enums/ContextType";
-import {ImageActions} from "../../../../logic/actions/ImageActions";
-import {EventType} from "../../../../data/enums/EventType";
-import {LabelStatus} from "../../../../data/enums/LabelStatus";
+import {ContextManager} from '../../../../logic/context/ContextManager';
+import {ContextType} from '../../../../data/enums/ContextType';
+import {ImageActions} from '../../../../logic/actions/ImageActions';
+import {EventType} from '../../../../data/enums/EventType';
+import {LabelStatus} from '../../../../data/enums/LabelStatus';
 
 interface IProps {
     activeImageIndex: number;
@@ -30,8 +30,8 @@ class ImagesList extends React.Component<IProps, IState> {
         super(props);
 
         this.state = {
-            size: null,
-        }
+            size: null
+        };
     }
 
     public componentDidMount(): void {
@@ -44,8 +44,7 @@ class ImagesList extends React.Component<IProps, IState> {
     }
 
     private updateListSize = () => {
-        if (!this.imagesListRef)
-            return;
+        if (!this.imagesListRef) return;
 
         const listBoundingBox = this.imagesListRef.getBoundingClientRect();
         this.setState({
@@ -53,63 +52,79 @@ class ImagesList extends React.Component<IProps, IState> {
                 width: listBoundingBox.width,
                 height: listBoundingBox.height
             }
-        })
+        });
     };
 
-    private isImageChecked = (index:number): boolean => {
-        const imageData = this.props.imagesData[index]
+    private isImageChecked = (index: number): boolean => {
+        const imageData = this.props.imagesData[index];
         switch (this.props.activeLabelType) {
             case LabelType.LINE:
-                return imageData.labelLines.length > 0
+                return imageData.labelLines.length > 0;
             case LabelType.IMAGE_RECOGNITION:
-                return imageData.labelNameIds.length > 0
+                return imageData.labelNameIds.length > 0;
             case LabelType.POINT:
-                return imageData.labelPoints
-                    .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
-                    .length > 0
+                return (
+                    imageData.labelPoints.filter(
+                        (labelPoint: LabelPoint) =>
+                            labelPoint.status === LabelStatus.ACCEPTED
+                    ).length > 0
+                );
             case LabelType.POLYGON:
-                return imageData.labelPolygons.length > 0
+                return imageData.labelPolygons.length > 0;
             case LabelType.RECT:
-                return imageData.labelRects
-                    .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
-                    .length > 0
+                return (
+                    imageData.labelRects.filter(
+                        (labelRect: LabelRect) =>
+                            labelRect.status === LabelStatus.ACCEPTED
+                    ).length > 0
+                );
         }
     };
 
     private onClickHandler = (index: number) => {
-        ImageActions.getImageByIndex(index)
+        ImageActions.getImageByIndex(index);
     };
 
-    private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
-        return <ImagePreview
-            key={index}
-            style={style}
-            size={{width: 150, height: 150}}
-            isScrolling={isScrolling}
-            isChecked={this.isImageChecked(index)}
-            imageData={this.props.imagesData[index]}
-            onClick={() => this.onClickHandler(index)}
-            isSelected={this.props.activeImageIndex === index}
-        />
+    private renderImagePreview = (
+        index: number,
+        isScrolling: boolean,
+        isVisible: boolean,
+        style: React.CSSProperties
+    ) => {
+        return (
+            <ImagePreview
+                key={index}
+                style={style}
+                size={{width: 100, height: 100}}
+                isScrolling={isScrolling}
+                isChecked={this.isImageChecked(index)}
+                imageData={this.props.imagesData[index]}
+                onClick={() => this.onClickHandler(index)}
+                isSelected={this.props.activeImageIndex === index}
+            />
+        );
     };
 
     public render() {
-        const { size } = this.state;
-        return(
+        const {size} = this.state;
+        return (
             <div
                 className="ImagesList"
-                ref={ref => this.imagesListRef = ref}
-                onClick={() => ContextManager.switchCtx(ContextType.LEFT_NAVBAR)}
-            >
-                {!!size && <VirtualList
-                    size={size}
-                    childSize={{width: 150, height: 150}}
-                    childCount={this.props.imagesData.length}
-                    childRender={this.renderImagePreview}
-                    overScanHeight={200}
-                />}
+                ref={(ref) => (this.imagesListRef = ref)}
+                onClick={() =>
+                    ContextManager.switchCtx(ContextType.LEFT_NAVBAR)
+                }>
+                {!!size && (
+                    <VirtualList
+                        size={size}
+                        childSize={{width: 100, height: 100}}
+                        childCount={this.props.imagesData.length}
+                        childRender={this.renderImagePreview}
+                        overScanHeight={200}
+                    />
+                )}
             </div>
-        )
+        );
     }
 }
 
@@ -121,7 +136,4 @@ const mapStateToProps = (state: AppState) => ({
     activeLabelType: state.labels.activeLabelType
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ImagesList);
+export default connect(mapStateToProps, mapDispatchToProps)(ImagesList);

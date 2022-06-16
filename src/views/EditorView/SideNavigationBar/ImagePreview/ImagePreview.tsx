@@ -142,10 +142,10 @@ class ImagePreview extends React.Component<IProps, IState> {
         const {size} = this.props;
 
         const containerRect: IRect = {
-            x: 0.15 * size.width,
-            y: 0.15 * size.height,
-            width: 0.7 * size.width,
-            height: 0.7 * size.height
+            x: 0.05 * size.width,
+            y: 0.05 * size.height,
+            width: 0.8 * size.width,
+            height: 0.8 * size.height
         };
 
         const imageRect: IRect = {
