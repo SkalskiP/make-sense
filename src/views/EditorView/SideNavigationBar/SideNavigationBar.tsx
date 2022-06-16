@@ -8,6 +8,7 @@ interface IProps {
     isOpen: boolean;
     isWithContext?: boolean;
     isGuide?: boolean;
+    isLabel?: boolean;
     renderCompanion?: () => any;
     renderContent?: () => any;
 }
@@ -18,6 +19,7 @@ export const SideNavigationBar: React.FC<IProps> = (props) => {
         isOpen,
         isWithContext,
         isGuide,
+        isLabel,
         renderContent,
         renderCompanion
     } = props;
@@ -28,7 +30,8 @@ export const SideNavigationBar: React.FC<IProps> = (props) => {
             right: direction === Direction.RIGHT,
             'with-context': isWithContext,
             closed: !isOpen,
-            'is-guide': isGuide
+            'is-guide': isGuide,
+            'is-label': isLabel
         });
     };
 

@@ -23,6 +23,13 @@
         }
     }
 
+    &.is-label {
+        .NavigationBarContentWrapper {
+            min-width: $sideNavigationBarContentWidthForLabel;
+            width: $sideNavigationBarContentWidthForLabel;
+        }
+    }
+
     .CompanionBar {
         align-self: stretch;
         min-width: $sideNavigationBarCompanionWidth;

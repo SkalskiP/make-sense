@@ -1,70 +1,72 @@
 @import '../../../../settings/Settings';
 
 .ImagePreview {
-  position: absolute;
-  cursor: pointer;
-
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-
-  border-bottom: solid 1px $darkThemeFirstColor;
-  &:nth-child(odd) {
-    border-right: solid 1px $darkThemeFirstColor;
-  }
-
-  .Foreground {
     position: absolute;
-    z-index: 100;
-    transition: transform 0.3s;
+    cursor: pointer;
 
-    .Image {
-      position: absolute;
-      left: 0;
-      top: 0;
-      border: solid 1px $darkThemeSecondColor;
-      user-select: none;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    border-bottom: solid 1px $darkThemeFirstColor;
+    &:nth-child(odd) {
+        border-right: solid 1px $darkThemeFirstColor;
     }
 
-    .CheckBox {
-      position: absolute;
-      z-index: 1000;
-      max-width: 20px;
-      max-height: 20px;
-      bottom: -10px;
-      left: -10px;
-      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
-      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
-    }
-  }
-
-  .Background {
-    position: absolute;
-    z-index: 0;
-    background-color: $darkThemeThirdColor;
-    transition: background-color 0.3s ease-in-out, transform 0.3s;
-  }
-
-  &.selected {
     .Foreground {
-      transform: translate(-2px, 2px);
-    }
-    .Background {
-      transform: translate(2px, -2px);
-      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-      background-color: var(--leading-color);
-    }
-  }
+        position: absolute;
+        z-index: 100;
+        transition: transform 0.3s;
 
-  &:hover {
-    .Foreground {
-      transform: translate(-2px, 2px);
+        .Image {
+            position: absolute;
+            left: 0;
+            top: 0;
+            border: solid 1px $darkThemeSecondColor;
+            user-select: none;
+        }
+
+        .CheckBox {
+            position: absolute;
+            z-index: 1000;
+            max-width: 20px;
+            max-height: 20px;
+            bottom: -5px;
+            left: -5px;
+            filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg)
+                saturate(2000%); // fallback if new css variables are not supported by browser
+            filter: invert(1) brightness(35%) sepia(100%)
+                hue-rotate(var(--hue-value)) saturate(2000%);
+        }
     }
+
     .Background {
-      transform: translate(2px, -2px);
+        position: absolute;
+        z-index: 0;
+        background-color: $darkThemeThirdColor;
+        transition: background-color 0.3s ease-in-out, transform 0.3s;
     }
-  }
+
+    &.selected {
+        .Foreground {
+            transform: translate(-2px, 2px);
+        }
+        .Background {
+            transform: translate(2px, -2px);
+            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+            background-color: var(--leading-color);
+        }
+    }
+
+    &:hover {
+        .Foreground {
+            transform: translate(-2px, 2px);
+        }
+        .Background {
+            transform: translate(2px, -2px);
+        }
+    }
 }

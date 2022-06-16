@@ -49,8 +49,8 @@ const EditorContainer: React.FC<IProps> = ({
                 ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
                 : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
             const rightTabWidth = rightTabStatus
-                ? Settings.SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
-                : Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
+                ? Settings.LABEL_SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
+                : Settings.LABEL_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
             const guideTabWidth = guideTabStatus
                 ? Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX
                 : Settings.GUIDE_SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX;
@@ -178,7 +178,10 @@ const EditorContainer: React.FC<IProps> = ({
                                         key={src}
                                         alt="sample images"
                                         src={src}
-                                        style={{width: 84 * 2, height: 105 * 2}}
+                                        style={{
+                                            maxWidth: 200
+                                            // maxHeight: 200
+                                        }}
                                     />
                                 );
                             });
@@ -249,6 +252,7 @@ const EditorContainer: React.FC<IProps> = ({
             <SideNavigationBar
                 direction={Direction.RIGHT}
                 isOpen={rightTabStatus}
+                isLabel={true}
                 isWithContext={activeContext === ContextType.RIGHT_NAVBAR}
                 renderCompanion={rightSideBarCompanionRender}
                 renderContent={rightSideBarRender}

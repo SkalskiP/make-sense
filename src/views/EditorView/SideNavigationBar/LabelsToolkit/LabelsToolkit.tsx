@@ -107,10 +107,10 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             props.projectType === ProjectType.IMAGE_RECOGNITION
                 ? [LabelType.IMAGE_RECOGNITION]
                 : [
-                      LabelType.RECT,
-                      LabelType.POINT,
-                      LabelType.LINE,
-                      LabelType.POLYGON
+                      LabelType.RECT
+                      //   LabelType.POINT,
+                      //   LabelType.LINE,
+                      //   LabelType.POLYGON
                   ];
 
         const activeTab: LabelType = props.activeLabelType
