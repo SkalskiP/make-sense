@@ -30,6 +30,7 @@ import {EditorActions} from '../actions/EditorActions';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {LabelUtil} from '../../utils/LabelUtil';
+import {JSONUploadStatus} from '../../data/enums/JSONUploadStatus';
 
 export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
@@ -178,6 +179,7 @@ export class RectRenderEngine extends BaseRenderEngine {
                         return labelRect;
                     }
                 );
+                imageData.uploadStatus = JSONUploadStatus.NEED_UPLOAD;
                 store.dispatch(updateImageDataById(imageData.id, imageData));
             }
         }
@@ -438,6 +440,7 @@ export class RectRenderEngine extends BaseRenderEngine {
             imageData.items.push(itemInfo);
         }
         imageData.labelRects.push(labelRect);
+        imageData.uploadStatus = JSONUploadStatus.NEED_UPLOAD;
 
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));

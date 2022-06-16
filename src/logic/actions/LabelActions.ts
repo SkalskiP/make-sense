@@ -17,6 +17,7 @@ import {
     updateImageDataById
 } from '../../store/labels/actionCreators';
 import {LabelType, LabelModeType} from '../../data/enums/LabelType';
+import {JSONUploadStatus} from '../../data/enums/JSONUploadStatus';
 
 export class LabelActions {
     public static deleteActiveLabel() {
@@ -57,7 +58,8 @@ export class LabelActions {
             items: filter(
                 imageData.items,
                 (item: ItemInfo) => item.uuid !== labelRectId
-            )
+            ),
+            uploadStatus: JSONUploadStatus.NEED_UPLOAD
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }

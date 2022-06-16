@@ -36,6 +36,7 @@ import {
 
 import {vi as lang} from '../../../lang';
 import {GenericYesNoPopupDraggable} from '../GenericYesNoPopupDraggable/GenericYesNoPopupDraggable';
+import {JSONUploadStatus} from '../../../data/enums/JSONUploadStatus';
 
 interface IProps {
     labelRectId: string;
@@ -242,6 +243,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
     };
 
     const save = () => {
+        imageData.uploadStatus = JSONUploadStatus.NEED_UPLOAD;
+
         if (mode === LabelModeType.HUMAN) {
             const updatedHumanInfo = {
                 ...humanInfo,

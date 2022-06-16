@@ -19,10 +19,13 @@ import {ImageData} from '../../../store/labels/types';
 import {APIService} from '../../../services/API';
 import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
+import {JSONUploadStatus} from '../../../data/enums/JSONUploadStatus';
+import {updateImageDataById} from '../../../store/labels/actionCreators';
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateProjectDataAction: (projectData: ProjectData) => any;
+    updateImageDataByIdAction: (id: string, newImageData: ImageData) => any;
     projectData: ProjectData;
 }
 
@@ -46,18 +49,42 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
         props.updateActivePopupTypeAction(PopupWindowType.EXIT_PROJECT);
 
     const uploadJson = async () => {
-        const imageData: ImageData = LabelsSelector.getActiveImageData();
-        const content = RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
-        if (content) {
-            const json = JSON.stringify(content);
-            try {
-                setIsLoading(true);
-                await APIService.updateImage({imageId: imageData.id, json});
-            } catch (error) {
-                console.error('Failed to updateImage:', error);
-            } finally {
-                setIsLoading(false);
+        const itemsNeedToUpload = LabelsSelector.getImagesData().filter(
+            (imageData) =>
+                imageData.uploadStatus === JSONUploadStatus.NEED_UPLOAD
+        );
+
+        try {
+            setIsLoading(true);
+            for await (const imageData of itemsNeedToUpload) {
+                try {
+                    updateImageDataById(imageData.id, {
+                        ...imageData,
+                        uploadStatus: JSONUploadStatus.UPLOADING
+                    });
+                    const content =
+                        RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
+                    const json = content ? JSON.stringify(content) : null;
+                    const res = await APIService.updateImage({
+                        imageId: imageData.id,
+                        json
+                    });
+                    updateImageDataById(imageData.id, {
+                        ...imageData,
+                        uploadStatus: JSONUploadStatus.UPLOADED
+                    });
+                } catch (error) {
+                    updateImageDataById(imageData.id, {
+                        ...imageData,
+                        uploadStatus: JSONUploadStatus.FAILED
+                    });
+                }
             }
+        } catch (error) {
+            console.error('Failed to updateImage: ', error);
+            alert('Failed to upload');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -110,7 +137,8 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
 
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
-    updateProjectDataAction: updateProjectData
+    updateProjectDataAction: updateProjectData,
+    updateImageDataByIdAction: updateImageDataById
 };
 
 const mapStateToProps = (state: AppState) => ({

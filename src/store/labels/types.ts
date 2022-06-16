@@ -5,6 +5,7 @@ import {IPoint} from '../../interfaces/IPoint';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {ILine} from '../../interfaces/ILine';
 import {GENDER} from '../../data/enums/ItemType';
+import {JSONUploadStatus} from '../../data/enums/JSONUploadStatus';
 
 export type LabelRect = {
     // GENERAL
@@ -83,6 +84,8 @@ export type ImageData = {
     humans: HumanInfo[];
     items: ItemInfo[];
     guideStyles?: {seq: string; name: string}[];
+
+    uploadStatus?: JSONUploadStatus;
 
     // SSD
     isVisitedByObjectDetector: boolean;
