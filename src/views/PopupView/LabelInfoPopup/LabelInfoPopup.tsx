@@ -76,6 +76,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
     const [itemInfo, setItemInfo] = useState<ItemInfo>();
     const [selectedItems, setSelectedItems] = useState<ISelectedItem>({});
     const [gender, setGender] = useState<number>();
+    const [image, setImage] = useState<string | undefined>();
 
     useEffect(() => {
         if (mode === LabelModeType.HUMAN) {
@@ -193,11 +194,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
         };
     }, [mode]);
 
-    const onSelect = (
-        item: {value: any; label: string},
-        type: ATTRIBUTE_TYPE
-    ) => {
-        // console.log('selectedItem = ', item, type);
+    const onSelect = (item: {value: any; label: any}, type: ATTRIBUTE_TYPE) => {
+        const imageURL = item.label?.props?.children[0]?.props?.src;
+        setImage(imageURL);
+
         switch (type) {
             case ATTRIBUTE_TYPE.GENDER: {
                 setGender(item.value);
@@ -424,6 +424,11 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         />
                     </div>
                 </div>
+                {image ? (
+                    <div className="SampleImage">
+                        <img src={image} width={100} height={100} />
+                    </div>
+                ) : null}
             </div>
         );
     };

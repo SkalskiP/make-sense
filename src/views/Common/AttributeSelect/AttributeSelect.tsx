@@ -61,19 +61,49 @@ export const AttributeSelect = (props: IProps) => {
             case ATTRIBUTE_TYPE.GENDER:
                 return Object.keys(GENDER).map((key) => ({
                     value: GENDER[key],
-                    label: `${lang.GENDER[key]} (${key})`
+                    // label: `${lang.GENDER[key]} (${key})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={`https://via.placeholder.com/30.png?text=${GENDER[key]}`}
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.GENDER[key]} (${key})`}
+                        </div>
+                    )
                 }));
             case ATTRIBUTE_TYPE.SOURCE:
                 return Object.keys(SOURCE).map((key) => ({
                     value: SOURCE[key],
-                    label: `${lang.SOURCE[key]} (${key})`
+                    // label: `${lang.SOURCE[key]} (${key})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={`https://via.placeholder.com/30.png?text=${SOURCE[key]}`}
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.SOURCE[key]} (${key})`}
+                        </div>
+                    )
                 }));
             case ATTRIBUTE_TYPE.MAIN_CATEGORY:
                 return Object.values(MAIN_CATEGORY_CODE)
                     .filter((value) => typeof value === 'string')
                     .map((key) => ({
                         value: MAIN_CATEGORY_CODE[key],
-                        label: `${lang.MAIN_CATEGORY[key]} (${key})`
+                        // label: `${lang.MAIN_CATEGORY[key]} (${key})`
+                        label: (
+                            <div className="IconItem">
+                                <img
+                                    src={`https://via.placeholder.com/30.png?text=${MAIN_CATEGORY_CODE[key]}`}
+                                    width={30}
+                                    height={30}
+                                />
+                                {`${lang.MAIN_CATEGORY[key]} (${key})`}
+                            </div>
+                        )
                     }));
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
                 let keys = Object.values(SUB_CATEGORY_CODE).filter(
@@ -89,23 +119,56 @@ export const AttributeSelect = (props: IProps) => {
                 }
                 return keys.map((key) => ({
                     value: SUB_CATEGORY_CODE[key],
-                    label: `${lang.SUB_CATEGORY[key]} (${key})`
+                    // label: `${lang.SUB_CATEGORY[key]} (${key})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={`https://via.placeholder.com/30.png?text=${SUB_CATEGORY_CODE[key]}`}
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.SUB_CATEGORY[key]} (${key})`}
+                        </div>
+                    )
                 }));
             }
             case ATTRIBUTE_TYPE.ITEM_COLOR:
-                return Object.values(ITEM_COLOR)
-                    .filter((value) => typeof value === 'string')
-                    .map((key) => ({
-                        value: ITEM_COLOR[key],
-                        label: `${lang.ITEM_COLOR[key]} (${key})`
-                    }));
+                return [
+                    ...Object.values(ITEM_COLOR)
+                        .filter((value) => typeof value === 'string')
+                        .map((key) => ({
+                            value: ITEM_COLOR[key],
+                            label: (
+                                <div className="IconItem">
+                                    <img
+                                        src={`https://via.placeholder.com/30.png?text=${ITEM_COLOR[key]}`}
+                                        width={30}
+                                        height={30}
+                                    />
+                                    {`${lang.ITEM_COLOR[key]} (${key})`}
+                                </div>
+                            )
+                        }))
+                ];
             case ATTRIBUTE_TYPE.ITEM_PATTERN:
-                return Object.values(ITEM_PATTERN)
-                    .filter((value) => typeof value === 'string')
-                    .map((key) => ({
-                        value: ITEM_PATTERN[key],
-                        label: `${lang.ITEM_PATTERN[key]} (${key})`
-                    }));
+                return [
+                    ...Object.values(ITEM_PATTERN)
+                        .filter((value) => typeof value === 'string')
+                        .map((key) => ({
+                            value: ITEM_PATTERN[key],
+                            label: (
+                                <div className="IconItem">
+                                    <img
+                                        src={`https://via.placeholder.com/30.png?text=${ITEM_PATTERN[key]}`}
+                                        width={30}
+                                        height={30}
+                                    />
+                                    {`${lang.ITEM_PATTERN[key]} (${key})`}
+                                </div>
+                            )
+                        }))
+                ];
+
             case ATTRIBUTE_TYPE.FASHION_STYLE: {
                 const styles =
                     gender === GENDER.MAN
@@ -121,9 +184,9 @@ export const AttributeSelect = (props: IProps) => {
                 return [
                     ...imageData.humans.map((human, index) => ({
                         value: human.uuid,
-                        label: index.toString()
+                        label: <div>{index.toString()}</div>
                     })),
-                    {value: '-1', label: 'UNKNOWN'}
+                    {value: '-1', label: <div>UNKNOWN</div>}
                 ];
             }
             default:

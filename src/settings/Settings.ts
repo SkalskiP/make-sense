@@ -71,5 +71,6 @@ export class Settings {
     ];
 
     public static readonly API_PREFIX =
-        'https://dev.ocmg.vn/fs-app/api/backoffice';
+        // 'https://dev.ocmg.vn/fs-app/api/backoffice';
+        'https://dev.ocmg.vn/showniq/api/backoffice/';
 }
