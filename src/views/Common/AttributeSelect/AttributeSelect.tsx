@@ -16,6 +16,7 @@ import {
 import Select from 'react-select';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {vi as lang} from '../../../lang';
+import {Settings} from '../../../settings/Settings';
 
 interface IProps {
     key?: string;
@@ -65,7 +66,11 @@ export const AttributeSelect = (props: IProps) => {
                     label: (
                         <div className="IconItem">
                             <img
-                                src={`https://via.placeholder.com/30.png?text=${GENDER[key]}`}
+                                src={
+                                    GENDER[key] === GENDER.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/genders/${GENDER[key]}_s.png`
+                                }
                                 width={30}
                                 height={30}
                             />
@@ -80,7 +85,11 @@ export const AttributeSelect = (props: IProps) => {
                     label: (
                         <div className="IconItem">
                             <img
-                                src={`https://via.placeholder.com/30.png?text=${SOURCE[key]}`}
+                                src={
+                                    SOURCE[key] === SOURCE.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/sources/${SOURCE[key]}_s.png`
+                                }
                                 width={30}
                                 height={30}
                             />
@@ -97,7 +106,12 @@ export const AttributeSelect = (props: IProps) => {
                         label: (
                             <div className="IconItem">
                                 <img
-                                    src={`https://via.placeholder.com/30.png?text=${MAIN_CATEGORY_CODE[key]}`}
+                                    src={
+                                        MAIN_CATEGORY_CODE[key] ===
+                                        MAIN_CATEGORY_CODE.UNKNOWN
+                                            ? Settings.UNKNOWN_URL
+                                            : `guides/icons/main_cats/${MAIN_CATEGORY_CODE[key]}_s.png`
+                                    }
                                     width={30}
                                     height={30}
                                 />
@@ -123,7 +137,12 @@ export const AttributeSelect = (props: IProps) => {
                     label: (
                         <div className="IconItem">
                             <img
-                                src={`https://via.placeholder.com/30.png?text=${SUB_CATEGORY_CODE[key]}`}
+                                src={
+                                    SUB_CATEGORY_CODE[key] ===
+                                    SUB_CATEGORY_CODE.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/sub_cats/${SUB_CATEGORY_CODE[key]}_s.png`
+                                }
                                 width={30}
                                 height={30}
                             />
@@ -141,7 +160,12 @@ export const AttributeSelect = (props: IProps) => {
                             label: (
                                 <div className="IconItem">
                                     <img
-                                        src={`https://via.placeholder.com/30.png?text=${ITEM_COLOR[key]}`}
+                                        src={
+                                            ITEM_COLOR[key] ===
+                                            ITEM_COLOR.UNKNOWN
+                                                ? Settings.UNKNOWN_URL
+                                                : `guides/icons/colors/${ITEM_COLOR[key]}_s.png`
+                                        }
                                         width={30}
                                         height={30}
                                     />
@@ -159,7 +183,13 @@ export const AttributeSelect = (props: IProps) => {
                             label: (
                                 <div className="IconItem">
                                     <img
-                                        src={`https://via.placeholder.com/30.png?text=${ITEM_PATTERN[key]}`}
+                                        src={
+                                            // `https://via.placeholder.com/30.png?text=${ITEM_PATTERN[key]}`
+                                            ITEM_PATTERN[key] ===
+                                            ITEM_PATTERN.UNKNOWN
+                                                ? Settings.UNKNOWN_URL
+                                                : `guides/icons/patterns/${ITEM_PATTERN[key]}_s.png`
+                                        }
                                         width={30}
                                         height={30}
                                     />

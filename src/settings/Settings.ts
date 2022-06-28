@@ -78,4 +78,7 @@ export class Settings {
     public static readonly API_PREFIX =
         // 'https://dev.ocmg.vn/fs-app/api/backoffice';
         'https://dev.ocmg.vn/showniq/api/backoffice/';
+
+    public static readonly UNKNOWN_URL = 'guides/icons/unknown.png';
+    public static readonly UNKNOWN_S_URL = 'guides/icons/unknown_s.png';
 }

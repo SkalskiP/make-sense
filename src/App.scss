@@ -1,13 +1,13 @@
 @import './settings/_Settings';
 
 .App {
-	--leading-color: #{$secondaryColor};
-	--button-text-color: #{white};
-	--hue-value: 172deg;
+    --leading-color: #{$secondaryColor};
+    --button-text-color: #{white};
+    --hue-value: 172deg;
 }
 
 .App.AI {
-	--leading-color: #{$primaryColor};
-	--button-text-color: #{$darkThemeSecondColor};
-	--hue-value: 120deg;
+    --leading-color: #{$primaryColor};
+    --button-text-color: #{$darkThemeSecondColor};
+    --hue-value: 120deg;
 }

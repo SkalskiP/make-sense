@@ -37,6 +37,7 @@ import {
 import {vi as lang} from '../../../lang';
 import {GenericYesNoPopupDraggable} from '../GenericYesNoPopupDraggable/GenericYesNoPopupDraggable';
 import {JSONUploadStatus} from '../../../data/enums/JSONUploadStatus';
+import {Settings} from '../../../settings/Settings';
 
 interface IProps {
     labelRectId: string;
@@ -93,11 +94,37 @@ const LabelInfoPopup: React.FC<IProps> = ({
             setSelectedItems({
                 [ATTRIBUTE_TYPE.GENDER]: {
                     value: found.gender,
-                    label: `${lang.GENDER[genderKey]} (${genderKey})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    GENDER[genderKey] === GENDER.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/genders/${GENDER[genderKey]}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.GENDER[genderKey]} (${genderKey})`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.SOURCE]: {
                     value: found.type,
-                    label: `${lang.SOURCE[sourceKey]} (${sourceKey})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    SOURCE[sourceKey] === SOURCE.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/sources/${SOURCE[sourceKey]}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.SOURCE[sourceKey]} (${sourceKey})`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
@@ -138,33 +165,108 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 },
                 [ATTRIBUTE_TYPE.GENDER]: {
                     value: found.gender,
-                    label: `${lang.GENDER[genderKey]} (${genderKey})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    GENDER[genderKey] === GENDER.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/genders/${GENDER[genderKey]}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.GENDER[genderKey]} (${genderKey})`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.MAIN_CATEGORY]: {
                     value: found.mainCategory,
-                    label: `${
-                        lang.MAIN_CATEGORY[
-                            MAIN_CATEGORY_CODE[found.mainCategory]
-                        ]
-                    } (${MAIN_CATEGORY_CODE[found.mainCategory]})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    found.mainCategory ===
+                                    MAIN_CATEGORY_CODE.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/main_cats/${found.mainCategory}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${
+                                lang.MAIN_CATEGORY[
+                                    MAIN_CATEGORY_CODE[found.mainCategory]
+                                ]
+                            } (${MAIN_CATEGORY_CODE[found.mainCategory]})`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
                     value: found.subCategory,
-                    label: `${
-                        lang.SUB_CATEGORY[SUB_CATEGORY_CODE[found.subCategory]]
-                    } (${SUB_CATEGORY_CODE[found.subCategory]})`
+                    // label: `${
+                    //     lang.SUB_CATEGORY[SUB_CATEGORY_CODE[found.subCategory]]
+                    // } (${SUB_CATEGORY_CODE[found.subCategory]})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    found.subCategory ===
+                                    SUB_CATEGORY_CODE.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/sub_cats/${found.subCategory}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${
+                                lang.SUB_CATEGORY[
+                                    SUB_CATEGORY_CODE[found.subCategory]
+                                ]
+                            } (${SUB_CATEGORY_CODE[found.subCategory]})`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.ITEM_COLOR]: {
                     value: found.color,
-                    label: `${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
-                        ITEM_COLOR[found.color]
-                    })`
+                    // label: `${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
+                    //     ITEM_COLOR[found.color]
+                    // })`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    found.color === ITEM_COLOR.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/colors/${found.color}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
+                                ITEM_COLOR[found.color]
+                            })`}
+                        </div>
+                    )
                 },
                 [ATTRIBUTE_TYPE.ITEM_PATTERN]: {
                     value: found.pattern,
-                    label: `${
-                        lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
-                    } (${ITEM_PATTERN[found.pattern]})`
+                    label: (
+                        <div className="IconItem">
+                            <img
+                                src={
+                                    found.pattern === ITEM_PATTERN.UNKNOWN
+                                        ? Settings.UNKNOWN_URL
+                                        : `guides/icons/patterns/${found.pattern}_s.png`
+                                }
+                                width={30}
+                                height={30}
+                            />
+                            {`${
+                                lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
+                            } (${ITEM_PATTERN[found.pattern]})`}
+                        </div>
+                    )
                 },
 
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
@@ -340,6 +442,11 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         />
                     </div>
                 </div>
+                {image ? (
+                    <div className="SampleImage">
+                        <img src={image} width={100} height={100} />
+                    </div>
+                ) : null}
             </div>
         ) : (
             <div className="LabelInfoPopupContent">

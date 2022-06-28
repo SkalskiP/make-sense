@@ -9,7 +9,15 @@
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
+    scrollbar-color: $primaryColor $secondaryColor;
 
+    ::-webkit-scrollbar {
+        width: 6px;
+        // border-left: 1px solid #e6ecf8;
+    }
+    ::-webkit-scrollbar-thumb {
+        background-color: $secondaryColor;
+    }
     &.with-context {
         .NavigationBarContentWrapper {
             background-color: $darkThemeForthColor;
