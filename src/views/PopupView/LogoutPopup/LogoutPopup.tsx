@@ -28,7 +28,7 @@ interface IProps {
     updateImageData: (imageData: ImageData[]) => any;
     updateFirstLabelCreatedFlag: (firstLabelCreatedFlag: boolean) => any;
     updateProjectData: (projectData: ProjectData) => any;
-    updateAuthData: (authData: AuthData) => any;
+    updateAuthDataAction: (authData: AuthData) => any;
     updateActivePopupType: (type: PopupWindowType) => any;
 }
 
@@ -39,7 +39,8 @@ const LogoutPopup: React.FC<IProps> = (props) => {
         updateActiveImageIndex,
         updateImageData,
         updateFirstLabelCreatedFlag,
-        updateProjectData
+        updateProjectData,
+        updateAuthDataAction
     } = props;
 
     const renderContent = () => {
@@ -54,7 +55,12 @@ const LogoutPopup: React.FC<IProps> = (props) => {
     };
 
     const onAccept = () => {
-        updateAuthData(null);
+        updateAuthDataAction({
+            email: null,
+            displayName: null,
+            authToken: null,
+            role: null
+        });
         window.localStorage.removeItem('@@auth');
         updateActiveLabelNameId(null);
         updateLabelNames([]);
@@ -88,7 +94,7 @@ const mapDispatchToProps = {
     updateActiveImageIndex,
     updateImageData,
     updateFirstLabelCreatedFlag,
-    updateAuthData,
+    updateAuthDataAction: updateAuthData,
     updateActivePopupType
 };
 

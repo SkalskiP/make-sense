@@ -25,6 +25,7 @@ interface IProps {
     PoseDetectionLoaded: boolean;
     updateAuthDataAction: (authData: AuthData) => any;
     updateActivePopupTypeAction: (type: PopupWindowType) => void;
+    authData: AuthData;
 }
 
 const App: React.FC<IProps> = ({
@@ -33,7 +34,8 @@ const App: React.FC<IProps> = ({
     ObjectDetectorLoaded,
     PoseDetectionLoaded,
     updateAuthDataAction,
-    updateActivePopupTypeAction
+    updateActivePopupTypeAction,
+    authData
 }) => {
     useEffect(() => {
         const auth: AuthData = JSON.parse(
@@ -49,7 +51,7 @@ const App: React.FC<IProps> = ({
         return () => {
             // second
         };
-    }, []);
+    }, [authData.authToken]);
 
     const selectRoute = () => {
         if (
@@ -92,7 +94,8 @@ const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
     ObjectDetectorLoaded: state.ai.isObjectDetectorLoaded,
-    PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
+    PoseDetectionLoaded: state.ai.isPoseDetectorLoaded,
+    authData: state.auth.authData
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
