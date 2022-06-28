@@ -128,6 +128,13 @@ export const FASHION_STYLE = [
         slug: 'bohemian',
         gender: 'A',
         status: 'A'
+    },
+    {
+        seq: -1,
+        name: 'Unknown',
+        slug: 'unknown',
+        gender: 'A',
+        status: 'A'
     }
 ];
 
@@ -149,7 +156,8 @@ export enum FASHION_STYLE_CODE_FOR_MAN {
     RETRO = 7,
     STREET = 8,
     PUNK = 9,
-    BASIC = 10
+    BASIC = 10,
+    UNKNOWN = -1
 }
 
 export enum FASHION_STYLE_CODE_FOR_WOMAN {
@@ -165,7 +173,8 @@ export enum FASHION_STYLE_CODE_FOR_WOMAN {
     PUNK = 28,
     TECH = 29,
     RETRO = 30,
-    BOHEMIAN = 31
+    BOHEMIAN = 31,
+    UNKNOWN = -1
 }
 
 export enum MAIN_CATEGORY_CODE {
@@ -448,5 +457,6 @@ export enum ITEM_PATTERN {
     GRAPHIC,
     HOUNDS_TOOTH,
     COLOR_BLOCK,
+    MESH,
     UNKNOWN = -1
 }

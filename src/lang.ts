@@ -24,7 +24,8 @@ export const vi = {
         punk: 'Punk',
         techwear: 'Techwear',
         retro: 'Cổ điển',
-        bohemian: 'Bohemian'
+        bohemian: 'Bohemian',
+        unknown: 'KHÔNG XÁC ĐỊNH'
     },
     MAIN_CATEGORY: {
         OUTER: 'ÁO KHOÁC',
@@ -152,6 +153,7 @@ export const vi = {
         GRAPHIC: 'họa tiết đồ họa',
         HOUNDS_TOOTH: 'họa tiết răng sói',
         COLOR_BLOCK: 'hình khối màu sắc ',
+        MESH: 'lưới thép',
         UNKNOWN: 'KHÔNG XÁC ĐỊNH'
     }
 };
