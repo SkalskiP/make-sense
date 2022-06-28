@@ -29,6 +29,7 @@ interface IProps {
     value: LabelName;
     options: LabelName[];
     mode?: LabelModeType;
+    description?: string;
     onDelete: (id: string) => any;
     onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     onSelectInfo?: (labelRectId: string) => any;
@@ -167,7 +168,8 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     public render() {
-        const {size, id, value, onDelete, onSelectInfo, mode} = this.props;
+        const {size, id, value, onDelete, onSelectInfo, mode, description} =
+            this.props;
         return (
             <div
                 className={this.getClassName()}
@@ -220,7 +222,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                         </div> */}
                         <div className="ContentWrapper">
                             <ImageButton
-                                externalClassName={'trash'}
+                                externalClassName={'info'}
                                 image={'ico/info.png'}
                                 imageAlt={'info'}
                                 buttonSize={{width: 30, height: 30}}
@@ -233,6 +235,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 buttonSize={{width: 30, height: 30}}
                                 onClick={() => onDelete(id)}
                             />
+                            <div className="DescriptionText">{description}</div>
                         </div>
                     </div>
                 </div>

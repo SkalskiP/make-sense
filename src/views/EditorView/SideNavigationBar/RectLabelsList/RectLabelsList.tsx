@@ -17,6 +17,10 @@ import {LabelStatus} from '../../../../data/enums/LabelStatus';
 import {findLast} from 'lodash';
 import {updateActivePopupType} from '../../../../store/general/actionCreators';
 import {PopupWindowType} from '../../../../data/enums/PopupWindowType';
+import {LabelModeType} from '../../../../data/enums/LabelType';
+import _ from 'lodash';
+import {vi as lang} from '../../../../lang';
+import {GENDER, GENDER_CODE, ITEM_COLOR} from '../../../../data/enums/ItemType';
 
 interface IProps {
     size: ISize;
@@ -83,6 +87,33 @@ const RectLabelsList: React.FC<IProps> = ({
         updateActiveLabelId(null);
     };
 
+    const getDescription = (labelRect: LabelRect) => {
+        if (labelRect.mode === LabelModeType.HUMAN) {
+            const found = _.find(imageData.humans, {uuid: labelRect.id});
+            if (found) {
+                return `${found.styles
+                    .map(
+                        (style) => lang.FASHION_STYLE[style.toLocaleLowerCase()]
+                    )
+                    .join('_')}_${lang.GENDER[GENDER_CODE[found.gender]]}`;
+            }
+        } else {
+            const found = _.find(imageData.items, {uuid: labelRect.id});
+            if (found) {
+                console.log('found.gender', found.gender);
+                return `${found.styles
+                    .map(
+                        (style) => lang.FASHION_STYLE[style.toLocaleLowerCase()]
+                    )
+                    .filter((style) => style !== undefined)
+                    .join('_')}_${lang.GENDER[GENDER_CODE[found.gender]]}_${
+                    lang.ITEM_COLOR[ITEM_COLOR[found.color]]
+                }`;
+            }
+        }
+        return '';
+    };
+
     const getChildren = () => {
         return imageData.labelRects
             .filter(
@@ -110,6 +141,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         options={labelNames}
                         onSelectLabel={updateRectLabel}
                         onSelectInfo={showInfo}
+                        description={getDescription(labelRect)}
                     />
                 );
             });

@@ -16,6 +16,13 @@ export const GENDER = {
     WOMAN: 2,
     UNKNOWN: -1
 };
+
+export const GENDER_CODE = {
+    '1': 'MAN',
+    '2': 'WOMAN',
+    '-1': 'UNKNOWN'
+};
+
 export const SOURCE = {
     HUMAN: 0,
     MANNEQUIN: 1,
