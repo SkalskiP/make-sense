@@ -30,6 +30,13 @@ export const SOURCE = {
     UNKNOWN: -1
 };
 
+export const SOURCE_CODE = {
+    0: 'HUMAN',
+    1: 'MANNEQUIN',
+    2: 'STYLEBOOK',
+    '-1': 'UNKNOWN'
+};
+
 export const FASHION_STYLE = [
     {
         seq: 18,

@@ -20,7 +20,17 @@ import {PopupWindowType} from '../../../../data/enums/PopupWindowType';
 import {LabelModeType} from '../../../../data/enums/LabelType';
 import _ from 'lodash';
 import {vi as lang} from '../../../../lang';
-import {GENDER, GENDER_CODE, ITEM_COLOR} from '../../../../data/enums/ItemType';
+import {
+    GENDER,
+    GENDER_CODE,
+    ITEM_COLOR,
+    ITEM_PATTERN,
+    MAIN_CATEGORY_CODE,
+    SOURCE,
+    SOURCE_CODE,
+    SUB_CATEGORY_CODE
+} from '../../../../data/enums/ItemType';
+import {Settings} from '../../../../settings/Settings';
 
 interface IProps {
     size: ISize;
@@ -107,11 +117,140 @@ const RectLabelsList: React.FC<IProps> = ({
                     )
                     .filter((style) => style !== undefined)
                     .join('_')}_${lang.GENDER[GENDER_CODE[found.gender]]}_${
+                    lang.MAIN_CATEGORY[MAIN_CATEGORY_CODE[found.mainCategory]]
+                }_${lang.SUB_CATEGORY[SUB_CATEGORY_CODE[found.subCategory]]}_${
                     lang.ITEM_COLOR[ITEM_COLOR[found.color]]
-                }`;
+                }_${lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]}
+                `;
             }
         }
         return '';
+    };
+
+    const getDescriptionIcon = (labelRect: LabelRect) => {
+        if (labelRect.mode === LabelModeType.HUMAN) {
+            const found = _.find(imageData.humans, {uuid: labelRect.id});
+            if (found) {
+                return (
+                    <div className="ItemContainer">
+                        <span className="Item">
+                            {found.styles
+                                .map(
+                                    (style) =>
+                                        lang.FASHION_STYLE[
+                                            style.toLocaleLowerCase()
+                                        ]
+                                )
+                                .filter((style) => style !== undefined)
+                                .join('_')}
+                        </span>
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.gender === GENDER.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/genders/${found.gender}_s.png`
+                            }
+                            alt={`${lang.GENDER[GENDER_CODE[found.gender]]} (${
+                                GENDER_CODE[found.gender]
+                            })`}
+                        />
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.type === SOURCE.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/sources/${found.type}_s.png`
+                            }
+                            alt={`${lang.SOURCE[SOURCE_CODE[found.type]]} (${
+                                SOURCE_CODE[found.type]
+                            })`}
+                        />
+                    </div>
+                );
+            }
+        } else {
+            const found = _.find(imageData.items, {uuid: labelRect.id});
+            if (found) {
+                return (
+                    <div className="ItemContainer">
+                        <span className="Item">
+                            {found.styles
+                                .map(
+                                    (style) =>
+                                        lang.FASHION_STYLE[
+                                            style.toLocaleLowerCase()
+                                        ]
+                                )
+                                .filter((style) => style !== undefined)
+                                .join('_')}
+                        </span>
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.gender === GENDER.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/genders/${found.gender}_s.png`
+                            }
+                            alt={`${lang.GENDER[GENDER_CODE[found.gender]]} (${
+                                GENDER_CODE[found.gender]
+                            })`}
+                        />
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.mainCategory ===
+                                MAIN_CATEGORY_CODE.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/main_cats/${found.mainCategory}_s.png`
+                            }
+                            alt={`${
+                                lang.MAIN_CATEGORY[
+                                    MAIN_CATEGORY_CODE[found.mainCategory]
+                                ]
+                            } (${MAIN_CATEGORY_CODE[found.mainCategory]})`}
+                        />
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.subCategory === SUB_CATEGORY_CODE.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/sub_cats/${found.subCategory}_s.png`
+                            }
+                            alt={`${
+                                lang.SUB_CATEGORY[
+                                    SUB_CATEGORY_CODE[found.subCategory]
+                                ]
+                            } (${SUB_CATEGORY_CODE[found.subCategory]})`}
+                        />
+
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.color === ITEM_COLOR.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/colors/${found.color}_s.png`
+                            }
+                            alt={`${
+                                lang.ITEM_COLOR[ITEM_COLOR[found.color]]
+                            } (${ITEM_COLOR[found.color]})`}
+                        />
+                        <img
+                            className="ItemIcon"
+                            src={
+                                found.pattern === ITEM_COLOR.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/patterns/${found.pattern}_s.png`
+                            }
+                            alt={`${
+                                lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
+                            } (${ITEM_PATTERN[found.pattern]})`}
+                        />
+                    </div>
+                );
+            }
+        }
+        return null;
     };
 
     const getChildren = () => {

@@ -73,6 +73,7 @@ export const AttributeSelect = (props: IProps) => {
                                 }
                                 width={30}
                                 height={30}
+                                alt={`${lang.GENDER[key]} (${key})`}
                             />
                             {`${lang.GENDER[key]} (${key})`}
                         </div>

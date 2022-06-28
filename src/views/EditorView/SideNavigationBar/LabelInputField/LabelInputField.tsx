@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {ISize} from '../../../../interfaces/ISize';
 import './LabelInputField.scss';
 import classNames from 'classnames';
@@ -29,7 +29,7 @@ interface IProps {
     value: LabelName;
     options: LabelName[];
     mode?: LabelModeType;
-    description?: string;
+    description?: string | ReactNode;
     onDelete: (id: string) => any;
     onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     onSelectInfo?: (labelRectId: string) => any;

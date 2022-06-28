@@ -1,17 +1,33 @@
 .RectLabelsList {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-
-  .RectLabelsListContent {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    align-content: flex-start;
-  }
+    align-content: center;
+
+    .RectLabelsListContent {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: flex-start;
+    }
+    .ItemContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .Item {
+        align-self: center;
+    }
+    .ItemIcon {
+        width: 20px;
+        height: 20px;
+        border-radius: 20%;
+        margin-left: 2px;
+        margin-right: 2px;
+    }
 }
