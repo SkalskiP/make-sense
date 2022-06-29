@@ -31,6 +31,40 @@ import {
     SUB_CATEGORY_CODE
 } from '../../../../data/enums/ItemType';
 import {Settings} from '../../../../settings/Settings';
+import {Fade, Tooltip, withStyles} from '@material-ui/core';
+import {ImageButton} from '../../../Common/ImageButton/ImageButton';
+
+const BUTTON_SIZE: ISize = {width: 30, height: 30};
+const BUTTON_PADDING: number = 10;
+
+const StyledTooltip = withStyles((theme) => ({
+    tooltip: {
+        backgroundColor: '#171717',
+        color: '#ffffff',
+        boxShadow: theme.shadows[1],
+        fontSize: 12,
+        maxWidth: 200,
+        textAlign: 'center'
+    }
+}))(Tooltip);
+
+const getButtonWithTooltip = (
+    key: string,
+    tooltipMessage: string,
+    imageSrc: string
+): React.ReactElement => {
+    return (
+        <StyledTooltip
+            key={key}
+            disableFocusListener={true}
+            title={tooltipMessage}
+            TransitionComponent={Fade}
+            TransitionProps={{timeout: 600}}
+            placement="bottom">
+            <img className="ItemIcon" src={imageSrc} alt={tooltipMessage} />
+        </StyledTooltip>
+    );
+};
 
 interface IProps {
     size: ISize;
@@ -144,28 +178,24 @@ const RectLabelsList: React.FC<IProps> = ({
                                 .filter((style) => style !== undefined)
                                 .join('_')}
                         </span>
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.gender === GENDER.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/genders/${found.gender}_s.png`
-                            }
-                            alt={`${lang.GENDER[GENDER_CODE[found.gender]]} (${
+                        {getButtonWithTooltip(
+                            `${found.uuid}_gender`,
+                            `${lang.GENDER[GENDER_CODE[found.gender]]} (${
                                 GENDER_CODE[found.gender]
-                            })`}
-                        />
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.type === SOURCE.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/sources/${found.type}_s.png`
-                            }
-                            alt={`${lang.SOURCE[SOURCE_CODE[found.type]]} (${
+                            })`,
+                            found.gender === GENDER.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/genders/${found.gender}_s.png`
+                        )}
+                        {getButtonWithTooltip(
+                            `${found.uuid}_source`,
+                            `${lang.SOURCE[SOURCE_CODE[found.type]]} (${
                                 SOURCE_CODE[found.type]
-                            })`}
-                        />
+                            })`,
+                            found.type === SOURCE.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/sources/${found.type}_s.png`
+                        )}
                     </div>
                 );
             }
@@ -185,7 +215,17 @@ const RectLabelsList: React.FC<IProps> = ({
                                 .filter((style) => style !== undefined)
                                 .join('_')}
                         </span>
-                        <img
+                        {getButtonWithTooltip(
+                            `${found.uuid}_gender`,
+                            `${lang.GENDER[GENDER_CODE[found.gender]]} (${
+                                GENDER_CODE[found.gender]
+                            })`,
+                            found.gender === GENDER.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/genders/${found.gender}_s.png`
+                        )}
+
+                        {/* <img
                             className="ItemIcon"
                             src={
                                 found.gender === GENDER.UNKNOWN
@@ -195,57 +235,47 @@ const RectLabelsList: React.FC<IProps> = ({
                             alt={`${lang.GENDER[GENDER_CODE[found.gender]]} (${
                                 GENDER_CODE[found.gender]
                             })`}
-                        />
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.mainCategory ===
-                                MAIN_CATEGORY_CODE.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/main_cats/${found.mainCategory}_s.png`
-                            }
-                            alt={`${
+                        /> */}
+                        {getButtonWithTooltip(
+                            `${found.uuid}_main`,
+                            `${
                                 lang.MAIN_CATEGORY[
                                     MAIN_CATEGORY_CODE[found.mainCategory]
                                 ]
-                            } (${MAIN_CATEGORY_CODE[found.mainCategory]})`}
-                        />
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.subCategory === SUB_CATEGORY_CODE.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/sub_cats/${found.subCategory}_s.png`
-                            }
-                            alt={`${
+                            } (${MAIN_CATEGORY_CODE[found.mainCategory]})`,
+                            found.mainCategory === MAIN_CATEGORY_CODE.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/main_cats/${found.mainCategory}_s.png`
+                        )}
+                        {getButtonWithTooltip(
+                            `${found.uuid}_sub`,
+                            `${
                                 lang.SUB_CATEGORY[
                                     SUB_CATEGORY_CODE[found.subCategory]
                                 ]
-                            } (${SUB_CATEGORY_CODE[found.subCategory]})`}
-                        />
-
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.color === ITEM_COLOR.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/colors/${found.color}_s.png`
-                            }
-                            alt={`${
-                                lang.ITEM_COLOR[ITEM_COLOR[found.color]]
-                            } (${ITEM_COLOR[found.color]})`}
-                        />
-                        <img
-                            className="ItemIcon"
-                            src={
-                                found.pattern === ITEM_COLOR.UNKNOWN
-                                    ? Settings.UNKNOWN_URL
-                                    : `guides/icons/patterns/${found.pattern}_s.png`
-                            }
-                            alt={`${
+                            } (${SUB_CATEGORY_CODE[found.subCategory]})`,
+                            found.subCategory === SUB_CATEGORY_CODE.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/sub_cats/${found.subCategory}_s.png`
+                        )}
+                        {getButtonWithTooltip(
+                            `${found.uuid}_color`,
+                            `${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
+                                ITEM_COLOR[found.color]
+                            })`,
+                            found.color === ITEM_COLOR.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/colors/${found.color}_s.png`
+                        )}
+                        {getButtonWithTooltip(
+                            `${found.uuid}_pattern`,
+                            `${
                                 lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
-                            } (${ITEM_PATTERN[found.pattern]})`}
-                        />
+                            } (${ITEM_PATTERN[found.pattern]})`,
+                            found.pattern === ITEM_PATTERN.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/patterns/${found.pattern}_s.png`
+                        )}
                     </div>
                 );
             }
