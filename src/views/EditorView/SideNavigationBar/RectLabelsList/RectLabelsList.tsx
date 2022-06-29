@@ -280,7 +280,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         options={labelNames}
                         onSelectLabel={updateRectLabel}
                         onSelectInfo={showInfo}
-                        description={getDescription(labelRect)}
+                        description={getDescriptionIcon(labelRect)}
                     />
                 );
             });
