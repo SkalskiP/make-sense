@@ -48,6 +48,7 @@ export const GenericYesNoPopupDraggable: React.FC<IProps> = ({
             left={window.innerWidth - 610}
             // onFocus={() => console.log('on focused')}
             isOpen={true}
+            isMinimised={false}
             onRequestClose={() => console.group('on request close')}>
             <div className="Header">{title}</div>
             <div className="Content">{renderContent()}</div>

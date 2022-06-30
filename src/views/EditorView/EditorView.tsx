@@ -12,23 +12,18 @@ interface IProps {
 }
 
 const EditorView: React.FC<IProps> = ({activePopupType}) => {
-
     const getClassName = () => {
-        return classNames(
-            'EditorView',
-            {
-                'withPopup': !!activePopupType
-            }
-        );
+        return classNames('EditorView', {
+            withPopup:
+                !!activePopupType &&
+                activePopupType !== PopupWindowType.LABEL_INFO
+        });
     };
 
     return (
-        <div
-            className={getClassName()}
-            draggable={false}
-        >
-            <TopNavigationBar/>
-            <EditorContainer/>
+        <div className={getClassName()} draggable={false}>
+            <TopNavigationBar />
+            <EditorContainer />
         </div>
     );
 };
@@ -37,6 +32,4 @@ const mapStateToProps = (state: AppState) => ({
     activePopupType: state.general.activePopupType
 });
 
-export default connect(
-    mapStateToProps
-)(EditorView);
+export default connect(mapStateToProps)(EditorView);
