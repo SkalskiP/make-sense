@@ -1,86 +1,96 @@
 @import '../../../settings/Settings';
 
 .Editor {
-  align-self: stretch;
-  flex: 1;
-  position: relative;
-
-  .ViewPortContent {
+    align-self: stretch;
+    flex: 1;
     position: relative;
 
-    .track-horizontal {
-      cursor: none;
+    .ViewPortContent {
+        position: relative;
+
+        .track-horizontal {
+            cursor: none;
+        }
+
+        .track-vertical {
+            cursor: none;
+        }
+
+        .ImageCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: none;
+
+            &:hover {
+                cursor: none;
+            }
+        }
     }
 
-    .track-vertical {
-      cursor: none;
+    .MousePositionIndicator {
+        position: absolute;
+        color: white;
+        font-size: 12px;
+        background-color: $darkThemeThirdColor;
+        opacity: 0.6;
+        padding: 5px;
+        user-select: none;
+        pointer-events: none;
+        z-index: 100;
+        width: fit-content;
     }
 
-    .ImageCanvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      cursor: none;
+    .Cursor {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        transition: width 0.05s ease-out, height 0.05s ease-out,
+            background-color 0.05s ease-in;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        pointer-events: none;
+        border: 2px solid white;
+        background-color: white;
+        z-index: 100000;
 
-      &:hover {
-        cursor: none;
-      }
+        > img {
+            position: absolute;
+            max-width: 20px;
+            max-height: 20px;
+            filter: brightness(0) invert(1);
+            bottom: calc(50% + 10px);
+            left: calc(50% + 10px);
+            display: none;
+            user-select: none;
+        }
+
+        &.move,
+        &.add,
+        &.resize,
+        &.close {
+            width: 24px;
+            height: 24px;
+            background-color: transparent;
+        }
+
+        &.grabbing {
+            width: 18px;
+            height: 18px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border: 2px solid transparent;
+        }
+
+        &.move,
+        &.add,
+        &.resize,
+        &.close,
+        &.cancel,
+        &.grab,
+        &.grabbing {
+            > img {
+                display: block;
+            }
+        }
     }
-  }
-
-  .MousePositionIndicator {
-    position: absolute;
-    color: white;
-    font-size: 12px;
-    background-color: $darkThemeThirdColor;
-    opacity: 0.6;
-    padding: 5px;
-    user-select: none;
-    pointer-events: none;
-    z-index: 100;
-    width: fit-content;
-  }
-
-  .Cursor {
-    position: absolute;
-    width: 6px;
-    height: 6px;
-    transition: width 0.05s ease-out, height 0.05s ease-out, background-color 0.05s ease-in;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    pointer-events: none;
-    border: 2px solid white;
-    background-color: white;
-    z-index: 100000;
-
-    > img {
-      position: absolute;
-      max-width: 20px;
-      max-height: 20px;
-      filter: brightness(0) invert(1);
-      bottom: calc(50% + 10px);
-      left: calc(50% + 10px);
-      display: none;
-      user-select: none;
-    }
-
-    &.move, &.add, &.resize, &.close {
-      width: 24px;
-      height: 24px;
-      background-color: transparent;
-    }
-
-    &.grabbing {
-      width: 18px;
-      height: 18px;
-      background-color: rgba(255, 255, 255, 0.5);
-      border: 2px solid transparent;
-    }
-
-    &.move, &.add, &.resize, &.close, &.cancel, &.grab, &.grabbing {
-      > img {
-        display: block;
-      }
-    }
-  }
 }

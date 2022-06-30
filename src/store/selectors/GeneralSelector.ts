@@ -42,6 +42,10 @@ export class GeneralSelector {
     }
 
     public static getEnablePerClassColorationStatus(): boolean {
-        return store.getState().general.enablePerClassColoration
+        return store.getState().general.enablePerClassColoration;
+    }
+
+    public static getFillMode(): boolean {
+        return store.getState().general.fillMode;
     }
 }

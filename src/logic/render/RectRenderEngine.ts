@@ -280,7 +280,13 @@ export class RectRenderEngine extends BaseRenderEngine {
         );
         const anchorColor: string =
             BaseRenderEngine.resolveLabelAnchorColor(displayAsActive);
-        this.renderRect(rectOnImage, displayAsActive, lineColor, anchorColor);
+        this.renderRect(
+            rectOnImage,
+            displayAsActive,
+            lineColor,
+            anchorColor,
+            GeneralSelector.getFillMode()
+        );
     }
 
     private drawActiveRect(labelRect: LabelRect, data: EditorData) {
@@ -317,22 +323,31 @@ export class RectRenderEngine extends BaseRenderEngine {
         );
         const anchorColor: string =
             BaseRenderEngine.resolveLabelAnchorColor(true);
-        this.renderRect(rectOnImage, true, lineColor, anchorColor);
+        this.renderRect(
+            rectOnImage,
+            true,
+            lineColor,
+            anchorColor,
+            GeneralSelector.getFillMode()
+        );
     }
 
     private renderRect(
         rectOnImage: IRect,
         isActive: boolean,
         lineColor: string,
-        anchorColor: string
+        anchorColor: string,
+        fillMode: boolean
     ) {
         const rectBetweenPixels =
             RenderEngineUtil.setRectBetweenPixels(rectOnImage);
-        DrawUtil.drawRectWithFill(
-            this.canvas,
-            rectBetweenPixels,
-            DrawUtil.hexToRGB(lineColor, 0.2)
-        );
+        if (fillMode) {
+            DrawUtil.drawRectWithFill(
+                this.canvas,
+                rectBetweenPixels,
+                DrawUtil.hexToRGB(lineColor, 0.2)
+            );
+        }
         DrawUtil.drawRect(
             this.canvas,
             rectBetweenPixels,
@@ -350,11 +365,13 @@ export class RectRenderEngine extends BaseRenderEngine {
                 );
                 const handleRectBetweenPixels: IRect =
                     RenderEngineUtil.setRectBetweenPixels(handleRect);
-                DrawUtil.drawRectWithFill(
-                    this.canvas,
-                    handleRectBetweenPixels,
-                    anchorColor
-                );
+                if (fillMode) {
+                    DrawUtil.drawRectWithFill(
+                        this.canvas,
+                        handleRectBetweenPixels,
+                        anchorColor
+                    );
+                }
             });
         }
     }

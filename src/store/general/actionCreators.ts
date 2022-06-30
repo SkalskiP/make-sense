@@ -9,71 +9,94 @@ export function updateWindowSize(windowSize: ISize): GeneralActionTypes {
     return {
         type: Action.UPDATE_WINDOW_SIZE,
         payload: {
-            windowSize,
-        },
+            windowSize
+        }
     };
 }
 
-export function updateActivePopupType(activePopupType: PopupWindowType): GeneralActionTypes {
+export function updateActivePopupType(
+    activePopupType: PopupWindowType
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_ACTIVE_POPUP_TYPE,
         payload: {
-            activePopupType,
+            activePopupType
         }
-    }
+    };
 }
 
-export function updateCustomCursorStyle(customCursorStyle: CustomCursorStyle): GeneralActionTypes {
+export function updateCustomCursorStyle(
+    customCursorStyle: CustomCursorStyle
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_CUSTOM_CURSOR_STYLE,
         payload: {
-            customCursorStyle,
+            customCursorStyle
         }
-    }
+    };
 }
 
-export function updateActiveContext(activeContext: ContextType): GeneralActionTypes {
+export function updateActiveContext(
+    activeContext: ContextType
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_CONTEXT,
         payload: {
-            activeContext,
-        },
+            activeContext
+        }
     };
 }
 
-export function updatePreventCustomCursorStatus(preventCustomCursor: boolean): GeneralActionTypes {
+export function updatePreventCustomCursorStatus(
+    preventCustomCursor: boolean
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_PREVENT_CUSTOM_CURSOR_STATUS,
         payload: {
-            preventCustomCursor,
-        },
+            preventCustomCursor
+        }
     };
 }
 
-export function updateImageDragModeStatus(imageDragMode: boolean): GeneralActionTypes {
+export function updateImageDragModeStatus(
+    imageDragMode: boolean
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_IMAGE_DRAG_MODE_STATUS,
         payload: {
-            imageDragMode,
-        },
+            imageDragMode
+        }
     };
 }
 
-export function updateCrossHairVisibleStatus(crossHairVisible: boolean): GeneralActionTypes {
+export function updateCrossHairVisibleStatus(
+    crossHairVisible: boolean
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_CROSS_HAIR_VISIBLE_STATUS,
         payload: {
-            crossHairVisible,
-        },
+            crossHairVisible
+        }
     };
 }
 
-export function updateProjectData(projectData: ProjectData): GeneralActionTypes {
+export function updateFillMode(fillMode: boolean): GeneralActionTypes {
+    return {
+        type: Action.UPDATE_FILL_MODE,
+        payload: {
+            fillMode
+        }
+    };
+}
+
+export function updateProjectData(
+    projectData: ProjectData
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_PROJECT_DATA,
         payload: {
-            projectData,
-        },
+            projectData
+        }
     };
 }
 
@@ -81,16 +104,18 @@ export function updateZoom(zoom: number): GeneralActionTypes {
     return {
         type: Action.UPDATE_ZOOM,
         payload: {
-            zoom,
-        },
+            zoom
+        }
     };
 }
 
-export function updatePerClassColorationStatus(enablePerClassColoration: boolean): GeneralActionTypes {
+export function updatePerClassColorationStatus(
+    enablePerClassColoration: boolean
+): GeneralActionTypes {
     return {
         type: Action.UPDATE_ENABLE_PER_CLASS_COLORATION_STATUS,
         payload: {
-            enablePerClassColoration,
-        },
+            enablePerClassColoration
+        }
     };
 }

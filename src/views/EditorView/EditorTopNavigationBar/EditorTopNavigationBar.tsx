@@ -6,6 +6,7 @@ import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import {
     updateCrossHairVisibleStatus,
+    updateFillMode,
     updateImageDragModeStatus
 } from '../../../store/general/actionCreators';
 import {GeneralSelector} from '../../../store/selectors/GeneralSelector';
@@ -71,8 +72,10 @@ interface IProps {
     activeContext: ContextType;
     updateImageDragModeStatusAction: (imageDragMode: boolean) => any;
     updateCrossHairVisibleStatusAction: (crossHairVisible: boolean) => any;
+    updateFillModeAction: (fillMode: boolean) => any;
     imageDragMode: boolean;
     crossHairVisible: boolean;
+    fillMode: boolean;
     activeLabelType: LabelType;
 }
 
@@ -80,8 +83,10 @@ const EditorTopNavigationBar: React.FC<IProps> = ({
     activeContext,
     updateImageDragModeStatusAction,
     updateCrossHairVisibleStatusAction,
+    updateFillModeAction,
     imageDragMode,
     crossHairVisible,
+    fillMode,
     activeLabelType
 }) => {
     const getClassName = () => {
@@ -100,6 +105,10 @@ const EditorTopNavigationBar: React.FC<IProps> = ({
 
     const crossHairOnClick = () => {
         updateCrossHairVisibleStatusAction(!crossHairVisible);
+    };
+
+    const fillOnClick = () => {
+        updateFillModeAction(!fillMode);
     };
 
     return (
@@ -165,6 +174,15 @@ const EditorTopNavigationBar: React.FC<IProps> = ({
                     undefined,
                     crossHairOnClick
                 )}
+                {getButtonWithTooltip(
+                    'fill-off',
+                    fillMode ? 'fill-off' : 'fill-on',
+                    'ico/outline-off.png',
+                    'outline-off',
+                    !fillMode,
+                    undefined,
+                    fillOnClick
+                )}
             </div>
             {((activeLabelType === LabelType.RECT &&
                 AISelector.isAIObjectDetectorModelLoaded()) ||
@@ -203,13 +221,15 @@ const EditorTopNavigationBar: React.FC<IProps> = ({
 
 const mapDispatchToProps = {
     updateImageDragModeStatusAction: updateImageDragModeStatus,
-    updateCrossHairVisibleStatusAction: updateCrossHairVisibleStatus
+    updateCrossHairVisibleStatusAction: updateCrossHairVisibleStatus,
+    updateFillModeAction: updateFillMode
 };
 
 const mapStateToProps = (state: AppState) => ({
     activeContext: state.general.activeContext,
     imageDragMode: state.general.imageDragMode,
     crossHairVisible: state.general.crossHairVisible,
+    fillMode: state.general.fillMode,
     activeLabelType: state.labels.activeLabelType
 });
 
