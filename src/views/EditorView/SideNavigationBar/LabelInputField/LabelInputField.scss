@@ -48,6 +48,8 @@
 
             .ContentWrapper {
                 align-self: stretch;
+                flex: 1;
+                border: 1 solid $secondaryColor;
 
                 display: flex;
                 flex-direction: row;
@@ -56,6 +58,7 @@
                 align-items: center;
                 align-content: center;
                 .DescriptionText {
+                    flex: 1;
                     color: $secondaryColor;
                     font-size: smaller;
                 }

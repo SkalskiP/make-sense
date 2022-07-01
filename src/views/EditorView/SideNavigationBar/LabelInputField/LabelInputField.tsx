@@ -228,6 +228,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 buttonSize={{width: 30, height: 30}}
                                 onClick={() => onSelectInfo(id)}
                             />
+                            <div className="DescriptionText">{description}</div>
                             <ImageButton
                                 externalClassName={'trash'}
                                 image={'ico/trash.png'}
@@ -235,7 +236,6 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 buttonSize={{width: 30, height: 30}}
                                 onClick={() => onDelete(id)}
                             />
-                            <div className="DescriptionText">{description}</div>
                         </div>
                     </div>
                 </div>
