@@ -24,6 +24,7 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     public mouseMoveHandler(data: EditorData): void {}
     public mouseDownHandler(data: EditorData): void {}
     public mouseUpHandler(data: EditorData): void {}
+    public pasteHandler(): void {}
 
     // =================================================================================================================
     // RENDERING

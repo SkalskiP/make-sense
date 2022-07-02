@@ -96,8 +96,11 @@ docker logs make_sense
 | Load next image                    | Editor   | <kbd>⌥</kbd> + <kbd>Right</kbd> | <kbd>Ctrl</kbd> + <kbd>Right</kbd> |
 | Zoom in                            | Editor   | <kbd>⌥</kbd> + <kbd>+</kbd> | <kbd>Ctrl</kbd> + <kbd>+</kbd> |
 | Zoom out                           | Editor   | <kbd>⌥</kbd> + <kbd>-</kbd> | <kbd>Ctrl</kbd> + <kbd>-</kbd> |
+| Toggle Drag Mode                   | Editor   | <kbd>h</kbd> | <kbd>h</kbd> |
 | Move image                         | Editor   | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> |
 | Select Label                       | Editor   | <kbd>⌥</kbd> + <kbd>0-9</kbd> | <kbd>Ctrl</kbd> + <kbd>0-9</kbd> |
+| Copy all labels                    | Editor   | <kbd>⌥</kbd> + <kbd>c</kbd> | <kbd>Ctrl</kbd> + <kbd>c</kbd> |
+| Paste all labels                   | Editor   | <kbd>⌥</kbd> + <kbd>p</kbd> | <kbd>Ctrl</kbd> + <kbd>p</kbd> |
 | Exit popup                         | Popup    | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
 
 **Table 1.** Supported keyboard shortcuts

@@ -4,12 +4,16 @@ import {EventType} from '../../data/enums/EventType';
 import {LabelType} from '../../data/enums/LabelType';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {RenderEngineSettings} from '../../settings/RenderEngineSettings';
-import {LabelName} from '../../store/labels/types';
+import {ImageData, LabelName} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import { EditorModel } from '../../staticModels/EditorModel';
+import { PolygonRenderEngine } from './PolygonRenderEngine';
+import { LineRenderEngine } from './LineRenderEngine';
 
 export abstract class BaseRenderEngine {
     protected readonly canvas: HTMLCanvasElement;
     public labelType: LabelType;
+    protected imageDataCache: ImageData;
 
     protected constructor(canvas: HTMLCanvasElement) {
         this.canvas = canvas;
@@ -36,6 +40,20 @@ export abstract class BaseRenderEngine {
     protected abstract mouseDownHandler(data: EditorData): void;
     protected abstract mouseMoveHandler(data: EditorData): void;
     protected abstract mouseUpHandler(data: EditorData): void;
+    public abstract pasteHandler(): void;
+
+    public copyHandler(){
+        switch (EditorModel.supportRenderingEngine.labelType) {
+            case LabelType.POLYGON:
+                (EditorModel.supportRenderingEngine as PolygonRenderEngine).cancelLabelCreation();
+                break;
+            case LabelType.LINE:
+                (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
+                break;
+        }
+        const imageData = LabelsSelector.getActiveImageData();
+        this.imageDataCache = {...imageData};
+    }
 
     abstract render(data: EditorData): void;
 

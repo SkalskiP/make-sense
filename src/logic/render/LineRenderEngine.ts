@@ -84,6 +84,21 @@ export class LineRenderEngine extends BaseRenderEngine {
             }
         }
     }
+    
+    public pasteHandler(): void {
+        this.cancelLabelCreation();
+        if(this.imageDataCache && this.imageDataCache.labelLines){
+            const imageData: ImageData = LabelsSelector.getActiveImageData();
+            this.imageDataCache.labelLines.forEach((lineLabel) => {
+                imageData.labelLines.push(lineLabel);
+                store.dispatch(updateImageDataById(imageData.id, imageData));
+                store.dispatch(updateFirstLabelCreatedFlag(true));
+                store.dispatch(updateActiveLabelId(lineLabel.id));
+                this.lineCreationStartPoint = null
+            });
+            EditorActions.setViewPortActionsDisabledStatus(false);
+        }
+    }
 
     // =================================================================================================================
     // RENDERING

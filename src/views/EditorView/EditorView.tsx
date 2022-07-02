@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './EditorView.scss';
 import EditorContainer from './EditorContainer/EditorContainer';
 import {PopupWindowType} from '../../data/enums/PopupWindowType';
@@ -12,6 +12,12 @@ interface IProps {
 }
 
 const EditorView: React.FC<IProps> = ({activePopupType}) => {
+
+    // Disable middle mouse scroll
+    useEffect(() => {
+        document.body.onmousedown = e => { return e.button === 1 ? false : true; };
+        }, []
+    );
 
     const getClassName = () => {
         return classNames(

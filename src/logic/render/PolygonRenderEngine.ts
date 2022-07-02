@@ -13,6 +13,7 @@ import {ImageData, LabelPolygon} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {
     updateActiveLabelId,
+    updateActiveLabelNameId,
     updateFirstLabelCreatedFlag,
     updateHighlightedLabelId,
     updateImageDataById
@@ -28,7 +29,7 @@ import {Settings} from '../../settings/Settings';
 import {LabelUtil} from '../../utils/LabelUtil';
 
 export class PolygonRenderEngine extends BaseRenderEngine {
-
+    
     // =================================================================================================================
     // STATE
     // =================================================================================================================
@@ -142,6 +143,15 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                     }
                 }
             }
+        }
+    }
+    
+    public pasteHandler(): void {
+        if(this.imageDataCache && this.imageDataCache.labelPolygons){
+            this.imageDataCache.labelPolygons.forEach((polyLabel) => {
+                store.dispatch(updateActiveLabelNameId(polyLabel.labelId));
+                this.addPolygonLabel(polyLabel.vertices);
+            });
         }
     }
 

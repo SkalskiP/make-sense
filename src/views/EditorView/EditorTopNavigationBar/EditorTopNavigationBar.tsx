@@ -39,7 +39,8 @@ const getButtonWithTooltip = (
     imageAlt: string,
     isActive: boolean,
     href?:string,
-    onClick?:() => any
+    onClick?:() => any,
+    id?:string
 ): React.ReactElement => {
     return <StyledTooltip
         key={key}
@@ -58,6 +59,7 @@ const getButtonWithTooltip = (
                 href={href}
                 onClick={onClick}
                 isActive={isActive}
+                id={id}
             />
         </div>
     </StyledTooltip>
@@ -160,7 +162,8 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                         'image-drag-mode',
                         imageDragMode,
                         undefined,
-                        imageDragOnClick
+                        imageDragOnClick,
+                        'imageDragOnClick'
                     )
                 }
                 {
