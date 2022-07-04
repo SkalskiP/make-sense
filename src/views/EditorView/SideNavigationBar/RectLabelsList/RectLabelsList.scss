@@ -17,16 +17,17 @@
     .ItemContainer {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        // justify-content: center;
         align-items: center;
+        margin-left: 5px;
     }
     .Item {
         align-self: center;
     }
     .ItemIcon {
-        width: 20px;
-        height: 20px;
-        border-radius: 20%;
+        width: 24px;
+        height: 24px;
+        // border-radius: 20%;
         margin-left: 2px;
         margin-right: 2px;
     }

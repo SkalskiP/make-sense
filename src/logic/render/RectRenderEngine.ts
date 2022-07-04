@@ -365,13 +365,11 @@ export class RectRenderEngine extends BaseRenderEngine {
                 );
                 const handleRectBetweenPixels: IRect =
                     RenderEngineUtil.setRectBetweenPixels(handleRect);
-                if (fillMode) {
-                    DrawUtil.drawRectWithFill(
-                        this.canvas,
-                        handleRectBetweenPixels,
-                        anchorColor
-                    );
-                }
+                DrawUtil.drawRectWithFill(
+                    this.canvas,
+                    handleRectBetweenPixels,
+                    anchorColor
+                );
             });
         }
     }

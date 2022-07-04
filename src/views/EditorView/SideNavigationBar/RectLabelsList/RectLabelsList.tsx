@@ -21,6 +21,7 @@ import {LabelModeType} from '../../../../data/enums/LabelType';
 import _ from 'lodash';
 import {vi as lang} from '../../../../lang';
 import {
+    FASHION_STYLE,
     GENDER,
     GENDER_CODE,
     ITEM_COLOR,
@@ -167,17 +168,26 @@ const RectLabelsList: React.FC<IProps> = ({
             if (found) {
                 return (
                     <div className="ItemContainer">
-                        <span className="Item">
-                            {found.styles
-                                .map(
-                                    (style) =>
-                                        lang.FASHION_STYLE[
-                                            style.toLocaleLowerCase()
-                                        ]
-                                )
-                                .filter((style) => style !== undefined)
-                                .join('_')}
-                        </span>
+                        {found.styles.map((styleString) => {
+                            const style = _.find(
+                                FASHION_STYLE,
+                                (item) =>
+                                    item.name.toUpperCase() ===
+                                    styleString.toUpperCase()
+                            );
+
+                            return getButtonWithTooltip(
+                                `${found.uuid}_${style.name}`,
+                                lang.FASHION_STYLE[
+                                    styleString.toLocaleLowerCase()
+                                ],
+                                style.seq === -1
+                                    ? Settings.UNKNOWN_URL
+                                    : found.gender === GENDER.MAN
+                                    ? `guides/icons/man_style/${style.m}_s.png`
+                                    : `guides/icons/woman_style/${style.f}_s.png`
+                            );
+                        })}
                         {getButtonWithTooltip(
                             `${found.uuid}_gender`,
                             `${lang.GENDER[GENDER_CODE[found.gender]]} (${
@@ -204,17 +214,29 @@ const RectLabelsList: React.FC<IProps> = ({
             if (found) {
                 return (
                     <div className="ItemContainer">
-                        <span className="Item">
-                            {found.styles
-                                .map(
-                                    (style) =>
-                                        lang.FASHION_STYLE[
-                                            style.toLocaleLowerCase()
-                                        ]
-                                )
-                                .filter((style) => style !== undefined)
-                                .join('_')}
-                        </span>
+                        {found.styles.map((styleString) => {
+                            const style = _.find(
+                                FASHION_STYLE,
+                                (item) =>
+                                    item.name.toUpperCase() ===
+                                    styleString.toUpperCase()
+                            );
+
+                            return getButtonWithTooltip(
+                                `${found.uuid}_${style.name}`,
+                                `${
+                                    lang.FASHION_STYLE[
+                                        styleString.toLocaleLowerCase()
+                                    ]
+                                } (${styleString.toUpperCase()})`,
+                                style.seq === -1
+                                    ? Settings.UNKNOWN_URL
+                                    : found.gender === GENDER.MAN
+                                    ? `guides/icons/man_style/${style.m}_s.png`
+                                    : `guides/icons/woman_style/${style.f}_s.png`
+                            );
+                        })}
+
                         {getButtonWithTooltip(
                             `${found.uuid}_gender`,
                             `${lang.GENDER[GENDER_CODE[found.gender]]} (${
@@ -236,7 +258,7 @@ const RectLabelsList: React.FC<IProps> = ({
                                 GENDER_CODE[found.gender]
                             })`}
                         /> */}
-                        {getButtonWithTooltip(
+                        {/* {getButtonWithTooltip(
                             `${found.uuid}_main`,
                             `${
                                 lang.MAIN_CATEGORY[
@@ -246,10 +268,14 @@ const RectLabelsList: React.FC<IProps> = ({
                             found.mainCategory === MAIN_CATEGORY_CODE.UNKNOWN
                                 ? Settings.UNKNOWN_URL
                                 : `guides/icons/main_cats/${found.mainCategory}_s.png`
-                        )}
+                        )} */}
                         {getButtonWithTooltip(
                             `${found.uuid}_sub`,
                             `${
+                                lang.MAIN_CATEGORY[
+                                    MAIN_CATEGORY_CODE[found.mainCategory]
+                                ]
+                            } (${MAIN_CATEGORY_CODE[found.mainCategory]}) > ${
                                 lang.SUB_CATEGORY[
                                     SUB_CATEGORY_CODE[found.subCategory]
                                 ]

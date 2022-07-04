@@ -16,6 +16,7 @@ import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
 import LabelInfoPopup from './LabelInfoPopup/LabelInfoPopup';
 import LoginPopup from './LoginPopup/LoginPopup';
 import LogoutPopup from './LogoutPopup/LogoutPopup';
+import DeleteConfirmPopup from './DeleteConfirmPopup/DeleteConfirmPopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -48,6 +49,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                 return <LoadModelPopup />;
             case PopupWindowType.SUGGEST_LABEL_NAMES:
                 return <SuggestLabelNamesPopup />;
+            case PopupWindowType.DELETE_CONFIRM:
+                return <DeleteConfirmPopup />;
             case PopupWindowType.LOADER:
                 return (
                     <ClipLoader

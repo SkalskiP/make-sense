@@ -234,7 +234,13 @@ class LabelInputField extends React.Component<IProps, IState> {
                                 image={'ico/trash.png'}
                                 imageAlt={'remove_rect'}
                                 buttonSize={{width: 30, height: 30}}
-                                onClick={() => onDelete(id)}
+                                onClick={() => {
+                                    this.props.updateActiveLabelId(id);
+                                    this.props.updateActivePopupType(
+                                        PopupWindowType.DELETE_CONFIRM
+                                    );
+                                    // onDelete(id);
+                                }}
                             />
                         </div>
                     </div>

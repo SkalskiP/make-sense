@@ -11,5 +11,6 @@ export enum PopupWindowType {
     LOADER = 'LOADER',
     LABEL_INFO = 'LABEL_INFO',
     LOGIN = 'LOGIN',
-    LOGOUT = 'LOGOUT'
+    LOGOUT = 'LOGOUT',
+    DELETE_CONFIRM = 'DELETE_CONFIRM'
 }
