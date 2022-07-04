@@ -245,6 +245,18 @@ export const AttributeSelect = (props: IProps) => {
                 isMulti={isMulti}
                 options={options}
                 onChange={(selectedItem) => onSelect(selectedItem, type)}
+                filterOption={(option, input) => {
+                    // console.log('option.data = ', option.data.label.props.length == 1);
+                    if (typeof option.data.label.props.children == 'string') {
+                        return option.data.label.props.children
+                            .toLowerCase()
+                            .includes(input.toLowerCase());
+                    } else {
+                        return option.data.label.props.children[1].props.children
+                            .toLowerCase()
+                            .includes(input.toLowerCase());
+                    }
+                }}
             />
         </div>
     );
