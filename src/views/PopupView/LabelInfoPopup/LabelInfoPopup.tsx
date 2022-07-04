@@ -105,7 +105,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${lang.GENDER[genderKey]} (${genderKey})`}
+                            <span className="ItemTitle">{`${lang.GENDER[genderKey]} (${genderKey})`}</span>
                         </div>
                     )
                 },
@@ -122,7 +122,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${lang.SOURCE[sourceKey]} (${sourceKey})`}
+                            <span className="ItemTitle">{`${lang.SOURCE[sourceKey]} (${sourceKey})`}</span>
                         </div>
                     )
                 },
@@ -176,7 +176,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${lang.GENDER[genderKey]} (${genderKey})`}
+                            <span className="ItemTitle">{`${lang.GENDER[genderKey]} (${genderKey})`}</span>
                         </div>
                     )
                 },
@@ -194,11 +194,13 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${
+                            <span className="ItemTitle">{`${
                                 lang.MAIN_CATEGORY[
                                     MAIN_CATEGORY_CODE[found.mainCategory]
                                 ]
-                            } (${MAIN_CATEGORY_CODE[found.mainCategory]})`}
+                            } (${
+                                MAIN_CATEGORY_CODE[found.mainCategory]
+                            })`}</span>
                         </div>
                     )
                 },
@@ -219,11 +221,13 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${
-                                lang.SUB_CATEGORY[
-                                    SUB_CATEGORY_CODE[found.subCategory]
-                                ]
-                            } (${SUB_CATEGORY_CODE[found.subCategory]})`}
+                            <span className="ItemTitle">
+                                {`${
+                                    lang.SUB_CATEGORY[
+                                        SUB_CATEGORY_CODE[found.subCategory]
+                                    ]
+                                } (${SUB_CATEGORY_CODE[found.subCategory]})`}
+                            </span>
                         </div>
                     )
                 },
@@ -243,9 +247,9 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
-                                ITEM_COLOR[found.color]
-                            })`}
+                            <span className="ItemTitle">{`${
+                                lang.ITEM_COLOR[ITEM_COLOR[found.color]]
+                            } (${ITEM_COLOR[found.color]})`}</span>
                         </div>
                     )
                 },
@@ -262,9 +266,9 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                 width={30}
                                 height={30}
                             />
-                            {`${
+                            <span className="ItemTitle">{`${
                                 lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
-                            } (${ITEM_PATTERN[found.pattern]})`}
+                            } (${ITEM_PATTERN[found.pattern]})`}</span>
                         </div>
                     )
                 },
@@ -298,8 +302,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
     }, [mode]);
 
     const onSelect = (item: {value: any; label: any}, type: ATTRIBUTE_TYPE) => {
-        const imageURL = item.label?.props?.children[0]?.props?.src;
-        setImage(imageURL);
+        // const imageURL = item.label?.props?.children[0]?.props?.src;
+        setImage(null);
 
         switch (type) {
             case ATTRIBUTE_TYPE.GENDER: {
@@ -416,6 +420,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.GENDER}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.GENDER]}
                         />
                     </div>
@@ -426,6 +431,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.SOURCE}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.SOURCE]}
                         />
                     </div>
@@ -437,6 +443,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                             type={ATTRIBUTE_TYPE.FASHION_STYLE}
                             gender={gender}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]}
                             isMulti={true}
                         />
@@ -444,7 +451,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 </div>
                 {image ? (
                     <div className="SampleImage">
-                        <img src={image} width={100} height={100} />
+                        <img src={image} width={300} height={300} />
                     </div>
                 ) : null}
             </div>
@@ -463,6 +470,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.HUMAN_ID}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.HUMAN_ID]}
                         />
                     </div>
@@ -473,6 +481,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.GENDER}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.GENDER]}
                         />
                     </div>
@@ -483,6 +492,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]}
                         />
                         <div style={{width: '10px'}} />
@@ -498,6 +508,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                             }
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY]}
                         />
                     </div>
@@ -508,6 +519,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_COLOR}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.ITEM_COLOR]}
                         />
                     </div>
@@ -518,6 +530,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_PATTERN}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.ITEM_PATTERN]}
                         />
                     </div>
@@ -529,6 +542,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.FASHION_STYLE}
                             onSelect={onSelect}
+                            setPreview={setImage}
                             value={selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]}
                             isMulti={true}
                         />
@@ -536,7 +550,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 </div>
                 {image ? (
                     <div className="SampleImage">
-                        <img src={image} width={100} height={100} />
+                        <img src={image} width={300} height={300} />
                     </div>
                 ) : null}
             </div>

@@ -3,6 +3,7 @@ import './AttributeSelect.scss';
 import classNames from 'classnames';
 import {
     ATTRIBUTE_TYPE,
+    FASHION_STYLE_CODE_FOR_MAN,
     FASHION_STYLE_MAN,
     FASHION_STYLE_WOMAN,
     GENDER,
@@ -33,6 +34,7 @@ interface IProps {
     mainCategory?: number;
     gender?: number;
     isMulti?: boolean;
+    setPreview?: (url: string) => any;
 }
 
 export const AttributeSelect = (props: IProps) => {
@@ -47,7 +49,8 @@ export const AttributeSelect = (props: IProps) => {
         externalClassName,
         mainCategory,
         gender,
-        isMulti
+        isMulti,
+        setPreview
     } = props;
 
     const getClassName = () => {
@@ -57,69 +60,70 @@ export const AttributeSelect = (props: IProps) => {
         });
     };
 
+    const renderItem = (item: {url: string; title: string}) => {
+        const {url, title} = item;
+        return (
+            <div
+                className="IconItem"
+                onMouseOver={() => setPreview(url.replace('_s.png', '.png'))}
+                onMouseLeave={() => setPreview(null)}>
+                <img src={url} width={30} height={30} />
+                <span className="ItemTitle">{title}</span>
+            </div>
+        );
+    };
+
     const selectOptions = () => {
         switch (type) {
             case ATTRIBUTE_TYPE.GENDER:
-                return Object.keys(GENDER).map((key) => ({
-                    value: GENDER[key],
-                    // label: `${lang.GENDER[key]} (${key})`
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    GENDER[key] === GENDER.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/genders/${GENDER[key]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                                alt={`${lang.GENDER[key]} (${key})`}
-                            />
-                            {`${lang.GENDER[key]} (${key})`}
-                        </div>
-                    )
-                }));
+                return Object.keys(GENDER).map((key) => {
+                    const url =
+                        GENDER[key] === GENDER.UNKNOWN
+                            ? Settings.UNKNOWN_URL
+                            : `guides/icons/genders/${GENDER[key]}_s.png`;
+                    return {
+                        value: GENDER[key],
+                        // label: `${lang.GENDER[key]} (${key})`
+                        label: renderItem({
+                            url,
+                            title: `${lang.GENDER[key]} (${key})`
+                        })
+                    };
+                });
             case ATTRIBUTE_TYPE.SOURCE:
-                return Object.keys(SOURCE).map((key) => ({
-                    value: SOURCE[key],
-                    // label: `${lang.SOURCE[key]} (${key})`
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    SOURCE[key] === SOURCE.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/sources/${SOURCE[key]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            {`${lang.SOURCE[key]} (${key})`}
-                        </div>
-                    )
-                }));
+                return Object.keys(SOURCE).map((key) => {
+                    const url =
+                        SOURCE[key] === SOURCE.UNKNOWN
+                            ? Settings.UNKNOWN_URL
+                            : `guides/icons/sources/${SOURCE[key]}_s.png`;
+                    return {
+                        value: SOURCE[key],
+                        // label: `${lang.SOURCE[key]} (${key})`
+                        label: renderItem({
+                            url,
+                            title: `${lang.SOURCE[key]} (${key})`
+                        })
+                    };
+                });
             case ATTRIBUTE_TYPE.MAIN_CATEGORY:
                 return Object.values(MAIN_CATEGORY_CODE)
                     .filter((value) => typeof value === 'string')
-                    .map((key) => ({
-                        value: MAIN_CATEGORY_CODE[key],
-                        // label: `${lang.MAIN_CATEGORY[key]} (${key})`
-                        label: (
-                            <div className="IconItem">
-                                <img
-                                    src={
-                                        MAIN_CATEGORY_CODE[key] ===
-                                        MAIN_CATEGORY_CODE.UNKNOWN
-                                            ? Settings.UNKNOWN_URL
-                                            : `guides/icons/main_cats/${MAIN_CATEGORY_CODE[key]}_s.png`
-                                    }
-                                    width={30}
-                                    height={30}
-                                />
-                                {`${lang.MAIN_CATEGORY[key]} (${key})`}
-                            </div>
-                        )
-                    }));
+                    .map((key) => {
+                        const url =
+                            MAIN_CATEGORY_CODE[key] ===
+                            MAIN_CATEGORY_CODE.UNKNOWN
+                                ? Settings.UNKNOWN_URL
+                                : `guides/icons/main_cats/${MAIN_CATEGORY_CODE[key]}_s.png`;
+
+                        return {
+                            value: MAIN_CATEGORY_CODE[key],
+                            // label: `${lang.MAIN_CATEGORY[key]} (${key})`
+                            label: renderItem({
+                                url,
+                                title: `${lang.MAIN_CATEGORY[key]} (${key})`
+                            })
+                        };
+                    });
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
                 let keys = Object.values(SUB_CATEGORY_CODE).filter(
                     (value) => typeof value === 'string'
@@ -132,72 +136,59 @@ export const AttributeSelect = (props: IProps) => {
                         subCategoryCodes?.includes(SUB_CATEGORY_CODE[key])
                     );
                 }
-                return keys.map((key) => ({
-                    value: SUB_CATEGORY_CODE[key],
-                    // label: `${lang.SUB_CATEGORY[key]} (${key})`
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    SUB_CATEGORY_CODE[key] ===
-                                    SUB_CATEGORY_CODE.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/sub_cats/${SUB_CATEGORY_CODE[key]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            {`${lang.SUB_CATEGORY[key]} (${key})`}
-                        </div>
-                    )
-                }));
+                return keys.map((key) => {
+                    const url =
+                        SUB_CATEGORY_CODE[key] === SUB_CATEGORY_CODE.UNKNOWN
+                            ? Settings.UNKNOWN_URL
+                            : `guides/icons/sub_cats/${SUB_CATEGORY_CODE[key]}_s.png`;
+
+                    return {
+                        value: SUB_CATEGORY_CODE[key],
+                        // label: `${lang.SUB_CATEGORY[key]} (${key})`
+                        label: renderItem({
+                            url,
+                            title: `${lang.SUB_CATEGORY[key]} (${key})`
+                        })
+                    };
+                });
             }
             case ATTRIBUTE_TYPE.ITEM_COLOR:
                 return [
                     ...Object.values(ITEM_COLOR)
                         .filter((value) => typeof value === 'string')
-                        .map((key) => ({
-                            value: ITEM_COLOR[key],
-                            label: (
-                                <div className="IconItem">
-                                    <img
-                                        src={
-                                            ITEM_COLOR[key] ===
-                                            ITEM_COLOR.UNKNOWN
-                                                ? Settings.UNKNOWN_URL
-                                                : `guides/icons/colors/${ITEM_COLOR[key]}_s.png`
-                                        }
-                                        width={30}
-                                        height={30}
-                                    />
-                                    {`${lang.ITEM_COLOR[key]} (${key})`}
-                                </div>
-                            )
-                        }))
+                        .map((key) => {
+                            const url =
+                                ITEM_COLOR[key] === ITEM_COLOR.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/colors/${ITEM_COLOR[key]}_s.png`;
+
+                            return {
+                                value: ITEM_COLOR[key],
+                                label: renderItem({
+                                    url,
+                                    title: `${lang.ITEM_COLOR[key]} (${key})`
+                                })
+                            };
+                        })
                 ];
             case ATTRIBUTE_TYPE.ITEM_PATTERN:
                 return [
                     ...Object.values(ITEM_PATTERN)
                         .filter((value) => typeof value === 'string')
-                        .map((key) => ({
-                            value: ITEM_PATTERN[key],
-                            label: (
-                                <div className="IconItem">
-                                    <img
-                                        src={
-                                            // `https://via.placeholder.com/30.png?text=${ITEM_PATTERN[key]}`
-                                            ITEM_PATTERN[key] ===
-                                            ITEM_PATTERN.UNKNOWN
-                                                ? Settings.UNKNOWN_URL
-                                                : `guides/icons/patterns/${ITEM_PATTERN[key]}_s.png`
-                                        }
-                                        width={30}
-                                        height={30}
-                                    />
-                                    {`${lang.ITEM_PATTERN[key]} (${key})`}
-                                </div>
-                            )
-                        }))
+                        .map((key) => {
+                            const url =
+                                ITEM_PATTERN[key] === ITEM_PATTERN.UNKNOWN
+                                    ? Settings.UNKNOWN_URL
+                                    : `guides/icons/patterns/${ITEM_PATTERN[key]}_s.png`;
+
+                            return {
+                                value: ITEM_PATTERN[key],
+                                label: renderItem({
+                                    url,
+                                    title: `${lang.ITEM_PATTERN[key]} (${key})`
+                                })
+                            };
+                        })
                 ];
 
             case ATTRIBUTE_TYPE.FASHION_STYLE: {
@@ -205,10 +196,24 @@ export const AttributeSelect = (props: IProps) => {
                     gender === GENDER.MAN
                         ? FASHION_STYLE_MAN
                         : FASHION_STYLE_WOMAN;
-                return styles.map((item) => ({
-                    value: item.name.toUpperCase(),
-                    label: `${lang.FASHION_STYLE[item.slug]} (${item.slug})`
-                }));
+                return styles.map((style) => {
+                    const url =
+                        style.seq === -1
+                            ? Settings.UNKNOWN_URL
+                            : gender === GENDER.MAN
+                            ? `guides/icons/man_style/${style.m}_s.png`
+                            : `guides/icons/woman_style/${style.f}_s.png`;
+
+                    return {
+                        value: style.name.toUpperCase(),
+                        label: renderItem({
+                            url,
+                            title: `${lang.FASHION_STYLE[style.slug]} (${
+                                style.slug
+                            })`
+                        })
+                    };
+                });
             }
             case ATTRIBUTE_TYPE.HUMAN_ID: {
                 const imageData = LabelsSelector.getActiveImageData();

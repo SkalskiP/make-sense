@@ -43,105 +43,130 @@ export const FASHION_STYLE = [
         name: 'Basic',
         slug: 'basic',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 10,
+        f: 13
     },
     {
         seq: 19,
         name: 'Elegance',
         slug: 'elegance',
         gender: 'F',
-        status: 'A'
+        status: 'A',
+        f: 2
     },
     {
         seq: 20,
         name: 'Office',
         slug: 'office',
         gender: 'F',
-        status: 'A'
+        status: 'A',
+        f: 1
     },
     {
         seq: 21,
         name: 'Minimalist',
         slug: 'minimalist',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 3,
+        f: 4
     },
     {
         seq: 22,
         name: 'Vacation',
         slug: 'vacation',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 4,
+        f: 5
     },
     {
         seq: 23,
         name: 'Street',
         slug: 'street',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 8,
+        f: 11
     },
     {
         seq: 24,
         name: 'Sporty',
         slug: 'sporty',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 5,
+        f: 8
     },
     {
         seq: 25,
         name: 'Girly',
         slug: 'girly',
         gender: 'F',
-        status: 'A'
+        status: 'A',
+        f: 6
     },
     {
         seq: 26,
         name: 'Sexy',
         slug: 'sexy',
         gender: 'F',
-        status: 'A'
+        status: 'A',
+        f: 7
     },
     {
         seq: 27,
         name: 'Gentleman',
         slug: 'gentleman',
         gender: 'M',
-        status: 'A'
+        status: 'A',
+        m: 1
     },
     {
         seq: 28,
         name: 'Punk',
         slug: 'punk',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 9,
+        f: 12
     },
     {
         seq: 29,
         name: 'Tech',
         slug: 'techwear',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 6,
+        f: 9
     },
     {
         seq: 30,
         name: 'Retro',
         slug: 'retro',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 7,
+        f: 10
     },
     {
         seq: 31,
         name: 'Bohemian',
         slug: 'bohemian',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: 2,
+        f: 3
     },
     {
         seq: -1,
         name: 'Unknown',
         slug: 'unknown',
         gender: 'A',
-        status: 'A'
+        status: 'A',
+        m: -1,
+        f: -1
     }
 ];
 

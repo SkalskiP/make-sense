@@ -41,8 +41,18 @@
 }
 .SampleImage {
     position: absolute;
-    bottom: 10px;
-    left: 40px;
-    width: 100px;
-    height: 100px;
+    bottom: 0px;
+    left: 0px;
+    max-width: 300px;
+    max-height: 300px;
+}
+.IconItem {
+    display: flex;
+    flex: 1;
+    // justify-content: center;
+    align-items: center;
+
+    .ItemTitle {
+        margin-left: 1em;
+    }
 }

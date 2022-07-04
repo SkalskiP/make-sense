@@ -2,9 +2,13 @@
     display: flex;
 }
 
-.Iconitem {
+.IconItem {
     display: flex;
-    border-width: 2px;
-    background-color: pink;
-    background: red;
+    flex: 1;
+    // justify-content: center;
+    align-items: center;
+
+    .ItemTitle {
+        margin-left: 1em;
+    }
 }
