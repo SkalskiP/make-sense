@@ -192,6 +192,7 @@ export const AttributeSelect = (props: IProps) => {
                 ];
 
             case ATTRIBUTE_TYPE.FASHION_STYLE: {
+                console.log('gender = ', gender);
                 const styles =
                     gender === GENDER.MAN
                         ? FASHION_STYLE_MAN

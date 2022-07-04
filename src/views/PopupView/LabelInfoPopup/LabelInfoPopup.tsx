@@ -128,22 +128,65 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 },
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
-                        ? found.styles.map((style) => {
-                              return {
-                                  value: style.toUpperCase(),
-                                  label: `${
-                                      lang.FASHION_STYLE[style.toLowerCase()]
-                                  } (${style.toUpperCase()})`
-                              };
-                          })
-                        : imageData.guideStyles.map((style) => {
+                        ? found.styles.map((styleString) => {
+                              const style =
+                                  _.find(
+                                      FASHION_STYLE,
+                                      (item) =>
+                                          item.name.toUpperCase() ===
+                                          styleString.toUpperCase()
+                                  ) || _.last(FASHION_STYLE);
                               return {
                                   value: style.name.toUpperCase(),
-                                  label: `${
-                                      lang.FASHION_STYLE[
-                                          style.name.toLocaleLowerCase()
-                                      ]
-                                  } (${style.name.toUpperCase()})`
+                                  label: (
+                                      <div className="IconItem">
+                                          <img
+                                              src={
+                                                  style.seq === -1
+                                                      ? Settings.UNKNOWN_URL
+                                                      : gender === GENDER.MAN
+                                                      ? `guides/icons/man_style/${style.m}_s.png`
+                                                      : `guides/icons/woman_style/${style.f}_s.png`
+                                              }
+                                              width={30}
+                                              height={30}
+                                          />
+                                          <span className="ItemTitle">{`${
+                                              lang.FASHION_STYLE[
+                                                  style.name.toLowerCase()
+                                              ]
+                                          } (${style.name.toUpperCase()})`}</span>
+                                      </div>
+                                  )
+                              };
+                          })
+                        : imageData.guideStyles.map((guideStyle) => {
+                              const style =
+                                  _.find(FASHION_STYLE, {
+                                      seq: parseInt(guideStyle.seq)
+                                  }) || _.last(FASHION_STYLE);
+                              return {
+                                  value: style.name.toUpperCase(),
+                                  label: (
+                                      <div className="IconItem">
+                                          <img
+                                              src={
+                                                  style.seq === -1
+                                                      ? Settings.UNKNOWN_URL
+                                                      : gender === GENDER.MAN
+                                                      ? `guides/icons/man_style/${style.m}_s.png`
+                                                      : `guides/icons/woman_style/${style.f}_s.png`
+                                              }
+                                              width={30}
+                                              height={30}
+                                          />
+                                          <span className="ItemTitle">{`${
+                                              lang.FASHION_STYLE[
+                                                  style.name.toLowerCase()
+                                              ]
+                                          } (${style.name.toUpperCase()})`}</span>
+                                      </div>
+                                  )
                               };
                           })
             });
@@ -275,22 +318,65 @@ const LabelInfoPopup: React.FC<IProps> = ({
 
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
-                        ? found.styles.map((style) => {
-                              return {
-                                  value: style.toUpperCase(),
-                                  label: `${
-                                      lang.FASHION_STYLE[style.toLowerCase()]
-                                  } (${style.toUpperCase()})`
-                              };
-                          })
-                        : imageData.guideStyles.map((style) => {
+                        ? found.styles.map((styleString) => {
+                              const style =
+                                  _.find(
+                                      FASHION_STYLE,
+                                      (item) =>
+                                          item.name.toUpperCase() ===
+                                          styleString.toUpperCase()
+                                  ) || _.last(FASHION_STYLE);
                               return {
                                   value: style.name.toUpperCase(),
-                                  label: `${
-                                      lang.FASHION_STYLE[
-                                          style.name.toLocaleLowerCase()
-                                      ]
-                                  } (${style.name.toUpperCase()})`
+                                  label: (
+                                      <div className="IconItem">
+                                          <img
+                                              src={
+                                                  style.seq === -1
+                                                      ? Settings.UNKNOWN_URL
+                                                      : gender === GENDER.MAN
+                                                      ? `guides/icons/man_style/${style.m}_s.png`
+                                                      : `guides/icons/woman_style/${style.f}_s.png`
+                                              }
+                                              width={30}
+                                              height={30}
+                                          />
+                                          <span className="ItemTitle">{`${
+                                              lang.FASHION_STYLE[
+                                                  style.name.toLowerCase()
+                                              ]
+                                          } (${style.name.toUpperCase()})`}</span>
+                                      </div>
+                                  )
+                              };
+                          })
+                        : imageData.guideStyles.map((guideStyle) => {
+                              const style =
+                                  _.find(FASHION_STYLE, {
+                                      seq: parseInt(guideStyle.seq)
+                                  }) || _.last(FASHION_STYLE);
+                              return {
+                                  value: style.name.toUpperCase(),
+                                  label: (
+                                      <div className="IconItem">
+                                          <img
+                                              src={
+                                                  style.seq === -1
+                                                      ? Settings.UNKNOWN_URL
+                                                      : gender === GENDER.MAN
+                                                      ? `guides/icons/man_style/${style.m}_s.png`
+                                                      : `guides/icons/woman_style/${style.f}_s.png`
+                                              }
+                                              width={30}
+                                              height={30}
+                                          />
+                                          <span className="ItemTitle">{`${
+                                              lang.FASHION_STYLE[
+                                                  style.name.toLowerCase()
+                                              ]
+                                          } (${style.name.toUpperCase()})`}</span>
+                                      </div>
+                                  )
                               };
                           })
             });
@@ -540,6 +626,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     <div className="AttributeName">Styles</div>
                     <div className="AttributeSelector">
                         <AttributeSelect
+                            gender={gender}
                             type={ATTRIBUTE_TYPE.FASHION_STYLE}
                             onSelect={onSelect}
                             setPreview={setImage}
