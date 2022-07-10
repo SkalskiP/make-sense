@@ -17,6 +17,7 @@ import EditorBottomNavigationBar from '../EditorBottomNavigationBar/EditorBottom
 import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigationBar';
 import {ProjectType} from '../../../data/enums/ProjectType';
 import {
+    FASHION_STYLE,
     FASHION_STYLE_CODE_FOR_MAN,
     FASHION_STYLE_CODE_FOR_WOMAN,
     GENDER
@@ -168,9 +169,16 @@ const EditorContainer: React.FC<IProps> = ({
                         .map((style) => {
                             // console.log('style == ', style);
                             const images = _.range(5).map((i) => {
-                                const src = `guides/${activeGender + 1}/${
-                                    activeGender + 1
-                                }_${style}/${i + 1}.jpg`;
+                                const st = _.find(FASHION_STYLE, {seq: style});
+                                const folderName =
+                                    st.gender === 'M'
+                                        ? 2
+                                        : st.gender === 'F'
+                                        ? 3
+                                        : activeGender + 1;
+                                const src = `guides/${folderName}/${folderName}_${style}/${
+                                    i + 1
+                                }.jpg`;
                                 // console.log('src', src);
 
                                 return (
