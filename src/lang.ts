@@ -155,5 +155,9 @@ export const vi = {
         COLOR_BLOCK: 'hình khối màu sắc ',
         MESH: 'vải lưới',
         UNKNOWN: 'KHÔNG XÁC ĐỊNH'
+    },
+    ALERT: {
+        SELECT_ONE_STYLE:
+            'Vui lòng chỉ chọn một phong cách!\nPlease choose only one style !\n하나의 스타일만 선택해주세요!'
     }
 };

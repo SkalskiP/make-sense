@@ -442,6 +442,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
     };
 
     const save = () => {
+        if (selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]?.length !== 1) {
+            alert(lang.ALERT.SELECT_ONE_STYLE);
+            return;
+        }
         imageData.uploadStatus = JSONUploadStatus.NEED_UPLOAD;
 
         if (mode === LabelModeType.HUMAN) {
@@ -657,6 +661,9 @@ const LabelInfoPopup: React.FC<IProps> = ({
             renderContent={renderContent}
             acceptLabel={'Save'}
             onAccept={save}
+            disableAcceptButton={
+                selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE]?.length !== 1
+            }
             rejectLabel={'Cancel'}
             onReject={() => updateActivePopupTypeAction(null)}
         />
