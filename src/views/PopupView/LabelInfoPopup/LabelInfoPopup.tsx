@@ -11,6 +11,8 @@ import {TagButton} from '../../Common/TagButton/TagButton';
 import {
     ATTRIBUTE_TYPE,
     FASHION_STYLE,
+    FASHION_STYLE_MAN,
+    FASHION_STYLE_WOMAN,
     GENDER,
     ITEM_COLOR,
     ITEM_PATTERN,
@@ -352,9 +354,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
                           })
                         : imageData.guideStyles.map((guideStyle) => {
                               const style =
-                                  _.find(FASHION_STYLE, {
-                                      seq: parseInt(guideStyle.seq)
-                                  }) || _.last(FASHION_STYLE);
+                                  _.find(
+                                      gender === GENDER.MAN
+                                          ? FASHION_STYLE_MAN
+                                          : FASHION_STYLE_WOMAN,
+                                      {
+                                          seq: parseInt(guideStyle.seq)
+                                      }
+                                  ) || _.last(FASHION_STYLE);
                               return {
                                   value: style.name.toUpperCase(),
                                   label: (
@@ -637,7 +644,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 </div>
                 {image ? (
                     <div className="SampleImage">
-                        <img src={image} width={300} height={300} />
+                        <img src={image} width={230} height={230} />
                     </div>
                 ) : null}
             </div>

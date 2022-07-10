@@ -15,7 +15,7 @@
 .AttributeContainer {
     display: flex;
     align-self: stretch;
-    flex: 1;
+    max-height: 5em;
     flex-direction: row;
 }
 
@@ -41,10 +41,10 @@
 }
 .SampleImage {
     position: absolute;
-    bottom: 0px;
-    left: 0px;
-    max-width: 300px;
-    max-height: 300px;
+    bottom: 1em;
+    left: 1em;
+    max-width: 230px;
+    max-height: 230px;
 }
 .IconItem {
     display: flex;

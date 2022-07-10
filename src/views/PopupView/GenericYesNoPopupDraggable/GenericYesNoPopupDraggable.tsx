@@ -44,7 +44,7 @@ export const GenericYesNoPopupDraggable: React.FC<IProps> = ({
         <ReactModal
             className="GenericYesNoPopupDraggable"
             initWidth={600}
-            initHeight={600}
+            initHeight={730}
             left={window.innerWidth - 610}
             // onFocus={() => console.log('on focused')}
             isOpen={true}

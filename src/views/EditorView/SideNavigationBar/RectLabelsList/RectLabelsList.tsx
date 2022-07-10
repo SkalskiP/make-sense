@@ -22,6 +22,8 @@ import _ from 'lodash';
 import {vi as lang} from '../../../../lang';
 import {
     FASHION_STYLE,
+    FASHION_STYLE_MAN,
+    FASHION_STYLE_WOMAN,
     GENDER,
     GENDER_CODE,
     ITEM_COLOR,
@@ -170,7 +172,9 @@ const RectLabelsList: React.FC<IProps> = ({
                     <div className="ItemContainer">
                         {found.styles.map((styleString) => {
                             const style = _.find(
-                                FASHION_STYLE,
+                                found.gender === GENDER.MAN
+                                    ? FASHION_STYLE_MAN
+                                    : FASHION_STYLE_WOMAN,
                                 (item) =>
                                     item.name.toUpperCase() ===
                                     styleString.toUpperCase()
@@ -216,7 +220,9 @@ const RectLabelsList: React.FC<IProps> = ({
                     <div className="ItemContainer">
                         {found.styles.map((styleString) => {
                             const style = _.find(
-                                FASHION_STYLE,
+                                found.gender === GENDER.MAN
+                                    ? FASHION_STYLE_MAN
+                                    : FASHION_STYLE_WOMAN,
                                 (item) =>
                                     item.name.toUpperCase() ===
                                     styleString.toUpperCase()
