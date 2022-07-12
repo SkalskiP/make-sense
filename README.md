@@ -130,6 +130,9 @@ You can find examples of export files along with a description and schema on our
 | **Label**     | ☐   | ✗    | ✗       | ✗        | ✗         | ✗          |
 
 **Table 3.** The matrix of supported labels import formats
+* ✓ - supported format
+* ☐ - not yet supported format
+* ✗ - format does not make sense for a given label type  
 
 ## 🔐 Privacy
 
