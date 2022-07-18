@@ -25,6 +25,7 @@ import {EditorModel} from '../../staticModels/EditorModel';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {Settings} from '../../settings/Settings';
+import {LabelUtil} from '../../utils/LabelUtil';
 
 export class PointRenderEngine extends BaseRenderEngine {
 
@@ -186,14 +187,7 @@ export class PointRenderEngine extends BaseRenderEngine {
     private addPointLabel = (point: IPoint) => {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
-        const labelPoint: LabelPoint = {
-            id: uuidv4(),
-            labelId: activeLabelId,
-            point,
-            isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
-            suggestedLabel: null
-        };
+        const labelPoint: LabelPoint = LabelUtil.createLabelPoint(activeLabelId, point);
         imageData.labelPoints.push(labelPoint);
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));
