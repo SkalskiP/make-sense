@@ -10,6 +10,7 @@ export type LabelRect = {
     id: string;
     labelId: string | null;
     rect: IRect;
+    isVisible: boolean;
 
     // AI
     isCreatedByAI: boolean;
@@ -20,8 +21,9 @@ export type LabelRect = {
 export type LabelPoint = {
     // GENERAL
     id: string;
-    labelId: string;
+    labelId: string | null;
     point: IPoint;
+    isVisible: boolean;
 
     // AI
     isCreatedByAI: boolean;
@@ -31,14 +33,16 @@ export type LabelPoint = {
 
 export type LabelPolygon = {
     id: string;
-    labelId: string;
+    labelId: string | null;
     vertices: IPoint[];
+    isVisible: boolean;
 }
 
 export type LabelLine = {
     id: string;
-    labelId: string;
-    line: ILine
+    labelId: string | null;
+    line: ILine;
+    isVisible: boolean;
 }
 
 export type LabelName = {

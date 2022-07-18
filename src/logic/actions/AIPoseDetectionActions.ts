@@ -67,6 +67,7 @@ export class AIPoseDetectionActions {
                                 x: keypoint.position.x,
                                 y: keypoint.position.y
                             },
+                            isVisible: true,
                             isCreatedByAI: true,
                             status: LabelStatus.UNDECIDED,
                             suggestedLabel: keypoint.part
