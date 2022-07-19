@@ -20,7 +20,7 @@
     "jszip": "^3.7.1",
     "lodash": "^4.17.21",
     "mobile-detect": "^1.4.5",
-    "moment": "^2.29.3",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^18.2.0",
