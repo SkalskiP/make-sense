@@ -62,6 +62,7 @@ export class AIObjectDetectionActions {
                     width: prediction.bbox[2],
                     height: prediction.bbox[3],
                 },
+                isVisible: true,
                 isCreatedByAI: true,
                 status: LabelStatus.UNDECIDED,
                 suggestedLabel: prediction.class

@@ -111,7 +111,7 @@
           font-size: 14px;
           cursor: pointer;
           user-select: none;
-          padding: 0 5px;
+          padding: 0 10px;
           color: white;
 
           &:hover {
@@ -131,7 +131,7 @@
           background-color: transparent;
         }
 
-        &.trash:not(.disabled):hover {
+        &.icon:not(.disabled):hover {
           filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
           filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
         }

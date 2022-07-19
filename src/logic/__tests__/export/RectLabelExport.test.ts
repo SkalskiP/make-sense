@@ -43,12 +43,15 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
                 width: 90,
                 height: 82
             },
+            isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: 'label-000'
         }
+
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
+
         // then
         const [
             resultClassIdx,
@@ -75,12 +78,15 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
                 width: 92,
                 height: 104
             },
+            isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: 'label-000'
         }
+
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
+
         // then
         const [
             resultClassIdx,
@@ -107,12 +113,15 @@ describe('RectLabelsExporter wrapRectLabelIntoYOLO method', () => {
                 width: 80,
                 height: 70
             },
+            isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: 'label-000'
         }
+
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoYOLO(labelRect, labelNames, imageSize)
+
         // then
         const [
             resultClassIdx,
@@ -141,12 +150,15 @@ describe('RectLabelsExporter wrapRectLabelIntoCSV method', () => {
                 width: 90,
                 height: 82
             },
+            isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: 'label-000'
         }
+
         // when
         const result = RectLabelsExporter.wrapRectLabelIntoCSV(labelRect, labelNames, imageSize, imageName)
+
         // then
         const [
             resultClassIdx,

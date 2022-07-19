@@ -1,8 +1,8 @@
-import {LabelType} from "../../data/enums/LabelType";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {AIObjectDetectionActions} from "./AIObjectDetectionActions";
-import {AIPoseDetectionActions} from "./AIPoseDetectionActions";
-import {ImageData} from "../../store/labels/types";
+import {LabelType} from '../../data/enums/LabelType';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {AIObjectDetectionActions} from './AIObjectDetectionActions';
+import {AIPoseDetectionActions} from './AIPoseDetectionActions';
+import {ImageData} from '../../store/labels/types';
 
 export class AIActions {
     public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {

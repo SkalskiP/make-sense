@@ -1,4 +1,4 @@
-import {LabelName, LabelPolygon, LabelRect} from '../store/labels/types';
+import {Annotation, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
 import { v4 as uuidv4 } from 'uuid';
 import {find} from 'lodash';
 import {IRect} from '../interfaces/IRect';
@@ -21,6 +21,7 @@ export class LabelUtil {
             id: uuidv4(),
             labelId,
             rect,
+            isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: null
@@ -31,7 +32,27 @@ export class LabelUtil {
         return {
             id: uuidv4(),
             labelId,
-            vertices
+            vertices,
+            isVisible: true
+        }
+    }
+
+    public static createLabelPoint(labelId: string, point: IPoint): LabelPoint {
+        return {
+            id: uuidv4(),
+            labelId,
+            point,
+            isVisible: true,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
+        }
+    }
+
+    public static toggleAnnotationVisibility<AnnotationType extends Annotation>(annotation: AnnotationType): AnnotationType {
+        return {
+            ...annotation,
+            isVisible: !annotation.isVisible
         }
     }
 

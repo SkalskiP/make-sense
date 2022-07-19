@@ -221,10 +221,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         imageData.labelPolygons.forEach((labelPolygon: LabelPolygon) => {
-            const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
-            const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
-            if (!(labelPolygon.id === activeLabelId && this.isResizeInProgress())) {
-                this.drawPolygon(labelPolygon.labelId, pathOnCanvas, isActive);
+            if (labelPolygon.isVisible) {
+                const isActive: boolean = labelPolygon.id === activeLabelId || labelPolygon.id === highlightedLabelId;
+                const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
+                if (!(labelPolygon.id === activeLabelId && this.isResizeInProgress())) {
+                    this.drawPolygon(labelPolygon.labelId, pathOnCanvas, isActive);
+                }
             }
         });
     }
