@@ -101,10 +101,12 @@ export class LineRenderEngine extends BaseRenderEngine {
         const highlightedLabelId: string = LabelsSelector.getHighlightedLabelId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         imageData.labelLines.forEach((labelLine: LabelLine) => {
-            const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
-            const lineOnCanvas = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data)
-            if (!(labelLine.id === activeLabelId && this.isResizeInProgress())) {
-                this.drawLine(labelLine.labelId, lineOnCanvas, isActive)
+            if (labelLine.isVisible) {
+                const isActive: boolean = labelLine.id === activeLabelId || labelLine.id === highlightedLabelId;
+                const lineOnCanvas = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data)
+                if (!(labelLine.id === activeLabelId && this.isResizeInProgress())) {
+                    this.drawLine(labelLine.labelId, lineOnCanvas, isActive)
+                }
             }
         });
     }

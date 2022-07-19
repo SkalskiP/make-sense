@@ -4,7 +4,6 @@ import {IPoint} from '../../interfaces/IPoint';
 import {CanvasUtil} from '../../utils/CanvasUtil';
 import {store} from '../../index';
 import {ImageData, LabelPoint} from '../../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
 import {
     updateActiveLabelId,
     updateFirstLabelCreatedFlag,
@@ -115,17 +114,19 @@ export class PointRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         if (imageData) {
             imageData.labelPoints.forEach((labelPoint: LabelPoint) => {
-                if (labelPoint.id === activeLabelId) {
-                    if (this.isInProgress()) {
-                        const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
-                        const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
-                        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true);
-                        DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor)
+                if (labelPoint.isVisible) {
+                    if (labelPoint.id === activeLabelId) {
+                        if (this.isInProgress()) {
+                            const pointSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
+                            const pointBetweenPixels: IPoint = RenderEngineUtil.setPointBetweenPixels(pointSnapped);
+                            const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true);
+                            DrawUtil.drawCircleWithFill(this.canvas, pointBetweenPixels, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor)
+                        } else {
+                            this.renderPoint(labelPoint, true, data);
+                        }
                     } else {
-                        this.renderPoint(labelPoint, true, data);
+                        this.renderPoint(labelPoint, labelPoint.id === activeLabelId || labelPoint.id === highlightedLabelId, data);
                     }
-                } else {
-                    this.renderPoint(labelPoint, labelPoint.id === activeLabelId || labelPoint.id === highlightedLabelId, data);
                 }
             });
         }

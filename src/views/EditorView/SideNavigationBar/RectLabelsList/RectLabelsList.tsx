@@ -54,7 +54,7 @@ const RectLabelsList: React.FC<IProps> = (
     };
 
     const toggleRectLabelVisibilityById = (labelRectId: string) => {
-        LabelActions.toggleRectLabelVisibilityById(imageData.id, labelRectId);
+        LabelActions.toggleLabelVisibilityById(imageData.id, labelRectId);
     };
 
     const updateRectLabel = (labelRectId: string, labelNameId: string) => {
@@ -92,12 +92,14 @@ const RectLabelsList: React.FC<IProps> = (
                     }}
                     isActive={labelRect.id === activeLabelId}
                     isHighlighted={labelRect.id === highlightedLabelId}
+                    isVisible={labelRect.isVisible}
                     id={labelRect.id}
                     key={labelRect.id}
                     onDelete={deleteRectLabelById}
                     value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
                     options={labelNames}
                     onSelectLabel={updateRectLabel}
+                    toggleLabelVisibility={toggleRectLabelVisibilityById}
                 />
             });
     };

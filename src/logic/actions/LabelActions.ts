@@ -4,6 +4,7 @@ import {filter} from 'lodash';
 import {store} from '../../index';
 import {updateImageData, updateImageDataById} from '../../store/labels/actionCreators';
 import {LabelType} from '../../data/enums/LabelType';
+import {LabelUtil} from '../../utils/LabelUtil';
 
 export class LabelActions {
     public static deleteActiveLabel() {
@@ -70,19 +71,22 @@ export class LabelActions {
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 
-    public static toggleRectLabelVisibilityById(imageId: string, labelRectId: string) {
+    public static toggleLabelVisibilityById(imageId: string, labelId: string) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
             ...imageData,
+            labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
+                return labelPoint.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelPoint) : labelPoint
+            }),
             labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
-                if (labelRect.id === labelRectId) {
-                    return {
-                        ...labelRect,
-                        isVisible: !labelRect.isVisible
-                    };
-                }
-                return labelRect;
-            })
+                return labelRect.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelRect) : labelRect
+            }),
+            labelPolygons: imageData.labelPolygons.map((labelPolygon: LabelPolygon) => {
+                return labelPolygon.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelPolygon) : labelPolygon
+            }),
+            labelLines: imageData.labelLines.map((labelLine: LabelLine) => {
+                return labelLine.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelLine) : labelLine
+            }),
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }

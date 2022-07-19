@@ -5,44 +5,32 @@ import {IPoint} from '../../interfaces/IPoint';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {ILine} from '../../interfaces/ILine';
 
-export type LabelRect = {
-    // GENERAL
+export type Annotation = {
     id: string;
     labelId: string | null;
+    isVisible: boolean;
+}
+
+export type LabelRect = Annotation & {
     rect: IRect;
-    isVisible: boolean;
-
-    // AI
     isCreatedByAI: boolean;
     status: LabelStatus;
     suggestedLabel: string;
 }
 
-export type LabelPoint = {
-    // GENERAL
-    id: string;
-    labelId: string | null;
+export type LabelPoint = Annotation & {
     point: IPoint;
-    isVisible: boolean;
-
-    // AI
     isCreatedByAI: boolean;
     status: LabelStatus;
     suggestedLabel: string;
 }
 
-export type LabelPolygon = {
-    id: string;
-    labelId: string | null;
+export type LabelPolygon = Annotation & {
     vertices: IPoint[];
-    isVisible: boolean;
 }
 
-export type LabelLine = {
-    id: string;
-    labelId: string | null;
+export type LabelLine = Annotation & {
     line: ILine;
-    isVisible: boolean;
 }
 
 export type LabelName = {

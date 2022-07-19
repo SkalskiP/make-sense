@@ -1,7 +1,7 @@
-import {IPoint} from "../../../../interfaces/IPoint";
-import {VGGPolygon, VGGRegionsData} from "../../../../data/labels/VGG";
-import {ImageData, LabelName} from "../../../../store/labels/types";
-import {VGGExporter} from "../../../export/polygon/VGGExporter";
+import {IPoint} from '../../../../interfaces/IPoint';
+import {VGGPolygon, VGGRegionsData} from '../../../../data/labels/VGG';
+import {ImageData, LabelName} from '../../../../store/labels/types';
+import {VGGExporter} from '../../../export/polygon/VGGExporter';
 
 describe('VGGExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {
@@ -13,7 +13,7 @@ describe('VGGExporter mapPolygonToVGG method', () => {
         ];
 
         const expectedPolygon: VGGPolygon = {
-            name: "polygon",
+            name: 'polygon',
             all_points_x: [1, 5, 6, 0, 1],
             all_points_y: [1, 1, 10, 10, 1]
         };
@@ -26,10 +26,10 @@ describe('VGGExporter mapPolygonToVGG method', () => {
     });
 });
 
-describe("VGGExporter mapImageDataToVGG method", () => {
+describe('VGGExporter mapImageDataToVGG method', () => {
     it('should return null', () => {
         const givenImageData: ImageData = {
-            id: "1",
+            id: '1',
             loadStatus: false,
             labelPoints: [],
             labelRects: [],
@@ -45,14 +45,15 @@ describe("VGGExporter mapImageDataToVGG method", () => {
 
     it('should return valid VGGRegionsData', () => {
         const givenImageData: ImageData = {
-            id: "1",
+            id: '1',
             loadStatus: true,
             labelPoints: [],
             labelRects: [],
             labelPolygons: [
                 {
-                    id: "1",
-                    labelId: "label_1",
+                    id: '1',
+                    labelId: 'label_1',
+                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -61,8 +62,9 @@ describe("VGGExporter mapImageDataToVGG method", () => {
                     ]
                 },
                 {
-                    id: "2",
-                    labelId: "label_2",
+                    id: '2',
+                    labelId: 'label_2',
+                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -81,34 +83,34 @@ describe("VGGExporter mapImageDataToVGG method", () => {
 
         const givenLabelNames: LabelName[] = [
             {
-                id: "label_1",
-                name: "banana"
+                id: 'label_1',
+                name: 'banana'
             },
             {
-                id: "label_2",
-                name: "kiwi"
+                id: 'label_2',
+                name: 'kiwi'
             }
         ];
 
         const expectedVGGRegionData: VGGRegionsData = {
-            "0": {
+            '0': {
                 shape_attributes: {
-                    name: "polygon",
+                    name: 'polygon',
                     all_points_x: [1, 5, 6, 0, 1],
                     all_points_y: [1, 1, 10, 10, 1]
                 },
                 region_attributes: {
-                    label: "banana"
+                    label: 'banana'
                 }
             },
-            "1": {
+            '1': {
                 shape_attributes: {
-                    name: "polygon",
+                    name: 'polygon',
                     all_points_x: [1, 5, 6, 10, 0, 1],
                     all_points_y: [1, 1, 10, 10, 10, 1]
                 },
                 region_attributes: {
-                    label: "kiwi"
+                    label: 'kiwi'
                 }
             }
         };
@@ -117,14 +119,15 @@ describe("VGGExporter mapImageDataToVGG method", () => {
 
     it('should return valid VGGRegionsData', () => {
         const givenImageData: ImageData = {
-            id: "1",
+            id: '1',
             loadStatus: true,
             labelPoints: [],
             labelRects: [],
             labelPolygons: [
                 {
-                    id: "1",
-                    labelId: "label_1",
+                    id: '1',
+                    labelId: 'label_1',
+                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -133,8 +136,9 @@ describe("VGGExporter mapImageDataToVGG method", () => {
                     ]
                 },
                 {
-                    id: "2",
+                    id: '2',
                     labelId: null,
+                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
@@ -153,24 +157,24 @@ describe("VGGExporter mapImageDataToVGG method", () => {
 
         const givenLabelNames: LabelName[] = [
             {
-                id: "label_1",
-                name: "banana"
+                id: 'label_1',
+                name: 'banana'
             },
             {
-                id: "label_2",
-                name: "kiwi"
+                id: 'label_2',
+                name: 'kiwi'
             }
         ];
 
         const expectedVGGRegionData: VGGRegionsData = {
-            "0": {
+            '0': {
                 shape_attributes: {
-                    name: "polygon",
+                    name: 'polygon',
                     all_points_x: [1, 5, 6, 0, 1],
                     all_points_y: [1, 1, 10, 10, 1]
                 },
                 region_attributes: {
-                    label: "banana"
+                    label: 'banana'
                 }
             }
         };
