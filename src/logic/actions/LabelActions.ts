@@ -70,6 +70,23 @@ export class LabelActions {
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 
+    public static toggleRectLabelVisibilityById(imageId: string, labelRectId: string) {
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+        const newImageData = {
+            ...imageData,
+            labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
+                if (labelRect.id === labelRectId) {
+                    return {
+                        ...labelRect,
+                        isVisible: !labelRect.isVisible
+                    };
+                }
+                return labelRect;
+            })
+        };
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
+    }
+
     public static removeLabelNames(labelNamesIds: string[]) {
         const imagesData: ImageData[] = LabelsSelector.getImagesData();
         const newImagesData: ImageData[] = imagesData.map((imageData: ImageData) => {

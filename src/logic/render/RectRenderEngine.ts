@@ -135,10 +135,12 @@ export class RectRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
-                    this.drawActiveRect(labelRect, data)
-                } else {
-                    this.drawInactiveRect(labelRect, data);
+                if (labelRect.isVisible) {
+                    if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
+                        this.drawActiveRect(labelRect, data)
+                    } else {
+                        this.drawInactiveRect(labelRect, data);
+                    }
                 }
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);

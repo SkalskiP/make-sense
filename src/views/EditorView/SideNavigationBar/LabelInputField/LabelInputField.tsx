@@ -58,11 +58,11 @@ class LabelInputField extends React.Component<IProps, IState> {
 
     private getClassName() {
         return classNames(
-            "LabelInputField",
+            'LabelInputField',
             {
-                "loaded": this.state.animate,
-                "active": this.props.isActive,
-                "highlighted": this.props.isHighlighted
+                'loaded': this.state.animate,
+                'active': this.props.isActive,
+                'highlighted': this.props.isHighlighted
             }
         );
     }
@@ -97,7 +97,7 @@ class LabelInputField extends React.Component<IProps, IState> {
         const height: number = Math.min(this.props.options.length, this.dropdownOptionCount) * this.dropdownOptionHeight;
         const style = {
             width: clientRect.width,
-            height: height,
+            height,
             left: clientRect.left
         };
 
