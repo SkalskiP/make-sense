@@ -19,9 +19,9 @@
     align-content: space-between;
 
     .Marker {
-      width: 5px;
-      height: calc(100% - 4px);
-      background-color: $darkThemeThirdColor;
+      margin-left: 10px;
+      width: 24px;
+      height: 24px;
     }
 
     .Content {
@@ -52,7 +52,7 @@
         font-size: 14px;
         cursor: pointer;
         user-select: none;
-        min-width: 160px;
+        min-width: 150px;
         height: 30px;
         padding: 0 5px;
         color: white;
@@ -65,16 +65,13 @@
         align-content: space-between;
 
         &:hover {
-          background-color: rgba(0, 0, 0, 0.05);
-
           &::after {
-            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-            background-color: var(--leading-color);
+            background-color: white;
           }
         }
 
         &::after {
-          background: $darkThemeThirdColor;
+          background: transparent;
           width: 100%;
           position: absolute;
           bottom: 0;
@@ -137,22 +134,10 @@
         }
       }
     }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-      .Marker {
-        background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-        background-color: var(--leading-color);
-      }
-    }
   }
 
   &.active {
-    background-color: rgba(0, 0, 0, 0.05);
-    .Marker {
-      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-      background-color: var(--leading-color);
-    }
+    background-color: rgba(0, 0, 0, 0.20);
   }
 
   &.loaded {
@@ -162,10 +147,6 @@
   }
 
   &.highlighted {
-    background-color: rgba(0, 0, 0, 0.05);
-    .Marker {
-      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-      background-color: var(--leading-color);
-    }
+    background-color: rgba(0, 0, 0, 0.20);
   }
 }

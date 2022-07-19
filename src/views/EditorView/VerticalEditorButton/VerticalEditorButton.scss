@@ -6,10 +6,13 @@
   background-color: transparent;
   transition: 0.3s ease-in-out;
   transform: rotate(-90deg);
-  transform-origin: 55px 25px;
+  transform-origin: 0 0;
   margin-bottom: 60px;
   user-select: none;
   cursor: pointer;
+  position: absolute;
+  top: 81px;
+  left: 0;
 
   display: flex;
   flex-direction: row;
@@ -20,6 +23,8 @@
 
   color: white;
   font-size: 13px;
+  border-color: $darkThemeSecondColor;
+  border-left: 1px;
 
   img {
     width: 15px;
@@ -30,12 +35,10 @@
   }
 
   &:hover {
-    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-    background-color: var(--leading-color);
+    background-color: $darkThemeFirstColor;
   }
 
   &.active {
-    background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-    background-color: var(--leading-color);
+    background-color: $darkThemeFirstColor;
   }
 }

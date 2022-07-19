@@ -74,7 +74,7 @@ const LineLabelsList: React.FC<IProps> = (
     };
 
     const onClickHandler = () => {
-        updateActiveLabelId(null);
+        updateActiveLabelIdAction(null);
     };
 
     const getChildren = () => {

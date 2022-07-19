@@ -22,7 +22,7 @@ interface IProps {
     isHighlighted: boolean;
     isVisible?: boolean;
     id: string;
-    value: LabelName;
+    value?: LabelName;
     options: LabelName[];
     onDelete: (id: string) => any;
     onSelectLabel: (labelRectId: string, labelNameId: string) => any;
@@ -179,7 +179,10 @@ class LabelInputField extends React.Component<IProps, IState> {
                         height: size.height,
                     }}
                 >
-                    <div className='Marker'/>
+                    <div
+                        className='Marker'
+                        style={value ? {backgroundColor: value.color} : {}}
+                    />
                     <div className='Content'>
                         <div className='ContentWrapper'>
                             <div className='DropdownLabel'
