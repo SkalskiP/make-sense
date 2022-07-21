@@ -6,12 +6,11 @@ import {
 } from "vite";
 
 import react from "@vitejs/plugin-react";
-import tsconfigPaths from "vite-tsconfig-paths";
 
 export default ({ mode }: UserConfig): UserConfigExport => {
   process.env = { ...process.env, ...loadEnv(mode || "development", process.cwd()) };
   return defineConfig({
-    plugins: [tsconfigPaths(), react()],
+    plugins: [react()],
     build: {
       minify: "terser",
       sourcemap: mode === "development",
@@ -35,7 +34,7 @@ export default ({ mode }: UserConfig): UserConfigExport => {
               "@tensorflow-models/coco-ssd",
               "@tensorflow-models/posenet",
             ],
-            ui: ["@mui/material", "@mui/styles"],
+            ui: ["@mui/material", "@mui/system"],
             moment: ["moment"]
 
           },
@@ -67,6 +66,7 @@ export default ({ mode }: UserConfig): UserConfigExport => {
       },
     },
     test: {
+      globals: true,
       coverage: {
         reporter: ["text", "json", "html"],
       },
