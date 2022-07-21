@@ -61,7 +61,18 @@ export class RectUtil {
             }
         }
     }
-
+    static limitRect(rect: IRect) {
+        if (rect.width < 0) {
+            rect.x = rect.x + rect.width;
+            rect.width = -rect.width;
+        }
+    
+        if (rect.height < 0) {
+            rect.y = rect.y + rect.height;
+            rect.height = -rect.height;
+        }
+        return rect;
+    }
     public static resizeRect(inputRect: IRect, rectAnchor: Direction, delta): IRect {
         const rect: IRect = {...inputRect};
         switch (rectAnchor) {
@@ -100,18 +111,9 @@ export class RectUtil {
                 rect.height += delta.y;
                 break;
         }
+ 
 
-        if (rect.width < 0)  {
-            rect.x = rect.x + rect.width;
-            rect.width = - rect.width;
-        }
-
-        if (rect.height < 0)  {
-            rect.y = rect.y + rect.height;
-            rect.height = - rect.height;
-        }
-
-        return rect;
+        return RectUtil.limitRect(rect);
     }
 
     public static translate(rect: IRect, delta: IPoint): IRect {
@@ -177,3 +179,5 @@ export class RectUtil {
         }
     }
 }
+
+

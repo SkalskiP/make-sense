@@ -1,30 +1,31 @@
-import React, {useState} from 'react'
-import './InsertLabelNamesPopup.scss'
-import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
-import {PopupWindowType} from '../../../data/enums/PopupWindowType';
-import {updateLabelNames} from '../../../store/labels/actionCreators';
-import {updateActivePopupType, updatePerClassColorationStatus} from '../../../store/general/actionCreators';
-import {AppState} from '../../../store';
-import {connect} from 'react-redux';
-import Scrollbars from 'react-custom-scrollbars';
-import {ImageButton} from '../../Common/ImageButton/ImageButton';
-import {LabelName} from '../../../store/labels/types';
-import {LabelUtil} from '../../../utils/LabelUtil';
-import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
-import {LabelActions} from '../../../logic/actions/LabelActions';
-import {ColorSelectorView} from './ColorSelectorView/ColorSelectorView';
-import TextField from '@material-ui/core/TextField';
-import {Settings} from '../../../settings/Settings';
-import {withStyles} from '@material-ui/core';
-import {reject, sample, filter, uniq} from 'lodash';
-import {ProjectType} from '../../../data/enums/ProjectType';
-import {submitNewNotification} from '../../../store/notifications/actionCreators';
-import {INotification} from '../../../store/notifications/types';
-import {NotificationUtil} from '../../../utils/NotificationUtil';
-import {NotificationsDataMap} from '../../../data/info/NotificationsData';
-import {Notification} from '../../../data/enums/Notification';
+import React, { useState } from 'react';
+import './InsertLabelNamesPopup.scss';
+import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
+import { PopupWindowType } from '../../../data/enums/PopupWindowType';
+import { updateLabelNames } from '../../../store/labels/actionCreators';
+import { updateActivePopupType, updatePerClassColorationStatus } from '../../../store/general/actionCreators';
+import { AppState } from '../../../store';
+import { connect } from 'react-redux';
+import Scrollbars from 'react-custom-scrollbars-2';
+import { ImageButton } from '../../Common/ImageButton/ImageButton';
+import { LabelName } from '../../../store/labels/types';
+import { LabelUtil } from '../../../utils/LabelUtil';
+import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
+import { LabelActions } from '../../../logic/actions/LabelActions';
+import { ColorSelectorView } from './ColorSelectorView/ColorSelectorView';
+import { Settings } from '../../../settings/Settings';
+import { reject, sample, filter, uniq } from 'lodash';
+import { ProjectType } from '../../../data/enums/ProjectType';
+import { submitNewNotification } from '../../../store/notifications/actionCreators';
+import { INotification } from '../../../store/notifications/types';
+import { NotificationUtil } from '../../../utils/NotificationUtil';
+import { NotificationsDataMap } from '../../../data/info/NotificationsData';
+import { Notification } from '../../../data/enums/Notification';
 
-const StyledTextField = withStyles({
+import { TextField } from '@mui/material';
+import { styled } from '@mui/system';
+
+const StyledTextField = styled(TextField)(({ theme }) => ({
     root: {
         '& .MuiInputBase-root': {
             color: 'white',
@@ -45,7 +46,7 @@ const StyledTextField = withStyles({
             borderBottomColor: Settings.SECONDARY_COLOR,
         }
     },
-})(TextField);
+}));
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
@@ -70,62 +71,62 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
     const validateEmptyLabelNames = (): boolean => {
-        const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '')
-        return emptyLabelNames.length === 0
-    }
+        const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '');
+        return emptyLabelNames.length === 0;
+    };
 
     const validateNonUniqueLabelNames = (): boolean => {
-        const uniqueLabelNames = uniq(labelNames.map((labelName: LabelName) => labelName.name))
-        return uniqueLabelNames.length === labelNames.length
-    }
+        const uniqueLabelNames = uniq(labelNames.map((labelName: LabelName) => labelName.name));
+        return uniqueLabelNames.length === labelNames.length;
+    };
 
     const callbackWithLabelNamesValidation = (callback: () => any): () => any => {
         return () => {
             if (!validateEmptyLabelNames()) {
                 submitNewNotificationAction(NotificationUtil
-                    .createErrorNotification(NotificationsDataMap[Notification.EMPTY_LABEL_NAME_ERROR]))
-                return
+                    .createErrorNotification(NotificationsDataMap[Notification.EMPTY_LABEL_NAME_ERROR]));
+                return;
             }
             if (validateNonUniqueLabelNames()) {
-                callback()
+                callback();
             } else {
                 submitNewNotificationAction(NotificationUtil
-                    .createErrorNotification(NotificationsDataMap[Notification.NON_UNIQUE_LABEL_NAMES_ERROR]))
+                    .createErrorNotification(NotificationsDataMap[Notification.NON_UNIQUE_LABEL_NAMES_ERROR]));
             }
-        }
-    }
+        };
+    };
 
     const addLabelNameCallback = () => {
         const newLabelNames = [
             ...labelNames,
             LabelUtil.createLabelName('')
-        ]
+        ];
         setLabelNames(newLabelNames);
     };
 
-    const safeAddLabelNameCallback = () => callbackWithLabelNamesValidation(addLabelNameCallback)()
+    const safeAddLabelNameCallback = () => callbackWithLabelNamesValidation(addLabelNameCallback)();
 
     const deleteLabelNameCallback = (id: string) => {
-        const newLabelNames = reject(labelNames, {id});
+        const newLabelNames = reject(labelNames, { id });
         setLabelNames(newLabelNames);
     };
 
     const togglePerClassColorationCallback = () => {
-        updatePerClassColorationStatusAction(!enablePerClassColoration)
-    }
+        updatePerClassColorationStatusAction(!enablePerClassColoration);
+    };
 
     const changeLabelNameColorCallback = (id: string) => {
         const newLabelNames = labelNames.map((labelName: LabelName) => {
-            return labelName.id === id ? {...labelName, color: sample(Settings.LABEL_COLORS_PALETTE)} : labelName
+            return labelName.id === id ? { ...labelName, color: sample(Settings.LABEL_COLORS_PALETTE) } : labelName;
         });
         setLabelNames(newLabelNames);
-    }
+    };
 
     const onKeyUpCallback = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            safeAddLabelNameCallback()
+            safeAddLabelNameCallback();
         }
-    }
+    };
 
     const labelInputs = labelNames.map((labelName: LabelName) => {
         const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -143,7 +144,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                 onKeyUp={onKeyUpCallback}
                 value={labelName.name}
                 onChange={onChangeCallback}
-                style = {{width: 280}}
+                style={{ width: 280 }}
                 InputLabelProps={{
                     shrink: true,
                 }}
@@ -158,21 +159,21 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                 buttonSize={{ width: 30, height: 30 }}
                 onClick={onDeleteCallback}
             />
-        </div>
+        </div>;
     });
 
     const onChange = (id: string, value: string) => {
         const newLabelNames = labelNames.map((labelName: LabelName) => {
             return labelName.id === id ? {
                 ...labelName, name: value
-            } : labelName
-        })
+            } : labelName;
+        });
         setLabelNames(newLabelNames);
     };
 
     const onCreateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
-            (labelName: LabelName) => labelName.name.length === 0)
+            (labelName: LabelName) => labelName.name.length === 0);
         if (labelNames.length > 0) {
             updateLabelNamesAction(nonEmptyLabelNames);
         }
@@ -183,7 +184,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
 
     const onUpdateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
-            (labelName: LabelName) => labelName.name.length === 0)
+            (labelName: LabelName) => labelName.name.length === 0);
         const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
         LabelActions.removeLabelNames(missingIds);
         updateLabelNamesAction(nonEmptyLabelNames);
@@ -263,7 +264,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             onAccept={isUpdate ? safeOnUpdateAcceptCallback : safeOnCreateAcceptCallback}
             rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
             onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
-        />)
+        />);
 };
 
 const mapDispatchToProps = {

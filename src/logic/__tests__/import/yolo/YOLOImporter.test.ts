@@ -1,8 +1,11 @@
-import {ImageData} from '../../../../store/labels/types';
-import {AcceptedFileType} from '../../../../data/enums/AcceptedFileType';
+// @vitest-environment jsdom
+
+import { ImageData } from '../../../../store/labels/types';
+import { AcceptedFileType } from '../../../../data/enums/AcceptedFileType';
 import { v4 as uuidv4 } from 'uuid';
-import {YOLOImporter} from '../../../import/yolo/YOLOImporter';
-import {isEqual} from 'lodash';
+import { YOLOImporter } from '../../../import/yolo/YOLOImporter';
+import { isEqual } from 'lodash';
+import { describe, it, expect } from 'vitest';
 
 const getDummyImageData = (fileName: string): ImageData => {
     return {
@@ -16,12 +19,12 @@ const getDummyImageData = (fileName: string): ImageData => {
         labelNameIds: [],
         isVisitedByObjectDetector: false,
         isVisitedByPoseDetector: false
-    }
-}
+    };
+};
 
 const getDummyFileData = (fileName: string): File => {
-    return new File([''], fileName, { type: AcceptedFileType.TEXT })
-}
+    return new File([''], fileName, { type: AcceptedFileType.TEXT });
+};
 
 describe('YOLOImporter filterFilesData method', () => {
     it('should return correct fileData partition', () => {
@@ -32,7 +35,7 @@ describe('YOLOImporter filterFilesData method', () => {
             '00002.png',
             '00003.png',
             '00004.png'
-        ]
+        ];
         const imagesData: ImageData[] = imageFileNames.map((fileName: string) => getDummyImageData(fileName));
         const annotationFileNames = [
             '00002.txt',
@@ -40,18 +43,18 @@ describe('YOLOImporter filterFilesData method', () => {
             '00004.txt',
             '00005.txt',
             '00006.txt'
-        ]
+        ];
         const annotationFiles: File[] = annotationFileNames.map((fileName: string) => getDummyFileData(fileName));
         const labelFileNames = [
             'labels.txt'
-        ]
-        const labelFiles : File[] = labelFileNames.map((fileName: string) => getDummyFileData(fileName));
+        ];
+        const labelFiles: File[] = labelFileNames.map((fileName: string) => getDummyFileData(fileName));
         const filesData: File[] = [...annotationFiles, ...labelFiles];
         const expectedAnnotationFileNames = [
             '00002.txt',
             '00003.txt',
             '00004.txt'
-        ]
+        ];
 
         // when
         const result = YOLOImporter.filterFilesData(filesData, imagesData);

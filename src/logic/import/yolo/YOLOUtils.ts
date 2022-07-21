@@ -41,7 +41,7 @@ export class YOLOUtils {
             .filter(Boolean)
             .map((rawAnnotation: string) => YOLOUtils.parseYOLOAnnotationFromString(
                 rawAnnotation, labelNames, imageSize, imageName
-            ))
+            ));
     }
 
     public static parseYOLOAnnotationFromString(

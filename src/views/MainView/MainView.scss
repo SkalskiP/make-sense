@@ -19,7 +19,7 @@
     .LeftColumn {
       width: 280px;
       height: 100%;
-      transition: width 1.2s ease-out;
+      transition: width 0.4s ease-out;
     }
 
     .Slider {
@@ -27,16 +27,16 @@
     }
 
     #lower {
-      transition: width 1.5s ease-out;
+      transition: width 0.5s ease-out;
     }
 
     #upper {
-      transition: width 1.4s ease-out;
+      transition: width 0.6s ease-out;
     }
 
     .RightColumn {
       .ImagesDropZone {
-        animation-duration: 1.5s;
+        animation-duration: 0.8s;
         animation-name: cssAnimationShow;
         animation-fill-mode: forwards;
       }

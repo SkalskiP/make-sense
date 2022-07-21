@@ -1,7 +1,10 @@
+// @vitest-environment jsdom
+
 import {LabelName} from '../../../store/labels/types';
 import {DetectedObject} from '@tensorflow-models/coco-ssd';
 import {AIObjectDetectionActions} from '../../actions/AIObjectDetectionActions';
 
+import { describe, it, expect } from 'vitest';
 describe('AIObjectDetectionActions extractNewSuggestedLabelNames method', () => {
     const mockLabelNames: LabelName[] = [
         {

@@ -1,5 +1,6 @@
 import {FileUtil} from "../FileUtil";
 
+import { describe, it, expect } from 'vitest';
 describe('FileUtil extractFileExtension method', () => {
     it('should return file extension', () => {
         // given

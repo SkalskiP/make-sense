@@ -3,7 +3,7 @@ import {BaseRenderEngine} from "../logic/render/BaseRenderEngine";
 import {IRect} from "../interfaces/IRect";
 import {IPoint} from "../interfaces/IPoint";
 import {ISize} from "../interfaces/ISize";
-import Scrollbars from "react-custom-scrollbars";
+import Scrollbars from "react-custom-scrollbars-2";
 import {ViewPortHelper} from "../logic/helpers/ViewPortHelper";
 
 export class EditorModel {
@@ -19,8 +19,8 @@ export class EditorModel {
 
     public static viewPortHelper: ViewPortHelper;
 
-    public static isLoading: boolean = false;
-    public static viewPortActionsDisabled: boolean = false;
+    public static isLoading: boolean;
+    public static viewPortActionsDisabled: boolean;
     public static mousePositionOnViewPortContent: IPoint;
     public static viewPortSize: ISize;
 

@@ -11,7 +11,7 @@ import {updateActiveLabelType} from '../store/labels/actionCreators';
 export class ObjectDetector {
     private static model: ObjectDetection;
 
-    public static loadModel(callback?: () => any) {
+    public static loadModel(callback?: () => unknown) {
         cocoSsd
             .load()
             .then((model: ObjectDetection) => {
@@ -32,7 +32,7 @@ export class ObjectDetector {
             })
     }
 
-    public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
+    public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => unknown) {
         if (!ObjectDetector.model) return;
 
         ObjectDetector.model

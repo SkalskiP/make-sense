@@ -1,7 +1,10 @@
+// @vitest-environment jsdom
+
 import {LabelName, LabelRect} from '../../../store/labels/types';
 import {LabelStatus} from '../../../data/enums/LabelStatus';
 import {ISize} from '../../../interfaces/ISize';
 import {RectLabelsExporter} from '../../export/RectLabelsExporter';
+import { describe, it, expect } from 'vitest';
 
 const imageSize: ISize = {
     width: 1920,

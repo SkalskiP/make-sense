@@ -9,7 +9,6 @@ import {AppState} from '../../../store';
 import {ProjectType} from '../../../data/enums/ProjectType';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
 import {updateActivePopupType, updateProjectData} from '../../../store/general/actionCreators';
-import {AcceptedFileType} from '../../../data/enums/AcceptedFileType';
 import {ProjectData} from '../../../store/general/types';
 import {ImageDataUtil} from '../../../utils/ImageDataUtil';
 import { sortBy } from 'lodash';
@@ -24,7 +23,9 @@ interface IProps {
 
 const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: AcceptedFileType.IMAGE
+        accept: {
+            'image/*': ['.jpeg', '.png']
+        }
     } as DropzoneOptions);
 
     const startEditor = (projectType: ProjectType) => {

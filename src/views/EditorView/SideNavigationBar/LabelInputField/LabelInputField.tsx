@@ -9,7 +9,7 @@ import {RectUtil} from '../../../../utils/RectUtil';
 import {AppState} from '../../../../store';
 import {connect} from 'react-redux';
 import {updateActiveLabelId, updateHighlightedLabelId} from '../../../../store/labels/actionCreators';
-import Scrollbars from 'react-custom-scrollbars';
+import Scrollbars from 'react-custom-scrollbars-2';
 import {EventType} from '../../../../data/enums/EventType';
 import {LabelName} from '../../../../store/labels/types';
 import {LabelsSelector} from '../../../../store/selectors/LabelsSelector';

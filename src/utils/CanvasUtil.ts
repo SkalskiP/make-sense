@@ -4,9 +4,9 @@ import {IRect} from "../interfaces/IRect";
 import {ISize} from "../interfaces/ISize";
 
 export class CanvasUtil {
-    public static getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent, canvas: HTMLCanvasElement): IPoint {
+    public static getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent, canvas: HTMLCanvasElement): IPoint {
         if (!!canvas && !!event) {
-            const canvasRect: ClientRect | DOMRect = canvas.getBoundingClientRect();
+            const canvasRect: DOMRect = canvas.getBoundingClientRect();
             return {
                 x: event.clientX - canvasRect.left,
                 y: event.clientY - canvasRect.top
@@ -16,8 +16,8 @@ export class CanvasUtil {
     }
 
     public static getClientRect(canvas: HTMLCanvasElement): IRect {
-        if (!!canvas) {
-            const canvasRect: ClientRect | DOMRect = canvas.getBoundingClientRect();
+        if (canvas) {
+            const canvasRect: DOMRect = canvas.getBoundingClientRect();
             return {
                 x: canvasRect.left,
                 y: canvasRect.top,
@@ -29,8 +29,8 @@ export class CanvasUtil {
     }
 
     public static getSize(canvas: HTMLCanvasElement): ISize {
-        if (!!canvas) {
-            const canvasRect: ClientRect | DOMRect = canvas.getBoundingClientRect();
+        if (canvas) {
+            const canvasRect: DOMRect = canvas.getBoundingClientRect();
             return {
                 width: canvasRect.width,
                 height: canvasRect.height

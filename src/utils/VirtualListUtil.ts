@@ -25,7 +25,7 @@ export class VirtualListUtil {
         const contentWrapperSize: ISize = VirtualListUtil.calculateContentSize(listSize, childSize, gridSize);
         const horizontalMargin = (contentWrapperSize.width - gridSize.width * childSize.width) / (gridSize.width + 1);
 
-        let anchors = [];
+        const anchors = [];
         for (let i = 0; i < childCount; i++) {
             const rowCount: number = Math.floor(i / gridSize.width);
             const columnCount: number = i % gridSize.width;

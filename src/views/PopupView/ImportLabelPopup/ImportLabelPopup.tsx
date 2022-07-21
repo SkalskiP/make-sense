@@ -8,7 +8,6 @@ import {FeatureInProgress} from '../../EditorView/FeatureInProgress/FeatureInPro
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import {useDropzone} from 'react-dropzone';
-import {AcceptedFileType} from '../../../data/enums/AcceptedFileType';
 import {ImageData, LabelName} from '../../../store/labels/types';
 import {updateActiveLabelType, updateImageData, updateLabelNames} from '../../../store/labels/actionCreators';
 import {ImporterSpecData} from '../../../data/ImporterSpecData';
@@ -41,7 +40,10 @@ const ImportLabelPopup: React.FC<IProps> = (
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(null);
 
     const {getRootProps, getInputProps} = useDropzone({
-        accept: [AcceptedFileType.JSON, AcceptedFileType.TEXT],
+        accept: {
+            "application/json": [".*"],
+            "text/plain": [".txt" ]
+        },
         multiple: true,
         onDrop: (acceptedFiles) => {
             const importer = new (ImporterSpecData[formatType])([labelType])

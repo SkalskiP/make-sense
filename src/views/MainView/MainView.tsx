@@ -1,14 +1,13 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './MainView.scss';
-import {TextButton} from '../Common/TextButton/TextButton';
+import { TextButton } from '../Common/TextButton/TextButton';
 import classNames from 'classnames';
-import {ISize} from '../../interfaces/ISize';
-import {ImageButton} from '../Common/ImageButton/ImageButton';
-import {ISocialMedia, SocialMediaData} from '../../data/info/SocialMediaData';
-import {EditorFeatureData, IEditorFeature} from '../../data/info/EditorFeatureData';
-import {Tooltip} from '@material-ui/core';
-import Fade from '@material-ui/core/Fade';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { ISize } from '../../interfaces/ISize';
+import { ImageButton } from '../Common/ImageButton/ImageButton';
+import { ISocialMedia, SocialMediaData } from '../../data/info/SocialMediaData';
+import { EditorFeatureData, IEditorFeature } from '../../data/info/EditorFeatureData';
+import { styled, Tooltip } from '@mui/material';
+import Fade from '@mui/material/Fade';
 import ImagesDropZone from './ImagesDropZone/ImagesDropZone';
 
 const MainView: React.FC = () => {
@@ -27,13 +26,13 @@ const MainView: React.FC = () => {
     const getClassName = () => {
         return classNames(
             'MainView', {
-                'InProgress': projectInProgress,
-                'Canceled': !projectInProgress && projectCanceled
-            }
+            'InProgress': projectInProgress,
+            'Canceled': !projectInProgress && projectCanceled
+        }
         );
     };
 
-    const DarkTooltip = withStyles(theme => ({
+    const DarkTooltip = styled(Tooltip)(({ theme }) => ({
         tooltip: {
             backgroundColor: '#171717',
             color: '#ffffff',
@@ -41,10 +40,10 @@ const MainView: React.FC = () => {
             fontSize: 11,
             maxWidth: 120
         },
-    }))(Tooltip);
+    }));
 
-    const getSocialMediaButtons = (size:ISize) => {
-        return SocialMediaData.map((data:ISocialMedia, index: number) => {
+    const getSocialMediaButtons = (size: ISize) => {
+        return SocialMediaData.map((data: ISocialMedia, index: number) => {
             return <DarkTooltip
                 key={index}
                 disableFocusListener={true}
@@ -61,12 +60,12 @@ const MainView: React.FC = () => {
                         href={data.href}
                     />
                 </div>
-            </DarkTooltip>
+            </DarkTooltip>;
         });
     };
 
     const getEditorFeatureTiles = () => {
-        return EditorFeatureData.map((data:IEditorFeature) => {
+        return EditorFeatureData.map((data: IEditorFeature) => {
             return <div
                 className='EditorFeaturesTiles'
                 key={data.displayText}
@@ -83,7 +82,7 @@ const MainView: React.FC = () => {
                         {data.displayText}
                     </div>
                 </div>
-            </div>
+            </div>;
         });
     };
 
@@ -91,13 +90,13 @@ const MainView: React.FC = () => {
         <div className={getClassName()}>
             <div className='Slider' id='lower'>
                 <div className='TriangleVertical'>
-                    <div className='TriangleVerticalContent'/>
+                    <div className='TriangleVerticalContent' />
                 </div>
             </div>
 
             <div className='Slider' id='upper'>
                 <div className='TriangleVertical'>
-                    <div className='TriangleVerticalContent'/>
+                    <div className='TriangleVerticalContent' />
                 </div>
             </div>
 
@@ -113,7 +112,7 @@ const MainView: React.FC = () => {
                     {getEditorFeatureTiles()}
                 </div>
                 <div className='TriangleVertical'>
-                    <div className='TriangleVerticalContent'/>
+                    <div className='TriangleVerticalContent' />
                 </div>
                 {projectInProgress && <TextButton
                     label={'Go Back'}
@@ -121,10 +120,10 @@ const MainView: React.FC = () => {
                 />}
             </div>
             <div className='RightColumn'>
-                <div/>
-                <ImagesDropZone/>
+                <div />
+                <ImagesDropZone />
                 <div className='SocialMediaWrapper'>
-                    {getSocialMediaButtons({width: 30, height: 30})}
+                    {getSocialMediaButtons({ width: 30, height: 30 })}
                 </div>
                 {!projectInProgress && <TextButton
                     label={'Get Started'}

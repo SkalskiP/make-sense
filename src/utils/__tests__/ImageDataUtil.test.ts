@@ -1,9 +1,12 @@
-import {ImageData} from '../../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
-import {LabelUtil} from '../LabelUtil';
-import {ImageDataUtil} from '../ImageDataUtil';
-import {AcceptedFileType} from '../../data/enums/AcceptedFileType';
+// @vitest-environment jsdom
 
+import { ImageData } from '../../store/labels/types';
+import { v4 as uuidv4 } from 'uuid';
+import { LabelUtil } from '../LabelUtil';
+import { ImageDataUtil } from '../ImageDataUtil';
+import { AcceptedFileType } from '../../data/enums/AcceptedFileType';
+
+import { describe, it, expect } from 'vitest';
 
 const getDummyImageData = (id: string): ImageData => {
     return {
@@ -17,8 +20,8 @@ const getDummyImageData = (id: string): ImageData => {
         labelNameIds: [],
         isVisitedByObjectDetector: false,
         isVisitedByPoseDetector: false
-    }
-}
+    };
+};
 
 
 describe('ImageDataUtil cleanAnnotation method', () => {
@@ -26,9 +29,9 @@ describe('ImageDataUtil cleanAnnotation method', () => {
         // given
         const item: ImageData = getDummyImageData(uuidv4());
         item.labelRects = [
-            LabelUtil.createLabelRect('label-id', {x: 1, y: 1, width: 1, height: 1}),
-            LabelUtil.createLabelRect('label-id', {x: 1, y: 1, width: 1, height: 1})
-        ]
+            LabelUtil.createLabelRect('label-id', { x: 1, y: 1, width: 1, height: 1 }),
+            LabelUtil.createLabelRect('label-id', { x: 1, y: 1, width: 1, height: 1 })
+        ];
 
         // when
         const result = ImageDataUtil.cleanAnnotations(item);
@@ -43,13 +46,13 @@ describe('ImageDataUtil arrange method', () => {
     it('should return new array with correctly arranged ImageData objects', () => {
         // given
         const idA = uuidv4(), idB = uuidv4(), idC = uuidv4(), idD = uuidv4();
-        const givenIdArrangement =  [idD, idA, idB, idC];
-        const expectedIdArrangement =  [idA, idB, idC, idD];
+        const givenIdArrangement = [idD, idA, idB, idC];
+        const expectedIdArrangement = [idA, idB, idC, idD];
         const items = givenIdArrangement.map((id: string) => getDummyImageData(id));
 
         // when
         const result = ImageDataUtil.arrange(items, expectedIdArrangement);
-        const resultIdArrangement = result.map((item: ImageData) => item.id)
+        const resultIdArrangement = result.map((item: ImageData) => item.id);
 
         // then
         expect(JSON.stringify(expectedIdArrangement)).toBe(JSON.stringify(resultIdArrangement));
