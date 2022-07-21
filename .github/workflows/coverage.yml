@@ -19,7 +19,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
+
+      - name: Update NPM
+        run: npm i -g npm
 
       - name: Install dependencies
         run: npm install
