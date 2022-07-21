@@ -67,6 +67,7 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
     };
 
     return (
+        <div>
         <GenericYesNoPopup
             title={'Exit project'}
             renderContent={renderContent}
@@ -75,6 +76,7 @@ const ExitProjectPopup: React.FC<IProps> = (props) => {
             rejectLabel={'Back'}
             onReject={onReject}
         />
+        </div>
     );
 };
 

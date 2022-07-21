@@ -23,8 +23,10 @@ interface IProps {
 }
 
 const PopupView: React.FC<IProps> = ({activePopupType}) => {
+    console.log(activePopupType)
     const selectPopup = () => {
         switch (activePopupType) {
+            
             case PopupWindowType.LOGIN:
                 return <LoginPopup />;
             case PopupWindowType.LOGOUT:
@@ -60,11 +62,11 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                     />
                 );
             default:
-                return null;
+                return <LoginPopup />;
         }
     };
 
-    return activePopupType && <div className="PopupView">{selectPopup()}</div>;
+    return activePopupType && <div className="PopupView ">{selectPopup()}</div>;
 };
 
 const mapStateToProps = (state: AppState) => ({

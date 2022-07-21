@@ -2,8 +2,10 @@
 
 .MainView {
   position: absolute;
-  height: 100vh;
-  width: 100vw;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
   margin: 0;
   padding: 0;
 
@@ -35,11 +37,42 @@
     }
 
     .RightColumn {
+      label + .MuiInput-formControl{
+        margin-top: unset;
+      }
       .ImagesDropZone {
         animation-duration: 1.5s;
         animation-name: cssAnimationShow;
         animation-fill-mode: forwards;
       }
+      .MuiFormControl-root{
+        width: 100%;
+        margin-bottom: 12px;
+      }
+      .MuiInputBase-input {
+        background: #FFFF;
+        border-radius: 9.73271px;
+        height: 65px ;
+        max-height: 65px;
+        width: 100%;
+        padding: 0px 19px;
+        color: #000000 !important;
+        &::placeholder{
+            color: #BABABA;
+            font-weight: 400;
+            font-size: 14.5991px;
+            line-height: 18px;
+        }
+    }
+    .MuiInput-underline{
+        &::after{
+            display: none !important;
+        }
+        &::before{
+            display: none !important;
+        }
+    }
+
     }
 
     .LeftColumn {
@@ -144,18 +177,18 @@
 }
 
 .RightColumn {
-  padding: 20px;
-  align-self: stretch;
-  flex: 1;
-  min-width: 200px;
-  z-index: 100;
+  // padding: 20px;
+  // align-self: stretch;
+  // flex: 1;
+  // min-width: 200px;
+  // z-index: 100;
 
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  align-content: center;
+  // display: flex;
+  // flex-direction: row;
+  // flex-wrap: nowrap;
+  // justify-content: center;
+  // align-items: center;
+  // align-content: center;
 
   .TextButton {
     box-shadow: black 0 0 0 2px inset;
@@ -279,5 +312,18 @@
   }
   100% {
     background-position: 0 50%;
+  }
+}
+
+.loginShowniq{
+  background-image: url("../../assets/img/backgroundImage.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  background-color: #00dafe;
+  background-position: center center;
+  width: 100%;
+  &__content{
+    margin-top: auto;
   }
 }

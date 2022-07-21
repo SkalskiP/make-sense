@@ -8,12 +8,12 @@
 
     .DropZone {
         user-select: none;
-        width: 400px;
-        height: 250px;
-        box-shadow: black 0 0 0 2px inset;
-        border-radius: 4px;
-        margin-bottom: 6px;
-
+        // width: 400px;
+        // height: 250px;
+        // box-shadow: black 0 0 0 2px inset;
+        // border-radius: 4px;
+        // margin-bottom: 6px;
+        width: 100%;
         display: flex;
         flex-direction: column;
         justify-items: center;
@@ -51,9 +51,63 @@
         flex-wrap: nowrap;
         justify-content: space-between;
         align-items: center;
-
+        margin-top: 5px;
+        &__active{
+         
+            background: #000000;
+            border-radius: 6px;
+            color: #fff;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 10px 12px;
+            width: 100% !important;
+            border: 1px solid #000000;
+            max-width: 304px;
+            margin-right: 5px;
+          
+            &:hover{
+             
+                border-radius: 6px;
+                background-color:  #FFFFFF;
+                color: #000000;
+                svg{
+                    path {
+                        stroke: #000000;
+                    }
+                }
+            }
+            
+        }
+        &__goback{
+            background: transparent;
+            border-radius: 6px;
+            border: 1px solid #000000 !important;
+            color: #000000;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 10px 12px;
+            box-shadow: unset;
+            margin-right: 5px;
+            min-width: 123px;
+            display: flex;
+            align-items: center;
+            justify-items: center;
+            &:hover{
+                background: #000000;
+                color: #fff;
+                svg{
+                    path {
+                        stroke: #fff;
+                    }
+                }
+            }
+        }
         .TextButton {
-            width: calc(50% - 3px);
+            
             display: flex;
             flex-direction: row;
             flex-wrap: nowrap;

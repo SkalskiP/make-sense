@@ -256,6 +256,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     return (
+        <div>
         <GenericYesNoPopup
             title={isUpdate ? 'Edit labels' : 'Create labels'}
             renderContent={renderContent}
@@ -263,7 +264,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             onAccept={isUpdate ? safeOnUpdateAcceptCallback : safeOnCreateAcceptCallback}
             rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
             onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
-        />)
+            
+        />
+         </div>
+         )
+     
 };
 
 const mapDispatchToProps = {

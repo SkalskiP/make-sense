@@ -11,6 +11,8 @@ import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
 import {APIService} from '../../../services/API';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import WrapperLogin from "../../../components/WrapperLogin/index"
+import {CodiconAccount, Eye, MoveIcon} from "../../../assets/icons"
 
 interface IProps {
     updateAuthDataAction: (authData: AuthData) => any;
@@ -37,21 +39,30 @@ const LoginPopup: React.FC<IProps> = ({
     const renderContent = () => (
         <div className="LoginPopupContent">
             <div className="LoginPopupInputContainer">
-                <Input
-                    fullWidth
-                    placeholder="email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    inputProps={{style: {color: 'white'}}}
-                />
+                <label className='LoginPopupContent__label'>Account</label>
+                <div className='LoginPopupContent__parent'>
+                    <CodiconAccount className='LoginPopupContent__icon'/>
+                    <Input
+                        fullWidth
+                        placeholder="email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        inputProps={{style: {color: 'white'}}}
+                    />
+                </div>
             </div>
             <div className="LoginPopupInputContainer">
-                <Input
-                    fullWidth
-                    placeholder="password"
-                    type="password"
-                    inputProps={{style: {color: 'white'}}}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                <label className='LoginPopupContent__label'>Password</label>
+                <div className='LoginPopupContent__parent'>
+                    <Eye className='LoginPopupContent__icon'/> 
+                    <MoveIcon className='LoginPopupContent__move'/> 
+                    <Input
+                        fullWidth
+                        placeholder="password"
+                        type="password"
+                        inputProps={{style: {color: 'white'}}}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
             </div>
             <div className="LoginPopupMessage">
                 {isLoadingStatus ? (
@@ -84,7 +95,9 @@ const LoginPopup: React.FC<IProps> = ({
                     '@@auth',
                     JSON.stringify({email, displayName, authToken, role})
                 );
-                updateActivePopupTypeAction(null);
+                setTimeout(() =>{ 
+                    window.location.href = "/"
+                }, 500)
             } else if (data.errors) {
                 setMessage(data.errors.map((error) => error.error).join('\n'));
             }
@@ -96,14 +109,18 @@ const LoginPopup: React.FC<IProps> = ({
     };
 
     return (
-        <GenericYesNoPopup
-            title={'Login'}
-            renderContent={renderContent}
-            acceptLabel={'Go'}
-            onAccept={doLogin}
-            rejectLabel={'Cancel'}
-            onReject={() => alert('Login required!')}
-        />
+        <div className='loginShowniq'>
+            <WrapperLogin>
+                <GenericYesNoPopup
+                    title={''}
+                    renderContent={renderContent}
+                    acceptLabel={'Go'}
+                    onAccept={doLogin}
+                    rejectLabel={'Cancel'}
+                    onReject={() => alert('Login required!')}
+                />
+            </WrapperLogin>
+        </div>
     );
 };
 

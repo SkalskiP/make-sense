@@ -124,6 +124,7 @@ export const LoadModelPopup: React.FC = () => {
     };
 
     return (
+        <div>
         <GenericYesNoPopup
             title={"Say hello to AI"}
             renderContent={renderContent}
@@ -134,5 +135,6 @@ export const LoadModelPopup: React.FC = () => {
             onReject={onReject}
             disableRejectButton={modelIsLoadingStatus}
         />
+       </div>
     );
 };

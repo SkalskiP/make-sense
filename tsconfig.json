@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES6",
+        "baseUrl": "src",
         "downlevelIteration": true,
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
@@ -21,7 +22,22 @@
         "suppressImplicitAnyIndexErrors": true,
         "noImplicitAny": false,
         "strictPropertyInitialization": false,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "*": ["src/*"],
+            "@/services/*": ["src/services/*"],
+            "@/helper": ["src/helper"],
+            "@/components/*": ["src/components/*"],
+            "@/widgets/*": ["src/frameworks/widgets/*"],
+            "@/constants/*": ["src/constants/*"],
+            "@/models/*": ["src/models/*"],
+            "@/pages/*": ["src/pages/*"],
+            "@/styles/*": ["src/styles/*"],
+            "@/actions/*": ["src/actions/*"],
+            "@/icons/*": ["src/assets/icons/*"],
+            "@/assets/*": ["src/assets/*"],
+            "@/App": ["src/App"]
+          }
     },
     "include": ["src"]
 }

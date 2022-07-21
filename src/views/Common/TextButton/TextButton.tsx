@@ -10,10 +10,11 @@ interface IProps {
     isActive?:boolean;
     isDisabled?:boolean;
     externalClassName?:string;
+    icon?: any
 }
 
 export const TextButton = (props:IProps) => {
-    const { key, label, onClick, style, isActive, isDisabled, externalClassName} = props;
+    const { key, label, onClick, style, isActive, isDisabled, externalClassName, icon} = props;
 
     const getClassName = () => {
         return classNames(
@@ -40,7 +41,7 @@ export const TextButton = (props:IProps) => {
             key={key}
             style={style}
         >
-            {label}
+            {label} {icon || ""}
         </div>
     )
 };

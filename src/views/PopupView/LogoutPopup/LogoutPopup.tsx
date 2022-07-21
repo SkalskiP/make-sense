@@ -20,7 +20,7 @@ import {
 import {updateAuthData} from '../../../store/auth/actionCreators';
 import {AuthData} from '../../../store/auth/types';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
-
+import WrapperLogin from "../../../components/WrapperLogin/index"
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
     updateActiveLabelNameId: (activeLabelId: string) => any;
@@ -76,14 +76,16 @@ const LogoutPopup: React.FC<IProps> = (props) => {
     };
 
     return (
-        <GenericYesNoPopup
-            title={'Logout'}
-            renderContent={renderContent}
-            acceptLabel={'OK'}
-            onAccept={onAccept}
-            rejectLabel={'Cancel'}
-            onReject={onReject}
-        />
+        <div>
+            <GenericYesNoPopup
+                title={'Logout'}
+                renderContent={renderContent}
+                acceptLabel={'OK'}
+                onAccept={onAccept}
+                rejectLabel={'Cancel'}
+                onReject={onReject}
+            />
+       </div>
     );
 };
 
