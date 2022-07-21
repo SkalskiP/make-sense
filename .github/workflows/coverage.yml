@@ -9,7 +9,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [14.x, 16.x]
 
     steps:
       - name: Checkout repository
@@ -26,10 +26,10 @@ jobs:
         run: npm install
 
       - name: Run the tests
-        run: npm test -- --coverage
+        run: npm run test:coverage
 
       - name: Upload coverage to Codecov
-        if: ${{ matrix.node-version == '10.x'}}
+        if: ${{ matrix.node-version == '14.x'}}
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
