@@ -19,10 +19,9 @@ import {PopupActions} from '../../logic/actions/PopupActions';
 import {Tooltip} from '@material-ui/core';
 import Fade from '@material-ui/core/Fade';
 import withStyles from '@material-ui/core/styles/withStyles';
-import ImagesDropZone from './ImagesDropZone/ImagesDropZone';
 import {updateAuthData} from '../../store/auth/actionCreators';
 import ImagesFetcher from './ImagesFetcher/ImagesFetcher';
-import {connect, RootStateOrAny, useSelector} from 'react-redux';
+import {connect} from 'react-redux';
 import {updateActivePopupType, updateProjectData} from '../../store/general/actionCreators';
 import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {AppState} from '../../store';
@@ -133,58 +132,11 @@ const MainView: React.FC<IProps> = ({
 
     return (
         <div className={`${getClassName()} loginShowniq InProgress `}>
-            {/* <div className="Slider" id="lower">
-                <div className="TriangleVertical">
-                    <div className="TriangleVerticalContent" />
-                </div>
-            </div> */}
-
-            {/* <div className="Slider" id="upper">
-                <div className="TriangleVertical">
-                    <div className="TriangleVerticalContent" />
-                </div>
-            </div> */}
-
-            {/* <div className="LeftColumn">
-                <div className={'LogoWrapper'}>
-                    <img
-                        draggable={false}
-                        alt={'main-logo'}
-                        src={'ico/main-image-color.png'}
-                    />
-                </div>
-                <div className="EditorFeaturesWrapper">
-                    {getEditorFeatureTiles()}
-                </div>
-                <div className="TriangleVertical">
-                    <div className="TriangleVerticalContent" />
-                </div>
-                {projectInProgress && (
-                    <TextButton label={'Go Back'} onClick={endProject} />
-                )}
-            </div> */}
             <WrapperLogin>
                  <div className='GenericYesNoPopup loginShowniq__content RightColumn'>
                     {/* <ImagesDropZone/> */}
                     <ImagesFetcher goBack={endProject} />
                 </div>
-              
-               
-                {/* {!projectInProgress && (
-                    <TextButton
-                        label={'Get Started'}
-                        onClick={startProject}
-                        externalClassName={'get-started-button'}
-                    />
-                )}
-                {!projectInProgress && authData.authToken && (
-                    <TextButton
-                        style={{bottom: 80}}
-                        label={'Log out'}
-                        onClick={logout}
-                        externalClassName={'get-started-button'}
-                    />
-                )} */}
             </WrapperLogin>
         </div>
     );
