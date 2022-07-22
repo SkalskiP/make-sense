@@ -97,7 +97,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         <img
                             draggable={false}
                             alt={'make-sense'}
-                            src={'/make-sense-ico-transparent.png'}
+                            src={'make-sense-ico-transparent.png'}
                         />
                         Make Sense
                     </div>

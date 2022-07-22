@@ -96,7 +96,7 @@ const LoginPopup: React.FC<IProps> = ({
                     JSON.stringify({email, displayName, authToken, role})
                 );
                 setTimeout(() =>{ 
-                    window.location.href = "/"
+                    window.location.href = `${process.env.REACT_APP_API_ROOT || ""}`
                 }, 500)
             } else if (data.errors) {
                 setMessage(data.errors.map((error) => error.error).join('\n'));
