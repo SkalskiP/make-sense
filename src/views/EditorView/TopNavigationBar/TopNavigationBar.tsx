@@ -96,10 +96,9 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     <div className="Header" onClick={closePopup}>
                         <img
                             draggable={false}
-                            alt={'make-sense'}
-                            src={'/make-sense-ico-transparent.png'}
+                            alt={'showniq icon'}
+                            src={'/showniq-icon.png'}
                         />
-                        Make Sense
                     </div>
                 </div>
                 <div className="NavigationBarGroupWrapper">
