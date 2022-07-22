@@ -107,6 +107,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
     };
 
     return(
+        <div>
         <GenericYesNoPopup
             title={"Load file with labels description"}
             renderContent={renderContent}
@@ -116,6 +117,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
             rejectLabel={"Create labels list"}
             onReject={onReject}
         />
+        </div>
     );
 };
 

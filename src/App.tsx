@@ -37,6 +37,7 @@ const App: React.FC<IProps> = ({
     updateActivePopupTypeAction,
     authData
 }) => {
+   
     useEffect(() => {
         const auth: AuthData = JSON.parse(
             window.localStorage.getItem('@@auth')
@@ -54,12 +55,13 @@ const App: React.FC<IProps> = ({
     }, [authData.authToken]);
 
     const selectRoute = () => {
+    
         if (
             !!PlatformModel.mobileDeviceData.manufacturer &&
             !!PlatformModel.mobileDeviceData.os
         )
             return <MobileMainView />;
-        if (!projectType) return <MainView />;
+        if (!projectType) return  <MainView /> ;
         else {
             if (
                 windowSize.height < Settings.EDITOR_MIN_HEIGHT ||
@@ -74,7 +76,7 @@ const App: React.FC<IProps> = ({
 
     return (
         <div
-            className={classNames('App', {
+            className={classNames('App m-x', {
                 AI: ObjectDetectorLoaded || PoseDetectionLoaded
             })}
             draggable={false}>

@@ -40,7 +40,7 @@ export const GenericYesNoPopup: React.FC<IProps> = (
     }, [status]);
 
     return (
-        <div className="GenericYesNoPopup">
+        <div className="GenericYesNoPopup loginShowniq__content">
             <div className="Header">
                 {title}
             </div>
@@ -51,13 +51,13 @@ export const GenericYesNoPopup: React.FC<IProps> = (
                 {!skipAcceptButton && <TextButton
                     label={!!acceptLabel ? acceptLabel : "YES"}
                     onClick={onAccept}
-                    externalClassName={"accept"}
+                    externalClassName={"accept me-2"}
                     isDisabled={disableAcceptButton}
                 />}
                 {!skipRejectButton && <TextButton
                     label={!!rejectLabel ? rejectLabel : "NO, THANKS"}
                     onClick={onReject}
-                    externalClassName={"reject"}
+                    externalClassName={"reject ms-2"}
                     isDisabled={disableRejectButton}
                 />}
             </div>

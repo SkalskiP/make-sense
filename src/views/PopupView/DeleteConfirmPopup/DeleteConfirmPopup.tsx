@@ -34,6 +34,7 @@ const DeleteConfirmPopup: React.FC<IProps> = (props) => {
     };
 
     return (
+        <div>
         <GenericYesNoPopup
             title={'Delete Confirmation'}
             renderContent={renderContent}
@@ -42,6 +43,7 @@ const DeleteConfirmPopup: React.FC<IProps> = (props) => {
             rejectLabel={'Cancel'}
             onReject={onReject}
         />
+        </div>
     );
 };
 

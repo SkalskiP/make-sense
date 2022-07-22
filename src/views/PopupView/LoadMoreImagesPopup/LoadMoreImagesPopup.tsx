@@ -73,6 +73,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
     };
 
     return(
+        <div>
         <GenericYesNoPopup
             title={"Load more images"}
             renderContent={renderContent}
@@ -82,6 +83,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
             rejectLabel={"Cancel"}
             onReject={onReject}
         />
+        </div>
     );
 };
 

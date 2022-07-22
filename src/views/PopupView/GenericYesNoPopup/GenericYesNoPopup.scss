@@ -1,39 +1,23 @@
 @import '../../../settings/Settings';
 
 .GenericYesNoPopup {
-    max-height: 700px;
-    max-width: 600px;
-    width: 50%;
-    border-radius: 5px;
-    user-select: none;
-    box-shadow: 0px 0px 10px 3px rgba(255, 255, 255, 0.02);
-
+    margin-top: auto;
+    margin-bottom: -22px;
+    padding: 41px 70px;
+    display: flex;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.58);
+    border-radius: 11.0791px;
+    max-width: 575.58px;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
     overflow: hidden;
 
-    .Header {
-        align-self: stretch;
-        height: 40px;
-        box-shadow: 0px 2px 15px 0px rgba(0, 0, 0, 0.4);
-        color: white;
-        font-weight: 900;
-        font-size: 18px;
-        background-color: $darkThemeFirstColor;
-
-        display: flex;
-        flex-direction: column;
-        flex-wrap: nowrap;
-        justify-content: center;
-        align-items: center;
-        align-content: center;
-    }
-
     .Content {
         align-self: stretch;
         font-size: 14px;
-        background-color: $darkThemeSecondColor;
+      
         flex: 1;
 
         display: flex;
@@ -45,12 +29,7 @@
     }
 
     .Footer {
-        padding: 0 40px;
-        height: 80px;
-        align-self: stretch;
-        background-color: $darkThemeSecondColor;
-        border-top: solid 1px $darkThemeFirstColor;
-
+       
         display: flex;
         flex-direction: row;
         flex-wrap: nowrap;
@@ -60,17 +39,22 @@
 
         .TextButton {
             margin-left: 20px;
-            box-shadow: $secondaryColor 0 0 0 2px inset; // fallback if new css variables are not supported by browser
-            box-shadow: var(--leading-color) 0 0 0 2px inset;
-            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-            background-color: var(--leading-color);
-            color: white; // fallback if new css variables are not supported by browser
-            color: var(--button-text-color);
-
+            background: #FF7DA9;
+            border-radius: 9.23261px;
+            color: #FFFFFF;
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18.4652px;
+            line-height: 22px;
+            min-width: 210px;
+            text-align: center;
+            padding: 12px;
+            box-shadow: unset;
+            border: 1px solid #FF7DA9;
             &:hover {
-                background-color: transparent;
-                color: $secondaryColor; // fallback if new css variables are not supported by browser
-                color: var(--leading-color);
+                background: #FFFFFF !important;
+                color: #000000 !important;
+                border: 1px solid #000000 !important;
             }
 
             &.disabled {
@@ -85,6 +69,11 @@
                     color: white;
                 }
             }
+        }
+
+        .TextButton.reject{
+            background: #26D7FF;
+            border: 1px solid #26D7FF;
         }
     }
 }

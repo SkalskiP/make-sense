@@ -185,6 +185,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     };
 
     return(
+        <div>
         <GenericYesNoPopup
             title={'New classes found'}
             renderContent={renderContent}
@@ -193,6 +194,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
             rejectLabel={'Reject'}
             onReject={onReject}
         />
+        </div>
     );
 };
 

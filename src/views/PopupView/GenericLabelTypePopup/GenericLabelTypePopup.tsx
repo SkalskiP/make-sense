@@ -69,6 +69,7 @@ const GenericLabelTypePopup: React.FC<IProps> = (
     }
 
     return(
+        <div>
         <GenericYesNoPopup
             title={title}
             renderContent={renderContent}
@@ -79,6 +80,7 @@ const GenericLabelTypePopup: React.FC<IProps> = (
             rejectLabel={rejectLabel}
             onReject={() => onReject(labelType)}
         />
+        </div>
     );
 };
 

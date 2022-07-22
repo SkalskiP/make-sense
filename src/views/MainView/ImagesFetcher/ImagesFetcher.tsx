@@ -22,13 +22,14 @@ import {Button, FormControl, Input, InputLabel} from '@material-ui/core';
 import {APIService} from '../../../services/API';
 import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
-
+import {Package, ChevronRightBlack, ChevronRightWhite} from "../../../assets/icons"
 interface IProps {
     updateActiveImageIndexAction: (activeImageIndex: number) => any;
     addImageDataAction: (imageData: ImageData[]) => any;
     updateProjectDataAction: (projectData: ProjectData) => any;
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     projectData: ProjectData;
+    goBack: () => any
 }
 
 const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
@@ -36,6 +37,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
+    const { goBack } = props 
 
     const loadImages = async () => {
         try {
@@ -53,10 +55,6 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const startEditor = (projectType: ProjectType) => {
         if (acceptedImages.length > 0) {
             const files = acceptedImages;
-            // const files = sortBy(
-            //     acceptedImages,
-            //     (item: APIImageData) => item.image_id
-            // );
             props.updateProjectDataAction({
                 ...props.projectData,
                 type: projectType
@@ -67,10 +65,6 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                     ImageDataUtil.createImageDataFromAPIData(file)
                 )
             );
-
-            // props.updateActivePopupTypeAction(
-            //     PopupWindowType.INSERT_LABEL_NAMES
-            // );
         }
     };
 
@@ -79,7 +73,8 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
             return (
                 <>
                     <FormControl>
-                        <InputLabel htmlFor="offset">Offset</InputLabel>
+                        <label className='LoginPopupContent__label'>Offset</label>
+                     
                         <Input
                             value={offset}
                             id="offset"
@@ -90,7 +85,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                         />
                     </FormControl>
                     <FormControl>
-                        <InputLabel id="limit">Limit</InputLabel>
+                        <label className='LoginPopupContent__label'>Limit</label>
                         <Input
                             value={limit}
                             id="limit"
@@ -98,11 +93,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                             onChange={(e) => setLimit(parseInt(e.target.value))}
                         />
                     </FormControl>
-                    <img
-                        draggable={false}
-                        alt={'upload'}
-                        src={'ico/box-opened.png'}
-                    />
+                    <Package/>
                     {isLoading ? (
                         <ClipLoader
                             size={40}
@@ -110,31 +101,22 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                             loading={true}
                         />
                     ) : null}
-                    <Button onClick={loadImages}>
+                    {/* <Button onClick={loadImages}>
                         Load Images from Server
-                    </Button>
+                    </Button> */}
                 </>
             );
         else if (acceptedImages.length === 1)
             return (
                 <>
-                    <img
-                        draggable={false}
-                        alt={'uploaded'}
-                        src={'ico/box-closed.png'}
-                    />
+                     <Package/>
                     <p className="extraBold">1 image loaded</p>
                 </>
             );
         else
             return (
                 <>
-                    <img
-                        draggable={false}
-                        key={1}
-                        alt={'uploaded'}
-                        src={'ico/box-closed.png'}
-                    />
+                  <Package/>
                     <p key={2} className="extraBold">
                         {acceptedImages.length} images loaded
                     </p>
@@ -151,15 +133,28 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         <div className="ImagesDropZone">
             <div className="DropZone">{getImageFetcherContent()}</div>
             <div className="DropZoneButtons">
+                {
+                   acceptedImages.length ? (
+                        <TextButton
+                                label={'Object Detection'}
+                                externalClassName="DropZoneButtons__active DropZoneButtons__active__second"
+                                isDisabled={!acceptedImages.length}
+                                onClick={startEditorWithObjectDetection}
+                                icon={<ChevronRightWhite className='ms-auto'/>}
+                            />) : (
+                                <TextButton
+                                    externalClassName="DropZoneButtons__active"
+                                    label={'Load Images from Server'}
+                                    onClick={loadImages}
+                                    icon={<ChevronRightWhite className='ms-auto'/>}
+                        />
+                    )
+                }
                 <TextButton
-                    label={'Object Detection'}
-                    isDisabled={!acceptedImages.length}
-                    onClick={startEditorWithObjectDetection}
-                />
-                <TextButton
-                    label={'Image recognition'}
-                    isDisabled={true}
-                    onClick={startEditorWithImageRecognition}
+                    label={'Go back'}
+                    externalClassName="DropZoneButtons__goback"
+                    onClick={goBack}
+                    icon={<ChevronRightBlack className='ms-auto'/>}
                 />
             </div>
         </div>

@@ -3,6 +3,7 @@
 .GenericYesNoPopupDraggable {
     max-height: 800px;
     max-width: 700px;
+ 
     // width: 50%;
     border-radius: 5px;
     user-select: none;
@@ -59,7 +60,7 @@
         align-content: flex-end;
 
         .TextButton {
-            margin-left: 20px;
+     
             box-shadow: $secondaryColor 0 0 0 2px inset; // fallback if new css variables are not supported by browser
             box-shadow: var(--leading-color) 0 0 0 2px inset;
             background-color: $secondaryColor; // fallback if new css variables are not supported by browser
