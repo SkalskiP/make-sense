@@ -2,6 +2,7 @@
     "name": "make-sense",
     "version": "1.0.0",
     "private": true,
+    "homepage": "/labeler",
     "dependencies": {
         "@material-ui/core": "^4.12.3",
         "@tensorflow-models/coco-ssd": "^2.2.2",
