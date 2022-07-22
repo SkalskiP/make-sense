@@ -1,43 +1,34 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "baseUrl": "src",
-        "downlevelIteration": true,
-        "lib": ["dom", "dom.iterable", "esnext"],
-        "allowJs": true,
-        "skipLibCheck": true,
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "esnext",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        "strictNullChecks": false,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "suppressImplicitAnyIndexErrors": true,
-        "noImplicitAny": false,
-        "strictPropertyInitialization": false,
-        "noFallthroughCasesInSwitch": true,
-        "paths": {
-            "*": ["src/*"],
-            "@/services/*": ["src/services/*"],
-            "@/helper": ["src/helper"],
-            "@/components/*": ["src/components/*"],
-            "@/widgets/*": ["src/frameworks/widgets/*"],
-            "@/constants/*": ["src/constants/*"],
-            "@/models/*": ["src/models/*"],
-            "@/pages/*": ["src/pages/*"],
-            "@/styles/*": ["src/styles/*"],
-            "@/actions/*": ["src/actions/*"],
-            "@/icons/*": ["src/assets/icons/*"],
-            "@/assets/*": ["src/assets/*"],
-            "@/App": ["src/App"]
-          }
-    },
-    "include": ["src"]
+  "compilerOptions": {
+    "target": "ES6",
+    "baseUrl": "src",
+    "downlevelIteration": true,
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "strictNullChecks": false,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noImplicitAny": false,
+    "strictPropertyInitialization": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": [
+    "src"
+  ]
 }
