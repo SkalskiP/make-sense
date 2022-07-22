@@ -10,6 +10,7 @@ import { AppInitializer } from './logic/initializer/AppInitializer';
 
 export const store = configureStore();
 AppInitializer.inti();
+
 ReactDOM.render(
     (<Provider store={store}>
         <App />
