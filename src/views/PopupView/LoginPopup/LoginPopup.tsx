@@ -1,18 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import './LoginPopup.scss';
-import {Input} from '@material-ui/core';
-import {connect} from 'react-redux';
-import {AppState} from '../../../store';
-import {updateAuthData} from '../../../store/auth/actionCreators';
-import {updateActivePopupType} from '../../../store/general/actionCreators';
-import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
-import {AuthData} from '../../../store/auth/types';
-import {ClipLoader} from 'react-spinners';
-import {CSSHelper} from '../../../logic/helpers/CSSHelper';
-import {APIService} from '../../../services/API';
-import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import { Input } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { AppState } from '../../../store';
+import { updateAuthData } from '../../../store/auth/actionCreators';
+import { updateActivePopupType } from '../../../store/general/actionCreators';
+import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
+import { AuthData } from '../../../store/auth/types';
+import { ClipLoader } from 'react-spinners';
+import { CSSHelper } from '../../../logic/helpers/CSSHelper';
+import { APIService } from '../../../services/API';
+import { PopupWindowType } from '../../../data/enums/PopupWindowType';
 import WrapperLogin from "../../../components/WrapperLogin/index"
-import {CodiconAccount, Eye, MoveIcon} from "../../../assets/icons"
+import { CodiconAccount, Eye, MoveIcon } from "../../../assets/icons"
 
 interface IProps {
     updateAuthDataAction: (authData: AuthData) => any;
@@ -41,25 +41,25 @@ const LoginPopup: React.FC<IProps> = ({
             <div className="LoginPopupInputContainer">
                 <label className='LoginPopupContent__label'>Account</label>
                 <div className='LoginPopupContent__parent'>
-                    <CodiconAccount className='LoginPopupContent__icon'/>
+                    <CodiconAccount className='LoginPopupContent__icon' />
                     <Input
                         fullWidth
                         placeholder="email"
                         onChange={(e) => setEmail(e.target.value)}
-                        inputProps={{style: {color: 'white'}}}
+                        inputProps={{ style: { color: 'white' } }}
                     />
                 </div>
             </div>
             <div className="LoginPopupInputContainer">
                 <label className='LoginPopupContent__label'>Password</label>
                 <div className='LoginPopupContent__parent'>
-                    <Eye className='LoginPopupContent__icon'/> 
-                    <MoveIcon className='LoginPopupContent__move'/> 
+                    <Eye className='LoginPopupContent__icon' />
+                    <MoveIcon className='LoginPopupContent__move' />
                     <Input
                         fullWidth
                         placeholder="password"
                         type="password"
-                        inputProps={{style: {color: 'white'}}}
+                        inputProps={{ style: { color: 'white' } }}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
@@ -72,8 +72,8 @@ const LoginPopup: React.FC<IProps> = ({
                         loading={true}
                     />
                 ) : (
-                    message
-                )}
+                        message
+                    )}
             </div>
         </div>
     );
@@ -81,10 +81,10 @@ const LoginPopup: React.FC<IProps> = ({
     const doLogin = async () => {
         try {
             setIsLoadingStatus(true);
-            const {data} = await APIService.login({email, password});
+            const { data } = await APIService.login({ email, password });
             // console.log('result.data', data);
             if (data.code === 200) {
-                const {displayName, role, token: authToken} = data.data;
+                const { displayName, role, token: authToken } = data.data;
                 updateAuthDataAction({
                     email,
                     displayName,
@@ -93,10 +93,10 @@ const LoginPopup: React.FC<IProps> = ({
                 });
                 window.localStorage.setItem(
                     '@@auth',
-                    JSON.stringify({email, displayName, authToken, role})
+                    JSON.stringify({ email, displayName, authToken, role })
                 );
-                setTimeout(() =>{ 
-                    window.location.href = `${process.env.REACT_APP_API_ROOT || "/"}`
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_API_ROOT || "/labeler"}`
                 }, 1000)
             } else if (data.errors) {
                 setMessage(data.errors.map((error) => error.error).join('\n'));
