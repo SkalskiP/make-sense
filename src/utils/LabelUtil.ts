@@ -7,6 +7,15 @@ import {IPoint} from '../interfaces/IPoint';
 import { sample } from 'lodash';
 import {Settings} from '../settings/Settings';
 
+export type LabelCount = {
+    point: number;
+    line: number;
+    polygon: number;
+    rect: number;
+}
+
+export type LabelCountSummary = Record<string, LabelCount[]>;
+
 export class LabelUtil {
     public static createLabelName(name: string): LabelName {
         return {
