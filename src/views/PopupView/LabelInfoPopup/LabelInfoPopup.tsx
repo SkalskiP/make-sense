@@ -548,7 +548,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 </div>
                 {image ? (
                     <div className="SampleImage">
-                        <img src={image} width={300} height={300} />
+                        <img src={image} width={230} height={230} />
                     </div>
                 ) : null}
             </div>
