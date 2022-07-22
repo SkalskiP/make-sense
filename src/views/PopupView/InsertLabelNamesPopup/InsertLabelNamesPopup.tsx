@@ -26,26 +26,25 @@ import { TextField } from '@mui/material';
 import { styled } from '@mui/system';
 
 const StyledTextField = styled(TextField)(({ theme }) => ({
-    root: {
-        '& .MuiInputBase-root': {
-            color: 'white',
-        },
-        '& label': {
-            color: 'white',
-        },
-        '& .MuiInput-underline:before': {
-            borderBottomColor: 'white',
-        },
-        '& .MuiInput-underline:hover:before': {
-            borderBottomColor: 'white',
-        },
-        '& label.Mui-focused': {
-            color: Settings.SECONDARY_COLOR,
-        },
-        '& .MuiInput-underline:after': {
-            borderBottomColor: Settings.SECONDARY_COLOR,
-        }
+
+    '& .MuiInputBase-root': {
+        color: 'white',
     },
+    '& label': {
+        color: 'white',
+    },
+    '& .MuiInput-underline:before': {
+        borderBottomColor: 'white',
+    },
+    '& .MuiInput-underline:hover:before': {
+        borderBottomColor: 'white',
+    },
+    '& label.Mui-focused': {
+        color: Settings.SECONDARY_COLOR,
+    },
+    '& .MuiInput-underline:after': {
+        borderBottomColor: Settings.SECONDARY_COLOR,
+    }
 }));
 
 interface IProps {
