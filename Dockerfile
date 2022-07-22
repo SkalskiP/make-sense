@@ -12,7 +12,7 @@ COPY . /usr/src/app
 COPY package.json ./
 RUN npm install
 RUN npm rebuild node-sass
-
+RUN export PUBLIC_URL=http://localhost:3000/labeler
 # Build frontend
 # FROM cache-image as builder
 # WORKDIR /usr/src/app
