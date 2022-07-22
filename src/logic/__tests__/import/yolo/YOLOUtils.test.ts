@@ -5,7 +5,6 @@ import { AnnotationsParsingError, LabelNamesNotUniqueError } from '../../../impo
 import { v4 as uuidv4 } from 'uuid';
 import { ISize } from '../../../../interfaces/ISize';
 import { IRect } from '../../../../interfaces/IRect';
-import { describe, it, expect } from 'vitest';
 
 describe('YOLOUtils parseLabelsFile method', () => {
     it('should return list of label names', () => {

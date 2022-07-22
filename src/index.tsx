@@ -12,11 +12,10 @@ AppInitializer.inti();
 
 const root = createRoot(document.getElementById('root') || document.createElement("div"));
 root.render(
-    <Provider store={store}>
-        <App />
-    </Provider>
+    <React.StrictMode>
+        <Provider store={store}>
+            <App />
+        </Provider>
+    </React.StrictMode>
 );
 
-
-// import * as serviceWorker from './serviceWorker';
-// serviceWorker.unregister();

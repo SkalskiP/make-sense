@@ -1,5 +1,4 @@
 import {DrawUtil} from '../DrawUtil';
-import { describe, it, expect } from 'vitest';
 
 describe('DrawUtil hexToRGB method', () => {
     it('should return correct white rgb value when alpha is null', () => {

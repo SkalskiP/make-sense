@@ -3,11 +3,10 @@ import { LabelUtil } from '../LabelUtil';
 import {LabelPoint, LabelPolygon, LabelRect} from '../../store/labels/types';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {IPoint} from '../../interfaces/IPoint';
-import { describe, it, expect, vi } from 'vitest';
 
 const mockUUID: string = '123e4567-e89b-12d3-a456-426614174000'
 
-vi.mock('uuid', () => ({ v4: () => mockUUID }));
+jest.mock('uuid', () => ({ v4: () => mockUUID }));
 
 describe('LabelUtil createLabelRect method', () => {
     it('return correct LabelRect object', () => {

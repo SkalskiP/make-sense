@@ -1,12 +1,9 @@
-// @vitest-environment jsdom
-
 import { ImageData } from '../../store/labels/types';
 import { v4 as uuidv4 } from 'uuid';
 import { LabelUtil } from '../LabelUtil';
 import { ImageDataUtil } from '../ImageDataUtil';
 import { AcceptedFileType } from '../../data/enums/AcceptedFileType';
 
-import { describe, it, expect } from 'vitest';
 
 const getDummyImageData = (id: string): ImageData => {
     return {

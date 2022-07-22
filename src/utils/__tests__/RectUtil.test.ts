@@ -2,7 +2,6 @@ import {RectUtil} from '../RectUtil';
 import {IRect} from '../../interfaces/IRect';
 import {IPoint} from '../../interfaces/IPoint';
 import {ISize} from '../../interfaces/ISize';
-import { describe, it, expect } from 'vitest';
 
 describe('RectUtil getRatio method', () => {
     it('should return correct value of rect ratio', () => {

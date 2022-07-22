@@ -1,8 +1,5 @@
-// @vitest-environment jsdom
-
 import {AIActions} from "../../actions/AIActions";
 
-import { describe, it, expect } from 'vitest';
 describe('AIActions excludeRejectedLabelNames method', () => {
     it('should return list with correct values', () => {
         // GIVEN

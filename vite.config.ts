@@ -65,11 +65,6 @@ export default ({ mode }: UserConfig): UserConfigExport => {
         ],
       },
     },
-    test: {
-      globals: true,
-      coverage: {
-        reporter: ["text", "json", "html"],
-      },
-    },
+     
   });
 };
