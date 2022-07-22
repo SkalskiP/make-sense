@@ -39,7 +39,7 @@
         "uuid": "^8.3.2"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "PUBLIC_URL=/labeler react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "test:coverage": "npm test -- --coverage",
