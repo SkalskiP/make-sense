@@ -133,7 +133,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         const onDeleteCallback = () => deleteLabelNameCallback(labelName.id);
         const onChangeColorCallback = () => changeLabelNameColorCallback(labelName.id);
         return <div className='LabelEntry' key={labelName.id}>
-            <StyledTextField
+            <StyledTextField variant='standard'
                 id={'key'}
                 autoComplete={'off'}
                 autoFocus={true}
