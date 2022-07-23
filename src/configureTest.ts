@@ -1,13 +1,8 @@
 import "@testing-library/jest-dom";
 
-
-import configureStore from 'redux-mock-store';
-
-const middlewares = []; // add your middlewares like `redux-thunk`
-
+const crypto = require('crypto');
 jest.mock("./App.tsx", () => "App");
 
-const crypto = require('crypto');
 
 Object.defineProperty(global.self, 'crypto', {
   value: {

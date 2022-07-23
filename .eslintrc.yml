@@ -6,8 +6,7 @@ parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
 rules:
-  ignoreParameters: false
-  ignoreProperties: false
+  "@typescript-eslint/no-inferrable-types": off
   no-shadow: off
   "@typescript-eslint/no-shadow":
     - error
@@ -20,7 +19,7 @@ rules:
         - .tsx
   complexity:
     - error
-    - 10
+    - 15
   no-await-in-loop: warn
   no-eval: error
   no-implied-eval: error
