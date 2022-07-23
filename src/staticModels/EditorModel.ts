@@ -20,7 +20,7 @@ export class EditorModel {
     public static viewPortHelper: ViewPortHelper;
 
     public static isLoading: boolean = false;
-    public static viewPortActionsDisabled: boolean;
+    public static viewPortActionsDisabled: boolean = false;
     public static mousePositionOnViewPortContent: IPoint;
     public static viewPortSize: ISize;
 
