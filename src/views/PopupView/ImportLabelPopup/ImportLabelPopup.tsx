@@ -63,7 +63,7 @@ const ImportLabelPopup: React.FC<IProps> = (
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            "application/json": [".*"],
+            "application/json": [".json" ],
             "text/plain": [".txt"]
         },
         multiple: true,
