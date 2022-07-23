@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom";
+import crypto from 'crypto';
 
-const crypto = require('crypto');
 jest.mock("./App.tsx", () => "App");
 
 

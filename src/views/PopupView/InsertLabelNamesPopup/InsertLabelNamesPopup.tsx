@@ -25,7 +25,7 @@ import { Notification } from '../../../data/enums/Notification';
 import { TextField } from '@mui/material';
 import { styled } from '@mui/system';
 
-const StyledTextField = styled(TextField)(({ theme }) => ({
+const StyledTextField = styled(TextField)(() => ({
 
     '& .MuiInputBase-root': {
         color: 'white',
@@ -127,6 +127,15 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         }
     };
 
+    const onChange = (id: string, value: string) => {
+        const newLabelNames = labelNames.map((labelName: LabelName) => {
+            return labelName.id === id ? {
+                ...labelName, name: value
+            } : labelName;
+        });
+        setLabelNames(newLabelNames);
+    };
+
     const labelInputs = labelNames.map((labelName: LabelName) => {
         const onChangeCallback = (event: React.ChangeEvent<HTMLInputElement>) =>
             onChange(labelName.id, event.target.value);
@@ -161,14 +170,6 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         </div>;
     });
 
-    const onChange = (id: string, value: string) => {
-        const newLabelNames = labelNames.map((labelName: LabelName) => {
-            return labelName.id === id ? {
-                ...labelName, name: value
-            } : labelName;
-        });
-        setLabelNames(newLabelNames);
-    };
 
     const onCreateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
