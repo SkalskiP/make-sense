@@ -25,8 +25,7 @@ import { Notification } from '../../../data/enums/Notification';
 import { TextField } from '@mui/material';
 import { styled } from '@mui/system';
 
-const StyledTextField = styled(TextField)(() => ({
-
+const StyledTextField = styled(TextField)({
     '& .MuiInputBase-root': {
         color: 'white',
     },
@@ -45,7 +44,7 @@ const StyledTextField = styled(TextField)(() => ({
     '& .MuiInput-underline:after': {
         borderBottomColor: Settings.SECONDARY_COLOR,
     }
-}));
+});
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;

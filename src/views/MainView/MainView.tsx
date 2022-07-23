@@ -6,7 +6,7 @@ import { ISize } from '../../interfaces/ISize';
 import { ImageButton } from '../Common/ImageButton/ImageButton';
 import { ISocialMedia, SocialMediaData } from '../../data/info/SocialMediaData';
 import { EditorFeatureData, IEditorFeature } from '../../data/info/EditorFeatureData';
-import { styled, Tooltip } from '@mui/material';
+import { styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import Fade from '@mui/material/Fade';
 import ImagesDropZone from './ImagesDropZone/ImagesDropZone';
 
@@ -32,8 +32,10 @@ const MainView: React.FC = () => {
         );
     };
 
-    const DarkTooltip = styled(Tooltip)(({ theme }) => ({
-        tooltip: {
+    const DarkTooltip = styled(({ className, ...props }: TooltipProps) => (
+        <Tooltip {...props} classes={{ popper: className }} />
+    ))(({ theme }) => ({
+        [`& .${tooltipClasses.tooltip}`]: {
             backgroundColor: '#171717',
             color: '#ffffff',
             boxShadow: theme.shadows[1],
