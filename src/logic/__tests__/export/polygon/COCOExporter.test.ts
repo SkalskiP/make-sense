@@ -1,14 +1,14 @@
 
-import {COCOCategory, COCOInfo} from "../../../../data/labels/COCO";
-import {COCOExporter} from "../../../export/polygon/COCOExporter";
-import {LabelName} from "../../../../store/labels/types";
+import { COCOCategory, COCOInfo } from "../../../../data/labels/COCO";
+import { COCOExporter } from "../../../export/polygon/COCOExporter";
+import { LabelName } from "../../../../store/labels/types";
 
 describe('COCOExporter produces correct COCO label', () => {
     it('should produce correct info component', () => {
-        const givenDescription: string = "lorem ipsum";
+        const givenDescription = "lorem ipsum";
         const expectedCOCOInfo: COCOInfo = {
             "description": "lorem ipsum"
-        }
+        };
         expect(COCOExporter.getInfoComponent(givenDescription)).toEqual(expectedCOCOInfo);
     });
 
@@ -26,7 +26,7 @@ describe('COCOExporter produces correct COCO label', () => {
                 "id": "id_3",
                 "name": "label_3"
             }
-        ]
+        ];
         const expectedCOCOCategories: COCOCategory[] = [
             {
                 "id": 1,
@@ -40,7 +40,7 @@ describe('COCOExporter produces correct COCO label', () => {
                 "id": 3,
                 "name": "label_3"
             }
-        ]
+        ];
         expect(COCOExporter.getCategoriesComponent(givenLabelNames)).toEqual(expectedCOCOCategories);
     });
-})
+});

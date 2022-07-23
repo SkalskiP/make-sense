@@ -6,6 +6,8 @@ parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
 rules:
+  ignoreParameters: false
+  ignoreProperties: false
   no-shadow: off
   "@typescript-eslint/no-shadow":
     - error

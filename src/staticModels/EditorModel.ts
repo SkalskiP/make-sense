@@ -1,10 +1,10 @@
-import {PrimaryEditorRenderEngine} from "../logic/render/PrimaryEditorRenderEngine";
-import {BaseRenderEngine} from "../logic/render/BaseRenderEngine";
-import {IRect} from "../interfaces/IRect";
-import {IPoint} from "../interfaces/IPoint";
-import {ISize} from "../interfaces/ISize";
+import { PrimaryEditorRenderEngine } from "../logic/render/PrimaryEditorRenderEngine";
+import { BaseRenderEngine } from "../logic/render/BaseRenderEngine";
+import { IRect } from "../interfaces/IRect";
+import { IPoint } from "../interfaces/IPoint";
+import { ISize } from "../interfaces/ISize";
 import Scrollbars from "react-custom-scrollbars-2";
-import {ViewPortHelper} from "../logic/helpers/ViewPortHelper";
+import { ViewPortHelper } from "../logic/helpers/ViewPortHelper";
 
 export class EditorModel {
     public static editor: HTMLDivElement;
@@ -19,7 +19,7 @@ export class EditorModel {
 
     public static viewPortHelper: ViewPortHelper;
 
-    public static isLoading: boolean;
+    public static isLoading: boolean = false;
     public static viewPortActionsDisabled: boolean;
     public static mousePositionOnViewPortContent: IPoint;
     public static viewPortSize: ISize;
