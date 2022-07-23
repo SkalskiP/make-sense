@@ -1,43 +1,43 @@
-import React, {useState} from 'react'
-import './LoadLabelNamesPopup.scss'
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {updateLabelNames} from "../../../store/labels/actionCreators";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {PopupWindowType} from "../../../data/enums/PopupWindowType";
-import {updateActivePopupType} from "../../../store/general/actionCreators";
-import {useDropzone} from "react-dropzone";
-import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
-import {LabelName} from "../../../store/labels/types";
-import {YOLOUtils} from "../../../logic/import/yolo/YOLOUtils";
+import React, { useState } from 'react';
+import './LoadLabelNamesPopup.scss';
+import { AppState } from "../../../store";
+import { connect } from "react-redux";
+import { updateLabelNames } from "../../../store/labels/actionCreators";
+import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
+import { PopupWindowType } from "../../../data/enums/PopupWindowType";
+import { updateActivePopupType as storeUpdateActivePopupType } from "../../../store/general/actionCreators";
+import { useDropzone } from "react-dropzone";
+import { LabelName } from "../../../store/labels/types";
+import { YOLOUtils } from "../../../logic/import/yolo/YOLOUtils";
 
 interface IProps {
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateLabels: (labels: LabelName[]) => any;
 }
 
-const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLabels}) => {
+const LoadLabelNamesPopup: React.FC<IProps> = ({ updateActivePopupType, updateLabels }) => {
     const [labelsList, setLabelsList] = useState([]);
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
 
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: AcceptedFileType.TEXT,
-        multiple: false,
-        onDrop: (acceptedFiles) => {
-            if (acceptedFiles.length === 1) {
-                YOLOUtils.loadLabelsList(acceptedFiles[0], onSuccess, onFailure);
-            }
-        }
-    });
-
-    const onSuccess = (labelsList: LabelName[]) => {
-        setLabelsList(labelsList);
+    const onSuccess = (labels: LabelName[]) => {
+        setLabelsList(labels);
         setInvalidFileLoadedStatus(false);
     };
 
     const onFailure = () => {
         setInvalidFileLoadedStatus(true);
     };
+
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+        accept: { "text/plain": [".txt"] },
+        multiple: false,
+        onDrop: (accepted) => {
+            if (accepted.length === 1) {
+                YOLOUtils.loadLabelsList(accepted[0], onSuccess, onFailure);
+            }
+        }
+    });
+
 
     const onAccept = () => {
         if (labelsList.length > 0) {
@@ -94,19 +94,19 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
     };
 
     const renderContent = () => {
-        return(<div className="LoadLabelsPopupContent">
+        return (<div className="LoadLabelsPopupContent">
             <div className="Message">
                 Load a text file with a list of labels you are planning to use. The names of
-                each label should be separated by new line. If you don't have a prepared file, no problem. You can
+                each label should be separated by new line. If you don&apos;t have a prepared file, no problem. You can
                 create your own list now.
             </div>
-            <div {...getRootProps({className: 'DropZone'})}>
+            <div {...getRootProps({ className: 'DropZone' })}>
                 {getDropZoneContent()}
             </div>
         </div>);
     };
 
-    return(
+    return (
         <GenericYesNoPopup
             title={"Load file with labels description"}
             renderContent={renderContent}
@@ -120,7 +120,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({updateActivePopupType, updateLab
 };
 
 const mapDispatchToProps = {
-    updateActivePopupType,
+    updateActivePopupType: storeUpdateActivePopupType,
     updateLabels: updateLabelNames
 };
 

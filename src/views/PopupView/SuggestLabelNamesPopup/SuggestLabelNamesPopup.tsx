@@ -6,7 +6,7 @@ import {updateRejectedSuggestedLabelList, updateSuggestedLabelList} from '../../
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
 import {PopupActions} from '../../../logic/actions/PopupActions';
 import {AISelector} from '../../../store/selectors/AISelector';
-import Scrollbars from 'react-custom-scrollbars';
+import Scrollbars from 'react-custom-scrollbars-2';
 import {LabelName} from '../../../store/labels/types';
 import {updateLabelNames} from '../../../store/labels/actionCreators';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';

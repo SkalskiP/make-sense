@@ -1,6 +1,6 @@
 import React from 'react';
 import {ISize} from '../../../../interfaces/ISize';
-import Scrollbars from 'react-custom-scrollbars';
+import Scrollbars from 'react-custom-scrollbars-2';
 import {ImageData, LabelName, LabelPolygon} from '../../../../store/labels/types';
 import './PolygonLabelsList.scss';
 import {

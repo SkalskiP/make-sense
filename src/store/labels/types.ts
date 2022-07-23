@@ -36,7 +36,7 @@ export type LabelLine = Annotation & {
 export type LabelName = {
     name: string;
     id: string;
-    color: string;
+    color?: string;
 }
 
 export type ImageData = {

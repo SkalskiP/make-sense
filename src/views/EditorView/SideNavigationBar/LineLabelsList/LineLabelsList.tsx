@@ -6,7 +6,7 @@ import {LabelActions} from '../../../../logic/actions/LabelActions';
 import LabelInputField from '../LabelInputField/LabelInputField';
 import {findLast} from 'lodash';
 import EmptyLabelList from '../EmptyLabelList/EmptyLabelList';
-import Scrollbars from 'react-custom-scrollbars';
+import Scrollbars from 'react-custom-scrollbars-2';
 import {
     updateActiveLabelId,
     updateActiveLabelNameId,

@@ -44,7 +44,7 @@ export class YOLOImporter extends AnnotationImporter {
         } catch (error) {
             onFailure(error as Error)
         }
-    };
+    }
 
     public static filterFilesData(filesData: File[], imagesData: ImageData[]): YOLOFilesSpec {
         const functionalityPartitionResult = ArrayUtil.partition(
@@ -90,7 +90,7 @@ export class YOLOImporter extends AnnotationImporter {
     public static injectImageDataWithAnnotations(sourceImageData: ImageData[], annotatedImageData: ImageData[]): ImageData[] {
         return sourceImageData.map((i: ImageData) => {
             const result = find(annotatedImageData, {id: i.id});
-            return !!result ? result : i;
+            return result ? result : i;
         })
     }
 }

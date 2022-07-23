@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "baseUrl": ".",
+    "target": "ESNext",
     "downlevelIteration": true,
     "lib": [
       "dom",
@@ -17,17 +18,22 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "outDir": "dist",
     "noEmit": true,
-    "jsx": "react-jsx",
+    "jsx": "react-jsxdev",
     "strictNullChecks": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "suppressImplicitAnyIndexErrors": true,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "types": [
+      "vite/client",
+    ]
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["./node_modules", "./public", "./dist", "./.vscode"]
 }

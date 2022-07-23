@@ -10,7 +10,7 @@ export class DrawUtil {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
-    public static drawLine(canvas:HTMLCanvasElement, startPoint:IPoint, endPoint:IPoint, color:string = '#111111', thickness:number = 1): void {
+    public static drawLine(canvas:HTMLCanvasElement, startPoint:IPoint, endPoint:IPoint, color = '#111111', thickness = 1): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.strokeStyle = color;
@@ -23,7 +23,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawRect(canvas:HTMLCanvasElement, rect:IRect, color:string = '#fff', thickness:number = 1): void {
+    public static drawRect(canvas:HTMLCanvasElement, rect:IRect, color = '#fff', thickness = 1): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.strokeStyle = color;
@@ -34,7 +34,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawRectWithFill(canvas:HTMLCanvasElement, rect:IRect, color:string = '#fff'): void {
+    public static drawRectWithFill(canvas:HTMLCanvasElement, rect:IRect, color = '#fff'): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.fillStyle = color;
@@ -44,7 +44,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static shadeEverythingButRect(canvas:HTMLCanvasElement, rect:IRect, color:string = 'rgba(0, 0, 0, 0.7)'): void {
+    public static shadeEverythingButRect(canvas:HTMLCanvasElement, rect:IRect, color = 'rgba(0, 0, 0, 0.7)'): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.fillStyle = color;
@@ -54,7 +54,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawCircleWithFill(canvas:HTMLCanvasElement, anchorPoint:IPoint, radius:number, color:string = '#ffffff'):void {
+    public static drawCircleWithFill(canvas:HTMLCanvasElement, anchorPoint:IPoint, radius:number, color = '#ffffff'):void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         const startAngleRad = UnitUtil.deg2rad(0);
@@ -66,7 +66,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawCircle(canvas:HTMLCanvasElement, anchorPoint:IPoint, radius:number, startAngleDeg:number, endAngleDeg:number, thickness:number = 20, color:string = '#ffffff'): void {
+    public static drawCircle(canvas:HTMLCanvasElement, anchorPoint:IPoint, radius:number, startAngleDeg:number, endAngleDeg:number, thickness = 20, color = '#ffffff'): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         const startAngleRad = UnitUtil.deg2rad(startAngleDeg);
         const endAngleRad = UnitUtil.deg2rad(endAngleDeg);
@@ -79,7 +79,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawPolygon(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = '#fff', thickness:number = 1): void {
+    public static drawPolygon(canvas:HTMLCanvasElement, anchors: IPoint[], color = '#fff', thickness = 1): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.strokeStyle = color;
@@ -94,7 +94,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawPolygonWithFill(canvas:HTMLCanvasElement, anchors: IPoint[], color:string = '#fff'): void {
+    public static drawPolygonWithFill(canvas:HTMLCanvasElement, anchors: IPoint[], color = '#fff'): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.fillStyle = color;
@@ -108,7 +108,7 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawText(canvas:HTMLCanvasElement, text:string, textSize:number, anchorPoint:IPoint, color:string = '#ffffff', bold:boolean = false, align:string = 'center'):void {
+    public static drawText(canvas:HTMLCanvasElement, text:string, textSize:number, anchorPoint:IPoint, color = '#ffffff', bold = false, align = 'center'):void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.fillStyle = color;
@@ -125,9 +125,9 @@ export class DrawUtil {
         const b = parseInt(hex.slice(5, 7), 16);
 
         if (alpha !== null) {
-            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
         } else {
-            return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+            return `rgb(${r}, ${g}, ${b})`;
         }
     }
 }

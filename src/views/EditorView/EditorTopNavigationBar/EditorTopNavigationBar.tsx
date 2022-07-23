@@ -1,28 +1,27 @@
-import {ContextType} from '../../../data/enums/ContextType';
+import { ContextType } from '../../../data/enums/ContextType';
 import './EditorTopNavigationBar.scss';
 import React from 'react';
 import classNames from 'classnames';
-import {AppState} from '../../../store';
-import {connect} from 'react-redux';
-import {updateCrossHairVisibleStatus, updateImageDragModeStatus} from '../../../store/general/actionCreators';
-import {GeneralSelector} from '../../../store/selectors/GeneralSelector';
-import {ViewPointSettings} from '../../../settings/ViewPointSettings';
-import {ImageButton} from '../../Common/ImageButton/ImageButton';
-import {ViewPortActions} from '../../../logic/actions/ViewPortActions';
-import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
-import {LabelType} from '../../../data/enums/LabelType';
-import {AISelector} from '../../../store/selectors/AISelector';
-import {ISize} from '../../../interfaces/ISize';
-import {AIActions} from '../../../logic/actions/AIActions';
-import withStyles from '@material-ui/core/styles/withStyles';
-import {Tooltip} from '@material-ui/core';
-import Fade from '@material-ui/core/Fade';
-
-const BUTTON_SIZE: ISize = {width: 30, height: 30};
+import { AppState } from '../../../store';
+import { connect } from 'react-redux';
+import { updateCrossHairVisibleStatus, updateImageDragModeStatus } from '../../../store/general/actionCreators';
+import { GeneralSelector } from '../../../store/selectors/GeneralSelector';
+import { ViewPointSettings } from '../../../settings/ViewPointSettings';
+import { ImageButton } from '../../Common/ImageButton/ImageButton';
+import { ViewPortActions } from '../../../logic/actions/ViewPortActions';
+import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
+import { LabelType } from '../../../data/enums/LabelType';
+import { AISelector } from '../../../store/selectors/AISelector';
+import { ISize } from '../../../interfaces/ISize';
+import { AIActions } from '../../../logic/actions/AIActions';
+import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'; 
+const BUTTON_SIZE: ISize = { width: 30, height: 30 };
 const BUTTON_PADDING: number = 10;
 
-const StyledTooltip = withStyles(theme => ({
-    tooltip: {
+const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: '#171717',
         color: '#ffffff',
         boxShadow: theme.shadows[1],
@@ -30,7 +29,7 @@ const StyledTooltip = withStyles(theme => ({
         maxWidth: 200,
         textAlign: 'center'
     },
-}))(Tooltip);
+  })); 
 
 const getButtonWithTooltip = (
     key: string,
@@ -38,8 +37,8 @@ const getButtonWithTooltip = (
     imageSrc: string,
     imageAlt: string,
     isActive: boolean,
-    href?:string,
-    onClick?:() => any
+    href?: string,
+    onClick?: () => any
 ): React.ReactElement => {
     return <StyledTooltip
         key={key}
@@ -60,8 +59,8 @@ const getButtonWithTooltip = (
                 isActive={isActive}
             />
         </div>
-    </StyledTooltip>
-}
+    </StyledTooltip>;
+};
 
 interface IProps {
     activeContext: ContextType;
@@ -101,7 +100,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
 
     const crossHairOnClick = () => {
         updateCrossHairVisibleStatusAction(!crossHairVisible);
-    }
+    };
 
     return (
         <div className={getClassName()}>
@@ -177,31 +176,31 @@ const EditorTopNavigationBar: React.FC<IProps> = (
             </div>
             {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
                 (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className='ButtonWrapper'>
-                {
-                    getButtonWithTooltip(
-                        'accept-all',
-                        'accept all proposed detections',
-                        'ico/accept-all.png',
-                        'accept-all',
-                        false,
-                        undefined,
-                        () => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    )
-                }
-                {
-                    getButtonWithTooltip(
-                        'reject-all',
-                        'reject all proposed detections',
-                        'ico/reject-all.png',
-                        'reject-all',
-                        false,
-                        undefined,
-                        () => AIActions.rejectAllSuggestedLabels(LabelsSelector.getActiveImageData())
-                    )
-                }
-            </div>}
+                    {
+                        getButtonWithTooltip(
+                            'accept-all',
+                            'accept all proposed detections',
+                            'ico/accept-all.png',
+                            'accept-all',
+                            false,
+                            undefined,
+                            () => AIActions.acceptAllSuggestedLabels(LabelsSelector.getActiveImageData())
+                        )
+                    }
+                    {
+                        getButtonWithTooltip(
+                            'reject-all',
+                            'reject all proposed detections',
+                            'ico/reject-all.png',
+                            'reject-all',
+                            false,
+                            undefined,
+                            () => AIActions.rejectAllSuggestedLabels(LabelsSelector.getActiveImageData())
+                        )
+                    }
+                </div>}
         </div>
-    )
+    );
 };
 
 const mapDispatchToProps = {
