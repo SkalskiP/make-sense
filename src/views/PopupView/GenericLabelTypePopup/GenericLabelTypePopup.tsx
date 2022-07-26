@@ -44,6 +44,7 @@ const GenericLabelTypePopup: React.FC<IProps> = (
             .filter((label: ILabelToolkit) => label.projectType === projectType)
             .map((label: ILabelToolkit) => {
                 return <ImageButton
+                    key={label.labelType}
                     image={label.imageSrc}
                     imageAlt={label.imageAlt}
                     buttonSize={{width: 40, height: 40}}

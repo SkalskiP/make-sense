@@ -1,4 +1,4 @@
 export type HotKeyAction = {
     keyCombo: string[];
-    action: (event: KeyboardEvent) => any;
+    action: (event: KeyboardEvent) => unknown;
 }

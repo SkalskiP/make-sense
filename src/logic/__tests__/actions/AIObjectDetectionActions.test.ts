@@ -1,3 +1,4 @@
+
 import {LabelName} from '../../../store/labels/types';
 import {DetectedObject} from '@tensorflow-models/coco-ssd';
 import {AIObjectDetectionActions} from '../../actions/AIObjectDetectionActions';

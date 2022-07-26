@@ -19,7 +19,7 @@ import {EditorActions} from '../../../logic/actions/EditorActions';
 import {EditorUtil} from '../../../utils/EditorUtil';
 import {ContextManager} from '../../../logic/context/ContextManager';
 import {ContextType} from '../../../data/enums/ContextType';
-import Scrollbars from 'react-custom-scrollbars';
+import Scrollbars from 'react-custom-scrollbars-2';
 import {ViewPortActions} from '../../../logic/actions/ViewPortActions';
 import {PlatformModel} from '../../../staticModels/PlatformModel';
 import LabelControlPanel from '../LabelControlPanel/LabelControlPanel';

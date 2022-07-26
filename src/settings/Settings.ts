@@ -59,5 +59,17 @@ export class Settings {
         '#cb38ff',
         '#ff95c8',
         '#ff37c7'
-    ]
+    ];
+
+    public static readonly CSV_SEPARATOR = ','
+    public static readonly RECT_LABELS_EXPORT_CSV_COLUMN_NAMES = [
+        'label_name',
+        'bbox_x',
+        'bbox_y',
+        'bbox_width',
+        'bbox_height',
+        'image_name',
+        'image_width',
+        'image_height'
+    ].join(Settings.CSV_SEPARATOR)
 }

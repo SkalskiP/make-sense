@@ -1,32 +1,43 @@
 import React from 'react';
-import {ISize} from "../../../../interfaces/ISize";
-import Scrollbars from 'react-custom-scrollbars';
-import {ImageData, LabelName, LabelPolygon} from "../../../../store/labels/types";
+import {ISize} from '../../../../interfaces/ISize';
+import Scrollbars from 'react-custom-scrollbars-2';
+import {ImageData, LabelName, LabelPolygon} from '../../../../store/labels/types';
 import './PolygonLabelsList.scss';
 import {
     updateActiveLabelId,
     updateActiveLabelNameId,
     updateImageDataById
-} from "../../../../store/labels/actionCreators";
-import {AppState} from "../../../../store";
-import {connect} from "react-redux";
-import LabelInputField from "../LabelInputField/LabelInputField";
-import EmptyLabelList from "../EmptyLabelList/EmptyLabelList";
-import {LabelActions} from "../../../../logic/actions/LabelActions";
-import {findLast} from "lodash";
+} from '../../../../store/labels/actionCreators';
+import {AppState} from '../../../../store';
+import {connect} from 'react-redux';
+import LabelInputField from '../LabelInputField/LabelInputField';
+import EmptyLabelList from '../EmptyLabelList/EmptyLabelList';
+import {LabelActions} from '../../../../logic/actions/LabelActions';
+import {findLast} from 'lodash';
 
 interface IProps {
     size: ISize;
     imageData: ImageData;
-    updateImageDataById: (id: string, newImageData: ImageData) => any;
+    updateImageDataByIdAction: (id: string, newImageData: ImageData) => any;
     activeLabelId: string;
     highlightedLabelId: string;
-    updateActiveLabelNameId: (activeLabelId: string) => any;
+    updateActiveLabelNameIdAction: (activeLabelId: string) => any;
     labelNames: LabelName[];
-    updateActiveLabelId: (activeLabelId: string) => any;
+    updateActiveLabelIdAction: (activeLabelId: string) => any;
 }
 
-const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataById, labelNames, updateActiveLabelNameId, activeLabelId, highlightedLabelId, updateActiveLabelId}) => {
+const PolygonLabelsList: React.FC<IProps> = (
+    {
+        size,
+        imageData,
+        updateImageDataByIdAction,
+        labelNames,
+        updateActiveLabelNameIdAction,
+        activeLabelId,
+        highlightedLabelId,
+        updateActiveLabelIdAction
+    }
+) => {
     const labelInputFieldHeight = 40;
     const listStyle: React.CSSProperties = {
         width: size.width,
@@ -39,6 +50,10 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
 
     const deletePolygonLabelById = (labelPolygonId: string) => {
         LabelActions.deletePolygonLabelById(imageData.id, labelPolygonId);
+    };
+
+    const togglePolygonLabelVisibilityById = (labelPolygonId: string) => {
+        LabelActions.toggleLabelVisibilityById(imageData.id, labelPolygonId);
     };
 
     const updatePolygonLabel = (labelPolygonId: string, labelNameId: string) => {
@@ -54,12 +69,12 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
                 return currentLabel
             })
         };
-        updateImageDataById(imageData.id, newImageData);
-        updateActiveLabelNameId(labelNameId);
+        updateImageDataByIdAction(imageData.id, newImageData);
+        updateActiveLabelNameIdAction(labelNameId);
     };
 
     const onClickHandler = () => {
-        updateActiveLabelId(null);
+        updateActiveLabelIdAction(null);
     };
 
     const getChildren = () => {
@@ -71,30 +86,32 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
                 }}
                 isActive={labelPolygon.id === activeLabelId}
                 isHighlighted={labelPolygon.id === highlightedLabelId}
+                isVisible={labelPolygon.isVisible}
                 id={labelPolygon.id}
                 key={labelPolygon.id}
                 onDelete={deletePolygonLabelById}
                 value={labelPolygon.labelId !== null ? findLast(labelNames, {id: labelPolygon.labelId}) : null}
                 options={labelNames}
                 onSelectLabel={updatePolygonLabel}
+                toggleLabelVisibility={togglePolygonLabelVisibilityById}
             />
         });
     };
 
     return (
         <div
-            className="PolygonLabelsList"
+            className='PolygonLabelsList'
             style={listStyle}
             onClickCapture={onClickHandler}
         >
             {imageData.labelPolygons.length === 0 ?
                 <EmptyLabelList
-                    labelBefore={"draw your first polygon"}
-                    labelAfter={"no labels created for this image yet"}
+                    labelBefore={'draw your first polygon'}
+                    labelAfter={'no labels created for this image yet'}
                 /> :
                 <Scrollbars>
                     <div
-                        className="PolygonLabelsListContent"
+                        className='PolygonLabelsListContent'
                         style={listStyleContent}
                     >
                         {getChildren()}
@@ -106,9 +123,9 @@ const PolygonLabelsList: React.FC<IProps> = ({size, imageData, updateImageDataBy
 };
 
 const mapDispatchToProps = {
-    updateImageDataById,
-    updateActiveLabelNameId,
-    updateActiveLabelId
+    updateImageDataByIdAction: updateImageDataById,
+    updateActiveLabelNameIdAction: updateActiveLabelNameId,
+    updateActiveLabelIdAction: updateActiveLabelId
 };
 
 const mapStateToProps = (state: AppState) => ({
