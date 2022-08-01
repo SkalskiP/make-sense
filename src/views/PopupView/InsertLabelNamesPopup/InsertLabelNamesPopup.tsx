@@ -184,7 +184,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const onUpdateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
             (labelName: LabelName) => labelName.name.length === 0);
-        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
+        const missingIds: string[] = LabelUtil.calculateMissingLabelNamesIds(
+            LabelsSelector.getLabelNames(), nonEmptyLabelNames);
         LabelActions.removeLabelNames(missingIds);
         updateLabelNamesAction(nonEmptyLabelNames);
         updateActivePopupTypeAction(null);

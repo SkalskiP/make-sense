@@ -1,4 +1,4 @@
-import {Annotation, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
+import {Annotation, ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
 import { v4 as uuidv4 } from 'uuid';
 import {find} from 'lodash';
 import {IRect} from '../interfaces/IRect';
@@ -6,6 +6,7 @@ import {LabelStatus} from '../data/enums/LabelStatus';
 import {IPoint} from '../interfaces/IPoint';
 import { sample } from 'lodash';
 import {Settings} from '../settings/Settings';
+import { ILine } from 'src/interfaces/ILine';
 
 export type LabelCount = {
     point: number;
@@ -14,7 +15,7 @@ export type LabelCount = {
     rect: number;
 }
 
-export type LabelCountSummary = Record<string, LabelCount[]>;
+export type LabelCountSummary = Record<string, LabelCount>;
 
 export class LabelUtil {
     public static createLabelName(name: string): LabelName {
@@ -58,6 +59,15 @@ export class LabelUtil {
         }
     }
 
+    public static createLabelLine(labelId: string, line: ILine): LabelLine {
+        return {
+            id: uuidv4(),
+            labelId,
+            line,
+            isVisible: true
+        }
+    }
+
     public static toggleAnnotationVisibility<AnnotationType extends Annotation>(annotation: AnnotationType): AnnotationType {
         return {
             ...annotation,
@@ -65,7 +75,21 @@ export class LabelUtil {
         }
     }
 
-    public static labelNamesIdsDiff(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
+    public static calculateLabelCountSummary(labels: LabelName[], imagesData: ImageData[]): LabelCountSummary {
+        let labelCount = labels.reduce((acc: LabelCountSummary, label: LabelName) => {
+            acc[label.id] = { point: 0, line: 0, polygon: 0, rect: 0}
+            return acc;
+        }, {});
+        labelCount = imagesData.reduce((acc: LabelCountSummary, imageData: ImageData) => {
+            for (const labelRect of imageData.labelRects) {
+                acc[labelRect.id].rect += 1
+            }
+            return acc;
+        }, labelCount)
+        return labelCount
+    }
+
+    public static calculateMissingLabelNamesIds(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
         return oldLabelNames.reduce((missingIds: string[], labelName: LabelName) => {
             if (!find(newLabelNames, { 'id': labelName.id })) {
                 missingIds.push(labelName.id);
