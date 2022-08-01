@@ -82,7 +82,16 @@ export class LabelUtil {
         }, {});
         labelCount = imagesData.reduce((acc: LabelCountSummary, imageData: ImageData) => {
             for (const labelRect of imageData.labelRects) {
-                acc[labelRect.id].rect += 1
+                acc[labelRect.labelId].rect += 1
+            }
+            for (const labelPoint of imageData.labelPoints) {
+                acc[labelPoint.labelId].point += 1
+            }
+            for (const labelLine of imageData.labelLines) {
+                acc[labelLine.labelId].line += 1
+            }
+            for (const labelPolygon of imageData.labelPolygons) {
+                acc[labelPolygon.labelId].polygon += 1
             }
             return acc;
         }, labelCount)

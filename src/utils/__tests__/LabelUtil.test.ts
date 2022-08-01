@@ -4,6 +4,7 @@ import {LabelLine, LabelPoint, LabelPolygon, LabelRect} from '../../store/labels
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {IPoint} from '../../interfaces/IPoint';
 import {ImageData} from '../../store/labels/types';
+import {ILine} from '../../interfaces/ILine';
 
 const mockUUID: string = '123e4567-e89b-12d3-a456-426614174000'
 
@@ -29,8 +30,8 @@ const mockImageData = (
     }
 }
 
-describe('LabelUtil createLabelRect method', () => {
-    it('return correct LabelRect object', () => {
+describe('LabelUtil.createLabelRect tests', () => {
+    test('return correct LabelRect object', () => {
         // given
         const labelId: string = '1';
         const rect: IRect = {
@@ -57,8 +58,8 @@ describe('LabelUtil createLabelRect method', () => {
     });
 });
 
-describe('LabelUtil createLabelPolygon method', () => {
-    it('return correct LabelPolygon object', () => {
+describe('LabelUtil.createLabelPolygon tests', () => {
+    test('return correct LabelPolygon object', () => {
         // given
         const labelId: string = '1';
         const vertices: IPoint[] = [
@@ -90,8 +91,8 @@ describe('LabelUtil createLabelPolygon method', () => {
     });
 });
 
-describe('LabelUtil createLabelPoint method', () => {
-    it('return correct LabelPoint object', () => {
+describe('LabelUtil.createLabelPoint tests', () => {
+    test('return correct LabelPoint object', () => {
         // given
         const labelId: string = '1';
         const point: IPoint = {
@@ -111,6 +112,29 @@ describe('LabelUtil createLabelPoint method', () => {
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: null
+        }
+        expect(result).toEqual(expectedResult);
+    });
+});
+
+describe('LabelUtil.createLabelLine tests', () => {
+    test('return correct LabelLine object', () => {
+        // given
+        const labelId: string = '1';
+        const line: ILine = {
+            start: {x: 0, y: 0},
+            end: {x: 10, y: 10}
+        };
+
+        // when
+        const result = LabelUtil.createLabelLine(labelId, line);
+
+        // then
+        const expectedResult: LabelLine = {
+            id: mockUUID,
+            labelId,
+            line,
+            isVisible: true
         }
         expect(result).toEqual(expectedResult);
     });
@@ -336,6 +360,180 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
             'label-id-1': { point: 0, line: 0, polygon: 0, rect: 0},
             'label-id-2': { point: 0, line: 0, polygon: 0, rect: 0},
             'label-id-3': { point: 0, line: 0, polygon: 0, rect: 0},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only rect counts when imagesData does contain only rect annotations', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-3', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData()
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 0, line: 0, polygon: 0, rect: 3},
+            'label-id-2': { point: 0, line: 0, polygon: 0, rect: 3},
+            'label-id-3': { point: 0, line: 0, polygon: 0, rect: 1},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only point counts when imagesData does contain only point annotations', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData([],
+                [
+                    LabelUtil.createLabelPoint('label-id-1', {x: 0, y: 0}),
+                    LabelUtil.createLabelPoint('label-id-2', {x: 0, y: 0}),
+                ]
+            ),
+            mockImageData(),
+            mockImageData([],
+                [
+                    LabelUtil.createLabelPoint('label-id-3', {x: 0, y: 0}),
+                    LabelUtil.createLabelPoint('label-id-2', {x: 0, y: 0}),
+                    LabelUtil.createLabelPoint('label-id-2', {x: 0, y: 0}),
+                ]
+            ),
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 1, line: 0, polygon: 0, rect: 0},
+            'label-id-2': { point: 3, line: 0, polygon: 0, rect: 0},
+            'label-id-3': { point: 1, line: 0, polygon: 0, rect: 0},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only line counts when imagesData does contain only line annotations', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData([], [],
+                [
+                    LabelUtil.createLabelLine('label-id-1', {start: {x: 0, y: 0}, end: {x: 1, y: 1}}),
+                    LabelUtil.createLabelLine('label-id-1', {start: {x: 0, y: 0}, end: {x: 1, y: 1}}),
+                    LabelUtil.createLabelLine('label-id-1', {start: {x: 0, y: 0}, end: {x: 1, y: 1}}),
+                ]
+            ),
+            mockImageData([], [],
+                [
+                    LabelUtil.createLabelLine('label-id-2', {start: {x: 0, y: 0}, end: {x: 1, y: 1}}),
+                    LabelUtil.createLabelLine('label-id-2', {start: {x: 0, y: 0}, end: {x: 1, y: 1}})
+                ]
+            ),
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 0, line: 3, polygon: 0, rect: 0},
+            'label-id-2': { point: 0, line: 2, polygon: 0, rect: 0},
+            'label-id-3': { point: 0, line: 0, polygon: 0, rect: 0},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only polygon counts when imagesData does contain only polygon annotations', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData([], [], [],
+                [
+                    LabelUtil.createLabelPolygon('label-id-1', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]),
+                    LabelUtil.createLabelPolygon('label-id-2', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]),
+                    LabelUtil.createLabelPolygon('label-id-3', [{x: 0, y: 0}, {x: 1, y: 0}, {x: 0, y: 1}]),
+                ]
+            )
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 0, line: 0, polygon: 1, rect: 0},
+            'label-id-2': { point: 0, line: 0, polygon: 1, rect: 0},
+            'label-id-3': { point: 0, line: 0, polygon: 1, rect: 0},
         };
         expect(result).toEqual(expectedResult);
     });
