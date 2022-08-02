@@ -29,15 +29,22 @@
       user-select: none;
     }
 
-    .CheckBox {
+    .annotations-count {
       position: absolute;
       z-index: 1000;
-      max-width: 20px;
-      max-height: 20px;
-      bottom: -10px;
-      left: -10px;
-      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
-      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+      width: 24px;
+      height: 24px;
+      bottom: -12px;
+      left: -12px;
+      border-radius: 2px;
+      background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+      background-color: var(--leading-color);
+      color: white;
+      font-weight: 700;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 

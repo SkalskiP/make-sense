@@ -19,8 +19,8 @@ interface IProps {
     style: React.CSSProperties;
     size: ISize;
     isScrolling?: boolean;
-    isChecked?: boolean;
-    onClick?: () => any;
+    annotationsCount?: number;
+    onClick?: () => void;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
@@ -64,7 +64,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             this.props.imageData.id !== nextProps.imageData.id ||
             this.state.image !== nextState.image ||
             this.props.isSelected !== nextProps.isSelected ||
-            this.props.isChecked !== nextProps.isChecked
+            this.props.annotationsCount !== nextProps.annotationsCount
         )
     }
 
@@ -135,7 +135,7 @@ class ImagePreview extends React.Component<IProps, IState> {
 
     public render() {
         const {
-            isChecked,
+            annotationsCount,
             style,
             onClick
         } = this.props;
@@ -160,12 +160,11 @@ class ImagePreview extends React.Component<IProps, IState> {
                                 alt={this.state.image.alt}
                                 style={{ ...this.getStyle(), left: 0, top: 0 }}
                             />
-                            {isChecked && <img
-                                className='CheckBox'
-                                draggable={false}
-                                src={'ico/ok.png'}
-                                alt={'checkbox'}
-                            />}
+                            {annotationsCount && <div
+                                className='annotations-count'
+                            >
+                                {annotationsCount}
+                            </div>}
                         </div>,
                         <div
                             className='Background'
