@@ -47,9 +47,10 @@
   }
 
   .RightContainer {
+    width: 500px;
+
     align-self: stretch;
     flex: 1;
-
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;

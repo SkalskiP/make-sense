@@ -74,7 +74,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 imageSrc: 'ico/tags.png',
                 imageAlt: 'label-counts',
                 disabled: () => LabelsSelector.getLabelNames().length === 0,
-                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.LABEL_COUNTS_STATISTICS))
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.PER_LABEL_ID_COUNTS_STATISTICS))
             },
         ]
     },

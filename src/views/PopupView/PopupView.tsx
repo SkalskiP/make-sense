@@ -13,7 +13,7 @@ import { CSSHelper } from '../../logic/helpers/CSSHelper';
 import { ClipLoader } from 'react-spinners';
 import ImportLabelPopup from './ImportLabelPopup/ImportLabelPopup';
 import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
-import LabelCountsStatisticsPopup from './LabelCountsStatisticsPopup/LabelCountsStatisticsPopup';
+import PerLabelIdCountsStatisticsPopup from "./PerLabelIdCountsStatisticsPopup/PerLabelIdCountsStatisticsPopup";
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -45,8 +45,8 @@ const PopupView: React.FC<IProps> = ({ activePopupType }) => {
                 return <LoadModelPopup />;
             case PopupWindowType.SUGGEST_LABEL_NAMES:
                 return <SuggestLabelNamesPopup />;
-            case PopupWindowType.LABEL_COUNTS_STATISTICS:
-                return <LabelCountsStatisticsPopup />;
+            case PopupWindowType.PER_LABEL_ID_COUNTS_STATISTICS:
+                return <PerLabelIdCountsStatisticsPopup />;
             case PopupWindowType.LOADER:
                 return <ClipLoader
                     size={50}
