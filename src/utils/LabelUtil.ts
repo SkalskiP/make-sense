@@ -1,12 +1,11 @@
 import {Annotation, ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
-import {find} from 'lodash';
+import {v4 as uuidv4} from 'uuid';
+import {find, sample} from 'lodash';
 import {IRect} from '../interfaces/IRect';
 import {LabelStatus} from '../data/enums/LabelStatus';
 import {IPoint} from '../interfaces/IPoint';
-import { sample } from 'lodash';
 import {Settings} from '../settings/Settings';
-import { ILine } from 'src/interfaces/ILine';
+import {ILine} from 'src/interfaces/ILine';
 
 export type LabelCount = {
     point: number;
@@ -26,19 +25,19 @@ export class LabelUtil {
         }
     }
 
-    public static createLabelRect(labelId: string, rect: IRect): LabelRect {
+    public static createLabelRect(labelId: string | null, rect: IRect, status: LabelStatus = LabelStatus.ACCEPTED): LabelRect {
         return {
             id: uuidv4(),
             labelId,
             rect,
             isVisible: true,
             isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
+            status,
             suggestedLabel: null
         }
     }
 
-    public static createLabelPolygon(labelId: string, vertices: IPoint[]): LabelPolygon {
+    public static createLabelPolygon(labelId: string | null, vertices: IPoint[]): LabelPolygon {
         return {
             id: uuidv4(),
             labelId,
@@ -47,19 +46,19 @@ export class LabelUtil {
         }
     }
 
-    public static createLabelPoint(labelId: string, point: IPoint): LabelPoint {
+    public static createLabelPoint(labelId: string | null, point: IPoint, status: LabelStatus = LabelStatus.ACCEPTED): LabelPoint {
         return {
             id: uuidv4(),
             labelId,
             point,
             isVisible: true,
             isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
+            status,
             suggestedLabel: null
         }
     }
 
-    public static createLabelLine(labelId: string, line: ILine): LabelLine {
+    public static createLabelLine(labelId: string | null, line: ILine): LabelLine {
         return {
             id: uuidv4(),
             labelId,
@@ -82,16 +81,18 @@ export class LabelUtil {
         }, {});
         labelCount = imagesData.reduce((acc: LabelCountSummary, imageData: ImageData) => {
             for (const labelRect of imageData.labelRects) {
-                acc[labelRect.labelId].rect += 1
+                if (labelRect.labelId !== null && labelRect.status === LabelStatus.ACCEPTED)
+                    acc[labelRect.labelId].rect += 1
             }
             for (const labelPoint of imageData.labelPoints) {
-                acc[labelPoint.labelId].point += 1
+                if (labelPoint.labelId !== null  && labelPoint.status === LabelStatus.ACCEPTED)
+                    acc[labelPoint.labelId].point += 1
             }
             for (const labelLine of imageData.labelLines) {
-                acc[labelLine.labelId].line += 1
+                if (labelLine.labelId !== null) acc[labelLine.labelId].line += 1
             }
             for (const labelPolygon of imageData.labelPolygons) {
-                acc[labelPolygon.labelId].polygon += 1
+                if (labelPolygon.labelId !== null) acc[labelPolygon.labelId].polygon += 1
             }
             return acc;
         }, labelCount)

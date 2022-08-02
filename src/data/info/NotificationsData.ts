@@ -21,6 +21,7 @@ export const NotificationsDataMap = {
     [Notification.ABOUT_TO_REMOVE_USED_LABEL_NAME_WARNING]: {
         header: 'Used label names',
         description: 'Looks like you are about to remove label name that is currently used by some of your annotations. ' +
-            'Keep in mind that annotations without specified label name can not be exported.'
+            'Keep in mind that annotations without specified label name can not be exported. You can still abort by ' +
+            'pressing "Cancel".'
     }
 }

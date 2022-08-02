@@ -1,9 +1,8 @@
-import { IRect } from '../../interfaces/IRect';
-import { LabelUtil } from '../LabelUtil';
-import {LabelLine, LabelPoint, LabelPolygon, LabelRect} from '../../store/labels/types';
+import {IRect} from '../../interfaces/IRect';
+import {LabelUtil} from '../LabelUtil';
+import {ImageData, LabelLine, LabelPoint, LabelPolygon, LabelRect} from '../../store/labels/types';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {IPoint} from '../../interfaces/IPoint';
-import {ImageData} from '../../store/labels/types';
 import {ILine} from '../../interfaces/ILine';
 
 const mockUUID: string = '123e4567-e89b-12d3-a456-426614174000'
@@ -406,6 +405,100 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         const expectedResult = {
             'label-id-1': { point: 0, line: 0, polygon: 0, rect: 3},
             'label-id-2': { point: 0, line: 0, polygon: 0, rect: 3},
+            'label-id-3': { point: 0, line: 0, polygon: 0, rect: 1},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only rect counts when imagesData does contain only rect annotations but some labelIds are null', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect(null, {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect(null, {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-3', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData()
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 0, line: 0, polygon: 0, rect: 2},
+            'label-id-2': { point: 0, line: 0, polygon: 0, rect: 2},
+            'label-id-3': { point: 0, line: 0, polygon: 0, rect: 1},
+        };
+        expect(result).toEqual(expectedResult);
+    });
+
+    test('return summary object with only rect counts when imagesData does contain only rect annotations but labels are rejected', () => {
+        // given
+        const labelNames = [
+            {
+                id: 'label-id-1',
+                name: 'label-name-1'
+            },
+            {
+                id: 'label-id-2',
+                name: 'label-name-2'
+            },
+            {
+                id: 'label-id-3',
+                name: 'label-name-3'
+            }
+        ];
+        const imagesData = [
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}, LabelStatus.REJECTED),
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData(
+                [
+                    LabelUtil.createLabelRect('label-id-1', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}),
+                    LabelUtil.createLabelRect('label-id-2', {x: 0, y: 0, width: 1, height: 1}, LabelStatus.REJECTED),
+                    LabelUtil.createLabelRect('label-id-3', {x: 0, y: 0, width: 1, height: 1}),
+                ]
+            ),
+            mockImageData()
+        ];
+
+        // when
+        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+
+        // then
+        const expectedResult = {
+            'label-id-1': { point: 0, line: 0, polygon: 0, rect: 2},
+            'label-id-2': { point: 0, line: 0, polygon: 0, rect: 2},
             'label-id-3': { point: 0, line: 0, polygon: 0, rect: 1},
         };
         expect(result).toEqual(expectedResult);
