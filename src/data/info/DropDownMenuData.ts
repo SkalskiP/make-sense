@@ -62,6 +62,22 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         ]
     },
     {
+        name: 'Insights',
+        imageSrc: 'ico/stats.png',
+        imageAlt: 'insights',
+        disabled: false,
+        children: [
+            {
+                name: 'Label Counts',
+                description: 'Display per label name annotations count',
+                imageSrc: 'ico/tags.png',
+                imageAlt: 'label-counts',
+                disabled: false,
+                onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.LABEL_COUNTS_STATISTICS))
+            },
+        ]
+    },
+    {
         name: 'Community',
         imageSrc: 'ico/plant.png',
         imageAlt: 'community',
@@ -82,6 +98,14 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 imageAlt: 'bug',
                 disabled: false,
                 onClick: () => window.open('https://github.com/SkalskiP/make-sense/issues', '_blank')
+            },
+            {
+                name: 'Vote for Next Big Feature',
+                description: 'Vote for next big feature that we will add to Make Sense',
+                imageSrc: 'ico/poll.png',
+                imageAlt: 'vote',
+                disabled: false,
+                onClick: () => window.open('https://github.com/SkalskiP/make-sense/discussions/269', '_blank')
             }
         ]
     }

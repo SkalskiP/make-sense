@@ -285,14 +285,14 @@ describe('LabelUtil.calculateMissingLabelNamesIds tests', () => {
     });
 });
 
-describe('LabelUtil.calculateLabelCountSummary tests', () => {
+describe('LabelUtil.calculatePerLabelIdCountSummary tests', () => {
     test('return empty summary object when labelNames is empty', () => {
         // given
         const labelNames = [];
         const imagesData = [];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {};
@@ -318,7 +318,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         const imagesData = [];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -352,7 +352,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -399,7 +399,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -446,7 +446,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -493,7 +493,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -538,7 +538,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -582,7 +582,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {
@@ -620,7 +620,7 @@ describe('LabelUtil.calculateLabelCountSummary tests', () => {
         ];
 
         // when
-        const result = LabelUtil.calculateLabelCountSummary(labelNames, imagesData);
+        const result = LabelUtil.calculatePerLabelIdCountSummary(labelNames, imagesData);
 
         // then
         const expectedResult = {

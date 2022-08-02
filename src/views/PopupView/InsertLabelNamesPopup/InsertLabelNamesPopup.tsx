@@ -68,7 +68,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
-    const labelsCountSummary = LabelUtil.calculateLabelCountSummary(
+    const labelsCountSummary = LabelUtil.calculatePerLabelIdCountSummary(
         LabelsSelector.getLabelNames(),
         LabelsSelector.getImagesData()
     )
@@ -112,7 +112,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const deleteLabelNameCallback = (id: string) => {
         const newLabelNames = reject(labelNames, { id });
         setLabelNames(newLabelNames);
-        if (!Object.values(labelsCountSummary[id]).every((value: number) => value === 0)) {
+        if (id in labelsCountSummary && !Object.values(labelsCountSummary[id]).every((value: number) => value === 0)) {
             submitNewNotificationAction(NotificationUtil
                 .createWarningNotification(NotificationsDataMap[Notification.ABOUT_TO_REMOVE_USED_LABEL_NAME_WARNING]));
         }

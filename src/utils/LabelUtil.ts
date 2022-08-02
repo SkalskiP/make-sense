@@ -74,7 +74,7 @@ export class LabelUtil {
         }
     }
 
-    public static calculateLabelCountSummary(labels: LabelName[], imagesData: ImageData[]): LabelCountSummary {
+    public static calculatePerLabelIdCountSummary(labels: LabelName[], imagesData: ImageData[]): LabelCountSummary {
         let labelCount = labels.reduce((acc: LabelCountSummary, label: LabelName) => {
             acc[label.id] = { point: 0, line: 0, polygon: 0, rect: 0}
             return acc;
