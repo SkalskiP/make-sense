@@ -68,6 +68,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
+    const labelsCountSummary = LabelUtil.calculateLabelCountSummary(
+        LabelsSelector.getLabelNames(),
+        LabelsSelector.getImagesData()
+    )
+
     const validateEmptyLabelNames = (): boolean => {
         const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '');
         return emptyLabelNames.length === 0;
@@ -107,6 +112,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const deleteLabelNameCallback = (id: string) => {
         const newLabelNames = reject(labelNames, { id });
         setLabelNames(newLabelNames);
+        if (!Object.values(labelsCountSummary[id]).every((value: number) => value === 0)) {
+            submitNewNotificationAction(NotificationUtil
+                .createWarningNotification(NotificationsDataMap[Notification.ABOUT_TO_REMOVE_USED_LABEL_NAME_WARNING]));
+        }
     };
 
     const togglePerClassColorationCallback = () => {
