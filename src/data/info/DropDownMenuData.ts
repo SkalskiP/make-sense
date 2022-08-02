@@ -1,13 +1,14 @@
 import {updateActivePopupType} from '../../store/general/actionCreators';
 import {PopupWindowType} from '../enums/PopupWindowType';
 import {store} from '../../index';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 
 export type DropDownMenuNode = {
     name: string
     description?: string
     imageSrc: string
     imageAlt: string
-    disabled: boolean
+    disabled: (() => boolean) | boolean
     onClick?: () => void
     children?: DropDownMenuNode[]
 }
@@ -72,7 +73,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 description: 'Display per label name annotations count',
                 imageSrc: 'ico/tags.png',
                 imageAlt: 'label-counts',
-                disabled: false,
+                disabled: () => LabelsSelector.getLabelNames().length === 0,
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.LABEL_COUNTS_STATISTICS))
             },
         ]
