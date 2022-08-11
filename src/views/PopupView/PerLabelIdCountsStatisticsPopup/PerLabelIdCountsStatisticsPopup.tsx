@@ -5,6 +5,7 @@ import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import {updateActivePopupType as storeUpdateActivePopupType} from '../../../store/general/actionCreators';
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import Scrollbars from 'react-custom-scrollbars-2';
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => void;
@@ -17,7 +18,13 @@ const PerLabelIdCountsStatisticsPopup: React.FC<IProps> = ({ updateActivePopupTy
     };
 
     const renderContent = () => {
-        return <div className={'per-label-id-counts-statistics-popup-content'}/>
+        return <div className={'per-label-id-counts-statistics-popup-content'}>
+            <Scrollbars autoHeight={true}>
+                <div>
+                    {null}
+                </div>
+            </Scrollbars>
+        </div>
     }
 
     return (

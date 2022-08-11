@@ -17,9 +17,9 @@ export const UnderlineTextButton = (props: IProps) => {
 
   const getClassName = () => {
     return classNames('UnderlineTextButton', {
-      under: under,
-      over: over,
-      active: active,
+      under,
+      over,
+      active,
     })
   };
 
