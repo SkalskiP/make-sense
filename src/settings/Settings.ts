@@ -3,7 +3,7 @@ import {PopupWindowType} from '../data/enums/PopupWindowType';
 export class Settings {
     public static readonly GITHUB_URL: string = 'https://github.com/SkalskiP';
     public static readonly MEDIUM_URL: string = 'https://medium.com/@piotr.skalski92';
-    public static readonly PATREON_URL: string = 'https://www.patreon.com/make_sense';
+    public static readonly TWITCH_URL: string = 'https://www.twitch.tv/skalskip';
 
     public static readonly TOP_NAVIGATION_BAR_HEIGHT_PX: number = 35;
     public static readonly EDITOR_BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
