@@ -21,7 +21,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         disabled: false,
         children: [
             {
-                name: 'Edit Labels',
+                name: 'Edit labels',
                 description: 'Modify labels list',
                 imageSrc: 'ico/tags.png',
                 imageAlt: 'labels',
@@ -29,7 +29,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.UPDATE_LABEL))
             },
             {
-                name: 'Import Images',
+                name: 'Import images',
                 description: 'Load more images',
                 imageSrc: 'ico/camera.png',
                 imageAlt: 'images',
@@ -37,7 +37,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_IMAGES))
             },
             {
-                name: 'Import Annotations',
+                name: 'Import annotations',
                 description: 'Import annotations from file',
                 imageSrc: 'ico/import-labels.png',
                 imageAlt: 'import-labels',
@@ -45,7 +45,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.IMPORT_ANNOTATIONS))
             },
             {
-                name: 'Export Annotations',
+                name: 'Export annotations',
                 description: 'Export annotations to file',
                 imageSrc: 'ico/export-labels.png',
                 imageAlt: 'export-labels',
@@ -53,7 +53,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.EXPORT_ANNOTATIONS))
             },
             {
-                name: 'Load AI Model',
+                name: 'Load AI model',
                 description: 'Load our pre-trained annotation models',
                 imageSrc: 'ico/ai.png',
                 imageAlt: 'load-ai-model',
@@ -69,10 +69,10 @@ export const DropDownMenuData: DropDownMenuNode[] = [
         disabled: false,
         children: [
             {
-                name: 'Label Counts',
+                name: 'Label distribution',
                 description: 'Display per label name annotations count',
                 imageSrc: 'ico/tags.png',
-                imageAlt: 'label-counts',
+                imageAlt: 'label-distribution',
                 disabled: () => LabelsSelector.getLabelNames().length === 0,
                 onClick: () => store.dispatch(updateActivePopupType(PopupWindowType.PER_LABEL_ID_COUNTS_STATISTICS))
             },
@@ -93,7 +93,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => window.open('https://skalskip.github.io/make-sense', '_blank')
             },
             {
-                name: 'Bugs and Features',
+                name: 'Bugs and features',
                 description: 'Report a bug or propose a new feature',
                 imageSrc: 'ico/bug.png',
                 imageAlt: 'bug',
@@ -101,7 +101,7 @@ export const DropDownMenuData: DropDownMenuNode[] = [
                 onClick: () => window.open('https://github.com/SkalskiP/make-sense/issues', '_blank')
             },
             {
-                name: 'Vote for Next Big Feature',
+                name: 'Vote for next BIG feature',
                 description: 'Vote for next big feature that we will add to Make Sense',
                 imageSrc: 'ico/poll.png',
                 imageAlt: 'vote',

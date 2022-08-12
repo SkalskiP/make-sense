@@ -1,4 +1,59 @@
+@import '../../../settings/Settings';
+
 .per-label-id-counts-statistics-popup-content {
-  height: calc(100vh - 200px);
-  width:  calc(100vw - 100px);
+  min-height: calc(100vh - 200px);
+  min-width:  calc(100vw - 100px);
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: start;
+  align-items: center;
+  align-content: center;
+
+  align-self: stretch;
+  flex: 1;
+
+  .left-container {
+    width: 50px;
+    align-self: stretch;
+    border-right: solid 1px $darkThemeFirstColor;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: flex-start;
+    padding: 3px 0;
+
+    .ImageButton {
+      transition: transform 0.3s;
+
+      &:hover {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &.active {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      &.monochrome {
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }
+  }
+
+  .right-container {
+    align-self: stretch;
+    flex: 1;
+    padding: 20px;
+    table {
+      border: 1px solid white;
+    }
+  }
 }

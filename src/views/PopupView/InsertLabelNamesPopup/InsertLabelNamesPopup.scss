@@ -1,6 +1,8 @@
 @import '../../../settings/Settings';
 
-.InsertLabelNamesPopup {
+.insert-label-names-popup {
+  min-height: 400px;
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -10,9 +12,8 @@
 
   align-self: stretch;
   flex: 1;
-  min-height: 400px;
 
-  .LeftContainer {
+  .left-container {
     width: 50px;
     align-self: stretch;
     border-right: solid 1px $darkThemeFirstColor;
@@ -46,7 +47,7 @@
     }
   }
 
-  .RightContainer {
+  .right-container {
     width: 500px;
 
     align-self: stretch;
@@ -58,7 +59,7 @@
     align-items: center;
     align-content: flex-start;
 
-    .Message {
+    .message {
       align-self: stretch;
       color: white;
       font-size: 15px;
@@ -66,7 +67,7 @@
       border-bottom: solid 1px $darkThemeFirstColor;
     }
 
-    .LabelsContainer {
+    .labels-container {
       align-self: stretch;
       flex: 1;
 
@@ -97,7 +98,7 @@
         }
       }
 
-      .EmptyList {
+      .empty-list {
         align-self: stretch;
         flex: 1;
 
@@ -133,12 +134,12 @@
       }
     }
 
-    .InsertLabelNamesPopupContent {
+    .insert-label-names-popup-content {
       margin-left: 40px;
       margin-right: 10px;
       margin-top: 20px;
 
-      .LabelEntry {
+      .label-entry {
         width: 100%;
         display: flex;
         flex-direction: row;
