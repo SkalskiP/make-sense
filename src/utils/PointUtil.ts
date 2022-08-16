@@ -1,4 +1,4 @@
-import {IPoint} from "../interfaces/IPoint";
+import {IPoint} from '../interfaces/IPoint';
 
 export class PointUtil {
     public static equals(p1: IPoint, p2: IPoint): boolean {

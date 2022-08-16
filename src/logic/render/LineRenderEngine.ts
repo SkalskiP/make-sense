@@ -51,9 +51,8 @@ export class LineRenderEngine extends BaseRenderEngine {
 
         if (isMouseOverCanvas) {
             if (!!anchorTypeUnderMouse && !this.isResizeInProgress()) {
-                const labelLine: LabelLine = this.getLineUnderMouse(data);
-                this.startExistingLabelUpdate(labelLine.id, anchorTypeUnderMouse)
-            } else if (!!labelLineUnderMouse) {
+                this.startExistingLabelUpdate(labelLineUnderMouse.id, anchorTypeUnderMouse)
+            } else if (labelLineUnderMouse !== null) {
                 store.dispatch(updateActiveLabelId(labelLineUnderMouse.id));
             } else if (!this.isInProgress() && isMouseOverImage) {
                 this.startNewLabelCreation(data)
@@ -268,7 +267,7 @@ export class LineRenderEngine extends BaseRenderEngine {
     // GETTERS
     // =================================================================================================================
 
-    private getLineUnderMouse(data: EditorData): LabelLine {
+    private getLineUnderMouse(data: EditorData): LabelLine | null {
         const labelLines: LabelLine[] = LabelsSelector.getActiveImageData().labelLines;
         for (let i = 0; i < labelLines.length; i++) {
             const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLines[i].line, data);

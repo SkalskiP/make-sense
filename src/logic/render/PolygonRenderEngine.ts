@@ -26,6 +26,7 @@ import {EditorActions} from '../actions/EditorActions';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {Settings} from '../../settings/Settings';
 import {LabelUtil} from '../../utils/LabelUtil';
+import {PolygonUtil} from '../../utils/PolygonUtil';
 
 export class PolygonRenderEngine extends BaseRenderEngine {
 
@@ -69,8 +70,8 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
             if (this.isCreationInProgress()) {
-                const isMouseOverStartAnchor: boolean = RenderEngineUtil.isMouseOverAnchor(
-                    data.mousePositionOnViewPortContent, this.activePath[0], RenderEngineSettings.anchorSize);
+                const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(
+                    data.mousePositionOnViewPortContent, this.activePath[0]);
                 if (isMouseOverStartAnchor) {
                     this.addLabelAndFinishCreation(data);
                 } else  {
@@ -121,7 +122,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         store.dispatch(updateHighlightedLabelId(labelPolygon.id))
                     }
                     const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
-                    const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
+                    const linesOnCanvas: ILine[] = PolygonUtil.getEdges(pathOnCanvas);
 
                     for (let j = 0; j < linesOnCanvas.length; j++) {
                         const mouseOverLine = RenderEngineUtil.isMouseOverLine(
@@ -193,7 +194,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private drawActivelyCreatedLabel(data: EditorData) {
         const standardizedPoints: IPoint[] = this.activePath.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
         const path = standardizedPoints.concat(data.mousePositionOnViewPortContent);
-        const lines: ILine[] = this.mapPointsToLines(path);
+        const lines: ILine[] = PolygonUtil.getEdges(path, false);
         const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
         const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
         DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(lineColor, 0.2));
@@ -404,51 +405,44 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     // =================================================================================================================
-    // MAPPERS
-    // =================================================================================================================
-
-    private mapPointsToLines(points: IPoint[]): ILine[] {
-        const lines: ILine[] = [];
-        for (let i = 0; i < points.length - 1; i++) {
-            lines.push({start: points[i], end: points[i + 1]})
-        }
-        return lines;
-    }
-
-    // =================================================================================================================
     // GETTERS
     // =================================================================================================================
 
-    private getPolygonUnderMouse(data: EditorData): LabelPolygon {
-        const labelPolygons: LabelPolygon[] = LabelsSelector.getActiveImageData().labelPolygons;
-        for (let i = 0; i < labelPolygons.length; i++) {
-            const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygons[i].vertices, data);
-            const linesOnCanvas: ILine[] = this.mapPointsToLines(pathOnCanvas.concat(pathOnCanvas[0]));
+    private getPolygonUnderMouse(data: EditorData): LabelPolygon | null {
+        const mouseOnCanvas = data.mousePositionOnViewPortContent;
+        if (!mouseOnCanvas) return null;
 
-            for (let j = 0; j < linesOnCanvas.length; j++) {
-                const mouseOverLine = RenderEngineUtil.isMouseOverLine(
-                    data.mousePositionOnViewPortContent,
-                    linesOnCanvas[j],
-                    RenderEngineSettings.anchorHoverSize.width / 2
-                )
-                if (mouseOverLine)
-                    return labelPolygons[i];
-            }
-            for (let j = 0; j < pathOnCanvas.length; j ++) {
-                if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, pathOnCanvas[j]))
-                    return labelPolygons[i];
+        const labelPolygons: LabelPolygon[] = LabelsSelector
+            .getActiveImageData()
+            .labelPolygons
+            .filter((labelPolygon: LabelPolygon) => labelPolygon.isVisible);
+        const radius = RenderEngineSettings.anchorHoverSize.width / 2;
+
+        for (const labelPolygon of labelPolygons) {
+            const verticesOnCanvas = RenderEngineUtil
+                .transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
+            if (RenderEngineUtil.isMouseOverPolygon(mouseOnCanvas, verticesOnCanvas, radius)) {
+                return labelPolygon;
             }
         }
         return null;
     }
 
-    private getAnchorUnderMouse(data: EditorData): IPoint {
-        const labelPolygons: LabelPolygon[] = LabelsSelector.getActiveImageData().labelPolygons;
-        for (let i = 0; i < labelPolygons.length; i++) {
-            const pathOnCanvas: IPoint[] = RenderEngineUtil.transferPolygonFromImageToViewPortContent(labelPolygons[i].vertices, data);
-            for (let j = 0; j < pathOnCanvas.length; j ++) {
-                if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, pathOnCanvas[j]))
-                    return pathOnCanvas[j];
+    private getAnchorUnderMouse(data: EditorData): IPoint | null {
+        const mouseOnCanvas = data.mousePositionOnViewPortContent;
+        if (!mouseOnCanvas) return null;
+
+        const labelPolygons: LabelPolygon[] = LabelsSelector
+            .getActiveImageData()
+            .labelPolygons
+            .filter((labelPolygon: LabelPolygon) => labelPolygon.isVisible);
+        const radius = RenderEngineSettings.anchorHoverSize.width / 2;
+
+        for (const labelPolygon of labelPolygons) {
+            const verticesOnCanvas = RenderEngineUtil
+                .transferPolygonFromImageToViewPortContent(labelPolygon.vertices, data);
+            for (const vertexOnCanvas of verticesOnCanvas) {
+                if (RenderEngineUtil.isMouseOverAnchor(mouseOnCanvas, vertexOnCanvas, radius)) return vertexOnCanvas;
             }
         }
         return null;

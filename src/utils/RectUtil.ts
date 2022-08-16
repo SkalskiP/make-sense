@@ -1,9 +1,9 @@
-import {IRect} from "../interfaces/IRect";
-import {IPoint} from "../interfaces/IPoint";
-import {ISize} from "../interfaces/ISize";
-import {RectAnchor} from "../data/RectAnchor";
-import {NumberUtil} from "./NumberUtil";
-import {Direction} from "../data/enums/Direction";
+import {IRect} from '../interfaces/IRect';
+import {IPoint} from '../interfaces/IPoint';
+import {ISize} from '../interfaces/ISize';
+import {RectAnchor} from '../data/RectAnchor';
+import {NumberUtil} from './NumberUtil';
+import {Direction} from '../data/enums/Direction';
 
 export class RectUtil {
     public static getRatio(rect: IRect): number {
@@ -61,7 +61,7 @@ export class RectUtil {
             }
         }
     }
-    
+
     public static resizeRect(inputRect: IRect, rectAnchor: Direction, delta): IRect {
         const rect: IRect = {...inputRect};
         switch (rectAnchor) {
@@ -100,17 +100,17 @@ export class RectUtil {
                 rect.height += delta.y;
                 break;
         }
- 
+
         if (rect.width < 0) {
             rect.x = rect.x + rect.width;
             rect.width = -rect.width;
         }
-    
+
         if (rect.height < 0) {
             rect.y = rect.y + rect.height;
             rect.height = -rect.height;
         }
-        
+
         return rect;
     }
 
@@ -175,6 +175,15 @@ export class RectUtil {
             width: rect.width,
             height: rect.height
         }
+    }
+
+    public static getVertices(rect: IRect): IPoint[] {
+        return [
+            { x: rect.x, y: rect.y },
+            { x: rect.x + rect.width, y: rect.y },
+            { x: rect.x + rect.width, y: rect.y + rect.height },
+            { x: rect.x, y: rect.y + rect.height }
+        ]
     }
 }
 
