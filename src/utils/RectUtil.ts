@@ -25,10 +25,10 @@ export class RectUtil {
     public static isPointInside(rect: IRect, point: IPoint): boolean {
         if (!rect || !point) return null;
         return (
-            rect.x < point.x &&
-            rect.x + rect.width > point.x &&
-            rect.y < point.y &&
-            rect.y + rect.height > point.y
+            rect.x <= point.x &&
+            rect.x + rect.width >= point.x &&
+            rect.y <= point.y &&
+            rect.y + rect.height >= point.y
         )
     }
 
