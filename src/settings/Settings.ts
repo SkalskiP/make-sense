@@ -61,8 +61,8 @@ export class Settings {
         '#ff37c7'
     ];
 
-    public static readonly CSV_SEPARATOR = ','
-    public static readonly RECT_LABELS_EXPORT_CSV_COLUMN_NAMES = [
+    public static readonly CSV_SEPARATOR = ',';
+    public static readonly RECT_LABELS_CSV_COLUMN_NAMES = [
         'label_name',
         'bbox_x',
         'bbox_y',
@@ -71,5 +71,13 @@ export class Settings {
         'image_name',
         'image_width',
         'image_height'
-    ].join(Settings.CSV_SEPARATOR)
+    ].join(Settings.CSV_SEPARATOR);
+    public static readonly POINT_LABELS_CSV_COLUMN_NAMES = [
+        'label_name',
+        'point_x',
+        'point_y',
+        'image_name',
+        'image_width',
+        'image_height'
+    ].join(Settings.CSV_SEPARATOR);
 }

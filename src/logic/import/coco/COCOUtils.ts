@@ -1,7 +1,7 @@
-import {COCOBBox, COCOSegmentation} from "../../../data/labels/COCO";
-import {IRect} from "../../../interfaces/IRect";
-import {IPoint} from "../../../interfaces/IPoint";
-import {chunk} from "lodash";
+import {COCOBBox, COCOSegmentation} from '../../../data/labels/COCO';
+import {IRect} from '../../../interfaces/IRect';
+import {IPoint} from '../../../interfaces/IPoint';
+import {chunk} from 'lodash';
 
 export class COCOUtils {
     public static bbox2rect(bbox: COCOBBox): IRect {

@@ -201,8 +201,8 @@ export class RectLabelsExporter {
                 .map((imageData: ImageData) => {
                     return RectLabelsExporter.wrapRectLabelsIntoCSV(imageData)})
                 .filter((imageLabelData: string) => {
-                    return !!imageLabelData})
-            contentEntries.unshift(Settings.RECT_LABELS_EXPORT_CSV_COLUMN_NAMES)
+                    return !!imageLabelData});
+            contentEntries.unshift(Settings.RECT_LABELS_CSV_COLUMN_NAMES);
 
             const content: string = contentEntries.join('\n');
             const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
