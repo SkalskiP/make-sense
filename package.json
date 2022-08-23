@@ -2,7 +2,7 @@
     "name": "make-sense",
     "version": "1.0.0",
     "private": true,
-    "homepage": "/labeler",
+    "homepage": ".",
     "dependencies": {
         "@material-ui/core": "^4.12.3",
         "@tensorflow-models/coco-ssd": "^2.2.2",
@@ -39,7 +39,7 @@
         "uuid": "^8.3.2"
     },
     "scripts": {
-        "start": "PUBLIC_URL=/labeler react-scripts start",
+        "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "test:coverage": "npm test -- --coverage",
