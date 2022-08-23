@@ -322,6 +322,7 @@ const RectLabelsList: React.FC<IProps> = ({
                     labelRect.status === LabelStatus.ACCEPTED
             )
             .map((labelRect: LabelRect) => {
+              
                 return (
                     <LabelInputField
                         size={{
@@ -343,6 +344,9 @@ const RectLabelsList: React.FC<IProps> = ({
                         onSelectLabel={updateRectLabel}
                         onSelectInfo={showInfo}
                         description={getDescriptionIcon(labelRect)}
+                        imageStatus={imageData.image_status}
+                        qcStatus={labelRect.qc_status}
+                        qcComment={labelRect.qc_comment}
                     />
                 );
             });

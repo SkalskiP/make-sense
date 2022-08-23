@@ -277,7 +277,7 @@ export class RectLabelsExporter {
 
         const getHumanIndex = (uuid: string) =>
             imageData.humans.findIndex((human) => human.uuid === uuid);
-
+        
         const json: RectJSON = {
             //@ts-ignore
             img_path: imageData.fileData.path,
@@ -285,6 +285,8 @@ export class RectLabelsExporter {
             version: 1,
             human_info: imageData.humans.map((human) => ({
                 human_id: convertHumanId(human.uuid),
+                qc_status: human.qc_status,
+                qc_comment: human.qc_comment,
                 bounding_box: convertRect(
                     imageData.labelRects.find(
                         (labelRect) => labelRect.id === human.uuid
@@ -298,6 +300,8 @@ export class RectLabelsExporter {
                 }:${item.subCategory}:${item.uuid}:${item.color}:${
                     item.pattern
                 }`,
+                qc_status: item.qc_status,
+                qc_comment: item.qc_comment,
                 bounding_box: convertRect(
                     imageData.labelRects.find(
                         (labelRect) => labelRect.id === item.uuid

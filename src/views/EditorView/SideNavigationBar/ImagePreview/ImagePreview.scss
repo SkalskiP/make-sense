@@ -50,6 +50,8 @@
         transition: background-color 0.3s ease-in-out, transform 0.3s;
     }
 
+    
+
     &.selected {
         .Foreground {
             transform: translate(-2px, 2px);
@@ -57,9 +59,12 @@
         .Background {
             transform: translate(2px, -2px);
             background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-            background-color: var(--leading-color);
+            // background-color: var(--leading-color);
         }
+        
     }
+
+   
 
     &:hover {
         .Foreground {
@@ -69,4 +74,12 @@
             transform: translate(2px, -2px);
         }
     }
+    .Background.danger {
+      background-color: $dangerColor; 
+      transform: translate(2px, -2px);
+    }
+
+    .Foreground.danger {
+      transform: translate(-2px, 2px);
+  }
 }

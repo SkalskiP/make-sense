@@ -20,6 +20,8 @@ export type LabelRect = {
     isCreatedByAI: boolean;
     status: LabelStatus;
     suggestedLabel: string;
+    qc_status?: string;
+    qc_comment?: string
 };
 
 export type LabelPoint = {
@@ -58,6 +60,8 @@ export type HumanInfo = {
     gender: number;
     type: number;
     styles: string[];
+    qc_status?: string;
+    qc_comment?: string
 };
 
 export type ItemInfo = {
@@ -70,9 +74,14 @@ export type ItemInfo = {
     color: number;
     pattern: number;
     styles: string[];
+    qc_status?: string;
+    qc_comment?: string;
 };
 
 export type ImageData = {
+    image_status?: any;
+    qc_status? : string;
+    qc_comment?: string;
     id: string;
     fileData: File;
     loadStatus: boolean;
@@ -84,7 +93,6 @@ export type ImageData = {
     humans: HumanInfo[];
     items: ItemInfo[];
     guideStyles?: {seq: string; name: string}[];
-
     uploadStatus?: JSONUploadStatus;
 
     // SSD
@@ -100,6 +108,8 @@ export type RectJSON = {
     version: number;
     human_info: {
         human_id: string;
+        qc_status?: string;
+        qc_comment?: string
         bounding_box: {
             lt_x: number;
             lt_y: number;
@@ -110,6 +120,8 @@ export type RectJSON = {
     }[];
     item_info: {
         item_id: string;
+        qc_status?: string;
+        qc_comment?: string;
         bounding_box: {
             lt_x: number;
             lt_y: number;

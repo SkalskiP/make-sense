@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, {useEffect, useState} from 'react';
 import './LabelInfoPopup.scss';
 import {AppState} from '../../../store';
@@ -502,6 +503,19 @@ const LabelInfoPopup: React.FC<IProps> = ({
         updateActivePopupTypeAction(null);
     };
 
+    const renderComment = () =>{
+      const {qc_comment, qc_status} = itemInfo || humanInfo
+      
+      if(qc_comment) {
+        return (
+          <div className="AttributeContainer mt-2">
+            <div className={`AttributeName ${qc_status === 'P' ? 'text-success':  qc_status === 'R' ? 'text-fail' : ''}`}>{qc_comment}</div>
+          </div>
+          )
+      }
+      return null
+    }
+
     const renderContent = () => {
         // console.log('humanInfo', humanInfo);
         // console.log('itemInfo', itemInfo);
@@ -509,9 +523,11 @@ const LabelInfoPopup: React.FC<IProps> = ({
         if (!humanInfo && !itemInfo) {
             return null;
         }
+        
         return mode === LabelModeType.HUMAN ? (
             <div className="LabelInfoPopupContent">
-                <div className="AttributeContainer">
+                {renderComment()}
+                <div className="AttributeContainer mt-2">
                     <div className="AttributeName">Gender</div>
                     <div className="AttributeSelector">
                         <AttributeSelect
@@ -551,10 +567,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <img src={image} width={300} height={300} />
                     </div>
                 ) : null}
+               
             </div>
         ) : (
             <div className="LabelInfoPopupContent">
-                <div className="AttributeContainer">
+               {renderComment()}
+                <div className="AttributeContainer mt-2">
                     <div className="AttributeName">Item UUID</div>
                     <div className="AttributeSelector">
                         <div className="title">{labelRectId}</div>
@@ -651,6 +669,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <img src={image} width={230} height={230} />
                     </div>
                 ) : null}
+                
             </div>
         );
     };
