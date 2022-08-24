@@ -220,26 +220,28 @@ const RectLabelsList: React.FC<IProps> = ({
                     <div className="ItemContainer">
                         {found.styles.map((styleString) => {
                             const style = _.find(
-                                found.gender === GENDER.MAN
-                                    ? FASHION_STYLE_MAN
-                                    : FASHION_STYLE_WOMAN,
+                                FASHION_STYLE,
+                                // to fix https://github.com/choipd/make-sense/issues/9
+                                // found.gender === GENDER.MAN
+                                //     ? FASHION_STYLE_MAN
+                                //     : FASHION_STYLE_WOMAN,
                                 (item) =>
                                     item.name.toUpperCase() ===
                                     styleString.toUpperCase()
                             );
 
                             return getButtonWithTooltip(
-                                `${found.uuid}_${style.name}`,
+                                `${found.uuid}_${style?.name}`,
                                 `${
                                     lang.FASHION_STYLE[
                                         styleString.toLocaleLowerCase()
                                     ]
                                 } (${styleString.toUpperCase()})`,
-                                style.seq === -1
+                                style?.seq === -1
                                     ? Settings.UNKNOWN_URL
                                     : found.gender === GENDER.MAN
-                                    ? `guides/icons/man_style/${style.m}_s.png`
-                                    : `guides/icons/woman_style/${style.f}_s.png`
+                                    ? `guides/icons/man_style/${style?.m}_s.png`
+                                    : `guides/icons/woman_style/${style?.f}_s.png`
                             );
                         })}
 
