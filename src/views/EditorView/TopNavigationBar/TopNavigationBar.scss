@@ -1,127 +1,128 @@
 @import '../../../settings/Settings';
 
 .TopNavigationBar {
-  align-self: stretch;
-  min-height: $topNavigationBarHeight;
-  background-color: $darkThemeFirstColor;
-  box-shadow: 0 0 6px 0 rgba(0,0,0,.2);
-
-  display: flex;
-  flex: 0 0 $topNavigationBarHeight;
-  flex-direction: column;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
-  align-items: center;
-  align-content: flex-start;
-
-  .TopNavigationBarWrapper {
-    padding: 0 $sideNavigationBarCompanionWidth;
-    color: white;
     align-self: stretch;
-    flex: 1;
-    height: calc(#{$topNavigationBarHeight} - #{$stateBarHeight});
+    min-height: $topNavigationBarHeight;
+    background-color: $darkThemeFirstColor;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.2);
+
     display: flex;
+    flex: 0 0 $topNavigationBarHeight;
+    flex-direction: column;
     flex-wrap: nowrap;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
-    align-content: space-between;
+    align-content: flex-start;
 
-    .NavigationBarGroupWrapper {
-      margin: 4px 0;
+    .TopNavigationBarWrapper {
+        padding: 0 $sideNavigationBarCompanionWidth;
+        color: white;
+        align-self: stretch;
+        flex: 1;
+        height: calc(#{$topNavigationBarHeight} - #{$stateBarHeight});
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+        align-content: space-between;
 
-      align-self: stretch;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
+        .NavigationBarGroupWrapper {
+            margin: 4px 0;
 
-      &.middle {
-        flex: auto;
-      }
+            align-self: stretch;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
 
-      &:not(:last-child) {
-        padding-right: 10px;
-        margin-right: 10px;
-        border-right: solid 1px $darkThemeForthColor;
-      }
-    }
+            &.middle {
+                flex: auto;
+            }
 
-    .ProjectName {
-      font-weight: 700;
-      margin-right: 10px;
-      user-select: none;
-    }
-
-    .ImageButton {
-      transition: transform 0.3s;
-
-      img {
-        filter: brightness(0) invert(1);
-        user-select: none;
-      }
-
-      &:hover {
-        background-color: transparent;
-      }
-
-      &:not(.disabled):hover {
-        filter: brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
-        filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
-      }
-    }
-
-    .TextInput {
-      max-width: 200px;
-      height: 25px;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.06);
-      }
-
-      > input {
-        padding-top: 3.5px;
-
-        &:focus {
-          outline: none;
-          color: $secondaryColor; // fallback if new css variables are not supported by browser
-          color: var(--leading-color);
-
-          ~ .Bar {
-            background-color: $secondaryColor; // fallback if new css variables are not supported by browser
-            background-color: var(--leading-color);
-          }
+            &:not(:last-child) {
+                padding-right: 10px;
+                margin-right: 10px;
+                border-right: solid 1px $darkThemeForthColor;
+            }
         }
-      }
 
-      .Bar {
-        height: 0;
-      }
+        .ProjectName {
+            font-weight: 700;
+            margin-right: 10px;
+            user-select: none;
+        }
+
+        .ImageButton {
+            transition: transform 0.3s;
+
+            img {
+                filter: brightness(0) invert(1);
+                user-select: none;
+            }
+
+            &:hover {
+                background-color: transparent;
+            }
+
+            &:not(.disabled):hover {
+                filter: brightness(35%) sepia(100%) hue-rotate(172deg)
+                    saturate(2000%); // fallback if new css variables are not supported by browser
+                filter: brightness(35%) sepia(100%) hue-rotate(var(--hue-value))
+                    saturate(2000%);
+            }
+        }
+
+        .TextInput {
+            max-width: 200px;
+            height: 25px;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.06);
+            }
+
+            > input {
+                padding-top: 3.5px;
+
+                &:focus {
+                    outline: none;
+                    color: $secondaryColor; // fallback if new css variables are not supported by browser
+                    color: var(--leading-color);
+
+                    ~ .Bar {
+                        background-color: $secondaryColor; // fallback if new css variables are not supported by browser
+                        background-color: var(--leading-color);
+                    }
+                }
+            }
+
+            .Bar {
+                height: 0;
+            }
+        }
+
+        .Header {
+            align-self: stretch;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            cursor: pointer;
+            margin-right: 10px;
+
+            > img {
+                max-width: 110px;
+                margin-right: 5px;
+                user-select: none;
+            }
+
+            font-weight: 900;
+            user-select: none;
+        }
+
+        .DropDownMenuWrapper {
+            align-self: stretch;
+        }
     }
-
-    .Header {
-      align-self: stretch;
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      align-content: center;
-      cursor: pointer;
-      margin-right: 10px;
-
-      > img {
-        width: 25px;
-        height: 25px;
-        margin-right: 5px;
-        user-select: none;
-      }
-
-      font-weight: 900;
-      user-select: none;
-    }
-
-    .DropDownMenuWrapper {
-      align-self: stretch;
-    }
-  }
 }

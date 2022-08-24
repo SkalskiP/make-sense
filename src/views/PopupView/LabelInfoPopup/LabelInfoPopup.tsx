@@ -147,7 +147,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                               src={
                                                   style.seq === -1
                                                       ? Settings.UNKNOWN_URL
-                                                      : gender === GENDER.MAN
+                                                      : found.gender ===
+                                                        GENDER.MAN
                                                       ? `guides/icons/man_style/${style.m}_s.png`
                                                       : `guides/icons/woman_style/${style.f}_s.png`
                                               }
@@ -176,7 +177,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                               src={
                                                   style.seq === -1
                                                       ? Settings.UNKNOWN_URL
-                                                      : gender === GENDER.MAN
+                                                      : found.gender ===
+                                                        GENDER.MAN
                                                       ? `guides/icons/man_style/${style.m}_s.png`
                                                       : `guides/icons/woman_style/${style.f}_s.png`
                                               }
@@ -337,7 +339,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                               src={
                                                   style.seq === -1
                                                       ? Settings.UNKNOWN_URL
-                                                      : gender === GENDER.MAN
+                                                      : found.gender ===
+                                                        GENDER.MAN
                                                       ? `guides/icons/man_style/${style.m}_s.png`
                                                       : `guides/icons/woman_style/${style.f}_s.png`
                                               }
@@ -371,7 +374,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                                               src={
                                                   style.seq === -1
                                                       ? Settings.UNKNOWN_URL
-                                                      : gender === GENDER.MAN
+                                                      : found.gender ===
+                                                        GENDER.MAN
                                                       ? `guides/icons/man_style/${style.m}_s.png`
                                                       : `guides/icons/woman_style/${style.f}_s.png`
                                               }
@@ -564,7 +568,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 </div>
                 {image ? (
                     <div className="SampleImage">
-                        <img src={image} width={300} height={300} />
+                        <img src={image} width={230} height={230} />
                     </div>
                 ) : null}
                
