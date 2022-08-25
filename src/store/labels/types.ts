@@ -108,8 +108,6 @@ export type RectJSON = {
     version: number;
     human_info: {
         human_id: string;
-        qc_status?: string;
-        qc_comment?: string
         bounding_box: {
             lt_x: number;
             lt_y: number;
@@ -117,11 +115,11 @@ export type RectJSON = {
             rb_y: number;
         };
         style: string[];
+        qc_status?: string;
+        qc_comment?: string;
     }[];
     item_info: {
         item_id: string;
-        qc_status?: string;
-        qc_comment?: string;
         bounding_box: {
             lt_x: number;
             lt_y: number;
@@ -129,6 +127,8 @@ export type RectJSON = {
             rb_y: number;
         };
         style: string[];
+        qc_status?: string;
+        qc_comment?: string;
     }[];
 };
 
