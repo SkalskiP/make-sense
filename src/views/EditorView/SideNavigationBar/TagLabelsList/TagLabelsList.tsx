@@ -65,8 +65,8 @@ const TagLabelsList: React.FC<IProps> = (
     }
 
     const getChildren = () => {
-        return <>
-            {...labelNames.map((labelName: LabelName) => {
+        return [
+            ...labelNames.map((labelName: LabelName) => {
                 return <div
                     className={getClassName(labelName.id)}
                     onClickCapture={() => onTagClick(labelName.id)}
@@ -74,14 +74,15 @@ const TagLabelsList: React.FC<IProps> = (
                 >
                     {labelName.name}
                 </div>
-            })}
+            }),
             <ImageButton
+                key={'addNew'}
                 image={"ico/plus.png"}
                 imageAlt={"plus"}
                 buttonSize={{width: 32, height: 32}}
                 onClick={addNewOnClick}
             />
-        </>
+        ]
     };
 
     return (
