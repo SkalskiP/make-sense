@@ -2,9 +2,11 @@ import classNames from "classnames";
 import React from 'react';
 import { connect } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
+import { ImageButton } from "../../../..//views/Common/ImageButton/ImageButton";
 import { IRect } from "../../../../interfaces/IRect";
 import { ISize } from "../../../../interfaces/ISize";
+import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
+import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
 import { ImageRepository } from "../../../../logic/imageRepository/ImageRepository";
 import { AppState } from "../../../../store";
 import { updateImageDataById } from "../../../../store/labels/actionCreators";
@@ -12,7 +14,6 @@ import { ImageData } from "../../../../store/labels/types";
 import { FileUtil } from "../../../../utils/FileUtil";
 import { RectUtil } from "../../../../utils/RectUtil";
 import './ImagePreview.scss';
-import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
 
 interface IProps {
     imageData: ImageData;
@@ -20,7 +21,7 @@ interface IProps {
     size: ISize;
     isScrolling?: boolean;
     isChecked?: boolean;
-    onClick?: () => any;
+    onClick?: (e: React.MouseEvent<HTMLDivElement>) => void;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
@@ -37,14 +38,14 @@ class ImagePreview extends React.Component<IProps, IState> {
 
         this.state = {
             image: null,
-        }
+        };
     }
 
     public componentDidMount(): void {
         ImageLoadManager.addAndRun(this.loadImage(this.props.imageData, this.props.isScrolling));
     }
 
-    public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
+    public componentDidUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
                 ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, nextProps.isScrolling));
@@ -65,7 +66,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             this.state.image !== nextState.image ||
             this.props.isSelected !== nextProps.isSelected ||
             this.props.isChecked !== nextProps.isChecked
-        )
+        );
     }
 
     private loadImage = async (imageData: ImageData, isScrolling: boolean) => {
@@ -80,7 +81,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
             FileUtil.loadImage(imageData.fileData)
                 .then((image: HTMLImageElement) => saveLoadedImagePartial(image))
-                .catch((error) => this.handleLoadImageError())
+                .catch((error) => this.handleLoadImageError());
         }
     };
 
@@ -91,6 +92,15 @@ class ImagePreview extends React.Component<IProps, IState> {
         if (imageData.id === this.props.imageData.id) {
             this.setState({ image });
             this.isLoading = false;
+        }
+    };
+
+    private removeImage = () => {
+        if (this.props.isChecked) {
+            alert("Hey, you can't delete an image that is currently selected!");
+        } else {
+            alert("Not Implement!");
+
         }
     };
 
@@ -119,10 +129,10 @@ class ImagePreview extends React.Component<IProps, IState> {
             height: imagePosition.height,
             left: imagePosition.x,
             top: imagePosition.y
-        }
+        };
     };
 
-    private handleLoadImageError = () => { };
+    private handleLoadImageError = () => { /* NOOP */ };
 
     private getClassName = () => {
         return classNames(
@@ -136,6 +146,7 @@ class ImagePreview extends React.Component<IProps, IState> {
     public render() {
         const {
             isChecked,
+            isSelected,
             style,
             onClick
         } = this.props;
@@ -146,39 +157,52 @@ class ImagePreview extends React.Component<IProps, IState> {
                 style={style}
                 onClick={onClick ? onClick : undefined}
             >
-                {(!!this.state.image) ?
-                    [
-                        <div
-                            className="Foreground"
-                            key={"Foreground"}
-                            style={this.getStyle()}
-                        >
-                            <img
-                                className="Image"
-                                draggable={false}
-                                src={this.state.image.src}
-                                alt={this.state.image.alt}
-                                style={{ ...this.getStyle(), left: 0, top: 0 }}
+                {(this.state.image) ?
+                    (
+                        <>
+                            {isSelected &&
+                                <ImageButton
+                                    className="Trash"
+                                    image={"ico/delete.png"}
+                                    imageAlt={"trash"} buttonSize={{ width: 32, height: 32 }}
+                                    onClick={this.removeImage}
+                                />
+                            }
+
+
+                            <div
+                                className="Foreground"
+                                key={"Foreground"}
+                                style={this.getStyle()}
+                            >
+                                <img
+                                    className="Image"
+                                    draggable={false}
+                                    src={this.state.image.src}
+                                    alt={this.state.image.alt}
+                                    style={{ ...this.getStyle(), left: 0, top: 0 }}
+                                />
+                                {isChecked && <img
+                                    className="CheckBox"
+                                    draggable={false}
+                                    src={"ico/ok.png"}
+                                    alt={"checkbox"}
+                                />}
+
+                            </div>,
+                            <div
+                                className="Background"
+                                key={"Background"}
+                                style={this.getStyle()}
                             />
-                            {isChecked && <img
-                                className="CheckBox"
-                                draggable={false}
-                                src={"ico/ok.png"}
-                                alt={"checkbox"}
-                            />}
-                        </div>,
-                        <div
-                            className="Background"
-                            key={"Background"}
-                            style={this.getStyle()}
-                        />
-                    ] :
+                        </>)
+                    :
                     <ClipLoader
                         size={30}
                         color={CSSHelper.getLeadingColor()}
                         loading={true}
                     />}
-            </div>)
+            </div>);
     }
 }
 

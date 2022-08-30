@@ -1,4 +1,4 @@
-import {zip} from "lodash";
+import { zip } from "lodash";
 
 export type ImageMap = { [s: string]: HTMLImageElement; };
 
@@ -17,5 +17,9 @@ export class ImageRepository {
 
     public static getById(uuid: string): HTMLImageElement {
         return ImageRepository.repository[uuid];
+    }
+
+    public static removeById(uuid: string) {
+        delete ImageRepository.repository[uuid];
     }
 }

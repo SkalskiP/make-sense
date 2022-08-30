@@ -1,4 +1,4 @@
-import {ISize} from "../interfaces/ISize";
+import {ISize} from '../interfaces/ISize';
 
 export class SizeUtil {
     public static scale(size: ISize, scale: number): ISize {

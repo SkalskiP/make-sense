@@ -1,0 +1,72 @@
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "rules": {
+    "jsx-quotes": [
+      "error"
+    ],
+    "no-alert": [
+      "error"
+    ],
+    "no-unused-vars": [
+      "off"
+    ],
+    "no-use-before-define": [
+      "warn"
+    ],
+    "complexity": [
+      "error",
+      15
+    ],
+    "no-await-in-loop": [
+      "warn"
+    ],
+    "no-eval": [
+      "error"
+    ],
+    "no-implied-eval": [
+      "error"
+    ],
+    "prefer-promise-reject-errors": [
+      "warn"
+    ],
+    "prefer-destructuring": [
+      "warn"
+    ],
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ],
+    "max-lines-per-function": [
+      "error",
+      150
+    ]
+  },
+  "env": {
+    "es6": true,
+    "browser": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}

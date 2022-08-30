@@ -1,26 +1,26 @@
-import { ContextType } from '../../../data/enums/ContextType';
-import './EditorTopNavigationBar.scss';
-import React from 'react';
+import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 import classNames from 'classnames';
-import { AppState } from '../../../store';
+import React from 'react';
 import { connect } from 'react-redux';
-import { updateCrossHairVisibleStatus, updateImageDragModeStatus } from '../../../store/general/actionCreators';
-import { GeneralSelector } from '../../../store/selectors/GeneralSelector';
-import { ViewPointSettings } from '../../../settings/ViewPointSettings';
-import { ImageButton } from '../../Common/ImageButton/ImageButton';
-import { ViewPortActions } from '../../../logic/actions/ViewPortActions';
-import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
+import { ContextType } from '../../../data/enums/ContextType';
 import { LabelType } from '../../../data/enums/LabelType';
-import { AISelector } from '../../../store/selectors/AISelector';
 import { ISize } from '../../../interfaces/ISize';
 import { AIActions } from '../../../logic/actions/AIActions';
-import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'; 
+import { ViewPortActions } from '../../../logic/actions/ViewPortActions';
+import { ViewPointSettings } from '../../../settings/ViewPointSettings';
+import { AppState } from '../../../store';
+import { updateCrossHairVisibleStatus, updateImageDragModeStatus } from '../../../store/general/actionCreators';
+import { AISelector } from '../../../store/selectors/AISelector';
+import { GeneralSelector } from '../../../store/selectors/GeneralSelector';
+import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
+import { ImageButton } from '../../Common/ImageButton/ImageButton';
+import './EditorTopNavigationBar.scss';
 const BUTTON_SIZE: ISize = { width: 30, height: 30 };
 const BUTTON_PADDING: number = 10;
 
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
-  ))(({ theme }) => ({
+))(({ theme }) => ({
     [`& .${tooltipClasses.tooltip}`]: {
         backgroundColor: '#171717',
         color: '#ffffff',
@@ -29,7 +29,7 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
         maxWidth: 200,
         textAlign: 'center'
     },
-  })); 
+}));
 
 const getButtonWithTooltip = (
     key: string,
@@ -171,6 +171,19 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                         crossHairVisible,
                         undefined,
                         crossHairOnClick
+                    )
+                }
+            </div>
+            <div className='ButtonWrapper'>
+                {
+                    getButtonWithTooltip(
+                        'image-trash',
+                        'drop selected image from collection',
+                        'ico/trash.png',
+                        'image-trash',
+                        false,
+                        undefined,
+                        () => alert("Not implemented yet"),
                     )
                 }
             </div>

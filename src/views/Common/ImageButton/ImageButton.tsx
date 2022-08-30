@@ -1,38 +1,38 @@
-import * as React from 'react';
-import {ISize} from "../../../interfaces/ISize";
-import './ImageButton.scss';
 import classNames from "classnames";
-import {LegacyRef} from "react";
+import * as React from 'react';
+import { LegacyRef } from "react";
+import { ISize } from "../../../interfaces/ISize";
+import './ImageButton.scss';
 
 export interface ImageButtonProps extends React.HTMLProps<HTMLDivElement> {
-    buttonSize:ISize,
-    padding?:number;
-    image:string,
-    imageAlt:string,
-    href?:string
-    onClick?:() => any;
-    style?:React.CSSProperties
-    isActive?:boolean;
-    isDisabled?:boolean;
-    externalClassName?:string;
+    buttonSize: ISize,
+    padding?: number;
+    image: string,
+    imageAlt: string,
+    href?: string;
+    onClick?: () => any;
+    style?: React.CSSProperties;
+    isActive?: boolean;
+    isDisabled?: boolean;
+    externalClassName?: string;
 }
 
 export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: LegacyRef<HTMLDivElement>) => {
-    const {buttonSize, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, externalClassName} = props;
-    const imagePadding:number = !!padding ? padding : 10;
+    const { buttonSize, padding, image, imageAlt, href, onClick, style, isActive, isDisabled, className: externalClassName } = props;
+    const imagePadding: number = padding ? padding : 10;
 
-    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();
         !!onClick && onClick();
     };
 
-    const buttonStyle:React.CSSProperties = {
+    const buttonStyle: React.CSSProperties = {
         ...style,
         width: buttonSize.width,
         height: buttonSize.height
     };
 
-    const imageStyle:React.CSSProperties = {
+    const imageStyle: React.CSSProperties = {
         maxWidth: buttonSize.width - imagePadding,
         maxHeight: buttonSize.height - imagePadding
     };
@@ -47,8 +47,8 @@ export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: Legac
             }
         );
     };
-    
-    return(
+
+    return (
         <div
             className={getClassName()}
             style={buttonStyle}
@@ -72,3 +72,7 @@ export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: Legac
         </div>
     );
 });
+
+ImageButton.displayName = "ImageButton";
+
+export default ImageButton;

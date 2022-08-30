@@ -5,6 +5,6 @@ export class XMLSanitizerUtil {
             .replace('>', '&gt;')
             .replace('&', '&amp;')
             .replace("'", '&#39;')
-            .replace("/", '&#x2F;')
+            .replace('/', '&#x2F;')
     }
 }

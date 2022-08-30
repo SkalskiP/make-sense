@@ -1,5 +1,5 @@
-import {ISize} from "../interfaces/ISize";
-import {IPoint} from "../interfaces/IPoint";
+import {ISize} from '../interfaces/ISize';
+import {IPoint} from '../interfaces/IPoint';
 
 export class VirtualListUtil {
     public static calculateGridSize(listSize: ISize, childSize: ISize, childCount: number): ISize {

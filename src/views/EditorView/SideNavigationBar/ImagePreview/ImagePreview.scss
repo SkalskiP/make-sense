@@ -12,6 +12,7 @@
   align-content: center;
 
   border-bottom: solid 1px $darkThemeFirstColor;
+
   &:nth-child(odd) {
     border-right: solid 1px $darkThemeFirstColor;
   }
@@ -41,6 +42,22 @@
     }
   }
 
+  .Trash {
+    position: absolute;
+    z-index: 1002;
+    max-width: 20px;
+    max-height: 20px;
+    right: 0px;
+    top: 0px;
+    transition: all 0.4s;
+    filter: invert(0) brightness(65%) sepia(100%) saturate(2000%);
+
+    &:hover {
+      filter: invert(1) brightness(35%) sepia(100%) hue-rotate(-40deg) saturate(2000%);
+    }
+
+  }
+
   .Background {
     position: absolute;
     z-index: 0;
@@ -52,6 +69,7 @@
     .Foreground {
       transform: translate(-2px, 2px);
     }
+
     .Background {
       transform: translate(2px, -2px);
       background-color: $secondaryColor; // fallback if new css variables are not supported by browser
@@ -63,6 +81,7 @@
     .Foreground {
       transform: translate(-2px, 2px);
     }
+
     .Background {
       transform: translate(2px, -2px);
     }

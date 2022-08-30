@@ -22,7 +22,8 @@ const config: Config.InitialOptions = {
       },
     ],
   },
-  "moduleNameMapper": {
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
     "\\.(css|scss|less)$": "identity-obj-proxy"
   },
   extensionsToTreatAsEsm: [".ts", ".tsx"],
