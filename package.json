@@ -36,7 +36,7 @@
     "preview": "vite preview",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "lint": "eslint src/**/*.ts src/**.tsx"
+    "lint": "eslint . --ext .ts --ext .tsx"
   },
   "browserslist": {
     "production": [

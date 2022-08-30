@@ -103,7 +103,7 @@ export const LoadModelPopup: React.FC = () => {
     const renderContent = () => {
         return <div className="LoadModelPopupContent">
             <div className="Message">
-                To speed up your work, you can use our AI, which will try to mark objects on your images. Don't worry,
+                To speed up your work, you can use our AI, which will try to mark objects on your images. Don&apos;t worry,
                 your photos are still safe. To take care of your privacy, we decided not to send your images to the
                 server, but instead send our AI to you. When accepting, make sure that you have a fast and stable
                 connection - it may take a few minutes to load the model.

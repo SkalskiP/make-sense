@@ -6,11 +6,11 @@ const config: Config.InitialOptions = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   transformIgnorePatterns: [],
   testEnvironment: 'jsdom',
-  roots: ["<rootDir>/src"],
-  setupFilesAfterEnv: ["<rootDir>/src/configureTest.ts"],
+  roots: ['<rootDir>/src'],
+  setupFilesAfterEnv: ['<rootDir>/src/configureTest.ts'],
   transform: {
-    "^.+(t|j)sx?$": [
-      "@swc/jest",
+    '^.+(t|j)sx?$': [
+      '@swc/jest',
       {
         jsc: {
           transform: {
@@ -23,15 +23,15 @@ const config: Config.InitialOptions = {
     ],
   },
   moduleNameMapper: {
-    "^@/(.*)$": "<rootDir>/src/$1",
-    "\\.(css|scss|less)$": "identity-obj-proxy"
+    '^@/(.*)$': '<rootDir>/src/$1',
+    '\\.(css|scss|less)$': 'identity-obj-proxy'
   },
-  extensionsToTreatAsEsm: [".ts", ".tsx"],
+  extensionsToTreatAsEsm: ['.ts', '.tsx'],
   collectCoverageFrom: [
-    "**/*.{ts,tsx}",
-    "!**/node_modules/**",
-    "!**/dist/**",
-    "!**/coverage/**",
+    '**/*.{ts,tsx}',
+    '!**/node_modules/**',
+    '!**/dist/**',
+    '!**/coverage/**',
   ],
 };
 export default config;

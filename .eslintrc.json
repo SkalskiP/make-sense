@@ -18,10 +18,10 @@
   },
   "rules": {
     "jsx-quotes": [
-      "error"
+      "warn"
     ],
     "no-alert": [
-      "error"
+      "warn"
     ],
     "no-unused-vars": [
       "off"
@@ -49,15 +49,30 @@
       "warn"
     ],
     "quotes": [
-      "error",
+      "warn",
       "single",
       {
         "avoidEscape": true
       }
     ],
-    "max-lines-per-function": [
-      "error",
-      150
+    "max-lines": [
+      "warn",
+      250
+    ],
+    "no-case-declarations": [
+      "warn"
+    ],
+    "prefer-const": [
+      "off"
+    ],
+    "prefer-arrow-callback": [
+      "warn"
+    ],
+    "@typescript-eslint/no-inferrable-types": [
+      "off"
+    ],
+    "@typescript-eslint/no-explicit-any": [
+      "off"
     ]
   },
   "env": {

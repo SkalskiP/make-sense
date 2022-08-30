@@ -110,7 +110,7 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     private getDropdownOptions = () => {
-        const onClick = (id: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+        const onClick = (id: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
             this.setState({isOpen: false});
             window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
             this.props.onSelectLabel(this.props.id, id);

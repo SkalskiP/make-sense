@@ -21,9 +21,9 @@ export class PrimaryEditorRenderEngine extends BaseRenderEngine {
     // EVENT HANDLERS
     // =================================================================================================================
 
-    public mouseMoveHandler(data: EditorData): void {}
-    public mouseDownHandler(data: EditorData): void {}
-    public mouseUpHandler(data: EditorData): void {}
+    public mouseMoveHandler(data: EditorData): void { /* noop */ }
+    public mouseDownHandler(data: EditorData): void { /* noop */ }
+    public mouseUpHandler(data: EditorData): void { /* noop */ }
 
     // =================================================================================================================
     // RENDERING

@@ -76,7 +76,7 @@ class Editor extends React.Component<IProps, IState> {
         this.unmountEventListeners();
     }
 
-    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<{}>, snapshot?: any): void {
+    public componentDidUpdate(prevProps: Readonly<IProps>, prevState: Readonly<unknown>, snapshot?: any): void {
         const {imageData, activeLabelType} = this.props;
 
         prevProps.imageData.id !== imageData.id && ImageLoadManager.addAndRun(this.loadImage(imageData));
@@ -138,7 +138,9 @@ class Editor extends React.Component<IProps, IState> {
         this.updateModelAndRender()
     };
 
-    private handleLoadImageError = () => {};
+    private handleLoadImageError = () => {
+        // TODO: handle error
+    };
 
     // =================================================================================================================
     // HELPER METHODS

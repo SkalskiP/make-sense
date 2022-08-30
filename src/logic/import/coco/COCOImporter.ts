@@ -121,7 +121,7 @@ export class COCOImporter extends AnnotationImporter {
     }
 
     public static validateCocoFormat(annotationsObject: COCOObject): void {
-        const missingKeys = COCOImporter.requiredKeys.filter((key: string) => !annotationsObject.hasOwnProperty(key))
+        const missingKeys = COCOImporter.requiredKeys.filter((key: string) => !Object.prototype.hasOwnProperty.call(annotationsObject,key))
         if (missingKeys.length !== 0) {
             throw new COCOFormatValidationError(`Uploaded file does not contain all required keys: ${missingKeys}`)
         }

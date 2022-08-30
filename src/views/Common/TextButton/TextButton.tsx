@@ -26,7 +26,7 @@ export const TextButton = (props:IProps) => {
         );
     };
 
-    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const onClickHandler = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         event.stopPropagation();
         if (onClick) {
             onClick();
