@@ -17,5 +17,11 @@ export const NotificationsDataMap = {
         header: 'Non unique label names',
         description: 'Looks like not all your label names are unique. Unique names are necessary to guarantee correct' +
             ' data export when you complete your work. Make your names unique and try again.'
+    },
+    [Notification.ABOUT_TO_REMOVE_USED_LABEL_NAME_WARNING]: {
+        header: 'Used label names',
+        description: 'Looks like you are about to remove label name that is currently used by some of your annotations. ' +
+            'Keep in mind that annotations without specified label name can not be exported. You can still abort by ' +
+            'pressing "Cancel".'
     }
 }

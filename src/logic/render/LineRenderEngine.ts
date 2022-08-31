@@ -17,13 +17,13 @@ import {EditorActions} from '../actions/EditorActions';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {DrawUtil} from '../../utils/DrawUtil';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
-import { v4 as uuidv4 } from 'uuid';
 import {ILine} from '../../interfaces/ILine';
 import {LineUtil} from '../../utils/LineUtil';
 import {updateCustomCursorStyle} from '../../store/general/actionCreators';
 import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
 import {LineAnchorType} from '../../data/enums/LineAnchorType';
 import {Settings} from '../../settings/Settings';
+import {LabelUtil} from '../../utils/LabelUtil';
 
 export class LineRenderEngine extends BaseRenderEngine {
 
@@ -197,12 +197,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         const lineOnImage = RenderEngineUtil.transferLineFromViewPortContentToImage(lineOnCanvas, data);
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
         const imageData: ImageData = LabelsSelector.getActiveImageData();
-        const labelLine: LabelLine = {
-            id: uuidv4(),
-            labelId: activeLabelId,
-            line: lineOnImage,
-            isVisible: true
-        };
+        const labelLine: LabelLine = LabelUtil.createLabelLine(activeLabelId, lineOnImage);
         imageData.labelLines.push(labelLine);
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));

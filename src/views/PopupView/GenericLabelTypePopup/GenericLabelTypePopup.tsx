@@ -1,25 +1,25 @@
 import React, {useState} from 'react'
 import './GenericLabelTypePopup.scss'
-import {LabelType} from "../../../data/enums/LabelType";
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {ImageButton} from "../../Common/ImageButton/ImageButton";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {ILabelToolkit, LabelToolkitData} from "../../../data/info/LabelToolkitData";
-import {ProjectType} from "../../../data/enums/ProjectType";
+import {LabelType} from '../../../data/enums/LabelType';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
+import {ImageButton} from '../../Common/ImageButton/ImageButton';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {ILabelToolkit, LabelToolkitData} from '../../../data/info/LabelToolkitData';
+import {ProjectType} from '../../../data/enums/ProjectType';
 
 interface IProps {
     title: string,
     activeLabelType: LabelType,
     projectType: ProjectType;
-    onLabelTypeChange?: (labelType: LabelType) => any;
+    onLabelTypeChange?: (labelType: LabelType) => void;
     acceptLabel: string;
-    onAccept: (labelType: LabelType) => any;
+    onAccept: (labelType: LabelType) => void;
     skipAcceptButton?: boolean;
     disableAcceptButton?: boolean;
     rejectLabel: string;
-    onReject: (labelType: LabelType) => any;
-    renderInternalContent: (labelType: LabelType) => any;
+    onReject: (labelType: LabelType) => void;
+    renderInternalContent: (labelType: LabelType) => JSX.Element;
 }
 
 const GenericLabelTypePopup: React.FC<IProps> = (
@@ -59,11 +59,11 @@ const GenericLabelTypePopup: React.FC<IProps> = (
     }
 
     const renderContent = () => {
-        return (<div className="GenericLabelTypePopupContent">
-            <div className="LeftContainer">
+        return (<div className='GenericLabelTypePopupContent'>
+            <div className='LeftContainer'>
                 {getSidebarButtons()}
             </div>
-            <div className="RightContainer">
+            <div className='RightContainer'>
                 {renderInternalContent(labelType)}
             </div>
         </div>);

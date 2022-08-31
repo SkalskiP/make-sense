@@ -68,6 +68,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
+    const labelsCountSummary = LabelUtil.calculatePerLabelIdCountSummary(
+        LabelsSelector.getLabelNames(),
+        LabelsSelector.getImagesData()
+    )
+
     const validateEmptyLabelNames = (): boolean => {
         const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '');
         return emptyLabelNames.length === 0;
@@ -107,6 +112,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const deleteLabelNameCallback = (id: string) => {
         const newLabelNames = reject(labelNames, { id });
         setLabelNames(newLabelNames);
+        if (id in labelsCountSummary && !Object.values(labelsCountSummary[id]).every((value: number) => value === 0)) {
+            submitNewNotificationAction(NotificationUtil
+                .createWarningNotification(NotificationsDataMap[Notification.ABOUT_TO_REMOVE_USED_LABEL_NAME_WARNING]));
+        }
     };
 
     const togglePerClassColorationCallback = () => {
@@ -140,7 +149,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             onChange(labelName.id, event.target.value);
         const onDeleteCallback = () => deleteLabelNameCallback(labelName.id);
         const onChangeColorCallback = () => changeLabelNameColorCallback(labelName.id);
-        return <div className='LabelEntry' key={labelName.id}>
+        return <div className='label-entry' key={labelName.id}>
             <StyledTextField variant='standard'
                 id={'key'}
                 autoComplete={'off'}
@@ -184,7 +193,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     const onUpdateAcceptCallback = () => {
         const nonEmptyLabelNames: LabelName[] = reject(labelNames,
             (labelName: LabelName) => labelName.name.length === 0);
-        const missingIds: string[] = LabelUtil.labelNamesIdsDiff(LabelsSelector.getLabelNames(), nonEmptyLabelNames);
+        const missingIds: string[] = LabelUtil.calculateMissingLabelNamesIds(
+            LabelsSelector.getLabelNames(), nonEmptyLabelNames);
         LabelActions.removeLabelNames(missingIds);
         updateLabelNamesAction(nonEmptyLabelNames);
         updateActivePopupTypeAction(null);
@@ -201,8 +211,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const renderContent = () => {
-        return (<div className='InsertLabelNamesPopup'>
-            <div className='LeftContainer'>
+        return (<div className='insert-label-names-popup'>
+            <div className='left-container'>
                 <ImageButton
                     image={'ico/plus.png'}
                     imageAlt={'plus'}
@@ -221,8 +231,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     externalClassName={enablePerClassColoration ? '' : 'monochrome'}
                 />}
             </div>
-            <div className='RightContainer'>
-                <div className='Message'>
+            <div className='right-container'>
+                <div className='message'>
                     {
                         isUpdate ?
                             'You can now edit the label names you use to describe the objects in the photos. Use the ' +
@@ -231,16 +241,16 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                             'project. You can also choose to skip that part for now and define label names as you go.'
                     }
                 </div>
-                <div className='LabelsContainer'>
+                <div className='labels-container'>
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
                         <div
-                            className='InsertLabelNamesPopupContent'
+                            className='insert-label-names-popup-content'
                         >
                             {labelInputs}
                         </div>
                     </Scrollbars> :
                         <div
-                            className='EmptyList'
+                            className='empty-list'
                             onClick={addLabelNameCallback}
                         >
                             <img

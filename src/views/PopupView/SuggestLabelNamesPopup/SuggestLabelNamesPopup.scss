@@ -1,6 +1,7 @@
 @import '../../../settings/Settings';
 
 .SuggestLabelNamesPopupContent {
+  max-width: 550px;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;

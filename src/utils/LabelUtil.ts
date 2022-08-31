@@ -1,11 +1,20 @@
-import {Annotation, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
-import {find} from 'lodash';
+import {Annotation, ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
+import {v4 as uuidv4} from 'uuid';
+import {find, sample} from 'lodash';
 import {IRect} from '../interfaces/IRect';
 import {LabelStatus} from '../data/enums/LabelStatus';
 import {IPoint} from '../interfaces/IPoint';
-import { sample } from 'lodash';
 import {Settings} from '../settings/Settings';
+import {ILine} from 'src/interfaces/ILine';
+
+export type LabelCount = {
+    point: number;
+    line: number;
+    polygon: number;
+    rect: number;
+}
+
+export type PerLabelIdCountSummary = Record<string, LabelCount>;
 
 export class LabelUtil {
     public static createLabelName(name: string): LabelName {
@@ -16,19 +25,19 @@ export class LabelUtil {
         }
     }
 
-    public static createLabelRect(labelId: string, rect: IRect): LabelRect {
+    public static createLabelRect(labelId: string | null, rect: IRect, status: LabelStatus = LabelStatus.ACCEPTED): LabelRect {
         return {
             id: uuidv4(),
             labelId,
             rect,
             isVisible: true,
             isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
+            status,
             suggestedLabel: null
         }
     }
 
-    public static createLabelPolygon(labelId: string, vertices: IPoint[]): LabelPolygon {
+    public static createLabelPolygon(labelId: string | null, vertices: IPoint[]): LabelPolygon {
         return {
             id: uuidv4(),
             labelId,
@@ -37,15 +46,24 @@ export class LabelUtil {
         }
     }
 
-    public static createLabelPoint(labelId: string, point: IPoint): LabelPoint {
+    public static createLabelPoint(labelId: string | null, point: IPoint, status: LabelStatus = LabelStatus.ACCEPTED): LabelPoint {
         return {
             id: uuidv4(),
             labelId,
             point,
             isVisible: true,
             isCreatedByAI: false,
-            status: LabelStatus.ACCEPTED,
+            status,
             suggestedLabel: null
+        }
+    }
+
+    public static createLabelLine(labelId: string | null, line: ILine): LabelLine {
+        return {
+            id: uuidv4(),
+            labelId,
+            line,
+            isVisible: true
         }
     }
 
@@ -56,7 +74,32 @@ export class LabelUtil {
         }
     }
 
-    public static labelNamesIdsDiff(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
+    public static calculatePerLabelIdCountSummary(labels: LabelName[], imagesData: ImageData[]): PerLabelIdCountSummary {
+        let labelCount = labels.reduce((acc: PerLabelIdCountSummary, label: LabelName) => {
+            acc[label.id] = { point: 0, line: 0, polygon: 0, rect: 0}
+            return acc;
+        }, {});
+        labelCount = imagesData.reduce((acc: PerLabelIdCountSummary, imageData: ImageData) => {
+            for (const labelRect of imageData.labelRects) {
+                if (labelRect.labelId !== null && labelRect.status === LabelStatus.ACCEPTED)
+                    acc[labelRect.labelId].rect += 1
+            }
+            for (const labelPoint of imageData.labelPoints) {
+                if (labelPoint.labelId !== null  && labelPoint.status === LabelStatus.ACCEPTED)
+                    acc[labelPoint.labelId].point += 1
+            }
+            for (const labelLine of imageData.labelLines) {
+                if (labelLine.labelId !== null) acc[labelLine.labelId].line += 1
+            }
+            for (const labelPolygon of imageData.labelPolygons) {
+                if (labelPolygon.labelId !== null) acc[labelPolygon.labelId].polygon += 1
+            }
+            return acc;
+        }, labelCount)
+        return labelCount
+    }
+
+    public static calculateMissingLabelNamesIds(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
         return oldLabelNames.reduce((missingIds: string[], labelName: LabelName) => {
             if (!find(newLabelNames, { 'id': labelName.id })) {
                 missingIds.push(labelName.id);

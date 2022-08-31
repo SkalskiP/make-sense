@@ -180,8 +180,8 @@ class LabelInputField extends React.Component<IProps, IState> {
                     }}
                 >
                     <div
-                        className='Marker'
-                        style={value ? {backgroundColor: value.color} : {}}
+                        className='marker'
+                        style={{backgroundColor: value ? value.color : '#fff'}}
                     />
                     <div className='Content'>
                         <div className='ContentWrapper'>

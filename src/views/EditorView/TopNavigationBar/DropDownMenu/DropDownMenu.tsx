@@ -68,20 +68,6 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatusAction})
         );
     }
 
-    const getDropDownContent = () => {
-        return DropDownMenuData.map((data: DropDownMenuNode, index: number) => getDropDownTab(data, index))
-    }
-
-    const wrapOnClick = (onClick?: () => void, disabled?: boolean): () => void => {
-        return () => {
-            if (!!disabled) return;
-            if (!!onClick) onClick();
-            setActiveTabIdx(null);
-            updatePreventCustomCursorStatusAction(false);
-            document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
-        }
-    }
-
     const getDropDownTab = (data: DropDownMenuNode, index: number) => {
         return <div
             className={getDropDownMenuTabClassName(index)}
@@ -98,6 +84,20 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatusAction})
         </div>
     }
 
+    const getDropDownContent = () => {
+        return DropDownMenuData.map((data: DropDownMenuNode, index: number) => getDropDownTab(data, index))
+    }
+
+    const wrapOnClick = (onClick?: () => void, disabled?: boolean): () => void => {
+        return () => {
+            if (!!disabled) return;
+            if (!!onClick) onClick();
+            setActiveTabIdx(null);
+            updatePreventCustomCursorStatusAction(false);
+            document.removeEventListener(EventType.MOUSE_DOWN, onMouseDownBeyondDropDown);
+        }
+    }
+
     const getDropDownWindow = (data: DropDownMenuNode) => {
         if (activeTabIdx !== null) {
             const style: React.CSSProperties = {
@@ -112,8 +112,9 @@ const DropDownMenu: React.FC<IProps> = ({updatePreventCustomCursorStatusAction})
                 onMouseLeave={onMouseLeaveWindow}
             >
                 {data.children.map((element: DropDownMenuNode, index: number) => {
-                    return <div className={getDropDownMenuContentOption(element.disabled)}
-                        onClick={wrapOnClick(element.onClick, element.disabled)}
+                    const disabled = typeof element.disabled === 'function' ? element.disabled() : element.disabled
+                    return <div className={getDropDownMenuContentOption(disabled)}
+                        onClick={wrapOnClick(element.onClick, disabled)}
                         key={index}
                     >
                         <div className='Marker'/>

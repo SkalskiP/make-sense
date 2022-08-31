@@ -1,26 +1,26 @@
-import classNames from "classnames";
+import classNames from 'classnames';
 import React from 'react';
-import { connect } from "react-redux";
-import { ClipLoader } from "react-spinners";
-import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
-import { IRect } from "../../../../interfaces/IRect";
-import { ISize } from "../../../../interfaces/ISize";
-import { ImageRepository } from "../../../../logic/imageRepository/ImageRepository";
-import { AppState } from "../../../../store";
-import { updateImageDataById } from "../../../../store/labels/actionCreators";
-import { ImageData } from "../../../../store/labels/types";
-import { FileUtil } from "../../../../utils/FileUtil";
-import { RectUtil } from "../../../../utils/RectUtil";
+import { connect } from 'react-redux';
+import { ClipLoader } from 'react-spinners';
+import { ImageLoadManager } from '../../../../logic/imageRepository/ImageLoadManager';
+import { IRect } from '../../../../interfaces/IRect';
+import { ISize } from '../../../../interfaces/ISize';
+import { ImageRepository } from '../../../../logic/imageRepository/ImageRepository';
+import { AppState } from '../../../../store';
+import { updateImageDataById } from '../../../../store/labels/actionCreators';
+import { ImageData } from '../../../../store/labels/types';
+import { FileUtil } from '../../../../utils/FileUtil';
+import { RectUtil } from '../../../../utils/RectUtil';
 import './ImagePreview.scss';
-import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
+import { CSSHelper } from '../../../../logic/helpers/CSSHelper';
 
 interface IProps {
     imageData: ImageData;
     style: React.CSSProperties;
     size: ISize;
     isScrolling?: boolean;
-    isChecked?: boolean;
-    onClick?: () => any;
+    annotationsCount?: number;
+    onClick?: () => void;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
@@ -64,7 +64,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             this.props.imageData.id !== nextProps.imageData.id ||
             this.state.image !== nextState.image ||
             this.props.isSelected !== nextProps.isSelected ||
-            this.props.isChecked !== nextProps.isChecked
+            this.props.annotationsCount !== nextProps.annotationsCount
         )
     }
 
@@ -126,16 +126,16 @@ class ImagePreview extends React.Component<IProps, IState> {
 
     private getClassName = () => {
         return classNames(
-            "ImagePreview",
+            'ImagePreview',
             {
-                "selected": this.props.isSelected,
+                'selected': this.props.isSelected,
             }
         );
     };
 
     public render() {
         const {
-            isChecked,
+            annotationsCount,
             style,
             onClick
         } = this.props;
@@ -149,27 +149,26 @@ class ImagePreview extends React.Component<IProps, IState> {
                 {(!!this.state.image) ?
                     [
                         <div
-                            className="Foreground"
-                            key={"Foreground"}
+                            className='Foreground'
+                            key={'Foreground'}
                             style={this.getStyle()}
                         >
                             <img
-                                className="Image"
+                                className='Image'
                                 draggable={false}
                                 src={this.state.image.src}
                                 alt={this.state.image.alt}
                                 style={{ ...this.getStyle(), left: 0, top: 0 }}
                             />
-                            {isChecked && <img
-                                className="CheckBox"
-                                draggable={false}
-                                src={"ico/ok.png"}
-                                alt={"checkbox"}
-                            />}
+                            {annotationsCount && <div
+                                className='annotations-count'
+                            >
+                                {annotationsCount}
+                            </div>}
                         </div>,
                         <div
-                            className="Background"
-                            key={"Background"}
+                            className='Background'
+                            key={'Background'}
                             style={this.getStyle()}
                         />
                     ] :
