@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './LoginPopup.scss';
 import { Input } from '@material-ui/core';
 import { connect } from 'react-redux';
