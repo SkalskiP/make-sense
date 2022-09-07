@@ -53,13 +53,13 @@ const LoginPopup: React.FC<IProps> = ({
             <div className="LoginPopupInputContainer">
                 <label className='LoginPopupContent__label'>Password</label>
                 <div className='LoginPopupContent__parent'>
-                    <Eye className='LoginPopupContent__icon'/>
-                    <MoveIcon className='LoginPopupContent__move'/>
+                    <Eye className='LoginPopupContent__icon'/> 
+                    <MoveIcon className='LoginPopupContent__move'/> 
                     <Input
                         fullWidth
                         placeholder="password"
                         type="password"
-                        inputProps={{style: { color: 'white' }}}
+                        inputProps={{style: {color: 'white'}}}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
