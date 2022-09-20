@@ -78,333 +78,131 @@ const LabelInfoPopup: React.FC<IProps> = ({
     const {id, mode} = labelRect;
     const [humanInfo, setHumanInfo] = useState<HumanInfo>();
     const [itemInfo, setItemInfo] = useState<ItemInfo>();
-    const [selectedItems, setSelectedItems] = useState<ISelectedItem>({});
+    const [selectedItems, setSelectedItems] = useState<any>({});
     const [gender, setGender] = useState<number>();
     const [image, setImage] = useState<string | undefined>();
+    const [isFollowHumanSetting, setFollowHumanSetting] = useState(false);
 
     useEffect(() => {
         if (mode === LabelModeType.HUMAN) {
             const found = _.find(imageData.humans, {uuid: id});
+            const foundGender = gender ? gender : found?.gender;
+            const genderStyles =
+                foundGender === GENDER.MAN
+                    ? FASHION_STYLE_MAN
+                    : FASHION_STYLE_WOMAN;
             setHumanInfo(found);
-            setGender(found.gender);
-            const genderKey = Object.keys(GENDER).find(
-                (key) => GENDER[key] === found.gender
-            );
-            const sourceKey = Object.keys(SOURCE).find(
-                (key) => SOURCE[key] === found.type
-            );
             setSelectedItems({
-                [ATTRIBUTE_TYPE.GENDER]: {
-                    value: found.gender,
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    GENDER[genderKey] === GENDER.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/genders/${GENDER[genderKey]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${lang.GENDER[genderKey]} (${genderKey})`}</span>
-                        </div>
-                    )
-                },
-                [ATTRIBUTE_TYPE.SOURCE]: {
-                    value: found.type,
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    SOURCE[sourceKey] === SOURCE.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/sources/${SOURCE[sourceKey]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${lang.SOURCE[sourceKey]} (${sourceKey})`}</span>
-                        </div>
-                    )
-                },
+                [ATTRIBUTE_TYPE.SOURCE]: found.type,
+                [ATTRIBUTE_TYPE.GENDER]: foundGender,
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
-                        ? found.styles.map((styleString) => {
-                              const style =
-                                  _.find(
-                                      FASHION_STYLE,
-                                      (item) =>
-                                          item.name.toUpperCase() ===
-                                          styleString.toUpperCase()
-                                  ) || _.last(FASHION_STYLE);
-                              return {
-                                  value: style.name.toUpperCase(),
-                                  label: (
-                                      <div className="IconItem">
-                                          <img
-                                              src={
-                                                  style.seq === -1
-                                                      ? Settings.UNKNOWN_URL
-                                                      : found.gender ===
-                                                        GENDER.MAN
-                                                      ? `guides/icons/man_style/${style.m}_s.png`
-                                                      : `guides/icons/woman_style/${style.f}_s.png`
-                                              }
-                                              width={30}
-                                              height={30}
-                                          />
-                                          <span className="ItemTitle">{`${
-                                              lang.FASHION_STYLE[
-                                                  style.name.toLowerCase()
-                                              ]
-                                          } (${style.name.toUpperCase()})`}</span>
-                                      </div>
-                                  )
-                              };
-                          })
-                        : imageData.guideStyles.map((guideStyle) => {
-                              const style =
-                                  _.find(FASHION_STYLE, {
-                                      seq: parseInt(guideStyle.seq)
-                                  }) || _.last(FASHION_STYLE);
-                              return {
-                                  value: style.name.toUpperCase(),
-                                  label: (
-                                      <div className="IconItem">
-                                          <img
-                                              src={
-                                                  style.seq === -1
-                                                      ? Settings.UNKNOWN_URL
-                                                      : found.gender ===
-                                                        GENDER.MAN
-                                                      ? `guides/icons/man_style/${style.m}_s.png`
-                                                      : `guides/icons/woman_style/${style.f}_s.png`
-                                              }
-                                              width={30}
-                                              height={30}
-                                          />
-                                          <span className="ItemTitle">{`${
-                                              lang.FASHION_STYLE[
-                                                  style.name.toLowerCase()
-                                              ]
-                                          } (${style.name.toUpperCase()})`}</span>
-                                      </div>
-                                  )
-                              };
-                          })
+                        ? genderStyles.filter((style) =>
+                              found.styles.includes(style.name.toUpperCase())
+                          )
+                        : genderStyles.filter((style) =>
+                              imageData.guideStyles
+                                  .map((gs) => parseInt(gs.seq))
+                                  .includes(style.seq)
+                          )
             });
         } else {
             const found = _.find(imageData.items, {uuid: id});
             setItemInfo(found);
-            setGender(found.gender);
-            const humanIndex = imageData.humans.findIndex(
+            const foundHuman = imageData.humans.find(
                 (human) => human.uuid === found.humanId
             );
-            const genderKey = Object.keys(GENDER).find(
-                (key) => GENDER[key] === found.gender
-            );
+            setHumanInfo(foundHuman ? foundHuman : null);
+            const foundGender = gender
+                ? gender
+                : foundHuman?.gender
+                ? foundHuman.gender
+                : found?.gender;
+
+            const genderStyles =
+                foundGender === GENDER.MAN
+                    ? FASHION_STYLE_MAN
+                    : FASHION_STYLE_WOMAN;
 
             setSelectedItems({
-                [ATTRIBUTE_TYPE.HUMAN_ID]: {
-                    value: found.humanId,
-                    label: humanIndex === -1 ? 'UNKNOWN' : humanIndex
-                },
-                [ATTRIBUTE_TYPE.GENDER]: {
-                    value: found.gender,
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    GENDER[genderKey] === GENDER.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/genders/${GENDER[genderKey]}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${lang.GENDER[genderKey]} (${genderKey})`}</span>
-                        </div>
-                    )
-                },
-                [ATTRIBUTE_TYPE.MAIN_CATEGORY]: {
-                    value: found.mainCategory,
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    found.mainCategory ===
-                                    MAIN_CATEGORY_CODE.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/main_cats/${found.mainCategory}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${
-                                lang.MAIN_CATEGORY[
-                                    MAIN_CATEGORY_CODE[found.mainCategory]
-                                ]
-                            } (${
-                                MAIN_CATEGORY_CODE[found.mainCategory]
-                            })`}</span>
-                        </div>
-                    )
-                },
-                [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
-                    value: found.subCategory,
-                    // label: `${
-                    //     lang.SUB_CATEGORY[SUB_CATEGORY_CODE[found.subCategory]]
-                    // } (${SUB_CATEGORY_CODE[found.subCategory]})`
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    found.subCategory ===
-                                    SUB_CATEGORY_CODE.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/sub_cats/${found.subCategory}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">
-                                {`${
-                                    lang.SUB_CATEGORY[
-                                        SUB_CATEGORY_CODE[found.subCategory]
-                                    ]
-                                } (${SUB_CATEGORY_CODE[found.subCategory]})`}
-                            </span>
-                        </div>
-                    )
-                },
-                [ATTRIBUTE_TYPE.ITEM_COLOR]: {
-                    value: found.color,
-                    // label: `${lang.ITEM_COLOR[ITEM_COLOR[found.color]]} (${
-                    //     ITEM_COLOR[found.color]
-                    // })`
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    found.color === ITEM_COLOR.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/colors/${found.color}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${
-                                lang.ITEM_COLOR[ITEM_COLOR[found.color]]
-                            } (${ITEM_COLOR[found.color]})`}</span>
-                        </div>
-                    )
-                },
-                [ATTRIBUTE_TYPE.ITEM_PATTERN]: {
-                    value: found.pattern,
-                    label: (
-                        <div className="IconItem">
-                            <img
-                                src={
-                                    found.pattern === ITEM_PATTERN.UNKNOWN
-                                        ? Settings.UNKNOWN_URL
-                                        : `guides/icons/patterns/${found.pattern}_s.png`
-                                }
-                                width={30}
-                                height={30}
-                            />
-                            <span className="ItemTitle">{`${
-                                lang.ITEM_PATTERN[ITEM_PATTERN[found.pattern]]
-                            } (${ITEM_PATTERN[found.pattern]})`}</span>
-                        </div>
-                    )
-                },
-
+                [ATTRIBUTE_TYPE.HUMAN_ID]: found.humanId,
+                [ATTRIBUTE_TYPE.GENDER]: foundGender,
+                [ATTRIBUTE_TYPE.MAIN_CATEGORY]: found.mainCategory,
+                [ATTRIBUTE_TYPE.SUB_CATEGORY]: found.subCategory,
+                [ATTRIBUTE_TYPE.ITEM_COLOR]: found.color,
+                [ATTRIBUTE_TYPE.ITEM_PATTERN]: found.pattern,
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
-                    found.styles.length > 0
-                        ? found.styles.map((styleString) => {
-                              const style =
-                                  _.find(
-                                      FASHION_STYLE,
-                                      (item) =>
-                                          item.name.toUpperCase() ===
-                                          styleString.toUpperCase()
-                                  ) || _.last(FASHION_STYLE);
-                              return {
-                                  value: style.name.toUpperCase(),
-                                  label: (
-                                      <div className="IconItem">
-                                          <img
-                                              src={
-                                                  style.seq === -1
-                                                      ? Settings.UNKNOWN_URL
-                                                      : found.gender ===
-                                                        GENDER.MAN
-                                                      ? `guides/icons/man_style/${style.m}_s.png`
-                                                      : `guides/icons/woman_style/${style.f}_s.png`
-                                              }
-                                              width={30}
-                                              height={30}
-                                          />
-                                          <span className="ItemTitle">{`${
-                                              lang.FASHION_STYLE[
-                                                  style.name.toLowerCase()
-                                              ]
-                                          } (${style.name.toUpperCase()})`}</span>
-                                      </div>
-                                  )
-                              };
-                          })
-                        : imageData.guideStyles.map((guideStyle) => {
-                              const style =
-                                  _.find(
-                                      gender === GENDER.MAN
-                                          ? FASHION_STYLE_MAN
-                                          : FASHION_STYLE_WOMAN,
-                                      {
-                                          seq: parseInt(guideStyle.seq)
-                                      }
-                                  ) || _.last(FASHION_STYLE);
-                              return {
-                                  value: style.name.toUpperCase(),
-                                  label: (
-                                      <div className="IconItem">
-                                          <img
-                                              src={
-                                                  style.seq === -1
-                                                      ? Settings.UNKNOWN_URL
-                                                      : found.gender ===
-                                                        GENDER.MAN
-                                                      ? `guides/icons/man_style/${style.m}_s.png`
-                                                      : `guides/icons/woman_style/${style.f}_s.png`
-                                              }
-                                              width={30}
-                                              height={30}
-                                          />
-                                          <span className="ItemTitle">{`${
-                                              lang.FASHION_STYLE[
-                                                  style.name.toLowerCase()
-                                              ]
-                                          } (${style.name.toUpperCase()})`}</span>
-                                      </div>
-                                  )
-                              };
-                          })
+                    (foundHuman ? foundHuman : found).styles.length > 0
+                        ? genderStyles.filter((style) =>
+                              found.styles.includes(style.name.toUpperCase())
+                          )
+                        : genderStyles.filter((style) =>
+                              imageData.guideStyles
+                                  .map((gs) => parseInt(gs.seq))
+                                  .includes(style.seq)
+                          )
             });
         }
 
         return () => {
             // nothing
         };
-    }, [mode]);
+    }, [mode, gender]);
 
-    const onSelect = (item: {value: any; label: any}, type: ATTRIBUTE_TYPE) => {
+    useEffect(() => {
+        console.log('humanInfo = ', humanInfo);
+        setFollowHumanSetting(Boolean(humanInfo));
+    }, [humanInfo]);
+
+    const onSelect = (item: any, type: ATTRIBUTE_TYPE) => {
         // const imageURL = item.label?.props?.children[0]?.props?.src;
         setImage(null);
 
         switch (type) {
+            case ATTRIBUTE_TYPE.HUMAN_ID: {
+                const human = imageData.humans.find(
+                    (human) => human.uuid === item
+                );
+
+                let composedGender;
+                let selectiveStyles;
+
+                if (item === '-1' || !human) {
+                    setHumanInfo(null);
+                    composedGender = LabelsSelector.getActiveGender();
+                    selectiveStyles = LabelsSelector.getActiveStyles();
+                } else {
+                    setHumanInfo(human);
+                    composedGender = human.gender;
+                    selectiveStyles = human.styles;
+                }
+
+                const genderStyles =
+                    composedGender === GENDER.MAN
+                        ? FASHION_STYLE_MAN
+                        : FASHION_STYLE_WOMAN;
+
+                const composedStyles =
+                    selectiveStyles.length > 0
+                        ? genderStyles.filter((style) =>
+                              selectiveStyles.includes(style.name.toUpperCase())
+                          )
+                        : genderStyles.filter((style) =>
+                              imageData.guideStyles
+                                  .map((gs) => parseInt(gs.seq))
+                                  .includes(style.seq)
+                          );
+
+                setSelectedItems({
+                    ...selectedItems,
+                    [type]: item,
+                    [ATTRIBUTE_TYPE.GENDER]: composedGender,
+                    [ATTRIBUTE_TYPE.FASHION_STYLE]: composedStyles
+                });
+                break;
+            }
             case ATTRIBUTE_TYPE.GENDER: {
-                setGender(item.value);
+                setGender(item);
                 setSelectedItems({...selectedItems, [type]: item});
                 break;
             }
@@ -412,30 +210,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 setSelectedItems({
                     ...selectedItems,
                     [ATTRIBUTE_TYPE.MAIN_CATEGORY]: item,
-                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: {
-                        value: SUB_CATEGORY_CODE.UNKNOWN,
-                        label: `${lang.SUB_CATEGORY.UNKNOWN} (${
-                            SUB_CATEGORY_CODE[SUB_CATEGORY_CODE.UNKNOWN]
-                        })`
-                    }
+                    [ATTRIBUTE_TYPE.SUB_CATEGORY]: SUB_CATEGORY_CODE.UNKNOWN
                 });
                 break;
             }
             case ATTRIBUTE_TYPE.SUB_CATEGORY: {
-                // const mainCode =
-                //     SUB_CATEGORY_TO_MAIN[SUB_CATEGORY_CODE[item.value]];
-                // const mainItem = {
-                //     value: mainCode,
-                //     label: `${
-                //         lang.MAIN_CATEGORY[MAIN_CATEGORY_CODE[mainCode]]
-                //     } (${MAIN_CATEGORY_CODE[mainCode]})`
-                // };
-
-                // console.log('mainItem = ', mainItem);
                 setSelectedItems({
                     ...selectedItems,
                     [ATTRIBUTE_TYPE.SUB_CATEGORY]: item
-                    // [ATTRIBUTE_TYPE.MAIN_CATEGORY]: mainItem
                 });
                 break;
             }
@@ -455,10 +237,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
         if (mode === LabelModeType.HUMAN) {
             const updatedHumanInfo = {
                 ...humanInfo,
-                gender: selectedItems[ATTRIBUTE_TYPE.GENDER].value,
-                type: selectedItems[ATTRIBUTE_TYPE.SOURCE].value,
+                gender: selectedItems[ATTRIBUTE_TYPE.GENDER],
+                type: selectedItems[ATTRIBUTE_TYPE.SOURCE],
                 styles: selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE].map(
-                    (item) => item.value
+                    (style) => style.name.toUpperCase()
                 )
             };
             // update active*
@@ -477,14 +259,14 @@ const LabelInfoPopup: React.FC<IProps> = ({
             // console.log('selectedItems', selectedItems);
             const updateItemInfo: ItemInfo = {
                 ...itemInfo,
-                humanId: selectedItems[ATTRIBUTE_TYPE.HUMAN_ID].value,
-                gender: selectedItems[ATTRIBUTE_TYPE.GENDER].value,
-                mainCategory: selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY].value,
-                subCategory: selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY].value,
-                color: selectedItems[ATTRIBUTE_TYPE.ITEM_COLOR].value,
-                pattern: selectedItems[ATTRIBUTE_TYPE.ITEM_PATTERN].value,
+                humanId: selectedItems[ATTRIBUTE_TYPE.HUMAN_ID],
+                gender: selectedItems[ATTRIBUTE_TYPE.GENDER],
+                mainCategory: selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY],
+                subCategory: selectedItems[ATTRIBUTE_TYPE.SUB_CATEGORY],
+                color: selectedItems[ATTRIBUTE_TYPE.ITEM_COLOR],
+                pattern: selectedItems[ATTRIBUTE_TYPE.ITEM_PATTERN],
                 styles: selectedItems[ATTRIBUTE_TYPE.FASHION_STYLE].map(
-                    (item) => item.value
+                    (style) => style.name.toUpperCase()
                 )
             };
 
@@ -513,6 +295,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
         if (!humanInfo && !itemInfo) {
             return null;
         }
+        console.log('follow? ', isFollowHumanSetting);
         return mode === LabelModeType.HUMAN ? (
             <div className="LabelInfoPopupContent">
                 <div className="AttributeContainer">
@@ -580,6 +363,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     <div className="AttributeName">Gender</div>
                     <div className="AttributeSelector">
                         <AttributeSelect
+                            isDisabled={isFollowHumanSetting}
+                            isActive={!isFollowHumanSetting}
                             type={ATTRIBUTE_TYPE.GENDER}
                             onSelect={onSelect}
                             setPreview={setImage}
@@ -605,7 +390,6 @@ const LabelInfoPopup: React.FC<IProps> = ({
                         <AttributeSelect
                             mainCategory={
                                 selectedItems[ATTRIBUTE_TYPE.MAIN_CATEGORY]
-                                    .value
                             }
                             type={ATTRIBUTE_TYPE.SUB_CATEGORY}
                             onSelect={onSelect}
@@ -641,6 +425,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     <div className="AttributeName">Styles</div>
                     <div className="AttributeSelector">
                         <AttributeSelect
+                            isDisabled={isFollowHumanSetting}
+                            isActive={!isFollowHumanSetting}
                             gender={gender}
                             type={ATTRIBUTE_TYPE.FASHION_STYLE}
                             onSelect={onSelect}
