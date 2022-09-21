@@ -17,16 +17,15 @@ import LabelInfoPopup from './LabelInfoPopup/LabelInfoPopup';
 import LoginPopup from './LoginPopup/LoginPopup';
 import LogoutPopup from './LogoutPopup/LogoutPopup';
 import DeleteConfirmPopup from './DeleteConfirmPopup/DeleteConfirmPopup';
+import PerformancePopup from './PerformancePopup/PerformancePopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
 }
 
 const PopupView: React.FC<IProps> = ({activePopupType}) => {
-    console.log(activePopupType)
     const selectPopup = () => {
         switch (activePopupType) {
-            
             case PopupWindowType.LOGIN:
                 return <LoginPopup />;
             case PopupWindowType.LOGOUT:
@@ -61,6 +60,8 @@ const PopupView: React.FC<IProps> = ({activePopupType}) => {
                         loading={true}
                     />
                 );
+            case PopupWindowType.PERFORMANCE:
+                return <PerformancePopup />;
             default:
                 return <LoginPopup />;
         }

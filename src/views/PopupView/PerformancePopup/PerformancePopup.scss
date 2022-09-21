@@ -1,0 +1,27 @@
+@import '../../../settings/Settings';
+
+.PerformancePopupContent {
+    display: flex;
+    padding: 10px;
+    color: white;
+    width: 100%;
+    justify-content: flex-start;
+    flex-direction: column;
+    overflow: auto;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    background-color: rgba($color: yellow, $alpha: 0.7);
+    color: $darkThemeFirstColor;
+    border: 1px solid $darkThemeFirstColor;
+    text-align: center;
+}
+tr,
+td {
+    border: 1px solid lightgray;
+    text-align: center;
+}
