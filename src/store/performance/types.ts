@@ -3,6 +3,7 @@ import {Action} from '../Actions';
 export type PerformanceState = {
     taskStatus: TaskStatus;
     tasks: Task[];
+    commonSummary: CommonSummary;
 };
 
 export type TaskStatus = {
@@ -29,6 +30,17 @@ export type Task = {
     note?: string;
 };
 
+export type CommonSummary = {
+    images: {
+        total: number;
+        labeled: number;
+        unchecked: number;
+        waitingQC: number;
+        passed: number;
+        rejected: number;
+    };
+};
+
 interface UpdateTaskStatusData {
     type: typeof Action.UPDATE_TASK_STATUS_DATA;
     payload: {
@@ -43,4 +55,14 @@ interface UpdateTasksData {
     };
 }
 
-export type PerformanceActionTypes = UpdateTaskStatusData | UpdateTasksData;
+interface UpdateCommonSummaryData {
+    type: typeof Action.UPDATE_COMMON_SUMMARY_DATA;
+    payload: {
+        commonSummary: CommonSummary;
+    };
+}
+
+export type PerformanceActionTypes =
+    | UpdateTaskStatusData
+    | UpdateTasksData
+    | UpdateCommonSummaryData;

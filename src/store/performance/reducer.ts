@@ -14,7 +14,17 @@ const initialState: PerformanceState = {
             tpd: 0
         }
     },
-    tasks: []
+    tasks: [],
+    commonSummary: {
+        images: {
+            total: 0,
+            labeled: 0,
+            unchecked: 0,
+            waitingQC: 0,
+            passed: 0,
+            rejected: 0
+        }
+    }
 };
 
 export function performanceReducer(
@@ -32,6 +42,12 @@ export function performanceReducer(
             return {
                 ...state,
                 tasks: action.payload.tasks
+            };
+        }
+        case Action.UPDATE_COMMON_SUMMARY_DATA: {
+            return {
+                ...state,
+                commonSummary: action.payload.commonSummary
             };
         }
         default:

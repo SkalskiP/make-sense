@@ -1,5 +1,5 @@
 import {Action} from '../Actions';
-import {Task, TaskStatus} from './types';
+import {CommonSummary, Task, TaskStatus} from './types';
 
 export function updateTaskStatus(taskStatus: TaskStatus) {
     return {
@@ -15,6 +15,15 @@ export function updateTasks(tasks: Task[]) {
         type: Action.UPDATE_TASKS_DATA,
         payload: {
             tasks
+        }
+    };
+}
+
+export function updateCommonSummary(commonSummary: CommonSummary) {
+    return {
+        type: Action.UPDATE_COMMON_SUMMARY_DATA,
+        payload: {
+            commonSummary
         }
     };
 }
