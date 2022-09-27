@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import './GenericYesNoPopup.scss'
-import {TextButton} from "../../Common/TextButton/TextButton";
-import {ContextManager} from "../../../logic/context/ContextManager";
-import {ContextType} from "../../../data/enums/ContextType";
+import {TextButton} from '../../Common/TextButton/TextButton';
+import {ContextManager} from '../../../logic/context/ContextManager';
+import {ContextType} from '../../../data/enums/ContextType';
 
 interface IProps {
     title: string;
@@ -30,7 +30,7 @@ export const GenericYesNoPopup: React.FC<IProps> = (
         skipRejectButton,
         disableRejectButton
     }) => {
-    
+
     const [status, setMountStatus] = useState(false);
     useEffect(() => {
         if (!status) {
@@ -40,25 +40,25 @@ export const GenericYesNoPopup: React.FC<IProps> = (
     }, [status]);
 
     return (
-        <div className="GenericYesNoPopup">
-            <div className="Header">
+        <div className='GenericYesNoPopup'>
+            <div className='Header'>
                 {title}
             </div>
-            <div className="Content">
+            <div className='Content'>
                 {renderContent()}
             </div>
-            <div className="Footer">
-                {!skipAcceptButton && <TextButton
-                    label={acceptLabel ? acceptLabel : "YES"}
-                    onClick={onAccept}
-                    externalClassName={"accept"}
-                    isDisabled={disableAcceptButton}
-                />}
+            <div className='Footer'>
                 {!skipRejectButton && <TextButton
-                    label={rejectLabel ? rejectLabel : "NO, THANKS"}
+                    label={rejectLabel ? rejectLabel : 'NO, THANKS'}
                     onClick={onReject}
-                    externalClassName={"reject"}
+                    externalClassName={'reject'}
                     isDisabled={disableRejectButton}
+                />}
+                {!skipAcceptButton && <TextButton
+                    label={acceptLabel ? acceptLabel : 'YES'}
+                    onClick={onAccept}
+                    externalClassName={'accept'}
+                    isDisabled={disableAcceptButton}
                 />}
             </div>
         </div>
