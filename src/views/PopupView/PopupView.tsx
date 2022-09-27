@@ -1,18 +1,19 @@
 import React from 'react';
 import './PopupView.scss';
-import { PopupWindowType } from "../../data/enums/PopupWindowType";
-import { AppState } from "../../store";
-import { connect } from "react-redux";
-import LoadLabelsPopup from "./LoadLabelNamesPopup/LoadLabelNamesPopup";
-import InsertLabelNamesPopup from "./InsertLabelNamesPopup/InsertLabelNamesPopup";
-import ExitProjectPopup from "./ExitProjectPopup/ExitProjectPopup";
-import LoadMoreImagesPopup from "./LoadMoreImagesPopup/LoadMoreImagesPopup";
-import { LoadModelPopup } from "./LoadModelPopup/LoadModelPopup";
-import SuggestLabelNamesPopup from "./SuggestLabelNamesPopup/SuggestLabelNamesPopup";
-import { CSSHelper } from "../../logic/helpers/CSSHelper";
-import { ClipLoader } from "react-spinners";
-import ImportLabelPopup from "./ImportLabelPopup/ImportLabelPopup";
-import ExportLabelPopup from "./ExportLabelsPopup/ExportLabelPopup";
+import { PopupWindowType } from '../../data/enums/PopupWindowType';
+import { AppState } from '../../store';
+import { connect } from 'react-redux';
+import LoadLabelsPopup from './LoadLabelNamesPopup/LoadLabelNamesPopup';
+import InsertLabelNamesPopup from './InsertLabelNamesPopup/InsertLabelNamesPopup';
+import ExitProjectPopup from './ExitProjectPopup/ExitProjectPopup';
+import LoadMoreImagesPopup from './LoadMoreImagesPopup/LoadMoreImagesPopup';
+import SuggestLabelNamesPopup from './SuggestLabelNamesPopup/SuggestLabelNamesPopup';
+import { CSSHelper } from '../../logic/helpers/CSSHelper';
+import { ClipLoader } from 'react-spinners';
+import ImportLabelPopup from './ImportLabelPopup/ImportLabelPopup';
+import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
+import LoadRoboflowModelPopup from './LoadRoboflowModelPopup/LoadRoboflowModelPopup';
+import LoadModelPopup from './LoadModelPopup/LoadModelPopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -42,6 +43,8 @@ const PopupView: React.FC<IProps> = ({ activePopupType }) => {
                 return <LoadMoreImagesPopup />;
             case PopupWindowType.LOAD_AI_MODEL:
                 return <LoadModelPopup />;
+            case PopupWindowType.LOAD_ROBOFLOW_JS_MODEL:
+                return <LoadRoboflowModelPopup />;
             case PopupWindowType.SUGGEST_LABEL_NAMES:
                 return <SuggestLabelNamesPopup />;
             case PopupWindowType.LOADER:
@@ -56,7 +59,7 @@ const PopupView: React.FC<IProps> = ({ activePopupType }) => {
     };
 
     return (
-        activePopupType && <div className="PopupView">
+        activePopupType && <div className='PopupView'>
             {selectPopup()}
         </div>
     );

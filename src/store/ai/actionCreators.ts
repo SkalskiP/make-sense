@@ -37,6 +37,15 @@ export function updatePoseDetectorStatus(isPoseDetectorLoaded: boolean): AIActio
     }
 }
 
+export function updateRoboflowJSObjectDetectorStatus(isRoboflowJSObjectDetectorLoaded: boolean): AIActionTypes {
+    return {
+        type: Action.UPDATE_ROBOFLOW_JS_OBJECT_DETECTOR_STATUS,
+        payload: {
+            isRoboflowJSObjectDetectorLoaded,
+        }
+    }
+}
+
 export function updateDisabledAIFlag(isAIDisabled: boolean): AIActionTypes {
     return {
         type: Action.UPDATE_DISABLED_AI_FLAG,

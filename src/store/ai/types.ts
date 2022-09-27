@@ -7,6 +7,9 @@ export type AIState = {
     // POSE NET
     isPoseDetectorLoaded: boolean;
 
+    // ROBOFLOW
+    isRoboflowJSObjectDetectorLoaded: boolean;
+
     // GENERAL
     suggestedLabelList: string[];
     rejectedSuggestedLabelList: string[];
@@ -41,6 +44,13 @@ interface UpdatePoseDetectorStatus {
     }
 }
 
+interface UpdateRoboflowJSObjectDetectorStatus {
+    type: typeof Action.UPDATE_ROBOFLOW_JS_OBJECT_DETECTOR_STATUS;
+    payload: {
+        isRoboflowJSObjectDetectorLoaded: boolean;
+    }
+}
+
 interface UpdateDisabledAIFlag {
     type: typeof Action.UPDATE_DISABLED_AI_FLAG;
     payload: {
@@ -52,4 +62,5 @@ export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
     | UpdateObjectDetectorStatus
     | UpdatePoseDetectorStatus
+    | UpdateRoboflowJSObjectDetectorStatus
     | UpdateDisabledAIFlag

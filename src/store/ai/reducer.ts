@@ -6,6 +6,7 @@ const initialState: AIState = {
     rejectedSuggestedLabelList: [],
     isObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
+    isRoboflowJSObjectDetectorLoaded: false,
     isAIDisabled: false
 };
 
@@ -36,6 +37,12 @@ export function aiReducer(
             return {
                 ...state,
                 isPoseDetectorLoaded: action.payload.isPoseDetectorLoaded
+            }
+        }
+        case Action.UPDATE_ROBOFLOW_JS_OBJECT_DETECTOR_STATUS: {
+            return {
+                ...state,
+                isRoboflowJSObjectDetectorLoaded: action.payload.isRoboflowJSObjectDetectorLoaded
             }
         }
         case Action.UPDATE_DISABLED_AI_FLAG: {

@@ -17,11 +17,14 @@ import NotificationsView from './views/NotificationsView/NotificationsView';
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    ObjectDetectorLoaded: boolean;
-    PoseDetectionLoaded: boolean;
+    objectDetectorLoaded: boolean;
+    poseDetectionLoaded: boolean;
+    roboflowJSObjectDetectorLoaded: boolean;
 }
 
-const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, PoseDetectionLoaded}) => {
+const App: React.FC<IProps> = (
+    {projectType, windowSize, objectDetectorLoaded, poseDetectionLoaded, roboflowJSObjectDetectorLoaded}
+) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
@@ -36,8 +39,10 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
         }
     };
 
+    const isAILoaded = objectDetectorLoaded || poseDetectionLoaded || roboflowJSObjectDetectorLoaded
+
       return (
-        <div className={classNames('App', {'AI': ObjectDetectorLoaded || PoseDetectionLoaded})}
+        <div className={classNames('App', {'AI': isAILoaded})}
             draggable={false}
         >
             {selectRoute()}
@@ -50,8 +55,9 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
-    ObjectDetectorLoaded: state.ai.isObjectDetectorLoaded,
-    PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
+    objectDetectorLoaded: state.ai.isObjectDetectorLoaded,
+    poseDetectionLoaded: state.ai.isPoseDetectorLoaded,
+    roboflowJSObjectDetectorLoaded: state.ai.isRoboflowJSObjectDetectorLoaded
 });
 
 export default connect(
