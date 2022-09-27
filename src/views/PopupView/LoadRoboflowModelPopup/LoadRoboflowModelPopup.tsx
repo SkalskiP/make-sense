@@ -15,6 +15,11 @@ import {updateRoboflowJSObjectDetectorStatus} from '../../../store/ai/actionCrea
 import {AIActionTypes} from '../../../store/ai/types';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 import {AIObjectDetectionActions} from '../../../logic/actions/AIObjectDetectionActions';
+import {submitNewNotification} from '../../../store/notifications/actionCreators';
+import {INotification, NotificationsActionType} from '../../../store/notifications/types';
+import {NotificationUtil} from '../../../utils/NotificationUtil';
+import {NotificationsDataMap} from '../../../data/info/NotificationsData';
+import {Notification} from '../../../data/enums/Notification';
 
 const StyledTextField = styled(TextField)({
     '& .MuiInputBase-root': {
@@ -40,12 +45,13 @@ const StyledTextField = styled(TextField)({
 
 interface IProps {
     updateActiveLabelTypeAction: (activeLabelType: LabelType) => LabelsActionTypes,
-    updateRoboflowJSObjectDetectorStatusAction: (isRoboflowJSObjectDetectorLoaded: boolean) => AIActionTypes
+    updateRoboflowJSObjectDetectorStatusAction: (isRoboflowJSObjectDetectorLoaded: boolean) => AIActionTypes,
+    submitNewNotificationAction: (notification: INotification) => NotificationsActionType
 }
 
-const LoadRoboflowModelPopup: React.FC<IProps> = ({
-        updateActiveLabelTypeAction, updateRoboflowJSObjectDetectorStatusAction
-    }) => {
+const LoadRoboflowModelPopup: React.FC<IProps> = (
+    {updateActiveLabelTypeAction, updateRoboflowJSObjectDetectorStatusAction, submitNewNotificationAction}
+) => {
     const [publishableKey, setPublishableKey] = useState('');
     const [modelId, setModelId] = useState('');
     const [modelVersion, setModelVersion] = useState(1);
@@ -61,8 +67,8 @@ const LoadRoboflowModelPopup: React.FC<IProps> = ({
     }
 
     const onModelLoadError = (error: Error) => {
-        // tslint:disable-next-line:no-console
-        console.log(error)
+        submitNewNotificationAction(NotificationUtil
+            .createErrorNotification(NotificationsDataMap[Notification.ROBOFLOW_JS_MODEL_COULD_NOT_BE_LOADED_ERROR]))
     }
 
     const onAccept = () => {
@@ -137,6 +143,7 @@ const LoadRoboflowModelPopup: React.FC<IProps> = ({
 const mapDispatchToProps = {
     updateRoboflowJSObjectDetectorStatusAction: updateRoboflowJSObjectDetectorStatus,
     updateActiveLabelTypeAction: updateActiveLabelType,
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({});

@@ -17,5 +17,10 @@ export const NotificationsDataMap = {
         header: 'Non unique label names',
         description: 'Looks like not all your label names are unique. Unique names are necessary to guarantee correct' +
             ' data export when you complete your work. Make your names unique and try again.'
+    },
+    [Notification.ROBOFLOW_JS_MODEL_COULD_NOT_BE_LOADED_ERROR]: {
+        header: 'roboflow.js model could not be loaded',
+        description: 'We ware unable to load your roboflow.js model. Please make sure that your publishable key and ' +
+            'model id are correct.'
     }
 }
