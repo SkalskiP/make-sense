@@ -1,0 +1,34 @@
+@import '../../../settings/Settings';
+
+.load-roboflow-model-popup {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  padding: 40px 0;
+  flex: 1;
+
+  .message {
+    align-self: stretch;
+    color: white;
+    font-size: 15px;
+    padding: 0 40px 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    > a {
+      max-width: 120px;
+      margin-bottom: 30px;
+
+      > img {
+        max-width: 120px;
+        user-select: none;
+      }
+    }
+  }
+}
