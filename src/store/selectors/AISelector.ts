@@ -13,6 +13,10 @@ export class AISelector {
         return store.getState().ai.isObjectDetectorLoaded;
     }
 
+    public static isAIRoboflowJSObjectDetectorModelLoaded(): boolean {
+        return store.getState().ai.isRoboflowJSObjectDetectorLoaded;
+    }
+
     public static isAIPoseDetectorModelLoaded(): boolean {
         return store.getState().ai.isPoseDetectorLoaded;
     }

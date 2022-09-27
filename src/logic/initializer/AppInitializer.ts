@@ -1,11 +1,11 @@
-import {updateWindowSize} from "../../store/general/actionCreators";
-import {ContextManager} from "../context/ContextManager";
-import {store} from "../../index";
-import {PlatformUtil} from "../../utils/PlatformUtil";
-import {PlatformModel} from "../../staticModels/PlatformModel";
-import {EventType} from "../../data/enums/EventType";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {EnvironmentUtil} from "../../utils/EnvironmentUtil";
+import {updateWindowSize} from '../../store/general/actionCreators';
+import {ContextManager} from '../context/ContextManager';
+import {store} from '../../index';
+import {PlatformUtil} from '../../utils/PlatformUtil';
+import {PlatformModel} from '../../staticModels/PlatformModel';
+import {EventType} from '../../data/enums/EventType';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {EnvironmentUtil} from '../../utils/EnvironmentUtil';
 
 export class AppInitializer {
     public static inti():void {
@@ -37,11 +37,7 @@ export class AppInitializer {
     };
 
     private static disableUnwantedKeyBoardBehaviour = (event: KeyboardEvent) => {
-        if (PlatformModel.isMac && event.metaKey) {
-            event.preventDefault();
-        }
-
-        if (["=", "+", "-"].includes(event.key)) {
+        if (['=', '+', '-'].includes(event.key)) {
             if (event.ctrlKey || (PlatformModel.isMac && event.metaKey)) {
                 event.preventDefault();
             }

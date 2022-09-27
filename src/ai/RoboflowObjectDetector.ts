@@ -1,4 +1,5 @@
-import * as express from 'roboflow';
+// import * as express from 'roboflow';
+import {max} from "lodash";
 
 
 export interface DetectedObject {
@@ -36,9 +37,21 @@ export class RoboflowObjectDetector {
 
         RoboflowObjectDetector.model
             .detect(image)
-            .then((predictions: DetectedObject[]) => {
+            .then((predictions) => {
+                const processedPredictions: DetectedObject[] = predictions.map((raw) => {
+                    return {
+                        bbox: [
+                            max([raw.bbox.x - raw.bbox.width / 2, 0]),
+                            max([raw.bbox.y - raw.bbox.height / 2, 0]),
+                            raw.bbox.width,
+                            raw.bbox.height
+                        ],
+                        class: raw.class,
+                        score: raw.confidence
+                    }
+                })
                 if (callback) {
-                    callback(predictions)
+                    callback(processedPredictions)
                 }
             })
             .catch((error) => {

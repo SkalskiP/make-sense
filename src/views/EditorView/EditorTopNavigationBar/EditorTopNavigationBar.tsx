@@ -102,6 +102,10 @@ const EditorTopNavigationBar: React.FC<IProps> = (
         updateCrossHairVisibleStatusAction(!crossHairVisible);
     };
 
+    const showAIButtons = (activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
+        (activeLabelType === LabelType.RECT && AISelector.isAIRoboflowJSObjectDetectorModelLoaded()) ||
+        (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())
+
     return (
         <div className={getClassName()}>
             <div className='ButtonWrapper'>
@@ -174,8 +178,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     )
                 }
             </div>
-            {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
-                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className='ButtonWrapper'>
+            {showAIButtons && <div className='ButtonWrapper'>
                     {
                         getButtonWithTooltip(
                             'accept-all',

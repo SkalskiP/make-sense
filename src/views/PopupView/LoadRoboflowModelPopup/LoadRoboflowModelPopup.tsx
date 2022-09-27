@@ -2,13 +2,19 @@ import React, {useState} from 'react';
 import './LoadRoboflowModelPopup.scss';
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
 import {PopupActions} from '../../../logic/actions/PopupActions';
-import {updateActivePopupType} from '../../../store/general/actionCreators';
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import {TextField} from '@mui/material';
 import {styled} from '@mui/system';
 import {Settings} from '../../../settings/Settings';
 import {RoboflowObjectDetector} from '../../../ai/RoboflowObjectDetector';
+import {updateActiveLabelType} from '../../../store/labels/actionCreators';
+import {LabelsActionTypes} from '../../../store/labels/types';
+import {LabelType} from '../../../data/enums/LabelType';
+import {updateRoboflowJSObjectDetectorStatus} from '../../../store/ai/actionCreators';
+import {AIActionTypes} from '../../../store/ai/types';
+import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
+import {AIObjectDetectionActions} from '../../../logic/actions/AIObjectDetectionActions';
 
 const StyledTextField = styled(TextField)({
     '& .MuiInputBase-root': {
@@ -32,12 +38,25 @@ const StyledTextField = styled(TextField)({
 });
 
 
-const LoadRoboflowModelPopup: React.FC = () => {
+interface IProps {
+    updateActiveLabelTypeAction: (activeLabelType: LabelType) => LabelsActionTypes,
+    updateRoboflowJSObjectDetectorStatusAction: (isRoboflowJSObjectDetectorLoaded: boolean) => AIActionTypes
+}
+
+const LoadRoboflowModelPopup: React.FC<IProps> = ({
+        updateActiveLabelTypeAction, updateRoboflowJSObjectDetectorStatusAction
+    }) => {
     const [publishableKey, setPublishableKey] = useState('');
     const [modelId, setModelId] = useState('');
     const [modelVersion, setModelVersion] = useState(1);
 
     const onModelLoadSuccess = () => {
+        updateRoboflowJSObjectDetectorStatusAction(true)
+        updateActiveLabelTypeAction(LabelType.RECT)
+        const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+        if (activeLabelType === LabelType.RECT) {
+            AIObjectDetectionActions.detectRectsForActiveImage();
+        }
         PopupActions.close();
     }
 
@@ -69,7 +88,7 @@ const LoadRoboflowModelPopup: React.FC = () => {
 
             <StyledTextField
                 variant='standard'
-                id={'key'}
+                id={'publishable-key'}
                 autoComplete={'off'}
                 autoFocus={true}
                 type={'password'}
@@ -85,7 +104,7 @@ const LoadRoboflowModelPopup: React.FC = () => {
 
             <StyledTextField
                 variant='standard'
-                id={'key'}
+                id={'model-id'}
                 autoComplete={'off'}
                 autoFocus={false}
                 type={'text'}
@@ -116,7 +135,8 @@ const LoadRoboflowModelPopup: React.FC = () => {
 }
 
 const mapDispatchToProps = {
-    updateActivePopupTypeAction: updateActivePopupType,
+    updateRoboflowJSObjectDetectorStatusAction: updateRoboflowJSObjectDetectorStatus,
+    updateActiveLabelTypeAction: updateActiveLabelType,
 };
 
 const mapStateToProps = (state: AppState) => ({});

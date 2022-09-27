@@ -13,6 +13,7 @@ import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {updateActivePopupType} from '../../store/general/actionCreators';
 import {AISelector} from '../../store/selectors/AISelector';
 import {AIActions} from './AIActions';
+import {RoboflowObjectDetector} from '../../ai/RoboflowObjectDetector';
 
 export class AIObjectDetectionActions {
     public static detectRectsForActiveImage(): void {
@@ -21,22 +22,36 @@ export class AIObjectDetectionActions {
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector || !AISelector.isAIObjectDetectorModelLoaded())
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector)
             return;
 
-        store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
-            const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
-            const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
-            if (newlySuggestedNames.length > 0) {
-                store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
-                store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
-            } else {
-                store.dispatch(updateActivePopupType(null));
-            }
-            AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
-        })
+        if (AISelector.isAIObjectDetectorModelLoaded()) {
+            store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
+            ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+                AIObjectDetectionActions.handleObjectDetectorResults(imageId, predictions);
+            })
+        }
+
+        if (AISelector.isAIRoboflowJSObjectDetectorModelLoaded()) {
+            store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
+            RoboflowObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+                AIObjectDetectionActions.handleObjectDetectorResults(imageId, predictions);
+            })
+        }
+    }
+
+    private static handleObjectDetectorResults = (imageId: string, predictions: DetectedObject[]) => {
+        const suggestedLabelNames = AIObjectDetectionActions
+            .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+        const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
+        const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
+        if (newlySuggestedNames.length > 0) {
+            store.dispatch(updateSuggestedLabelList(newlySuggestedNames));
+            store.dispatch(updateActivePopupType(PopupWindowType.SUGGEST_LABEL_NAMES));
+        } else {
+            store.dispatch(updateActivePopupType(null));
+        }
+        AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
     }
 
     public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
