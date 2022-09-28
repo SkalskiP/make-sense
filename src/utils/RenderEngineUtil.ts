@@ -1,14 +1,14 @@
-import {EditorData} from "../data/EditorData";
-import {RectUtil} from "./RectUtil";
-import {store} from "../index";
-import {CustomCursorStyle} from "../data/enums/CustomCursorStyle";
-import {updateCustomCursorStyle} from "../store/general/actionCreators";
-import {IPoint} from "../interfaces/IPoint";
-import {PointUtil} from "./PointUtil";
-import {IRect} from "../interfaces/IRect";
-import {ILine} from "../interfaces/ILine";
-import {LineUtil} from "./LineUtil";
-import {ISize} from "../interfaces/ISize";
+import {EditorData} from '../data/EditorData';
+import {RectUtil} from './RectUtil';
+import {store} from '../index';
+import {CustomCursorStyle} from '../data/enums/CustomCursorStyle';
+import {updateCustomCursorStyle} from '../store/general/actionCreators';
+import {IPoint} from '../interfaces/IPoint';
+import {PointUtil} from './PointUtil';
+import {IRect} from '../interfaces/IRect';
+import {ILine} from '../interfaces/ILine';
+import {LineUtil} from './LineUtil';
+import {PolygonUtil} from './PolygonUtil';
 
 export class RenderEngineUtil {
     public static calculateImageScale(data: EditorData): number {
@@ -108,19 +108,30 @@ export class RenderEngineUtil {
         }
     }
 
-    public static isMouseOverLine(mouse: IPoint, l: ILine, radius: number): boolean {
-        const minX: number = Math.min(l.start.x, l.end.x);
-        const maxX: number = Math.max(l.start.x, l.end.x);
-        const minY: number = Math.min(l.start.y, l.end.y);
-        const maxY: number = Math.max(l.start.y, l.end.y);
+    public static isMouseOverLine(mouse: IPoint, line: ILine, radius: number): boolean {
+        const minX: number = Math.min(line.start.x, line.end.x);
+        const maxX: number = Math.max(line.start.x, line.end.x);
+        const minY: number = Math.min(line.start.y, line.end.y);
+        const maxY: number = Math.max(line.start.y, line.end.y);
 
         return (minX - radius <= mouse.x && maxX + radius >= mouse.x) &&
             (minY - radius <= mouse.y && maxY + radius >= mouse.y) &&
-            LineUtil.getDistanceFromLine(l, mouse) < radius;
+            LineUtil.getDistanceFromLine(line, mouse) < radius;
     }
 
-    public static isMouseOverAnchor(mouse: IPoint, anchor: IPoint, size: ISize): boolean {
-        if (!mouse || !anchor) return null;
-        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, size), mouse);
+    public static isMouseOverAnchor(mouse: IPoint, anchor: IPoint, radius: number): boolean {
+        const anchorSize = { width: 2 * radius, height: 2 * radius}
+        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, anchorSize), mouse);
+    }
+
+    public static isMouseOverPolygon(mouse: IPoint, vertices: IPoint[], radius: number): boolean {
+        for (const vertex of vertices) {
+            if (RenderEngineUtil.isMouseOverAnchor(mouse, vertex, radius)) return true;
+        }
+        const edges = PolygonUtil.getEdges(vertices)
+        for (const edge of edges) {
+            if (RenderEngineUtil.isMouseOverLine(mouse, edge, radius)) return true;
+        }
+        return false;
     }
 }

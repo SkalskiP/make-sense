@@ -135,10 +135,12 @@ export class RectRenderEngine extends BaseRenderEngine {
         const imageData: ImageData = LabelsSelector.getActiveImageData();
         if (imageData) {
             imageData.labelRects.forEach((labelRect: LabelRect) => {
-                if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
-                    this.drawActiveRect(labelRect, data)
-                } else {
-                    this.drawInactiveRect(labelRect, data);
+                if (labelRect.isVisible) {
+                    if (labelRect.status === LabelStatus.ACCEPTED && labelRect.id === activeLabelId) {
+                        this.drawActiveRect(labelRect, data)
+                    } else {
+                        this.drawInactiveRect(labelRect, data);
+                    }
                 }
             });
             this.drawCurrentlyCreatedRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
@@ -243,14 +245,14 @@ export class RectRenderEngine extends BaseRenderEngine {
 
     private getRectUnderMouse(data: EditorData): LabelRect {
         const activeRectLabel: LabelRect = LabelsSelector.getActiveRectLabel();
-        if (!!activeRectLabel && this.isMouseOverRectEdges(activeRectLabel.rect, data)) {
+        if (!!activeRectLabel && activeRectLabel.isVisible && this.isMouseOverRectEdges(activeRectLabel.rect, data)) {
             return activeRectLabel;
         }
 
         const labelRects: LabelRect[] = LabelsSelector.getActiveImageData().labelRects;
-        for (let i = 0; i < labelRects.length; i++) {
-            if (this.isMouseOverRectEdges(labelRects[i].rect, data)) {
-                return labelRects[i];
+        for (const labelRect of labelRects) {
+            if (labelRect.isVisible && this.isMouseOverRectEdges(labelRect.rect, data)) {
+                return labelRect;
             }
         }
         return null;

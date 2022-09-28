@@ -1,17 +1,18 @@
+
 export class FileUtil {
     public static loadImage(fileData: File): Promise<HTMLImageElement> {
-		return new Promise((resolve, reject) => {
-			const url = URL.createObjectURL(fileData);
+        return new Promise((resolve, reject) => {
+            const url = URL.createObjectURL(fileData);
             const image = new Image();
-			image.src = url;
-			image.onload = () => resolve(image);
-			image.onerror = reject;
-		})
+            image.src = url;
+            image.onload = () => resolve(image);
+            image.onerror = reject;
+        });
     }
 
     public static loadImages(fileData: File[]): Promise<HTMLImageElement[]> {
         return new Promise((resolve, reject) => {
-            const promises: Promise<HTMLImageElement>[] = fileData.map((fileData: File) => FileUtil.loadImage(fileData))
+            const promises: Promise<HTMLImageElement>[] = fileData.map((data: File) => FileUtil.loadImage(data));
             Promise
                 .all(promises)
                 .then((values: HTMLImageElement[]) => resolve(values))
@@ -21,18 +22,18 @@ export class FileUtil {
 
     public static readFile(fileData: File): Promise<string> {
         return new Promise((resolve, reject) => {
-            let reader = new FileReader();
+            const reader = new FileReader();
             reader.onloadend = (event: any) => {
-                resolve(event.target.result);
+                resolve(event?.target?.result);
             };
             reader.onerror = reject;
             reader.readAsText(fileData);
-        })
+        });
     }
 
     public static readFiles(fileData: File[]): Promise<string[]> {
         return new Promise((resolve, reject) => {
-            const promises: Promise<string>[] = fileData.map((fileData: File) => FileUtil.readFile(fileData))
+            const promises: Promise<string>[] = fileData.map((data: File) => FileUtil.readFile(data));
             Promise
                 .all(promises)
                 .then((values: string[]) => resolve(values))
@@ -48,8 +49,8 @@ export class FileUtil {
     public static extractFileName(name: string): string | null {
         const splitPath = name.split(".");
         let fName = "";
-        for(const idx of Array(splitPath.length - 1).keys()){
-            if(fName === "") fName += splitPath[idx];
+        for (const idx of Array(splitPath.length - 1).keys()) {
+            if (fName === "") fName += splitPath[idx];
             else fName += "." + splitPath[idx];
         }
         return fName;

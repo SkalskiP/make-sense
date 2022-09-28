@@ -15,7 +15,7 @@ import {Notification} from '../data/enums/Notification';
 export class PoseDetector {
     private static model: PoseNet;
 
-    public static loadModel(callback?: () => any) {
+    public static loadModel(callback?: () => unknown) {
         posenet
             .load({
                 architecture: 'ResNet50',
@@ -47,7 +47,7 @@ export class PoseDetector {
             })
     }
 
-    public static predict(image: HTMLImageElement, callback?: (predictions: Pose[]) => any) {
+    public static predict(image: HTMLImageElement, callback?: (predictions: Pose[]) => unknown) {
         if (!PoseDetector.model) return;
 
         PoseDetector.model

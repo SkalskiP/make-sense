@@ -9,16 +9,16 @@ $width: 300px;
 }
 
 .TextInput {
-  height: $width/6;
+  height: calc($width/6);
   overflow: hidden;
   position: relative;
 }
 
 label {
   position: absolute;
-  top: $width/15;
+  top: calc($width/15);
   color: white;
-  font: 400 $width/15;
+  font: 400 calc($width/15);
   cursor: text;
   transition: .25s ease;
 }
@@ -26,17 +26,17 @@ label {
 input {
   display: block;
   width: 100%;
-  padding-top: $width/15;
+  padding-top: calc($width/15);
   border: none;
   border-radius: 0; // For iOS
   color: white;
   background: $main-color;
-  font-size: $width/20;
+  font-size: calc($width/20);
   transition: .3s ease;
   &:valid {
     ~label {
       top: 0;
-      font: 700 $width/25;
+      font: 700 calc($width/25);
       color: white;
     }
   }
@@ -44,7 +44,7 @@ input {
     outline: none;
     ~label {
       top: 0;
-      font: 700 $width/25;
+      font: 700 calc($width/25);
       color: $secondaryColor; // fallback if new css variables are not supported by browser
       color: var(--leading-color);
     }

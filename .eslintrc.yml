@@ -1,0 +1,32 @@
+extends:
+  - eslint:recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:react/recommended
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+rules:
+  "@typescript-eslint/no-inferrable-types": off
+  no-shadow: off
+  "@typescript-eslint/no-shadow":
+    - error
+  no-use-before-define: off
+  "@typescript-eslint/no-use-before-define":
+    - error
+  react/jsx-filename-extension:
+    - warn
+    - extensions:
+        - .tsx
+  complexity:
+    - error
+    - 15
+  no-await-in-loop: warn
+  no-eval: error
+  no-implied-eval: error
+  prefer-promise-reject-errors: warn
+env:
+  browser: true
+settings:
+  react:
+    pragma: React
+    version: detect

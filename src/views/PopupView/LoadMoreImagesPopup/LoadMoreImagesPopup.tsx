@@ -1,27 +1,28 @@
-import React from 'react'
-import './LoadMoreImagesPopup.scss'
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {addImageData} from "../../../store/labels/actionCreators";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {useDropzone} from "react-dropzone";
-import {ImageData} from "../../../store/labels/types";
-import {AcceptedFileType} from "../../../data/enums/AcceptedFileType";
-import {PopupActions} from "../../../logic/actions/PopupActions";
-import {ImageDataUtil} from "../../../utils/ImageDataUtil";
+import React from 'react';
+import './LoadMoreImagesPopup.scss';
+import { AppState } from "../../../store";
+import { connect } from "react-redux";
+import { addImageData } from "../../../store/labels/actionCreators";
+import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
+import { useDropzone } from "react-dropzone";
+import { ImageData } from "../../../store/labels/types";
+import { PopupActions } from "../../../logic/actions/PopupActions";
+import { ImageDataUtil } from "../../../utils/ImageDataUtil";
 
 interface IProps {
     addImageData: (imageData: ImageData[]) => any;
 }
 
-const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        accept: AcceptedFileType.IMAGE
+const LoadMoreImagesPopup: React.FC<IProps> = ({ addImageData }) => {
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
+        accept: {
+            'image/*': ['.jpeg', '.png']
+        }
     });
 
     const onAccept = () => {
         if (acceptedFiles.length > 0) {
-            addImageData(acceptedFiles.map((fileData:File) => ImageDataUtil.createImageDataFromFileData(fileData)));
+            addImageData(acceptedFiles.map((fileData: File) => ImageDataUtil.createImageDataFromFileData(fileData)));
             PopupActions.close();
         }
     };
@@ -65,14 +66,14 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({addImageData}) => {
     };
 
     const renderContent = () => {
-        return(<div className="LoadMoreImagesPopupContent">
-            <div {...getRootProps({className: 'DropZone'})}>
+        return (<div className="LoadMoreImagesPopupContent">
+            <div {...getRootProps({ className: 'DropZone' })}>
                 {getDropZoneContent()}
             </div>
         </div>);
     };
 
-    return(
+    return (
         <GenericYesNoPopup
             title={"Load more images"}
             renderContent={renderContent}

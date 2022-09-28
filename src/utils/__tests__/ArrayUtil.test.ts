@@ -1,5 +1,6 @@
 import {ArrayUtil, ArrayUtilAmbiguousMatchError, EmptyArrayError, NegativeIndexError} from '../ArrayUtil';
 
+
 describe('ArrayUtil partition method', () => {
     it('should return empty PartitionResult if array is empty', () => {
         // when

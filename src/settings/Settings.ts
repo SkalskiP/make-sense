@@ -3,7 +3,7 @@ import {PopupWindowType} from '../data/enums/PopupWindowType';
 export class Settings {
     public static readonly GITHUB_URL: string = 'https://github.com/SkalskiP';
     public static readonly MEDIUM_URL: string = 'https://medium.com/@piotr.skalski92';
-    public static readonly PATREON_URL: string = 'https://www.patreon.com/make_sense';
+    public static readonly TWITCH_URL: string = 'https://www.twitch.tv/skalskip';
 
     public static readonly TOP_NAVIGATION_BAR_HEIGHT_PX: number = 35;
     public static readonly EDITOR_BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
@@ -59,5 +59,17 @@ export class Settings {
         '#cb38ff',
         '#ff95c8',
         '#ff37c7'
-    ]
+    ];
+
+    public static readonly CSV_SEPARATOR = ','
+    public static readonly RECT_LABELS_EXPORT_CSV_COLUMN_NAMES = [
+        'label_name',
+        'bbox_x',
+        'bbox_y',
+        'bbox_width',
+        'bbox_height',
+        'image_name',
+        'image_width',
+        'image_height'
+    ].join(Settings.CSV_SEPARATOR)
 }
