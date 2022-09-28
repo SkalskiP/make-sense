@@ -28,7 +28,7 @@
     "react-spinners": "^0.13.3",
     "redux": "^4.2.0",
     "uuid": "^8.3.2",
-    "yolov5-js": "file:../yolov5-js"
+    "yolov5-js": "file:../yolov5js"
   },
   "scripts": {
     "dev": "vite",

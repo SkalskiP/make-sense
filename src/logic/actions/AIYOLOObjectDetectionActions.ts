@@ -64,6 +64,7 @@ export class AIYOLOObjectDetectionActions {
                     width: prediction.width,
                     height: prediction.height,
                 },
+                isVisible: true,
                 isCreatedByAI: true,
                 status: LabelStatus.UNDECIDED,
                 suggestedLabel: prediction.class
