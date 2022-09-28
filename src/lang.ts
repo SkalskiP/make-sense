@@ -77,7 +77,7 @@ export const vi = {
         PANTIES_UNDERWEAR: 'quần lót',
         PAJAMAS_HOMEWEAR: 'đồ mặc nhà',
         SLIP: 'đầm ngủ',
-        GOWN: 'áo choàng tắm',
+        BATHROBE: 'áo choàng tắm',
         CORRECTION_UNDERWEAR: 'đồ lót định hình cơ thể',
         SHOES_LOERFERS: 'giày lười',
         HEELS: 'giày cao gót',

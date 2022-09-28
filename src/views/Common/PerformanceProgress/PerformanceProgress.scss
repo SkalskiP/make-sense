@@ -1,0 +1,70 @@
+@import '../../../settings/Settings';
+
+.PerformanceProgress {
+    display: flex;
+    flex: 1;
+    height: 100%;
+    align-items: flex-end;
+    margin-bottom: 8px;
+    margin-left: 74px;
+    margin-right: 230px;
+    position: relative;
+    .Progress {
+        position: relative;
+        display: flex;
+        flex: 1;
+        border-radius: 10px;
+        height: 10px;
+        overflow-y: hidden;
+        background-color: $darkThemeThirdColor;
+        color: white;
+        font-size: 0.5em;
+    }
+    .Filler {
+        height: 100%;
+        background-color: $secondaryColor;
+        min-width: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        transition: width 1s ease-in-out;
+    }
+    .AverageLabel {
+        margin-right: -25px;
+    }
+    .Me {
+        position: absolute;
+        top: 1px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        background-color: white;
+        opacity: 0.9;
+        transition: left 1s ease-in-out;
+    }
+    .Name {
+        display: flex;
+        flex-direction: row;
+        top: 0;
+        position: absolute;
+        font-size: 8px;
+        transition: left right 1s ease-in-out;
+    }
+    .Reverse {
+        flex-direction: row-reverse;
+    }
+    .FlipV {
+        display: inline-block;
+        transform: scale(-1, 1);
+    }
+    .Ranker {
+        position: absolute;
+        top: 1px;
+        width: 8px;
+        height: 8px;
+        border-radius: 4px;
+        border: 1px solid white;
+        background-color: red;
+        transition: left 1s ease-in-out;
+    }
+}

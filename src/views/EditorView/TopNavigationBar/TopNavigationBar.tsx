@@ -21,11 +21,15 @@ import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
 import {JSONUploadStatus} from '../../../data/enums/JSONUploadStatus';
 import {updateImageDataById} from '../../../store/labels/actionCreators';
+import PerformanceProgress from 'views/Common/PerformanceProgress/PerformanceProgress';
+import {updateTaskStatus} from 'store/performance/actionCreators';
+import {TaskStatus} from 'store/performance/types';
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateProjectDataAction: (projectData: ProjectData) => any;
     updateImageDataByIdAction: (id: string, newImageData: ImageData) => any;
+    updateTaskStatusAction: (taskStatus: TaskStatus) => any;
     projectData: ProjectData;
 }
 
@@ -65,7 +69,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     const content =
                         RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
                     const json = content ? JSON.stringify(content) : null;
-                    const res = await APIService.updateImage({
+                    await APIService.updateImage({
                         imageId: imageData.id,
                         json
                     });
@@ -73,6 +77,11 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         ...imageData,
                         uploadStatus: JSONUploadStatus.UPLOADED
                     });
+                    const {data} = await APIService.getTaskStatus();
+                    setTimeout(
+                        () => props.updateTaskStatusAction(data.data),
+                        1000
+                    );
                 } catch (error) {
                     updateImageDataById(imageData.id, {
                         ...imageData,
@@ -105,13 +114,8 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     <DropDownMenu />
                 </div>
                 <div className="NavigationBarGroupWrapper middle">
-                    <div className="ProjectName">{authData.email}</div>
-                    {/* <TextInput
-                        isPassword={false}
-                        value={props.projectData.name}
-                        onChange={onChange}
-                        onFocus={onFocus}
-                    /> */}
+                    {/* <div className="ProjectName">{authData.email}</div> */}
+                    <PerformanceProgress />
                 </div>
                 <div className="NavigationBarGroupWrapper">
                     {isLoading ? (
@@ -137,7 +141,8 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
     updateProjectDataAction: updateProjectData,
-    updateImageDataByIdAction: updateImageDataById
+    updateImageDataByIdAction: updateImageDataById,
+    updateTaskStatusAction: updateTaskStatus
 };
 
 const mapStateToProps = (state: AppState) => ({

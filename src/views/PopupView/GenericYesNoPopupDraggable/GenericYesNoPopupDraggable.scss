@@ -3,7 +3,7 @@
 .GenericYesNoPopupDraggable {
     max-height: 800px;
     max-width: 700px;
- 
+
     // width: 50%;
     border-radius: 5px;
     user-select: none;
@@ -36,7 +36,6 @@
         font-size: 14px;
         background-color: $darkThemeSecondColor;
         flex: 1;
-
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
@@ -60,7 +59,6 @@
         align-content: flex-end;
 
         .TextButton {
-     
             box-shadow: $secondaryColor 0 0 0 2px inset; // fallback if new css variables are not supported by browser
             box-shadow: var(--leading-color) 0 0 0 2px inset;
             background-color: $secondaryColor; // fallback if new css variables are not supported by browser

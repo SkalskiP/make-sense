@@ -77,4 +77,49 @@ export class APIService {
             }
         });
     };
+
+    public static getTasks = async () => {
+        const token = AuthSelector.getToken();
+        if (!token) {
+            throw Error('Token is required');
+        }
+        return await axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            url: `${Settings.API_PREFIX}/labeler/tasks`
+        });
+    };
+
+    public static getTaskStatus = async () => {
+        const token = AuthSelector.getToken();
+        if (!token) {
+            throw Error('Token is required');
+        }
+        return await axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            url: `${Settings.API_PREFIX}/labeler/taskStatus`
+        });
+    };
+
+    public static getSummary = async () => {
+        const token = AuthSelector.getToken();
+        if (!token) {
+            throw Error('Token is required');
+        }
+        return await axios({
+            method: 'get',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`
+            },
+            url: `${Settings.API_PREFIX}/labeler/common_summary`
+        });
+    };
 }

@@ -166,6 +166,7 @@ const EditorContainer: React.FC<IProps> = ({
                                     : FASHION_STYLE_CODE_FOR_MAN.GENTLEMAN;
                             }
                         })
+                        .filter((style) => style !== 0)
                         .map((style) => {
                             // console.log('style == ', style);
                             const images = _.range(5).map((i) => {
