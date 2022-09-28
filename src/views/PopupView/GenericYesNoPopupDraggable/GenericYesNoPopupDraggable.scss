@@ -113,7 +113,7 @@
     border-right: solid 2px #333;
 }
 .flexible-modal-drag-area {
-    background: rgba(255, 0, 0, 0);
+    background: rgba(255, 0, 0, 0) !important;
     height: 30px;
     position: absolute;
     right: 0;
@@ -135,4 +135,12 @@
     right: 0;
     top: 0;
     cursor: move;
+}
+
+.text-success{
+  color: $lightSuccess;
+}
+
+.text-fail{
+  color: $dangerColor;
 }

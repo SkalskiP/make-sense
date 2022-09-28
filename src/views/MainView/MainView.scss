@@ -325,5 +325,9 @@
   width: 100%;
   &__content{
     margin-top: auto;
+    @media screen and (max-width: 1500px) {
+      background: rgba(0, 120, 147, 0.55) !important;
+      position: fixed;
+    }
   }
 }

@@ -83,7 +83,7 @@ const EditorContainer: React.FC<IProps> = ({
             <>
                 <VerticalEditorButton
                     label="Images"
-                    image={'/ico/camera.png'}
+                    image={'ico/camera.png'}
                     imageAlt={'images'}
                     onClick={leftSideBarButtonOnClick}
                     isActive={leftTabStatus}

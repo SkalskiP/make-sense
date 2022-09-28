@@ -8,4 +8,5 @@ export type APIImageData = {
     labeling_json?: string;
     image_width: string;
     image_height: string;
+    image_status: string;
 };

@@ -178,8 +178,8 @@ class ImagePreview extends React.Component<IProps, IState> {
     };
 
     public render() {
-        const {isChecked, style, onClick} = this.props;
-
+        const {isChecked, style, onClick, imageData} = this.props;
+       
         return (
             <div
                 className={this.getClassName()}
@@ -188,7 +188,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                 {!!this.state.image ? (
                     [
                         <div
-                            className="Foreground"
+                            className={`Foreground  ${imageData?.image_status === 'R' ? "danger": ""}`}
                             key={'Foreground'}
                             style={this.getStyle()}>
                             <img
@@ -208,7 +208,7 @@ class ImagePreview extends React.Component<IProps, IState> {
                             )}
                         </div>,
                         <div
-                            className="Background"
+                            className={`Background  ${imageData?.image_status === 'R' ? "danger": ""}`}
                             key={'Background'}
                             style={this.getStyle()}
                         />

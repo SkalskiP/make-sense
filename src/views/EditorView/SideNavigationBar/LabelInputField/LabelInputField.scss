@@ -160,6 +160,15 @@
                     filter: brightness(35%) sepia(100%)
                         hue-rotate(var(--hue-value)) saturate(2000%);
                 }
+                &.info.danger {
+                  filter: brightness(35%) sepia(100%)
+                  hue-rotate(var(--red-value)) saturate(2000%);
+                }
+
+                &.info.success {
+                  filter: brightness(35%) sepia(100%)
+                  hue-rotate(var(--green-value)) saturate(2000%);
+                }
             }
         }
 

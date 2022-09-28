@@ -64,6 +64,7 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
         });
     };
 
+
     const topNavigationBar = (
         <div className={getClassName()}>
             <div className="NavigationBarGroupWrapper">

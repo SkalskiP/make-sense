@@ -26,8 +26,8 @@ const LoginPopup: React.FC<IProps> = ({
     const [isLoadingStatus, setIsLoadingStatus] = useState(false);
     const [email, setEmail] = useState<string>();
     const [password, setPassword] = useState<string>();
-    const [message, setMessage] = useState<string>();
-
+    const [message, setMessage] = useState<any>();
+  
     useEffect(() => {
         setMessage('');
 
@@ -64,7 +64,7 @@ const LoginPopup: React.FC<IProps> = ({
                     />
                 </div>
             </div>
-            <div className="LoginPopupMessage">
+            <div className="LoginPopupMessage mb-3 text-danger">
                 {isLoadingStatus ? (
                     <ClipLoader
                         size={40}
@@ -95,11 +95,11 @@ const LoginPopup: React.FC<IProps> = ({
                     '@@auth',
                     JSON.stringify({email, displayName, authToken, role})
                 );
-                setTimeout(() =>{ 
-                    window.location.href = "/"
-                }, 500)
+                setTimeout(() => {
+                    window.location.href = `${process.env.REACT_APP_API_ROOT || "/labeler"}`
+                }, 1000)
             } else if (data.errors) {
-                setMessage(data.errors.map((error) => error.error).join('\n'));
+                setMessage(data.errors.map((error) => error.error['en']).join('\n'));
             }
         } catch (error) {
             console.error('failed to login: ', error);

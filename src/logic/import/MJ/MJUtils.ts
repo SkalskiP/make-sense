@@ -55,7 +55,8 @@ export class MJUtils {
         if (typeof rawAnnotation === 'string') {
             annotation = JSON.parse(rawAnnotation) as RectJSON;
         }
-        // console.log('annotation', annotation);
+        // console.log(131231, annotation)
+         
         const humansLabelRects: LabelRect[] = annotation.human_info.map(
             (human) => {
                 const {lt_x, lt_y, rb_x, rb_y} = human.bounding_box;
@@ -63,15 +64,19 @@ export class MJUtils {
                 const rectY: number = lt_y;
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
+                const qc_status: string = human.qc_status
+                const qc_comment: string = human.qc_comment
                 // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
                     x: rectX,
                     y: rectY,
                     width: rectWidth,
-                    height: rectHeight
+                    height: rectHeight,
                 };
                 const aLabel = LabelUtil.createLabelRect(human.style[0], rect);
                 aLabel.mode = LabelModeType.HUMAN;
+                aLabel.qc_status = qc_status
+                aLabel.qc_comment = qc_comment
                 return aLabel;
             }
         );
@@ -82,6 +87,8 @@ export class MJUtils {
                 const rectY: number = lt_y;
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
+                const qc_status: string = item.qc_status
+                const qc_comment: string = item.qc_comment
                 // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
                     x: rectX,
@@ -94,6 +101,8 @@ export class MJUtils {
                 const [, , , , uuid, ,] = item.item_id.split(':');
                 aLabel.mode = LabelModeType.ITEM;
                 aLabel.id = uuid;
+                aLabel.qc_status = qc_status
+                aLabel.qc_comment = qc_comment
                 return aLabel;
             }
         );
@@ -106,7 +115,9 @@ export class MJUtils {
                 id: parseInt(id),
                 gender: parseInt(gender),
                 type: parseInt(type),
-                styles: human.style
+                styles: human.style,
+                qc_comment: human.qc_comment,
+                qc_status: human.qc_status
             };
         });
         const items = annotation.item_info.map((item, itemIdx) => {
@@ -130,7 +141,9 @@ export class MJUtils {
                 subCategory: parseInt(subCategory),
                 color: parseInt(color),
                 pattern: parseInt(pattern),
-                styles: item.style
+                styles: item.style,
+                qc_comment: item.qc_comment,
+                qc_status: item.qc_status
             };
         });
 

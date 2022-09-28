@@ -19,10 +19,12 @@ export class ImageDataUtil {
             isVisitedByObjectDetector: false,
             isVisitedByPoseDetector: false,
             humans: [],
-            items: []
+            items: [],
+            image_status: ""
         };
     }
     public static createImageDataFromAPIData(apiData: APIImageData): ImageData {
+      
         const data: ImageData = {
             id: apiData.image_id,
             fileData: {
@@ -41,7 +43,8 @@ export class ImageDataUtil {
             isVisitedByPoseDetector: false,
             humans: [],
             items: [],
-            guideStyles: apiData.style_list
+            guideStyles: apiData.style_list,
+            image_status: apiData.image_status  || ""
         };
 
         // if labeling_json data is available, apply annotations

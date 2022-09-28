@@ -13,7 +13,6 @@ import {
     updateHighlightedLabelId,
     updateActiveHumanID
 } from '../../../../store/labels/actionCreators';
-import Scrollbars from 'react-custom-scrollbars';
 import {EventType} from '../../../../data/enums/EventType';
 import {LabelName} from '../../../../store/labels/types';
 import {LabelsSelector} from '../../../../store/selectors/LabelsSelector';
@@ -37,6 +36,9 @@ interface IProps {
     updateActiveLabelId: (highlightedLabelId: string) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     updateActiveHumanID: (humanId: string) => any;
+    imageStatus?: string ;
+    qcStatus?: string;
+    qcComment?: string
 }
 
 interface IState {
@@ -168,8 +170,9 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     public render() {
-        const {size, id, value, onDelete, onSelectInfo, mode, description} =
+        const {size, id, value, onDelete, onSelectInfo, mode, description, qcStatus} =
             this.props;
+           
         return (
             <div
                 className={this.getClassName()}
@@ -222,7 +225,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                         </div> */}
                         <div className="ContentWrapper">
                             <ImageButton
-                                externalClassName={'info'}
+                                externalClassName={`info ${qcStatus === "R" ? "danger" : qcStatus === "P" ? "success" : ""}`}
                                 image={'ico/info.png'}
                                 imageAlt={'info'}
                                 buttonSize={{width: 30, height: 30}}

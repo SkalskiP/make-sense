@@ -30,7 +30,8 @@ export class LabelUtil {
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
             suggestedLabel: null,
-            mode: LabelsSelector.getActiveLabelMode()
+            mode: LabelsSelector.getActiveLabelMode(),
+           
         };
     }
 

@@ -1,4 +1,4 @@
-import {PopupWindowType} from '../data/enums/PopupWindowType';
+import { PopupWindowType } from '../data/enums/PopupWindowType';
 
 export class Settings {
     public static readonly GITHUB_URL: string = 'https://github.com/SkalskiP';
@@ -76,8 +76,8 @@ export class Settings {
     ];
 
     public static readonly API_PREFIX =
-        // 'https://dev.ocmg.vn/fs-app/api/backoffice';
-        'https://dev.ocmg.vn/showniq/api/backoffice/';
+        process.env.REACT_APP_API_URL || 'https://dev.ocmg.vn/showniq/api/backoffice'
+    // 'https://dev.ocmg.vn/fs-app/api/backoffice';
 
     public static readonly UNKNOWN_URL = 'guides/icons/unknown.png';
     public static readonly UNKNOWN_S_URL = 'guides/icons/unknown_s.png';
