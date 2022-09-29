@@ -18,6 +18,8 @@ import {Notification} from '../../../data/enums/Notification';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
 import {ClipLoader} from 'react-spinners';
 import {useDropzone} from 'react-dropzone';
+import {YOLOUtils} from '../../../logic/import/yolo/YOLOUtils';
+import {LabelName} from '../../../store/labels/types';
 
 enum ModelSource {
     DOWNLOAD = 'DOWNLOAD',
@@ -56,40 +58,64 @@ interface IProps {
 }
 
 const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, submitNewNotificationAction }) => {
+
+    // BUSINESS LOGIC
+
     const [modelSource, setModelSource] = useState(ModelSource.UPLOAD);
     const [selectedPretrainedModel, setSelectedPretrainedModel] = useState(PretrainedModel.YOLO_V5_N_COCO);
     const [isLoading, setIsLoading] = useState(false);
-
     const [modelFiles, setModeFiles] = useState([]);
     const [classNames, setClassNames] = useState([]);
-    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
-        onDrop: (accepted) => {
-            // tslint:disable-next-line:no-console
-            console.log(accepted)
-        }
-    });
 
-    const onAccept = () => {
-        if (modelSource === ModelSource.DOWNLOAD) {
-            const onSuccess = () => {
-                PopupActions.close();
+    const onDrop = (accepted: File[]) => {
+        const jsonFiles = accepted.filter((file: File) => file.name.endsWith('json'));
+        const binFiles = accepted.filter((file: File) => file.name.endsWith('bin'));
+        const txtFiles = accepted.filter((file: File) => file.name.endsWith('txt'));
+
+        if (jsonFiles.length === 1 && txtFiles.length === 1 && binFiles.length > 0) {
+            const onSuccess = (labels: LabelName[]) => {
+                setClassNames(labels)
+                setModeFiles([...jsonFiles, ...binFiles])
             }
             const onFailure = () => {
-                setIsLoading(false)
-                submitNewNotificationAction(NotificationUtil.createErrorNotification(
-                    NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
-                ))
+                return null;
             }
-            setIsLoading(true)
+            YOLOUtils.loadLabelsList(txtFiles[0], onSuccess, onFailure)
+        }
+    }
+
+    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({ onDrop });
+
+    const onAccept = () => {
+        const onSuccess = () => {
+            PopupActions.close();
+        }
+        const onFailure = () => {
+            setIsLoading(false)
+            submitNewNotificationAction(NotificationUtil.createErrorNotification(
+                NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
+            ))
+        }
+        setIsLoading(true)
+        if (modelSource === ModelSource.DOWNLOAD) {
             YOLOV5ObjectDetector.loadModel(PretrainedModelDataMap[selectedPretrainedModel].config, onSuccess, onFailure)
         } else {
-            PopupActions.close();
+            const config = { source: modelFiles, classNames: classNames.map((className: LabelName) => className.name) }
+            YOLOV5ObjectDetector.loadModel(config, onSuccess, onFailure)
         }
     }
 
     const onReject = () => {
         updateActivePopupTypeAction(PopupWindowType.LOAD_AI_MODEL);
     }
+
+    const changeModelSource = (source: ModelSource) => {
+        setModelSource(source)
+        setModeFiles([])
+        setClassNames([])
+    }
+
+    // RENDER
 
     const renderMenu = () => {
         return(<div className='left-container'>
@@ -98,7 +124,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                 imageAlt={'upload model weights'}
                 buttonSize={{ width: 40, height: 40 }}
                 padding={15}
-                onClick={() => setModelSource(ModelSource.UPLOAD)}
+                onClick={() => changeModelSource(ModelSource.UPLOAD)}
                 externalClassName={'monochrome'}
                 isActive={modelSource === ModelSource.UPLOAD}
             />
@@ -107,7 +133,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                 imageAlt={'download model weights'}
                 buttonSize={{ width: 40, height: 40 }}
                 padding={15}
-                onClick={() => setModelSource(ModelSource.DOWNLOAD)}
+                onClick={() => changeModelSource(ModelSource.DOWNLOAD)}
                 externalClassName={'monochrome'}
                 isActive={modelSource === ModelSource.DOWNLOAD}
             />
@@ -146,7 +172,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     const renderMessage = () => {
         const uploadMessage: string = 'Drag and drop your own YOLOv5 model converted to tensorflow.js format and ' +
             'speed up annotation process. Make sure to upload all required files: model.json, model shards as well ' +
-            'as text file containing list of detected classes names.'
+            'as .txt containing list of detected classes names.'
         const downloadMessage: string = 'Use one of ours pretrained YOLOv5 models to speed up annotation process.'
         return(<div className='message'>
             {modelSource === ModelSource.DOWNLOAD ? downloadMessage : uploadMessage}
@@ -164,17 +190,31 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     }
 
     const getDropZoneContent = () => {
-        return <>
-            <input {...getInputProps()} />
-            <img
-                draggable={false}
-                alt={'upload'}
-                src={'ico/box-opened.png'}
-            />
-            <p className='extraBold'>Drop model files</p>
-            <p>or</p>
-            <p className='extraBold'>Click here to select them</p>
-        </>;
+        if (modelFiles.length === 0 && classNames.length === 0) {
+            return <>
+                <input {...getInputProps()} />
+                <img
+                    draggable={false}
+                    alt={'upload'}
+                    src={'ico/box-opened.png'}
+                />
+                <p className='extraBold'>Drop model files</p>
+                <p>or</p>
+                <p className='extraBold'>Click here to select them</p>
+            </>;
+        } else {
+            return <>
+                <input {...getInputProps()} />
+                <img
+                    draggable={false}
+                    alt={'uploaded'}
+                    src={'ico/box-closed.png'}
+                />
+                <p className='extraBold'>{modelFiles.length} model files</p>
+                <p className='extraBold'>{classNames.length} class names</p>
+            </>;
+        }
+
     }
 
     const renderDropZone = () => {
