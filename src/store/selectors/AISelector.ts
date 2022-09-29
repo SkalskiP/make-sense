@@ -14,7 +14,7 @@ export class AISelector {
     }
 
     public static isAIYOLOObjectDetectorModelLoaded(): boolean {
-        return store.getState().ai.isYOLOObjectDetectorLoaded;
+        return store.getState().ai.isYOLOV5ObjectDetectorLoaded;
     }
 
     public static isAIPoseDetectorModelLoaded(): boolean {

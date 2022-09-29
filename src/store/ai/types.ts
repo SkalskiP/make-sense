@@ -4,8 +4,8 @@ export type AIState = {
     // SSD
     isSSDObjectDetectorLoaded: boolean;
 
-    // YOLO
-    isYOLOObjectDetectorLoaded: boolean;
+    // YOLO V5
+    isYOLOV5ObjectDetectorLoaded: boolean;
 
     // POSE NET
     isPoseDetectorLoaded: boolean;
@@ -37,10 +37,10 @@ interface UpdateSSDObjectDetectorStatus {
     }
 }
 
-interface UpdateYOLOObjectDetectorStatus {
-    type: typeof Action.UPDATE_YOLO_OBJECT_DETECTOR_STATUS;
+interface UpdateYOLOV5ObjectDetectorStatus {
+    type: typeof Action.UPDATE_YOLO_V5_OBJECT_DETECTOR_STATUS;
     payload: {
-        isYOLOObjectDetectorLoaded: boolean;
+        isYOLOV5ObjectDetectorLoaded: boolean;
     }
 }
 
@@ -61,6 +61,6 @@ interface UpdateDisabledAIFlag {
 export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
     | UpdateSSDObjectDetectorStatus
-    | UpdateYOLOObjectDetectorStatus
+    | UpdateYOLOV5ObjectDetectorStatus
     | UpdatePoseDetectorStatus
     | UpdateDisabledAIFlag

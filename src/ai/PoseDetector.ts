@@ -40,7 +40,7 @@ export class PoseDetector {
                 store.dispatch(
                     submitNewNotification(
                         NotificationUtil.createErrorNotification(
-                            NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
+                            NotificationsDataMap[Notification.MODEL_DOWNLOAD_ERROR]
                         )
                     )
                 )

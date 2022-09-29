@@ -3,7 +3,12 @@ import './LoadYOLOv5ModelPopup.scss'
 import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
 import {PopupActions} from '../../../logic/actions/PopupActions';
 import {ImageButton} from '../../Common/ImageButton/ImageButton';
-import {ModelConfig, YOLO_V5_N_COCO_MODEL_CONFIG, YOLO_V5_S_COCO_MODEL_CONFIG, YOLO_V5_M_COCO_MODEL_CONFIG} from 'yolov5js'
+import {
+    ModelConfig,
+    YOLO_V5_M_COCO_MODEL_CONFIG,
+    YOLO_V5_N_COCO_MODEL_CONFIG,
+    YOLO_V5_S_COCO_MODEL_CONFIG
+} from 'yolov5js'
 import {AppState} from '../../../store';
 import {connect} from 'react-redux';
 import {PopupWindowType} from '../../../data/enums/PopupWindowType';
@@ -72,6 +77,11 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
         const binFiles = accepted.filter((file: File) => file.name.endsWith('bin'));
         const txtFiles = accepted.filter((file: File) => file.name.endsWith('txt'));
 
+        if (txtFiles.length === 0) {
+            submitNewNotificationAction(NotificationUtil.createErrorNotification(
+                NotificationsDataMap[Notification.LABELS_FILE_UPLOAD_ERROR]))
+        }
+
         if (jsonFiles.length === 1 && txtFiles.length === 1 && binFiles.length > 0) {
             const onSuccess = (labels: LabelName[]) => {
                 setClassNames(labels)
@@ -92,8 +102,9 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
         }
         const onFailure = () => {
             setIsLoading(false)
-            submitNewNotificationAction(NotificationUtil.createErrorNotification(
-                NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
+            const notification = modelSource === ModelSource.UPLOAD ?
+                Notification.MODEL_LOAD_ERROR : Notification.MODEL_DOWNLOAD_ERROR
+            submitNewNotificationAction(NotificationUtil.createErrorNotification(NotificationsDataMap[notification]
             ))
         }
         setIsLoading(true)

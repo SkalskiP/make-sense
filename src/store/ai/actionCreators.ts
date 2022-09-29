@@ -28,11 +28,11 @@ export function updateSSDObjectDetectorStatus(isSSDObjectDetectorLoaded: boolean
     }
 }
 
-export function updateYOLOObjectDetectorStatus(isYOLOObjectDetectorLoaded: boolean): AIActionTypes {
+export function updateYOLOV5ObjectDetectorStatus(isYOLOV5ObjectDetectorLoaded: boolean): AIActionTypes {
     return {
-        type: Action.UPDATE_YOLO_OBJECT_DETECTOR_STATUS,
+        type: Action.UPDATE_YOLO_V5_OBJECT_DETECTOR_STATUS,
         payload: {
-            isYOLOObjectDetectorLoaded,
+            isYOLOV5ObjectDetectorLoaded,
         }
     }
 }

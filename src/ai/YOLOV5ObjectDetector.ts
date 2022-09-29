@@ -1,6 +1,6 @@
 import {DetectedObject, load, YOLOv5, ModelConfig} from 'yolov5js'
 import {store} from '../index';
-import {updateYOLOObjectDetectorStatus} from '../store/ai/actionCreators';
+import {updateYOLOV5ObjectDetectorStatus} from '../store/ai/actionCreators';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
 import {LabelType} from '../data/enums/LabelType';
 import {NotificationUtil} from '../utils/NotificationUtil';
@@ -17,7 +17,7 @@ export class YOLOV5ObjectDetector {
         load(modelConfig)
             .then((model: YOLOv5) => {
                 YOLOV5ObjectDetector.model = model;
-                store.dispatch(updateYOLOObjectDetectorStatus(true));
+                store.dispatch(updateYOLOV5ObjectDetectorStatus(true));
                 store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 if (activeLabelType === LabelType.RECT) {
