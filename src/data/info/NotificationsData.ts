@@ -31,11 +31,11 @@ export const NotificationsDataMap: ExportFormatDataMap = {
     [Notification.MODEL_LOAD_ERROR]: {
         header: 'Model could not be loaded',
         description: 'Looks like we ware unable to load your tensorflow.js model from uploaded files. Make sure that ' +
-            'you uploaded all model shard files.'
+            'you uploaded all model shard files. Please re-upload all model files once again.'
     },
     [Notification.LABELS_FILE_UPLOAD_ERROR]: {
         header: 'Labels file was not uploaded',
         description: 'Looks like you forgot to upload text file containing list of detected classes names. We need ' +
-            'it to map YOLOv5 model output to labels.'
+            'it to map YOLOv5 model output to labels. Please re-upload all model files once again.'
     }
 }
