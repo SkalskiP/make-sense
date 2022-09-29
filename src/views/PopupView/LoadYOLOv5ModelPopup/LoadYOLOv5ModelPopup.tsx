@@ -17,6 +17,7 @@ import {NotificationsDataMap} from '../../../data/info/NotificationsData';
 import {Notification} from '../../../data/enums/Notification';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
 import {ClipLoader} from 'react-spinners';
+import {useDropzone} from 'react-dropzone';
 
 enum ModelSource {
     DOWNLOAD = 'DOWNLOAD',
@@ -58,6 +59,15 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     const [modelSource, setModelSource] = useState(ModelSource.UPLOAD);
     const [selectedPretrainedModel, setSelectedPretrainedModel] = useState(PretrainedModel.YOLO_V5_N_COCO);
     const [isLoading, setIsLoading] = useState(false);
+
+    const [modelFiles, setModeFiles] = useState([]);
+    const [classNames, setClassNames] = useState([]);
+    const {acceptedFiles, getRootProps, getInputProps} = useDropzone({
+        onDrop: (accepted) => {
+            // tslint:disable-next-line:no-console
+            console.log(accepted)
+        }
+    });
 
     const onAccept = () => {
         if (modelSource === ModelSource.DOWNLOAD) {
@@ -104,7 +114,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
         </div>)
     }
 
-    const mapOptions = () => {
+    const getOptionsContent = () => {
         return Object.entries(PretrainedModelDataMap).map(([key, value]) => {
             return <div
                 className='options-item'
@@ -129,13 +139,15 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
 
     const renderOptions = () => {
         return(<div className='options'>
-            {mapOptions()}
+            {getOptionsContent()}
         </div>)
     }
 
     const renderMessage = () => {
-        const uploadMessage: string = 'Drag and drop your own YOLOv5 model to speed up your annotation process.'
-        const downloadMessage: string = 'Use one of ours pretrained YOLOv5 models to speed up your annotation process.'
+        const uploadMessage: string = 'Drag and drop your own YOLOv5 model converted to tensorflow.js format and ' +
+            'speed up annotation process. Make sure to upload all required files: model.json, model shards as well ' +
+            'as text file containing list of detected classes names.'
+        const downloadMessage: string = 'Use one of ours pretrained YOLOv5 models to speed up annotation process.'
         return(<div className='message'>
             {modelSource === ModelSource.DOWNLOAD ? downloadMessage : uploadMessage}
         </div>)
@@ -151,7 +163,28 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
         </div>)
     }
 
+    const getDropZoneContent = () => {
+        return <>
+            <input {...getInputProps()} />
+            <img
+                draggable={false}
+                alt={'upload'}
+                src={'ico/box-opened.png'}
+            />
+            <p className='extraBold'>Drop model files</p>
+            <p>or</p>
+            <p className='extraBold'>Click here to select them</p>
+        </>;
+    }
+
+    const renderDropZone = () => {
+        return(<div {...getRootProps({ className: 'drop-zone' })}>
+            {getDropZoneContent()}
+        </div>)
+    }
+
     const renderContent = () => {
+        const shouldRenderDropZone = !isLoading && modelSource === ModelSource.UPLOAD
         const shouldRenderOptions = !isLoading && modelSource === ModelSource.DOWNLOAD
         return (<div className='load-yolo-v5-model-popup'>
             {renderMenu()}
@@ -159,14 +192,19 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                 {isLoading && renderLoader()}
                 {!isLoading && renderMessage()}
                 {shouldRenderOptions && renderOptions()}
+                {shouldRenderDropZone && renderDropZone()}
             </div>
         </div>);
     }
+
+    const disableAcceptButton = modelSource === ModelSource.UPLOAD &&
+        (modelFiles.length === 0 || classNames.length === 0)
 
     return (
         <GenericYesNoPopup
             title={'Load YOLOv5 model'}
             renderContent={renderContent}
+            disableAcceptButton={disableAcceptButton}
             acceptLabel={'Use model!'}
             onAccept={onAccept}
             rejectLabel={'Back'}
