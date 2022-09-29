@@ -2,8 +2,7 @@ import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
 import {ImageRepository} from '../imageRepository/ImageRepository';
 import {AISelector} from '../../store/selectors/AISelector';
-import {YOLOObjectDetector} from '../../ai/YOLOObjectDetector';
-import {DetectedObject} from 'yolov5-js';
+import {DetectedObject} from 'yolov5js';
 import {findLast} from 'lodash';
 import {v4 as uuidv4} from 'uuid';
 import {LabelStatus} from '../../data/enums/LabelStatus';
@@ -13,6 +12,7 @@ import {updateActivePopupType} from '../../store/general/actionCreators';
 import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {AIActions} from './AIActions';
 import {updateSuggestedLabelList} from '../../store/ai/actionCreators';
+import {YOLOV5ObjectDetector} from '../../ai/YOLOV5ObjectDetector';
 
 export class AIYOLOObjectDetectionActions {
     public static detectRectsForActiveImage(): void {
@@ -26,7 +26,7 @@ export class AIYOLOObjectDetectionActions {
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        YOLOObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+        YOLOV5ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
             const suggestedLabelNames = AIYOLOObjectDetectionActions
                 .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();

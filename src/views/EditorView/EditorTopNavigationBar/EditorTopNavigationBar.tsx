@@ -14,7 +14,7 @@ import { LabelType } from '../../../data/enums/LabelType';
 import { AISelector } from '../../../store/selectors/AISelector';
 import { ISize } from '../../../interfaces/ISize';
 import { AIActions } from '../../../logic/actions/AIActions';
-import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material'; 
+import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
 const BUTTON_SIZE: ISize = { width: 30, height: 30 };
 const BUTTON_PADDING: number = 10;
 
@@ -29,7 +29,7 @@ const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
         maxWidth: 200,
         textAlign: 'center'
     },
-  })); 
+  }));
 
 const getButtonWithTooltip = (
     key: string,

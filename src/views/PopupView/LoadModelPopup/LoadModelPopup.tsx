@@ -8,7 +8,11 @@ import {AIModel} from '../../../data/enums/AIModel';
 import {PoseDetector} from '../../../ai/PoseDetector';
 import {findLast} from 'lodash';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
-import {YOLOObjectDetector} from '../../../ai/YOLOObjectDetector';
+import {updateActivePopupType as storeUpdateActivePopupType} from '../../../store/general/actionCreators';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
+import {PopupWindowType} from '../../../data/enums/PopupWindowType';
+import {GeneralActionTypes} from '../../../store/general/types';
 
 interface SelectableModel {
     model: AIModel,
@@ -18,8 +22,8 @@ interface SelectableModel {
 
 const models: SelectableModel[] = [
     {
-        model: AIModel.YOLO_OBJECT_DETECTION,
-        name: 'COCO YOLO - object detection using rectangles',
+        model: AIModel.YOLO_V5_OBJECT_DETECTION,
+        name: 'YOLOv5 - object detection using rectangles',
         flag: false
     },
     {
@@ -34,9 +38,22 @@ const models: SelectableModel[] = [
     }
 ];
 
-export const LoadModelPopup: React.FC = () => {
+interface IProps {
+    updateActivePopupType: (activePopupType: PopupWindowType) => GeneralActionTypes;
+}
+
+const LoadModelPopup: React.FC<IProps> = ({ updateActivePopupType }) => {
     const [modelIsLoadingStatus, setModelIsLoadingStatus] = useState(false);
     const [selectedModelToLoad, updateSelectedModelToLoad] = useState(models);
+
+    const extractSelectedModel = (): AIModel => {
+        const model: SelectableModel = findLast(selectedModelToLoad, { flag: true });
+        if (!!model) {
+            return model.model
+        } else {
+            return null;
+        }
+    };
 
     const onAccept = () => {
         setModelIsLoadingStatus(true);
@@ -51,19 +68,9 @@ export const LoadModelPopup: React.FC = () => {
                     PopupActions.close();
                 });
                 break;
-            case AIModel.YOLO_OBJECT_DETECTION:
-                YOLOObjectDetector.loadModel(() => {
-                    PopupActions.close();
-                })
-        }
-    };
-
-    const extractSelectedModel = (): AIModel => {
-        const model: SelectableModel = findLast(selectedModelToLoad, { flag: true });
-        if (!!model) {
-            return model.model
-        } else {
-            return null;
+            case AIModel.YOLO_V5_OBJECT_DETECTION:
+                updateActivePopupType(PopupWindowType.LOAD_YOLO_V5_MODEL);
+                break;
         }
     };
 
@@ -113,10 +120,9 @@ export const LoadModelPopup: React.FC = () => {
     const renderContent = () => {
         return <div className='LoadModelPopupContent'>
             <div className='Message'>
-                To speed up your work, you can use our AI, which will try to mark objects on your images. Don't worry,
-                your photos are still safe. To take care of your privacy, we decided not to send your images to the
-                server, but instead send our AI to you. When accepting, make sure that you have a fast and stable
-                connection - it may take a few minutes to load the model.
+                Speed up your annotation process using AI. Don't worry, your photos are still safe. To take care of
+                your privacy, we decided not to send your images to the server, but instead bring AI to you. Make sure
+                that you have a fast and stable connection - it may take a while to load the model.
             </div>
             <div className='Companion'>
                 {modelIsLoadingStatus ?
@@ -146,3 +152,14 @@ export const LoadModelPopup: React.FC = () => {
         />
     );
 };
+
+const mapDispatchToProps = {
+    updateActivePopupType: storeUpdateActivePopupType
+};
+
+const mapStateToProps = (state: AppState) => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LoadModelPopup);

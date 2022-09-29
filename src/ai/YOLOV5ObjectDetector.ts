@@ -1,4 +1,4 @@
-import {DetectedObject, load, YOLOv5, YOLO_V5_N_COCO_MODEL_CONFIG} from 'yolov5-js'
+import {DetectedObject, load, YOLOv5, ModelConfig} from 'yolov5js'
 import {store} from '../index';
 import {updateYOLOObjectDetectorStatus} from '../store/ai/actionCreators';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
@@ -10,39 +10,30 @@ import {submitNewNotification} from '../store/notifications/actionCreators';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
 import {AIYOLOObjectDetectionActions} from '../logic/actions/AIYOLOObjectDetectionActions';
 
-export class YOLOObjectDetector {
+export class YOLOV5ObjectDetector {
     private static model: YOLOv5;
 
-    public static loadModel(callback?: () => any) {
-        load(YOLO_V5_N_COCO_MODEL_CONFIG)
+    public static loadModel(modelConfig: ModelConfig, onSuccess?: () => any, onFailure?: () => any) {
+        load(modelConfig)
             .then((model: YOLOv5) => {
-                YOLOObjectDetector.model = model;
+                YOLOV5ObjectDetector.model = model;
                 store.dispatch(updateYOLOObjectDetectorStatus(true));
                 store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
                 if (activeLabelType === LabelType.RECT) {
                     AIYOLOObjectDetectionActions.detectRectsForActiveImage();
                 }
-                if (callback) {
-                    callback();
-                }
+                if (onSuccess) onSuccess()
             })
             .catch((error) => {
-                // TODO: Introduce central logging system like Sentry
-                store.dispatch(
-                    submitNewNotification(
-                        NotificationUtil.createErrorNotification(
-                            NotificationsDataMap[Notification.MODEL_LOADING_ERROR]
-                        )
-                    )
-                )
+                if (onFailure) onFailure()
             })
     }
 
     public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
-        if (!YOLOObjectDetector.model) return;
+        if (!YOLOV5ObjectDetector.model) return;
 
-        YOLOObjectDetector.model
+        YOLOV5ObjectDetector.model
             .detect(image)
             .then((predictions: DetectedObject[]) => {
                 if (callback) {
