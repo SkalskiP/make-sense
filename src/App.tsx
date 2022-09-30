@@ -17,11 +17,14 @@ import NotificationsView from './views/NotificationsView/NotificationsView';
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    ObjectDetectorLoaded: boolean;
-    PoseDetectionLoaded: boolean;
+    isObjectDetectorLoaded: boolean;
+    isPoseDetectionLoaded: boolean;
+    isYOLOV5ObjectDetectorLoaded: boolean;
 }
 
-const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, PoseDetectionLoaded}) => {
+const App: React.FC<IProps> = ({
+    projectType, windowSize, isObjectDetectorLoaded, isPoseDetectionLoaded, isYOLOV5ObjectDetectorLoaded
+}) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
@@ -35,23 +38,23 @@ const App: React.FC<IProps> = ({projectType, windowSize, ObjectDetectorLoaded, P
             }
         }
     };
-
-      return (
-        <div className={classNames('App', {'AI': ObjectDetectorLoaded || PoseDetectionLoaded})}
-            draggable={false}
+    const isAILoaded = isObjectDetectorLoaded || isPoseDetectionLoaded || isYOLOV5ObjectDetectorLoaded
+    return (
+        <div className={classNames('App', {'AI': isAILoaded})} draggable={false}
         >
             {selectRoute()}
             <PopupView/>
             <NotificationsView/>
         </div>
-      );
+    );
 };
 
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
-    ObjectDetectorLoaded: state.ai.isObjectDetectorLoaded,
-    PoseDetectionLoaded: state.ai.isPoseDetectorLoaded
+    isSSDObjectDetectorLoaded: state.ai.isSSDObjectDetectorLoaded,
+    isPoseDetectorLoaded: state.ai.isPoseDetectorLoaded,
+    isYOLOV5ObjectDetectorLoaded: state.ai.isYOLOV5ObjectDetectorLoaded
 });
 
 export default connect(
