@@ -174,12 +174,15 @@ export class PointRenderEngine extends BaseRenderEngine {
     }
 
     private getLabelPointUnderMouse(mousePosition: IPoint, data: EditorData): LabelPoint {
-        const labelPoints: LabelPoint[] = LabelsSelector.getActiveImageData().labelPoints;
-        for (let i = 0; i < labelPoints.length; i++) {
-            const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoints[i].point, data);
+        const labelPoints: LabelPoint[] = LabelsSelector
+            .getActiveImageData()
+            .labelPoints
+            .filter((labelPoint: LabelPoint) => labelPoint.isVisible);
+        for (const labelPoint of labelPoints) {
+            const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
             const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointOnCanvas, RenderEngineSettings.anchorHoverSize);
             if (RectUtil.isPointInside(handleRect, mousePosition)) {
-                return labelPoints[i];
+                return labelPoint;
             }
         }
         return null;

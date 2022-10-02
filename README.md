@@ -5,8 +5,10 @@
 
 <h1 align="center">makesense.ai</h1>
 
-<p align="center"> 
-    <img width="600" src=".//public/ico/main-image-dark_alter.png" alt="Logo">
+<p align="center">
+    </br>
+    <img width="100" src=".//public/favicon.png" alt="make sense logo">
+    </br>
 </p>
 
 [makesense.ai][1] is a free-to-use online tool for labeling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deep learning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded  in one of the multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
@@ -15,17 +17,13 @@
 
 You can find out more about our tool from the newly released [documentation][14].
 
-## 💡 Motto
-
-> For AI to be free we need not just Open Source, but also a strong Open Data movement.  
-
-Andrew Ng
-
 ## 👀 Sneak Peek
 
-<p align="center"> 
-    <img width="1000" src=".//examples/demo-base.gif" alt="alfa-demo">
+<div align="center">
+<p>
+   <img width="850" src=".//examples/demo-base.gif">
 </p>
+</div>
 
 **Figure 1.** Basic version of the application - without AI support
 
@@ -38,16 +36,19 @@ Andrew Ng
 
 In the future, we also plan to add, among other things, models that classify photos, detect characteristic features of faces as well as whole faces. The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
 
-<p align="center"> 
-    <img width="1000" src=".//examples/demo-ssd.gif" alt="ai-demo">
+<div align="center">
+<p>
+   <img width="850" src=".//examples/demo-ssd.gif">
 </p>
+</div>
 
 **Figure 2.** SSD model - allows you to detect multiple objects, speeding up the bbox labeling process
 
-
-<p align="center"> 
-    <img width="1000" src=".//examples/demo-posenet.gif" alt="ai-demo">
+<div align="center">
+<p>
+   <img width="850" src=".//examples/demo-posenet.gif">
 </p>
+</div>
 
 **Figure 3.** PoseNet model - allows you to detect people's poses in photos, automating point labeling in some usecases
 
@@ -138,17 +139,15 @@ You can find examples of export files along with a description and schema on our
 
 We don't store your images, because we don't send them anywhere in the first place.
 
-## 📅 Road Map
-
-Our application is being actively developed. Check out our plans for the near future on our [Wiki][6]. If you have an idea for a new functionality, please hit us on [Twitter][3] and [Gitter][5] or create an issue where you can describe your concept. In the meantime, see what improvements we are planning for you in the future.
-
 ## 🚀 Tutorials
 
 If you are just starting your adventure with deep learning and would like to learn and create something cool along the way, [makesense.ai][1] can help you with that. Leverage our bounding box labeling functionality to prepare a data set and use it to train your first state-of-the-art object detection model. Follow [instructions][12] and [examples][13] but most importantly, free your creativity.
 
-<p align="center"> 
-    <img width="800" src=".//examples/object_detection_basketball.gif" alt="Object detection tutorial">
+<div align="center">
+<p>
+   <img width="850" src=".//examples/object_detection_basketball.gif">
 </p>
+</div>
 
 **Figure 4.** Detection of players moving around the basketball court, based on <a href="https://research.google.com/youtube8m/">YouTube-8M</a> dataset.
 
@@ -159,8 +158,6 @@ If you are just starting your adventure with deep learning and would like to lea
       <img src="https://contrib.rocks/image?repo=SkalskiP/make-sense" />
     </a>
 </p>
-
-Feel free to file [issues](https://github.com/SkalskiP/make-sense/issues) or [pull requests](https://github.com/SkalskiP/make-sense/pulls).  
 
 ## 💬 Citation
 
@@ -193,3 +190,4 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file f
 [12]: https://towardsdatascience.com/chess-rolls-or-basketball-lets-create-a-custom-object-detection-model-ef53028eac7d
 [13]: https://github.com/SkalskiP/ILearnDeepLearning.py/tree/master/02_data_science_toolkit/02_yolo_object_detection
 [14]: https://skalskip.github.io/make-sense/
+[15]: https://github.com/SkalskiP/make-sense/issues

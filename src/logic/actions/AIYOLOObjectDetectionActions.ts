@@ -1,32 +1,34 @@
-import {DetectedObject} from '@tensorflow-models/coco-ssd';
 import {ImageData, LabelName, LabelRect} from '../../store/labels/types';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
-import { v4 as uuidv4 } from 'uuid';
+import {ImageRepository} from '../imageRepository/ImageRepository';
+import {AISelector} from '../../store/selectors/AISelector';
+import {DetectedObject} from 'yolov5js';
+import {findLast} from 'lodash';
+import {v4 as uuidv4} from 'uuid';
+import {LabelStatus} from '../../data/enums/LabelStatus';
 import {store} from '../../index';
 import {updateImageDataById} from '../../store/labels/actionCreators';
-import {ObjectDetector} from '../../ai/ObjectDetector';
-import {ImageRepository} from '../imageRepository/ImageRepository';
-import {LabelStatus} from '../../data/enums/LabelStatus';
-import {findLast} from 'lodash';
-import {updateSuggestedLabelList} from '../../store/ai/actionCreators';
-import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {updateActivePopupType} from '../../store/general/actionCreators';
-import {AISelector} from '../../store/selectors/AISelector';
+import {PopupWindowType} from '../../data/enums/PopupWindowType';
 import {AIActions} from './AIActions';
+import {updateSuggestedLabelList} from '../../store/ai/actionCreators';
+import {YOLOV5ObjectDetector} from '../../ai/YOLOV5ObjectDetector';
 
-export class AIObjectDetectionActions {
+export class AIYOLOObjectDetectionActions {
     public static detectRectsForActiveImage(): void {
         const activeImageData: ImageData = LabelsSelector.getActiveImageData();
-        AIObjectDetectionActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
+        AIYOLOObjectDetectionActions.detectRects(activeImageData.id, ImageRepository.getById(activeImageData.id))
     }
 
     public static detectRects(imageId: string, image: HTMLImageElement): void {
-        if (LabelsSelector.getImageDataById(imageId).isVisitedByObjectDetector || !AISelector.isAIObjectDetectorModelLoaded())
+        if (LabelsSelector.getImageDataById(imageId).isVisitedByYOLOObjectDetector
+            || !AISelector.isAIYOLOObjectDetectorModelLoaded())
             return;
 
         store.dispatch(updateActivePopupType(PopupWindowType.LOADER));
-        ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
-            const suggestedLabelNames = AIObjectDetectionActions.extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
+        YOLOV5ObjectDetector.predict(image, (predictions: DetectedObject[]) => {
+            const suggestedLabelNames = AIYOLOObjectDetectionActions
+                .extractNewSuggestedLabelNames(LabelsSelector.getLabelNames(), predictions);
             const rejectedLabelNames = AISelector.getRejectedSuggestedLabelList();
             const newlySuggestedNames = AIActions.excludeRejectedLabelNames(suggestedLabelNames, rejectedLabelNames);
             if (newlySuggestedNames.length > 0) {
@@ -35,17 +37,17 @@ export class AIObjectDetectionActions {
             } else {
                 store.dispatch(updateActivePopupType(null));
             }
-            AIObjectDetectionActions.saveRectPredictions(imageId, predictions);
+            AIYOLOObjectDetectionActions.saveRectPredictions(imageId, predictions);
         })
     }
 
     public static saveRectPredictions(imageId: string, predictions: DetectedObject[]) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
-        const predictedLabels: LabelRect[] = AIObjectDetectionActions.mapPredictionsToRectLabels(predictions);
+        const predictedLabels: LabelRect[] = AIYOLOObjectDetectionActions.mapPredictionsToRectLabels(predictions);
         const nextImageData: ImageData = {
             ...imageData,
             labelRects: imageData.labelRects.concat(predictedLabels),
-            isVisitedByObjectDetector: true
+            isVisitedByYOLOObjectDetector: true
         };
         store.dispatch(updateImageDataById(imageData.id, nextImageData));
     }
@@ -57,10 +59,10 @@ export class AIObjectDetectionActions {
                 labelIndex: null,
                 labelId: null,
                 rect: {
-                    x: prediction.bbox[0],
-                    y: prediction.bbox[1],
-                    width: prediction.bbox[2],
-                    height: prediction.bbox[3],
+                    x: prediction.x,
+                    y: prediction.y,
+                    width: prediction.width,
+                    height: prediction.height,
                 },
                 isVisible: true,
                 isCreatedByAI: true,

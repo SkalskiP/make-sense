@@ -49,8 +49,11 @@ export type ImageData = {
     labelPolygons: LabelPolygon[];
     labelNameIds: string[];
 
+    // YOLO
+    isVisitedByYOLOObjectDetector: boolean;
+
     // SSD
-    isVisitedByObjectDetector: boolean;
+    isVisitedBySSDObjectDetector: boolean;
 
     // POSE NET
     isVisitedByPoseDetector: boolean;

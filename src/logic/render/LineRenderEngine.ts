@@ -51,9 +51,8 @@ export class LineRenderEngine extends BaseRenderEngine {
 
         if (isMouseOverCanvas) {
             if (!!anchorTypeUnderMouse && !this.isResizeInProgress()) {
-                const labelLine: LabelLine = this.getLineUnderMouse(data);
-                this.startExistingLabelUpdate(labelLine.id, anchorTypeUnderMouse)
-            } else if (!!labelLineUnderMouse) {
+                this.startExistingLabelUpdate(labelLineUnderMouse.id, anchorTypeUnderMouse)
+            } else if (labelLineUnderMouse !== null) {
                 store.dispatch(updateActiveLabelId(labelLineUnderMouse.id));
             } else if (!this.isInProgress() && isMouseOverImage) {
                 this.startNewLabelCreation(data)
@@ -181,11 +180,6 @@ export class LineRenderEngine extends BaseRenderEngine {
         return !!this.lineUpdateAnchorType;
     }
 
-    private isMouseOverAnchor(mouse: IPoint, anchor: IPoint): boolean {
-        if (!mouse || !anchor) return null;
-        return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, RenderEngineSettings.anchorSize), mouse);
-    }
-
     // =================================================================================================================
     // CREATION
     // =================================================================================================================
@@ -268,28 +262,39 @@ export class LineRenderEngine extends BaseRenderEngine {
     // GETTERS
     // =================================================================================================================
 
-    private getLineUnderMouse(data: EditorData): LabelLine {
-        const labelLines: LabelLine[] = LabelsSelector.getActiveImageData().labelLines;
-        for (let i = 0; i < labelLines.length; i++) {
-            const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLines[i].line, data);
-            const mouseOverLine = RenderEngineUtil.isMouseOverLine(
-                data.mousePositionOnViewPortContent,
-                lineOnCanvas,
-                RenderEngineSettings.anchorHoverSize.width / 2
-            )
-            if (mouseOverLine) return labelLines[i]
+    private getLineUnderMouse(data: EditorData): LabelLine | null {
+        const mouseOnCanvas = data.mousePositionOnViewPortContent;
+        if (!mouseOnCanvas) return null;
+
+        const labelLines: LabelLine[] = LabelsSelector
+            .getActiveImageData()
+            .labelLines
+            .filter((labelLine: LabelLine) => labelLine.isVisible);
+        const radius = RenderEngineSettings.anchorHoverSize.width / 2;
+
+        for (const labelLine of labelLines) {
+            const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data);
+            if (RenderEngineUtil.isMouseOverLine(mouseOnCanvas, lineOnCanvas, radius)) return labelLine;
         }
         return null;
     }
 
-    private getAnchorTypeUnderMouse(data: EditorData): LineAnchorType {
-        const labelLines: LabelLine[] = LabelsSelector.getActiveImageData().labelLines;
-        for (let i = 0; i < labelLines.length; i++) {
-            const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLines[i].line, data);
-            if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, lineOnCanvas.start)) {
+    private getAnchorTypeUnderMouse(data: EditorData): LineAnchorType | null {
+        const mouseOnCanvas = data.mousePositionOnViewPortContent;
+        if (!mouseOnCanvas) return null;
+
+        const labelLines: LabelLine[] = LabelsSelector
+            .getActiveImageData()
+            .labelLines
+            .filter((labelLine: LabelLine) => labelLine.isVisible);
+        const radius = RenderEngineSettings.anchorHoverSize.width / 2;
+
+        for (const labelLine of labelLines) {
+            const lineOnCanvas: ILine = RenderEngineUtil.transferLineFromImageToViewPortContent(labelLine.line, data);
+            if (RenderEngineUtil.isMouseOverAnchor(mouseOnCanvas, lineOnCanvas.start, radius)) {
                 return LineAnchorType.START
             }
-            if (this.isMouseOverAnchor(data.mousePositionOnViewPortContent, lineOnCanvas.end)) {
+            if (RenderEngineUtil.isMouseOverAnchor(mouseOnCanvas, lineOnCanvas.end, radius)) {
                 return LineAnchorType.END
             }
         }

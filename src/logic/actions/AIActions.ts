@@ -1,8 +1,10 @@
 import {LabelType} from '../../data/enums/LabelType';
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
-import {AIObjectDetectionActions} from './AIObjectDetectionActions';
+import {AISSDObjectDetectionActions} from './AISSDObjectDetectionActions';
 import {AIPoseDetectionActions} from './AIPoseDetectionActions';
 import {ImageData} from '../../store/labels/types';
+import {AISelector} from '../../store/selectors/AISelector';
+import {AIYOLOObjectDetectionActions} from './AIYOLOObjectDetectionActions';
 
 export class AIActions {
     public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
@@ -16,10 +18,16 @@ export class AIActions {
 
     public static detect(imageId: string, image: HTMLImageElement): void {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
-
+        const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
+        const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
-                AIObjectDetectionActions.detectRects(imageId, image);
+                if (isAISSDObjectDetectorModelLoaded) {
+                    AISSDObjectDetectionActions.detectRects(imageId, image);
+                }
+                if (isAIYOLOObjectDetectorModelLoaded) {
+                    AIYOLOObjectDetectionActions.detectRects(imageId, image);
+                }
                 break;
             case LabelType.POINT:
                 AIPoseDetectionActions.detectPoses(imageId, image);
@@ -29,10 +37,16 @@ export class AIActions {
 
     public static rejectAllSuggestedLabels(imageData: ImageData) {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
-
+        const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
+        const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
-                AIObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                if (isAISSDObjectDetectorModelLoaded) {
+                    AISSDObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                }
+                if (isAIYOLOObjectDetectorModelLoaded) {
+                    AIYOLOObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                }
                 break;
             case LabelType.POINT:
                 AIPoseDetectionActions.rejectAllSuggestedPointLabels(imageData);
@@ -42,9 +56,16 @@ export class AIActions {
 
     public static acceptAllSuggestedLabels(imageData: ImageData) {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
+        const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
+        const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
-                AIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                if (isAISSDObjectDetectorModelLoaded) {
+                    AISSDObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                }
+                if (isAIYOLOObjectDetectorModelLoaded) {
+                    AIYOLOObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                }
                 break;
             case LabelType.POINT:
                 AIPoseDetectionActions.acceptAllSuggestedPointLabels(imageData);
