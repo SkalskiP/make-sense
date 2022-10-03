@@ -15,42 +15,19 @@
 
 ## 📄 Documentation
 
-You can find out more about our tool from the newly released [documentation][14].
+You can find out more about our tool from the newly released [documentation][14] - still under 🚧 construction. Let us know what topics we should cover first.
 
-## 👀 Sneak Peek
+## 🤖 Advanced AI integrations
 
-<div align="center">
-<p>
-   <img width="850" src=".//examples/demo-base.gif">
-</p>
-</div>
+[makesense.ai][1] strives to significantly reduce the time you have to spend on photo labeling. We are doing our best to integrate lates and gratest AI models, that are able to give you recommendations as well as automate repetitive and tedious activities.
 
-**Figure 1.** Basic version of the application - without AI support
-
-## 🤖 Advanced AI functionalities
-
-[makesense.ai][1] strives to significantly reduce the time we have to spend on labeling photos. To achieve this, we are going to use many different AI models that will be able to give you recommendations as well as automate repetitive and tedious activities.
-
-* [SSD model][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bboxes on photos and  also (in some cases) suggest a label. 
-* [PoseNet model][11] is a vision model that can be used to estimate the pose of a person in an image or video by estimating where key body joints are.
+* [YOLOv5][16] is our most powerful integration yet. Thanks to the use of [yolov5js][17] you can load not only pretreated models from [yolov5js-zoo](18), but above all your own models trained thanks to YOLOv5 and [exported](19) to tfjs format.
+* [SSD][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bboxes on photos and  also (in some cases) suggest a label. 
+* [PoseNet][11] is a vision model that can be used to estimate the pose of a person in an image or video by estimating where key body joints are.
 
 In the future, we also plan to add, among other things, models that classify photos, detect characteristic features of faces as well as whole faces. The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
 
-<div align="center">
-<p>
-   <img width="850" src=".//examples/demo-ssd.gif">
-</p>
-</div>
-
-**Figure 2.** SSD model - allows you to detect multiple objects, speeding up the bbox labeling process
-
-<div align="center">
-<p>
-   <img width="850" src=".//examples/demo-posenet.gif">
-</p>
-</div>
-
-**Figure 3.** PoseNet model - allows you to detect people's poses in photos, automating point labeling in some usecases
+https://user-images.githubusercontent.com/26109316/193255987-2d01c549-48c3-41ae-87e9-e1b378968966.mov
 
 ## 💻 Local Setup
 
@@ -143,13 +120,6 @@ We don't store your images, because we don't send them anywhere in the first pla
 
 If you are just starting your adventure with deep learning and would like to learn and create something cool along the way, [makesense.ai][1] can help you with that. Leverage our bounding box labeling functionality to prepare a data set and use it to train your first state-of-the-art object detection model. Follow [instructions][12] and [examples][13] but most importantly, free your creativity.
 
-<div align="center">
-<p>
-   <img width="850" src=".//examples/object_detection_basketball.gif">
-</p>
-</div>
-
-**Figure 4.** Detection of players moving around the basketball court, based on <a href="https://research.google.com/youtube8m/">YouTube-8M</a> dataset.
 
 ## 🏆 Contribution
 
@@ -191,3 +161,7 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file f
 [13]: https://github.com/SkalskiP/ILearnDeepLearning.py/tree/master/02_data_science_toolkit/02_yolo_object_detection
 [14]: https://skalskip.github.io/make-sense/
 [15]: https://github.com/SkalskiP/make-sense/issues
+[16]: https://github.com/ultralytics/yolov5
+[17]: https://github.com/SkalskiP/yolov5js 
+[18]: https://github.com/SkalskiP/yolov5js-zoo
+[19]: https://github.com/ultralytics/yolov5/blob/master/export.py
