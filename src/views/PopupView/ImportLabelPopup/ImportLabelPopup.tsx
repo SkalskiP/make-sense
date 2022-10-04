@@ -64,7 +64,8 @@ const ImportLabelPopup: React.FC<IProps> = (
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
             "application/json": [".json" ],
-            "text/plain": [".txt"]
+            "text/plain": [".txt"],
+            "application/xml": [".xml"],
         },
         multiple: true,
         onDrop: (acceptedFiles) => {
