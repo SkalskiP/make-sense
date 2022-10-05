@@ -1,35 +1,29 @@
-import * as posenet from '@tensorflow-models/posenet';
-import {PoseNet} from '@tensorflow-models/posenet';
-import {Pose} from '@tensorflow-models/posenet';
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
+import {DetectedObject, ObjectDetection} from '@tensorflow-models/coco-ssd';
 import {store} from '../index';
-import {updatePoseDetectorStatus} from '../store/ai/actionCreators';
-import {AIPoseDetectionActions} from '../logic/actions/AIPoseDetectionActions';
+import {updateSSDObjectDetectorStatus} from '../store/ai/actionCreators';
 import {LabelType} from '../data/enums/LabelType';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
+import {AISSDObjectDetectionActions} from '../logic/actions/AISSDObjectDetectionActions';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
 import {submitNewNotification} from '../store/notifications/actionCreators';
 import {NotificationUtil} from '../utils/NotificationUtil';
 import {NotificationsDataMap} from '../data/info/NotificationsData';
 import {Notification} from '../data/enums/Notification';
 
-export class PoseDetector {
-    private static model: PoseNet;
+export class SSDObjectDetector {
+    private static model: ObjectDetection;
 
-    public static loadModel(callback?: () => unknown) {
-        posenet
-            .load({
-                architecture: 'ResNet50',
-                outputStride: 32,
-                inputResolution: 257,
-                quantBytes: 2
-            })
-            .then((model: PoseNet) => {
-                PoseDetector.model = model;
-                store.dispatch(updatePoseDetectorStatus(true));
-                store.dispatch(updateActiveLabelType(LabelType.POINT));
+    public static loadModel(callback?: () => any) {
+        cocoSsd
+            .load()
+            .then((model: ObjectDetection) => {
+                SSDObjectDetector.model = model;
+                store.dispatch(updateSSDObjectDetectorStatus(true));
+                store.dispatch(updateActiveLabelType(LabelType.RECT));
                 const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
-                if (activeLabelType === LabelType.POINT) {
-                    AIPoseDetectionActions.detectPoseForActiveImage();
+                if (activeLabelType === LabelType.RECT) {
+                    AISSDObjectDetectionActions.detectRectsForActiveImage();
                 }
                 if (callback) {
                     callback();
@@ -47,12 +41,12 @@ export class PoseDetector {
             })
     }
 
-    public static predict(image: HTMLImageElement, callback?: (predictions: Pose[]) => unknown) {
-        if (!PoseDetector.model) return;
+    public static predict(image: HTMLImageElement, callback?: (predictions: DetectedObject[]) => any) {
+        if (!SSDObjectDetector.model) return;
 
-        PoseDetector.model
-            .estimateMultiplePoses(image)
-            .then((predictions: Pose[]) => {
+        SSDObjectDetector.model
+            .detect(image)
+            .then((predictions: DetectedObject[]) => {
                 if (callback) {
                     callback(predictions)
                 }
