@@ -56,10 +56,10 @@ export class VOCImporter extends AnnotationImporter {
         const root = document.getElementsByTagName('annotation')[0];
         const filename = root.getElementsByTagName('filename')[0].textContent;
         
-        const labeledBoxes: LabelRect[] = this.parseAnnotationsFromFileString(document, labelNames);
+        const [labeledBoxes, newLabelNames] = this.parseAnnotationsFromFileString(document, labelNames);
 
         return {
-            labelNames,
+            labelNames: newLabelNames,
             fileParseResults: fileParseResults.concat({
                 filename,
                 labeledBoxes
@@ -67,8 +67,10 @@ export class VOCImporter extends AnnotationImporter {
         };
     }
 
-    protected static parseAnnotationsFromFileString(document: Document, labelNames: Record<string, LabelName>): LabelRect[] {
-        return Array.from(document.getElementsByTagName('object')).map(d => {
+    protected static parseAnnotationsFromFileString(document: Document, labelNames: Record<string, LabelName>): 
+        [LabelRect[], Record<string, LabelName>] {
+        const newLabelNames: Record<string, LabelName> = Object.assign(labelNames);
+        return [Array.from(document.getElementsByTagName('object')).map(d => {
             const labelName = d.getElementsByTagName('name')[0].textContent;
             const bbox = d.getElementsByTagName('bndbox')[0];
             const xmin = parseInt(bbox.getElementsByTagName('xmin')[0].textContent);
@@ -82,14 +84,14 @@ export class VOCImporter extends AnnotationImporter {
                 width: xmax - xmin, 
             };
             
-            if (!labelNames[labelName]) {
-                labelNames[labelName] = LabelUtil.createLabelName(labelName);
+            if (!newLabelNames[labelName]) {
+                newLabelNames[labelName] = LabelUtil.createLabelName(labelName);
             }
             
-            const labelId = labelNames[labelName].id;
+            const labelId = newLabelNames[labelName].id;
 
             return LabelUtil.createLabelRect(labelId, rect);
-        });
+        }), newLabelNames];
     }
 
     private static mapImageData(): Record<string, ImageData> {
