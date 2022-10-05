@@ -3,30 +3,27 @@ import {LabelUtil} from "../../../utils/LabelUtil";
 import {AnnotationImporter} from '../AnnotationImporter';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 
-export type FileParseResult = {
+type FileParseResult = {
     filename: string,
     labeledBoxes: LabelRect[]
 };
-export type VOCImportResult = {
-    labelNames: LabelName[],
+
+type VOCImportResult = {
+    labelNames: Record<string, LabelName>,
     fileParseResults: FileParseResult[],
 };
 
 export class VOCImporter extends AnnotationImporter {
-    public static requiredKeys = ['annotation', 'filename', 'categories'];
-    private labelNames: Map<string, LabelName>;
-
     public import(
         filesData: File[],
         onSuccess: (imagesData: ImageData[], labelNames: LabelName[]) => any,
         onFailure: (error?:Error) => any
     ): void {
         try {
-            const inputImagesData: Map<string, ImageData> = VOCImporter.mapImageData();
-            this.labelNames = new Map<string, LabelName>();
+            const inputImagesData: Record<string, ImageData> = VOCImporter.mapImageData();
 
-            Promise.all(this.loadAndParseFiles(filesData)).then(results => {
-                for (const result of results) {
+            this.loadAndParseFiles(filesData).then(results => {
+                for (const result of results.fileParseResults) {
                     if (inputImagesData[result.filename]) {
                         inputImagesData[result.filename].labelRects = result.labeledBoxes;
                     }
@@ -34,7 +31,7 @@ export class VOCImporter extends AnnotationImporter {
 
                 onSuccess(
                     Array.from(Object.values(inputImagesData)),
-                    Array.from(this.labelNames.values())
+                    Array.from(Object.values(results.labelNames))
                 );
             }).catch((error: Error) => onFailure(error));
         } catch (error) {
@@ -42,26 +39,35 @@ export class VOCImporter extends AnnotationImporter {
         }
     }
 
-    private loadAndParseFiles(files: File[]): Promise<FileParseResult>[] {
+    private loadAndParseFiles(files: File[]): Promise<VOCImportResult> {
         const parser = new DOMParser();
-        return files.map(fileData => fileData.text().then(text => 
-            this.parseDocumentIntoImageData(parser.parseFromString(text, 'application/xml'))
-        ));
+
+        return Promise.all(files.map(file => file.text())).then(textFiles => 
+            textFiles.reduce((current, fileData) => 
+            VOCImporter.parseDocumentIntoImageData(parser.parseFromString(fileData, 'application/xml'), current), 
+                {
+                    labelNames: {},
+                    fileParseResults: [],
+                } as VOCImportResult)
+            );
     }
 
-    private parseDocumentIntoImageData(document: Document): FileParseResult {
+    protected static parseDocumentIntoImageData(document: Document, { fileParseResults, labelNames }: VOCImportResult): VOCImportResult {
         const root = document.getElementsByTagName('annotation')[0];
         const filename = root.getElementsByTagName('filename')[0].textContent;
         
-        const labeledBoxes: LabelRect[] = this.parseAnnotationsFromFileString(document);
+        const labeledBoxes: LabelRect[] = this.parseAnnotationsFromFileString(document, labelNames);
 
         return {
-            filename,
-            labeledBoxes,
+            labelNames,
+            fileParseResults: fileParseResults.concat({
+                filename,
+                labeledBoxes
+            }),
         };
     }
 
-    private parseAnnotationsFromFileString(document: Document): LabelRect[] {
+    protected static parseAnnotationsFromFileString(document: Document, labelNames: Record<string, LabelName>): LabelRect[] {
         return Array.from(document.getElementsByTagName('object')).map(d => {
             const labelName = d.getElementsByTagName('name')[0].textContent;
             const bbox = d.getElementsByTagName('bndbox')[0];
@@ -76,23 +82,22 @@ export class VOCImporter extends AnnotationImporter {
                 width: xmax - xmin, 
             };
             
-            if (!this.labelNames.has(labelName)) {
-                this.labelNames.set(labelName, LabelUtil.createLabelName(labelName));
+            if (!labelNames[labelName]) {
+                labelNames[labelName] = LabelUtil.createLabelName(labelName);
             }
             
-            const labelId = this.labelNames.get(labelName).id;
+            const labelId = labelNames[labelName].id;
 
             return LabelUtil.createLabelRect(labelId, rect);
         });
     }
 
-    private static mapImageData(): Map<string, ImageData> {
+    private static mapImageData(): Record<string, ImageData> {
         return LabelsSelector.getImagesData().reduce(
-            (c: Map<string, ImageData>, i: ImageData) => {
+            (c: Record<string, ImageData>, i: ImageData) => {
                 c[i.fileData.name] = i;
                 return c;
-            },
-            {} as Map<string, ImageData>
+            }, {}
         );
     }
 }
