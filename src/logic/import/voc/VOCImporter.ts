@@ -13,6 +13,21 @@ type VOCImportResult = {
     fileParseResults: FileParseResult[],
 };
 
+class DocumentParsingError extends Error {
+    constructor(message?: string) {
+        super(message);
+        this.name = "DocumentParsingError";
+    }
+}
+class AnnotationParsingError extends Error {
+    constructor(message?: string) {
+        super(message);
+        this.name = "AnnotationParsingError";
+    }
+}
+
+const parser = new DOMParser();
+
 export class VOCImporter extends AnnotationImporter {
     public import(
         filesData: File[],
@@ -40,31 +55,54 @@ export class VOCImporter extends AnnotationImporter {
     }
 
     private loadAndParseFiles(files: File[]): Promise<VOCImportResult> {
-        const parser = new DOMParser();
-
         return Promise.all(files.map((file: File) => file.text())).then((fileTexts: string[]) => 
-            fileTexts.reduce((current: VOCImportResult, fileText: string) => 
-            VOCImporter.parseDocumentIntoImageData(parser.parseFromString(fileText, 'application/xml'), current), 
-                {
-                    labelNames: {},
-                    fileParseResults: [],
-                } as VOCImportResult)
+            fileTexts.reduce((current: VOCImportResult, fileText: string, currentIndex: number) => 
+            {
+                const fileName = files[currentIndex].name;
+                try {
+                    return VOCImporter.parseDocumentIntoImageData(VOCImporter.tryParseVOCDocument(fileText), current);
+                } catch (e) {
+                    if (e instanceof DocumentParsingError) {
+                        throw new DocumentParsingError(`Failed trying to parse ${fileName} as VOC XML document.`)
+                    } else if (e instanceof AnnotationParsingError) {
+                        throw new AnnotationParsingError(`Failed trying to find required VOC annotations for ${fileName}.`)
+                    } else {
+                        throw e;
+                    }
+                }
+            }, 
+            {
+                labelNames: {},
+                fileParseResults: [],
+            } as VOCImportResult)
             );
+    }
+
+    private static tryParseVOCDocument(fileText: string): Document {
+        try {
+            return parser.parseFromString(fileText, 'application/xml');
+        } catch {
+            throw new DocumentParsingError();
+        }
     }
 
     protected static parseDocumentIntoImageData(document: Document, { fileParseResults, labelNames }: VOCImportResult): VOCImportResult {
         const root = document.getElementsByTagName('annotation')[0];
         const filename = root.getElementsByTagName('filename')[0].textContent;
         
-        const [labeledBoxes, newLabelNames] = this.parseAnnotationsFromFileString(document, labelNames);
+        try {
+            const [labeledBoxes, newLabelNames] = this.parseAnnotationsFromFileString(document, labelNames);
 
-        return {
-            labelNames: newLabelNames,
-            fileParseResults: fileParseResults.concat({
-                filename,
-                labeledBoxes
-            }),
-        };
+            return {
+                labelNames: newLabelNames,
+                fileParseResults: fileParseResults.concat({
+                    filename,
+                    labeledBoxes
+                }),
+            };
+        } catch {
+            throw new AnnotationParsingError();
+        }
     }
 
     protected static parseAnnotationsFromFileString(document: Document, labelNames: Record<string, LabelName>): 
