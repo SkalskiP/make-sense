@@ -42,9 +42,9 @@ export class VOCImporter extends AnnotationImporter {
     private loadAndParseFiles(files: File[]): Promise<VOCImportResult> {
         const parser = new DOMParser();
 
-        return Promise.all(files.map(file => file.text())).then(textFiles => 
-            textFiles.reduce((current, fileData) => 
-            VOCImporter.parseDocumentIntoImageData(parser.parseFromString(fileData, 'application/xml'), current), 
+        return Promise.all(files.map((file: File) => file.text())).then((fileTexts: string[]) => 
+            fileTexts.reduce((current: VOCImportResult, fileText: string) => 
+            VOCImporter.parseDocumentIntoImageData(parser.parseFromString(fileText, 'application/xml'), current), 
                 {
                     labelNames: {},
                     fileParseResults: [],
@@ -69,7 +69,7 @@ export class VOCImporter extends AnnotationImporter {
 
     protected static parseAnnotationsFromFileString(document: Document, labelNames: Record<string, LabelName>): 
         [LabelRect[], Record<string, LabelName>] {
-        const newLabelNames: Record<string, LabelName> = Object.assign(labelNames);
+        const newLabelNames: Record<string, LabelName> = Object.assign({}, labelNames);
         return [Array.from(document.getElementsByTagName('object')).map(d => {
             const labelName = d.getElementsByTagName('name')[0].textContent;
             const bbox = d.getElementsByTagName('bndbox')[0];
@@ -89,16 +89,15 @@ export class VOCImporter extends AnnotationImporter {
             }
             
             const labelId = newLabelNames[labelName].id;
-
             return LabelUtil.createLabelRect(labelId, rect);
         }), newLabelNames];
     }
 
     private static mapImageData(): Record<string, ImageData> {
         return LabelsSelector.getImagesData().reduce(
-            (c: Record<string, ImageData>, i: ImageData) => {
-                c[i.fileData.name] = i;
-                return c;
+            (imageDataMap: Record<string, ImageData>, imageData: ImageData) => {
+                imageDataMap[imageData.fileData.name] = imageData;
+                return imageDataMap;
             }, {}
         );
     }
