@@ -37,5 +37,15 @@ export const NotificationsDataMap: ExportFormatDataMap = {
         header: 'Labels file was not uploaded',
         description: 'Looks like you forgot to upload text file containing list of detected classes names. We need ' +
             'it to map YOLOv5 model output to labels. Please re-upload all model files once again.'
+    },
+    [Notification.ANNOTATION_FILE_PARSE_ERROR]: {
+        header: 'Annotation files could not be parsed',
+        description: 'The contents of an annotation file is not valid JSON, CSV, or XML. Please fix the files selected' +
+            'to import and try again.',
+    },
+    [Notification.ANNOTATION_IMPORT_ASSERTION_ERROR]: {
+        header: 'Annotation files did not contain valid data',
+        description: 'Missing or invalid annotations provied during import. Please fix the files selected ' +
+            'to import and try again.',
     }
 }

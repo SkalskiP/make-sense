@@ -13,6 +13,11 @@ import { updateActiveLabelType, updateImageData, updateLabelNames } from '../../
 import { ImporterSpecData } from '../../../data/ImporterSpecData';
 import { AnnotationFormatType } from '../../../data/enums/AnnotationFormatType';
 import { ILabelFormatData } from '../../../interfaces/ILabelFormatData';
+import { submitNewNotification } from '../../../store/notifications/actionCreators';
+import { NotificationUtil } from '../../../utils/NotificationUtil';
+import { NotificationsDataMap } from '../../../data/info/NotificationsData';
+import { DocumentParsingError } from '../../../logic/import/voc/VOCImporter';
+import { Notification } from '../../../data/enums/Notification';
 
 interface IProps {
     activeLabelType: LabelType,
@@ -59,6 +64,8 @@ const ImportLabelPopup: React.FC<IProps> = (
         setLoadedLabelNames([]);
         setLoadedImageData([]);
         setAnnotationsLoadedError(error);
+        const notification = error instanceof DocumentParsingError ? Notification.ANNOTATION_FILE_PARSE_ERROR : Notification.ANNOTATION_IMPORT_ASSERTION_ERROR;
+        submitNewNotification(NotificationUtil.createErrorNotification(NotificationsDataMap[notification]));
     };
 
     const { getRootProps, getInputProps } = useDropzone({

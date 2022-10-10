@@ -13,16 +13,17 @@ type VOCImportResult = {
     fileParseResults: FileParseResult[],
 };
 
-class DocumentParsingError extends Error {
+export class DocumentParsingError extends Error {
     constructor(message?: string) {
         super(message);
         this.name = "DocumentParsingError";
     }
 }
-class AnnotationParsingError extends Error {
+
+export class AnnotationAssertionError extends Error {
     constructor(message?: string) {
         super(message);
-        this.name = "AnnotationParsingError";
+        this.name = "AnnotationAssertionError";
     }
 }
 
@@ -64,8 +65,8 @@ export class VOCImporter extends AnnotationImporter {
                 } catch (e) {
                     if (e instanceof DocumentParsingError) {
                         throw new DocumentParsingError(`Failed trying to parse ${fileName} as VOC XML document.`)
-                    } else if (e instanceof AnnotationParsingError) {
-                        throw new AnnotationParsingError(`Failed trying to find required VOC annotations for ${fileName}.`)
+                    } else if (e instanceof AnnotationAssertionError) {
+                        throw new AnnotationAssertionError(`Failed trying to find required VOC annotations for ${fileName}.`)
                     } else {
                         throw e;
                     }
@@ -87,10 +88,9 @@ export class VOCImporter extends AnnotationImporter {
     }
 
     protected static parseDocumentIntoImageData(document: Document, { fileParseResults, labelNames }: VOCImportResult): VOCImportResult {
-        const root = document.getElementsByTagName('annotation')[0];
-        const filename = root.getElementsByTagName('filename')[0].textContent;
-        
         try {
+            const root = document.getElementsByTagName('annotation')[0];
+            const filename = root.getElementsByTagName('filename')[0].textContent;
             const [labeledBoxes, newLabelNames] = this.parseAnnotationsFromFileString(document, labelNames);
 
             return {
@@ -101,7 +101,7 @@ export class VOCImporter extends AnnotationImporter {
                 }),
             };
         } catch {
-            throw new AnnotationParsingError();
+            throw new AnnotationAssertionError();
         }
     }
 
