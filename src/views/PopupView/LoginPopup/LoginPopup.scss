@@ -14,6 +14,10 @@
     align-content: flex-start;
     min-height: 100px;
     width: 100%;
+    &__row{
+        display: flex;
+        width: 100%;
+    }
     &__parent{
         position: relative;
     }
@@ -62,6 +66,24 @@
         line-height: 20px;
         color: #000000;
         margin-bottom: 12px;
+       
+    }
+    &__control{
+        &__second{
+            margin-left: 5px;
+            width: 100%;
+        }
+        &__first{
+            margin-right: 5px;
+            width: 100%;
+        }
+    }
+    &__select{
+        width: 100%;
+        .MuiSelect-select{
+            display: flex;
+            align-items: center;
+        }
     }
 }
 

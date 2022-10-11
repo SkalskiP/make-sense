@@ -18,7 +18,7 @@ import {ProjectData} from '../../../store/general/types';
 import {ImageDataUtil} from '../../../utils/ImageDataUtil';
 import {sortBy} from 'lodash';
 import {APIImageData} from '../../../services/types';
-import {Button, FormControl, Input, InputLabel} from '@material-ui/core';
+import { FormControl, Input, Select} from '@material-ui/core';
 import {APIService} from '../../../services/API';
 import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
@@ -32,18 +32,38 @@ interface IProps {
     goBack: () => any
 }
 
+const IMAGE_STATUS = [
+    {
+        label: 'All',
+        value: 'all'
+    },
+    {
+        label: 'Assigned',
+        value: 'S'
+    },
+    {
+        label: 'Wasiting QC',
+        value: 'W'
+    },
+    {
+        label: 'Rejected',
+        value: 'R'
+    }
+]
+
 const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const [acceptedImages, setAcceptedImages] = useState<APIImageData[]>([]);
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(10);
     const [isLoading, setIsLoading] = useState(false);
+    const [statusValue, setStatusValue] = useState('all')
     const { goBack } = props 
 
     const loadImages = async () => {
         try {
             setIsLoading(true);
-            const {data} = await APIService.fetchImages({offset, limit});
-            // console.log('data.data = ', data.data);
+            const statusValueParams  = statusValue !== 'all' ? statusValue: null
+            const {data} = await APIService.fetchImages({offset, limit, status_value: statusValueParams});
             setAcceptedImages(data.data.image_list);
         } catch (error) {
             console.error('Failed to loadImages: ', error);
@@ -72,20 +92,43 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         if (acceptedImages.length === 0)
             return (
                 <>
-                    <FormControl>
-                        <label className='LoginPopupContent__label'>Offset</label>
-                     
-                        <Input
-                            value={offset}
-                            id="offset"
-                            type="number"
-                            onChange={(e) =>
-                                setOffset(parseInt(e.target.value))
-                            }
-                        />
-                    </FormControl>
-                    <FormControl>
-                        <label className='LoginPopupContent__label'>Limit</label>
+                    <div className='LoginPopupContent__row'>
+                    <div className='LoginPopupContent__control__first'>
+                        <FormControl>
+                            <label className='LoginPopupContent__label'>Image status</label>
+                        
+                            <Select
+                                value={statusValue}                            
+                                onChange={(e) =>{
+                                    setStatusValue(e.target.value.toString())
+                                 }}
+                                className='LoginPopupContent__select'
+                            >
+                                {
+                                    IMAGE_STATUS.map(item=>(
+                                        <option value={item.value}>{item.label}</option>
+                                    ))
+                                }  
+                            </Select>
+                        </FormControl>
+                    </div>
+                    <div className=' LoginPopupContent__control__second'>
+                        <FormControl >
+                            <label className='LoginPopupContent__label'>Offset</label>
+                        
+                            <Input
+                                value={offset}
+                                id="offset"
+                                type="number"
+                                onChange={(e) =>
+                                    setOffset(parseInt(e.target.value))
+                                }
+                            />
+                        </FormControl>
+                    </div>
+                    </div>
+                    <FormControl >
+                        <label className='LoginPopupContent__label '>Limit</label>
                         <Input
                             value={limit}
                             id="limit"

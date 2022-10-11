@@ -25,10 +25,12 @@ export class APIService {
 
     public static fetchImages = async ({
         offset,
-        limit
+        limit,
+        status_value
     }: {
         offset: number;
         limit: number;
+        status_value?: string;
     }) => {
         const token = AuthSelector.getToken();
         if (!token) {
@@ -41,7 +43,7 @@ export class APIService {
                 Authorization: `Bearer ${token}`
             },
             url: `${Settings.API_PREFIX}/labeler/images`,
-            params: {limit, offset}
+            params: {limit, offset, status_value}
         });
     };
 
@@ -77,7 +79,6 @@ export class APIService {
             }
         });
     };
-
     public static getTasks = async () => {
         const token = AuthSelector.getToken();
         if (!token) {
