@@ -63,7 +63,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         try {
             setIsLoading(true);
             const statusValueParams  = statusValue !== 'all' ? statusValue: null
-            const {data} = await APIService.fetchImages({offset, limit, status_value: statusValueParams});
+            const {data} = await APIService.fetchImages({offset, limit, image_status: statusValueParams});
             setAcceptedImages(data.data.image_list);
         } catch (error) {
             console.error('Failed to loadImages: ', error);
@@ -92,9 +92,7 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         if (acceptedImages.length === 0)
             return (
                 <>
-                    <div className='LoginPopupContent__row'>
-                    <div className='LoginPopupContent__control__first'>
-                        <FormControl>
+                  <FormControl>
                             <label className='LoginPopupContent__label'>Image status</label>
                         
                             <Select
@@ -111,9 +109,9 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                                 }  
                             </Select>
                         </FormControl>
-                    </div>
-                    <div className=' LoginPopupContent__control__second'>
-                        <FormControl >
+                    <div className='LoginPopupContent__row'>
+                    <div className='LoginPopupContent__control__first'>
+                    <FormControl >
                             <label className='LoginPopupContent__label'>Offset</label>
                         
                             <Input
@@ -126,8 +124,9 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                             />
                         </FormControl>
                     </div>
-                    </div>
-                    <FormControl >
+                    <div className=' LoginPopupContent__control__second'>
+                       
+                        <FormControl >
                         <label className='LoginPopupContent__label '>Limit</label>
                         <Input
                             value={limit}
@@ -136,6 +135,9 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
                             onChange={(e) => setLimit(parseInt(e.target.value))}
                         />
                     </FormControl>
+                    </div>
+                    </div>
+                   
                     <Package/>
                     {isLoading ? (
                         <ClipLoader
