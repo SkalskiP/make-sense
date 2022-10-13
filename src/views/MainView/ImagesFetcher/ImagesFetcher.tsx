@@ -42,7 +42,7 @@ const IMAGE_STATUS = [
         value: 'S'
     },
     {
-        label: 'Wasiting QC',
+        label: 'Waiting QC',
         value: 'W'
     },
     {
@@ -50,7 +50,6 @@ const IMAGE_STATUS = [
         value: 'R'
     }
 ]
-
 const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
     const [acceptedImages, setAcceptedImages] = useState<APIImageData[]>([]);
     const [offset, setOffset] = useState(0);
