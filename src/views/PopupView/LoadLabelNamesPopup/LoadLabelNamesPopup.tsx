@@ -114,7 +114,7 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, up
             acceptLabel={'Start project'}
             onAccept={onAccept}
             disableAcceptButton={labelsList.length === 0}
-            rejectLabel={'Create labels list'}
+            rejectLabel={'Back'}
             onReject={onReject}
         />
     );
