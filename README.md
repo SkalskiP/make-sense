@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/SkalskiP/make-sense.svg?branch=develop)](https://travis-ci.org/SkalskiP/make-sense)
-[![codecov](https://codecov.io/gh/SkalskiP/make-sense/branch/develop/graph/badge.svg?token=lWsADbAey2)](https://codecov.io/gh/SkalskiP/make-sense)
+[![Discord](https://img.shields.io/badge/stars-nominate-brightgreen?logo=github)](https://stars.github.com/nominate/)
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/SkalskiP/make-sense?include_prereleases)
+[![codecov](https://codecov.io/gh/SkalskiP/make-sense/branch/develop/graph/badge.svg?token=lWsADbAey2)](https://codecov.io/gh/SkalskiP/make-sense)
 [![Gitter](https://badges.aleen42.com/src/gitter.svg)](https://gitter.im/make-sense-ai/community)
 [![Discord](https://badges.aleen42.com/src/discord.svg)](https://discord.gg/ASCjCrNdA7)
 
