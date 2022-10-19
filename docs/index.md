@@ -11,14 +11,22 @@
 
 [makesense.ai][1] strives to significantly reduce the time we have to spend on labeling photos. To achieve this, we are going to use many different AI models that will be able to give you recommendations as well as automate repetitive and tedious activities.
 
-* [SSD model][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bboxes on photos and  also (in some cases) suggest a label.
+* [YOLOv5][16] is our most powerful integration yet. Thanks to the use of [yolov5js][17] you can load not only pretreated models from [yolov5js-zoo](18), but above all your own models trained thanks to YOLOv5 and [exported](19) to tfjs format.
+* [SSD model][8] pretrained on the [COCO dataset][9], which will do some work for you in drawing bboxes on photos and  also (in some cases) suggest a label.
 * [PoseNet model][11] is a vision model that can be used to estimate the pose of a person in an image or video by estimating where key body joints are.
 
 In the future, we also plan to add, among other things, models that classify photos, detect characteristic features of faces as well as whole faces. The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
 
+## We need help
+
+Our documentation is still under construction. 🚧 Let us know what topics we should cover first. 
 
 [1]: http://makesense.ai
 [8]: https://arxiv.org/abs/1512.02325
 [9]: http://cocodataset.org
 [10]: https://www.tensorflow.org/js
 [11]: https://www.tensorflow.org/lite/models/pose_estimation/overview
+[16]: https://github.com/ultralytics/yolov5
+[17]: https://github.com/SkalskiP/yolov5js
+[18]: https://github.com/SkalskiP/yolov5js-zoo
+[19]: https://github.com/ultralytics/yolov5/blob/master/export.py

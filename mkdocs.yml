@@ -15,10 +15,12 @@ copyright: Copyright &copy; 2019 Piotr Skalski
 
 # Customization
 extra:
-  version: 1.8.0-alpha
+  version: 1.10.0-alpha
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/SkalskiP
+    - icon: fontawesome/brands/twitch
+      link: https://www.twitch.tv/skalskip
     - icon: fontawesome/brands/twitter
       link: https://twitter.com/PiotrSkalski92
     - icon: fontawesome/brands/linkedin
@@ -27,10 +29,12 @@ extra:
 # Page tree
 nav:
   - Home: index.md
-  - Import: import.md
-  - Export: export.md
-  - Shortcuts: shortcuts.md
-  - Local setup: local-setup.md
+  - Annotations:
+      - Import: import.md
+      - Export: export.md
+  - Integrations:
+      - YOLOv5: yolov5.md
+  - Changelog: changelog.md
 
 # Configuration
 theme:
@@ -60,3 +64,6 @@ markdown_extensions:
   - footnotes
   - pymdownx.highlight
   - pymdownx.superfences
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg

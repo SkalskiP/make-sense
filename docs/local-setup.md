@@ -1,4 +1,4 @@
-# Set Up the Project Locally
+## Set Up the Project Locally
 
 ```bash
 # clone repository

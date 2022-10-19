@@ -1,4 +1,4 @@
-# Export Formats
+## Supported export Formats
 
 |               | CSV | YOLO | VOC XML | VGG JSON | COCO JSON | PIXEL MASK |
 |:-------------:|:---:|:----:|:-------:|:--------:|:---------:|:----------:|
