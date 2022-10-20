@@ -18,6 +18,7 @@ import { NotificationUtil } from '../../../utils/NotificationUtil';
 import { NotificationsDataMap } from '../../../data/info/NotificationsData';
 import { DocumentParsingError } from '../../../logic/import/voc/VOCImporter';
 import { Notification } from '../../../data/enums/Notification';
+import {LabelNamesNotUniqueError} from '../../../logic/import/yolo/YOLOErrors';
 
 interface IProps {
     activeLabelType: LabelType,
@@ -44,7 +45,15 @@ const ImportLabelPopup: React.FC<IProps> = (
     const [loadedImageData, setLoadedImageData] = useState([]);
     const [annotationsLoadedError, setAnnotationsLoadedError] = useState(null);
 
-
+    const resolveNotification = (error: Error): Notification => {
+        if (error instanceof DocumentParsingError) {
+            return Notification.ANNOTATION_FILE_PARSE_ERROR
+        }
+        if (error instanceof LabelNamesNotUniqueError) {
+            return Notification.NON_UNIQUE_LABEL_NAMES_ERROR
+        }
+        return Notification.ANNOTATION_IMPORT_ASSERTION_ERROR
+    }
 
     const onLabelTypeChange = (type: LabelType) => {
         setLabelType(type);
@@ -64,7 +73,7 @@ const ImportLabelPopup: React.FC<IProps> = (
         setLoadedLabelNames([]);
         setLoadedImageData([]);
         setAnnotationsLoadedError(error);
-        const notification = error instanceof DocumentParsingError ? Notification.ANNOTATION_FILE_PARSE_ERROR : Notification.ANNOTATION_IMPORT_ASSERTION_ERROR;
+        const notification = resolveNotification(error)
         submitNewNotification(NotificationUtil.createErrorNotification(NotificationsDataMap[notification]));
     };
 
