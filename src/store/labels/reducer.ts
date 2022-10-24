@@ -32,7 +32,9 @@ export function labelsReducer(
     state = initialState,
     action: LabelsActionTypes
 ): LabelsState {
+    
     switch (action.type) {
+        
         case Action.UPDATE_ACTIVE_IMAGE_INDEX: {
             return {
                 ...state,
@@ -64,6 +66,7 @@ export function labelsReducer(
             };
         }
         case Action.UPDATE_IMAGE_DATA_BY_ID: {
+            
             return {
                 ...state,
                 imagesData: state.imagesData.map((imageData: ImageData) =>

@@ -75,8 +75,13 @@
         }
     }
     .Background.danger {
-      background-color: $dangerColor; 
-      transform: translate(2px, -2px);
+    //   background-color: $dangerColor; 
+      transform: translate(8px, -2px);
+    }
+
+    .Foreground.danger{
+        border: 3px solid red;
+        box-sizing: content-box;
     }
 
     .Foreground.danger {

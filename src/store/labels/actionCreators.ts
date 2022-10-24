@@ -59,6 +59,7 @@ export function updateImageDataById(
     id: string,
     newImageData: ImageData
 ): LabelsActionTypes {
+  
     return {
         type: Action.UPDATE_IMAGE_DATA_BY_ID,
         payload: {

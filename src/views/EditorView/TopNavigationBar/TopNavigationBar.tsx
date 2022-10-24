@@ -8,9 +8,8 @@ import {
     updateActivePopupType,
     updateProjectData
 } from '../../../store/general/actionCreators';
-import TextInput from '../../Common/TextInput/TextInput';
+import {ImageDataUtil} from '../../../utils/ImageDataUtil';
 import {ImageButton} from '../../Common/ImageButton/ImageButton';
-import {Settings} from '../../../settings/Settings';
 import {ProjectData} from '../../../store/general/types';
 import DropDownMenu from './DropDownMenu/DropDownMenu';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
@@ -34,6 +33,7 @@ interface IProps {
 }
 
 const TopNavigationBar: React.FC<IProps> = (props) => {
+    const { updateImageDataByIdAction } = props
     const {authData} = useSelector((state: RootStateOrAny) => state.auth);
     const [isLoading, setIsLoading] = useState(false);
     const onFocus = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -52,38 +52,52 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
     const closePopup = () =>
         props.updateActivePopupTypeAction(PopupWindowType.EXIT_PROJECT);
 
+    const updateImageFormApi = async (imageData, json) =>{
+        const { data: dataRes } =   await APIService.updateImage({
+            imageId: imageData.id,
+            json
+        });
+        let newImageData = imageData
+        if(dataRes['data'] && dataRes['code'] === 200){
+         const imageMapData = ImageDataUtil.createImageDataFromAPIData(dataRes['data'])
+         newImageData = {...imageData, ...imageMapData}
+        }
+        return newImageData
+    }    
+
     const uploadJson = async () => {
+      
         const itemsNeedToUpload = LabelsSelector.getImagesData().filter(
             (imageData) =>
                 imageData.uploadStatus === JSONUploadStatus.NEED_UPLOAD
         );
-
+            
         try {
             setIsLoading(true);
             for await (const imageData of itemsNeedToUpload) {
                 try {
-                    updateImageDataById(imageData.id, {
+                  
+                    updateImageDataByIdAction(imageData.id, {
                         ...imageData,
                         uploadStatus: JSONUploadStatus.UPLOADING
                     });
                     const content =
                         RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
                     const json = content ? JSON.stringify(content) : null;
-                    await APIService.updateImage({
-                        imageId: imageData.id,
-                        json
-                    });
-                    updateImageDataById(imageData.id, {
-                        ...imageData,
+                    const newImageData = await updateImageFormApi(imageData, json)
+                    
+                    updateImageDataByIdAction(newImageData.id, {                     
+                        ...newImageData,
                         uploadStatus: JSONUploadStatus.UPLOADED
                     });
                     const {data} = await APIService.getTaskStatus();
+                   
                     setTimeout(
                         () => props.updateTaskStatusAction(data.data),
                         1000
                     );
                 } catch (error) {
-                    updateImageDataById(imageData.id, {
+                    updateImageDataByIdAction(imageData.id, {
                         ...imageData,
                         uploadStatus: JSONUploadStatus.FAILED
                     });
