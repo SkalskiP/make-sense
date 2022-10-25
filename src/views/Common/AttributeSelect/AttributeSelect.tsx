@@ -191,7 +191,7 @@ export const AttributeSelect = (props: IProps) => {
     const renderHumanId = (uuid: any) => {
         const imageData = LabelsSelector.getActiveImageData();
         const index = _.findIndex(imageData.humans, {uuid});
-        return uuid === '-1'
+        return uuid === '-1' || index === -1
             ? {value: '-1', label: <div>UNKNOWN</div>}
             : {
                   value: uuid,

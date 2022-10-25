@@ -8,7 +8,6 @@ import {
     updateActivePopupType,
     updateProjectData
 } from '../../../store/general/actionCreators';
-import {ImageDataUtil} from '../../../utils/ImageDataUtil';
 import {ImageButton} from '../../Common/ImageButton/ImageButton';
 import {ProjectData} from '../../../store/general/types';
 import DropDownMenu from './DropDownMenu/DropDownMenu';
@@ -59,15 +58,34 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
         });
         let newImageData = imageData
         if(dataRes['data'] && dataRes['code'] === 200){
-         const imageMapData = ImageDataUtil.createImageDataFromAPIData(dataRes['data'])
-         newImageData.image_status = imageMapData.image_status
-         newImageData.labelRects.forEach((_, index) => {
-            newImageData.labelRects[index].qc_comment = imageMapData.labelRects[index].qc_comment
-            newImageData.labelRects[index].qc_status = imageMapData.labelRects[index].qc_status
+        const resData = dataRes['data']
+        newImageData.image_status = resData.image_status
+        const humansNow = resData.labeling_json.human_info
+        const itemsNow = resData.labeling_json.item_info
+        
+        newImageData.humans.forEach((item, index) => {
+            const itemTmp = humansNow.find(el => el.human_id === `${item.id}:${item.gender}:${item.type}`)
+            if(itemTmp){
+                newImageData.humans[index].qc_comment = itemTmp.qc_comment
+                newImageData.humans[index].qc_status = itemTmp.qc_status
+                const indexRects = newImageData.labelRects.findIndex(el=> el.id === newImageData.humans[index].uuid)
+                if(indexRects !== -1) {
+                    newImageData.labelRects[indexRects].qc_comment = itemTmp.qc_comment
+                    newImageData.labelRects[indexRects].qc_status = itemTmp.qc_status
+                }
+            }
          });
-         newImageData.humans.forEach((_, index) => {
-            newImageData.humans[index].qc_comment = imageMapData.humans[index].qc_comment
-            newImageData.humans[index].qc_status = imageMapData.humans[index].qc_status
+         newImageData.items.forEach((item, index) => {
+            const itemTmp = itemsNow.find(el => el.item_id === `${item.humanId}:${item.gender}:${item.mainCategory}:${item.subCategory}:${item.uuid}:${item.color}:${item.pattern}`)
+            if(itemTmp){
+                newImageData.items[index].qc_comment = itemTmp.qc_comment
+                newImageData.items[index].qc_status = itemTmp.qc_status
+                const indexRects = newImageData.labelRects.findIndex(el=> el.id === newImageData.items[index].uuid)
+                if(indexRects !== -1) {
+                    newImageData.labelRects[indexRects].qc_comment = itemTmp.qc_comment
+                    newImageData.labelRects[indexRects].qc_status = itemTmp.qc_status
+                }
+            }
          });
         }
         return newImageData
@@ -92,8 +110,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     const content =
                         RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
                     const json = content ? JSON.stringify(content) : null;
-                    const newImageData = await updateImageFormApi(imageData, json)
-                    console.log(newImageData, imageData)
+                    const newImageData = await updateImageFormApi(imageData, json)              
                     updateImageDataByIdAction(newImageData.id, {                     
                         ...newImageData,
                         uploadStatus: JSONUploadStatus.UPLOADED
