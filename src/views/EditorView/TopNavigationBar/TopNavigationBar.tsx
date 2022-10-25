@@ -60,7 +60,15 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
         let newImageData = imageData
         if(dataRes['data'] && dataRes['code'] === 200){
          const imageMapData = ImageDataUtil.createImageDataFromAPIData(dataRes['data'])
-         newImageData = {...imageData, ...imageMapData}
+         newImageData.image_status = imageMapData.image_status
+         newImageData.labelRects.forEach((_, index) => {
+            newImageData.labelRects[index].qc_comment = imageMapData.labelRects[index].qc_comment
+            newImageData.labelRects[index].qc_status = imageMapData.labelRects[index].qc_status
+         });
+         newImageData.humans.forEach((_, index) => {
+            newImageData.humans[index].qc_comment = imageMapData.humans[index].qc_comment
+            newImageData.humans[index].qc_status = imageMapData.humans[index].qc_status
+         });
         }
         return newImageData
     }    
@@ -85,7 +93,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
                     const json = content ? JSON.stringify(content) : null;
                     const newImageData = await updateImageFormApi(imageData, json)
-                    
+                    console.log(newImageData, imageData)
                     updateImageDataByIdAction(newImageData.id, {                     
                         ...newImageData,
                         uploadStatus: JSONUploadStatus.UPLOADED
