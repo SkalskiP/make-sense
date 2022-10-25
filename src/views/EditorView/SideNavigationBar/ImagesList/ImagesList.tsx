@@ -91,7 +91,6 @@ class ImagesList extends React.Component<IProps, IState> {
         isVisible: boolean,
         style: React.CSSProperties
     ) => {
-        
         return (
             <ImagePreview
                 key={index}
@@ -108,7 +107,6 @@ class ImagesList extends React.Component<IProps, IState> {
 
     public render() {
         const {size} = this.state;
-        
         return (
             <div
                 className="ImagesList"
