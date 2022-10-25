@@ -129,7 +129,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         image: HTMLImageElement,
         imageData: ImageData
     ) => {
-     
+        // console.log('saveLoadedImage: ', image, imageData);
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.storeImage(imageData.id, image);
@@ -179,8 +179,7 @@ class ImagePreview extends React.Component<IProps, IState> {
     };
 
     public render() {
-        const {isChecked, style, onClick, imageData} = this.props;
-        
+        const {isChecked, style, onClick, imageData} = this.props; 
         return (
             <div
                 className={this.getClassName()}

@@ -149,7 +149,8 @@ const EditorContainer: React.FC<IProps> = ({
             LabelsSelector.getActiveGender() === GENDER.MAN
                 ? GENDER.MAN
                 : GENDER.WOMAN;
-        if (activeImageData.guideStyles) {         
+        if (activeImageData.guideStyles) {  
+            // console.log('Guide styles = ', activeImageData.guideStyles);       
             return (
                 <div
                     style={{
@@ -169,12 +170,11 @@ const EditorContainer: React.FC<IProps> = ({
                         .map((style) => {
                            // console.log('style == ', style);
                             const images = _.range(5).map((i) => {
-                                const st = _.find(FASHION_STYLE, {seq: style});
-                                
+                                const st = _.find(FASHION_STYLE, {seq: style});                              
                                 const folderName =
-                                    st?.gender === 'M'
+                                    st.gender === 'M'
                                         ? 2
-                                        : st?.gender === 'F'
+                                        : st.gender === 'F'
                                         ? 3
                                         : activeGender + 1;
                                 const src = `guides/${folderName}/${folderName}_${style}/${
