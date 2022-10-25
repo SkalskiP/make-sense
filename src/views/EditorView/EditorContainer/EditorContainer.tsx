@@ -149,8 +149,7 @@ const EditorContainer: React.FC<IProps> = ({
             LabelsSelector.getActiveGender() === GENDER.MAN
                 ? GENDER.MAN
                 : GENDER.WOMAN;
-        if (activeImageData.guideStyles) {
-          
+        if (activeImageData.guideStyles) {         
             return (
                 <div
                     style={{
