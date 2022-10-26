@@ -25,6 +25,7 @@ import {ClipLoader} from 'react-spinners';
 import {useDropzone} from 'react-dropzone';
 import {YOLOUtils} from '../../../logic/import/yolo/YOLOUtils';
 import {LabelName} from '../../../store/labels/types';
+import {LabelNamesNotUniqueError} from '../../../logic/import/yolo/YOLOErrors';
 
 enum ModelSource {
     DOWNLOAD = 'DOWNLOAD',
@@ -87,8 +88,11 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                 setClassNames(labels)
                 setModeFiles([...jsonFiles, ...binFiles])
             }
-            const onFailure = () => {
-                return null;
+            const onFailure = (error) => {
+                if (error instanceof LabelNamesNotUniqueError) {
+                    submitNewNotificationAction(NotificationUtil
+                        .createErrorNotification(NotificationsDataMap[Notification.NON_UNIQUE_LABEL_NAMES_ERROR]));
+                }
             }
             YOLOUtils.loadLabelsList(txtFiles[0], onSuccess, onFailure)
         }

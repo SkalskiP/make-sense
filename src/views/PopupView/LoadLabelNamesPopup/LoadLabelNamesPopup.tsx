@@ -9,13 +9,22 @@ import { updateActivePopupType } from '../../../store/general/actionCreators';
 import { useDropzone } from 'react-dropzone';
 import { LabelName } from '../../../store/labels/types';
 import { YOLOUtils } from '../../../logic/import/yolo/YOLOUtils';
+import {LabelNamesNotUniqueError} from '../../../logic/import/yolo/YOLOErrors';
+import {NotificationUtil} from '../../../utils/NotificationUtil';
+import {NotificationsDataMap} from '../../../data/info/NotificationsData';
+import {Notification} from '../../../data/enums/Notification';
+import {submitNewNotification} from '../../../store/notifications/actionCreators';
+import {INotification} from '../../../store/notifications/types';
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;
     updateLabelNamesAction: (labels: LabelName[]) => any;
+    submitNewNotificationAction: (notification: INotification) => any;
 }
 
-const LoadLabelNamesPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, updateLabelNamesAction }) => {
+const LoadLabelNamesPopup: React.FC<IProps> = (
+    { updateActivePopupTypeAction, updateLabelNamesAction, submitNewNotificationAction }
+) => {
     const [labelsList, setLabelsList] = useState([]);
     const [invalidFileLoadedStatus, setInvalidFileLoadedStatus] = useState(false);
 
@@ -24,8 +33,12 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, up
         setInvalidFileLoadedStatus(false);
     };
 
-    const onFailure = () => {
+    const onFailure = (error: Error) => {
         setInvalidFileLoadedStatus(true);
+        if (error instanceof LabelNamesNotUniqueError) {
+            submitNewNotificationAction(NotificationUtil
+                .createErrorNotification(NotificationsDataMap[Notification.NON_UNIQUE_LABEL_NAMES_ERROR]));
+        }
     };
 
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
@@ -122,7 +135,8 @@ const LoadLabelNamesPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, up
 
 const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
-    updateLabelNamesAction: updateLabelNames
+    updateLabelNamesAction: updateLabelNames,
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({});

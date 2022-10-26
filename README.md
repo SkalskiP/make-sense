@@ -45,23 +45,21 @@ npm install
 # serve with hot reload at localhost:3000
 npm start
 ```
-To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v12.x.x` versions are required. More information about this problem is available in the [#16][4].
+To ensure proper functionality of the application locally, npm `8.x.x` and node.js `v16.x.x` versions are required. More information about this problem is available in the [#16][4].
 
 ## 🐳 Docker Setup
 
 ```bash
 # Build Docker Image
-docker build -t make_sense docker/
+docker build -t make-sense -f docker/Dockerfile .
 
 # Run Docker Image as Service
-docker run -dit -p 3000:3000 --restart=always --name=make_sense make_sense
-
-# Get Docker Container IP
-docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' make_sense
-# Go to `<DOCKER_CONTAINER_IP>:3000`
+docker run -dit -p 3000:3000 --restart=always --name=make-sense make-sense
 
 # Get Docker Container Logs
-docker logs make_sense
+docker logs make-sense
+
+# Access make-sense: http://localhost:3000/
 ```
 
 ## ⌨️ Keyboard Shortcuts
