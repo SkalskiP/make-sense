@@ -1,6 +1,9 @@
 name: Deploy documantation
 
-on: [push]
+on:
+  push:
+    branches:
+      - develop
 
 jobs:
   deploy:

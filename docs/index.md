@@ -21,6 +21,19 @@ In the future, we also plan to add, among other things, models that classify pho
 
 Our documentation is still under construction. 🚧 Let us know what topics we should cover first. 
 
+<div class="termy">
+
+```console
+$ git clone https://github.com/SkalskiP/make-sense.git
+$ cd make-sense
+$ npm install
+$ npm start
+```
+
+</div>
+
+
+
 [1]: http://makesense.ai
 [8]: https://arxiv.org/abs/1512.02325
 [9]: http://cocodataset.org

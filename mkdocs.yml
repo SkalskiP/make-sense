@@ -1,9 +1,8 @@
 # Project information
-site_name: Make Sense
+site_name: make-sense
 site_url: https://skalskip.github.io/make-sense
 site_author: Piotr Skalski
-site_description: >-
-  Free to use online tool for labelling photos
+site_description: free to use online tool for labelling photos
 
 # Repository
 repo_name: 'SkalskiP/make-sense'
@@ -25,6 +24,8 @@ extra:
       link: https://twitter.com/PiotrSkalski92
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/piotr-skalski-36b5b4122/
+    - icon: fontawesome/brands/medium
+      link: https://medium.com/@piotr.skalski92
 
 # Page tree
 nav:
@@ -45,10 +46,12 @@ theme:
   font:
     text: Roboto
     code: Roboto Mono
-  logo: 'img/logo.png'
+  logo: 'img/favicon.png'
   favicon: 'img/favicon.png'
   features:
-    - navigation.expand
+    - search.suggest
+    - search.highlight
+    - content.tabs.link
   icon:
     repo: fontawesome/brands/github
     
@@ -67,3 +70,12 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+
+extra_css:
+  - css/termynal.css
+
+extra_javascript:
+  - javascript/termynal.js
+  - javascript/custom.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
