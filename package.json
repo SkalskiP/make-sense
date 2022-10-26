@@ -31,10 +31,10 @@
     "yolov5js": "^1.0.0"
   },
   "scripts": {
-    "dev": "vite --port 3000",
+    "dev": "vite --host --port 3000",
     "start": "vite --port 3000",
     "build": "vite build",
-    "preview": "vite preview --port 3000",
+    "preview": "vite preview --host --port 3000",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts src/**.tsx"
