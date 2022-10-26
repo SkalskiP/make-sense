@@ -1,6 +1,6 @@
 {
   "name": "make-sense",
-  "version": "1.0.0",
+  "version": "1.10.0-alpha",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -31,10 +31,10 @@
     "yolov5js": "^1.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+    "dev": "vite --port 3000",
+    "start": "vite --port 3000",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port 3000",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint src/**/*.ts src/**.tsx"
