@@ -2,7 +2,7 @@ import React from 'react';
 import './FeatureInProgress.scss';
 
 export const FeatureInProgress: React.FC = () => {
-    return(
+    return (
         <div
             className="FeatureInProgress"
         >
@@ -11,7 +11,7 @@ export const FeatureInProgress: React.FC = () => {
                 alt={'take_off'}
                 src={'ico/take-off.png'}
             />
-            <p className="extraBold">new feature <br/> coming soon...</p>
+            <p className="extraBold">new feature <br /> coming soon...</p>
         </div>
-    )
+    );
 };

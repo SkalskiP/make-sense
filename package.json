@@ -7,6 +7,7 @@
     "@emotion/styled": "^11.9.3",
     "@mui/material": "^5.9.1",
     "@mui/system": "^5.9.1",
+    "@reduxjs/toolkit": "^1.9.0",
     "@tensorflow-models/coco-ssd": "^2.2.2",
     "@tensorflow-models/posenet": "^2.2.2",
     "@tensorflow/tfjs": "^3.19.0",
