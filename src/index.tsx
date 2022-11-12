@@ -7,7 +7,7 @@ import { Provider } from 'react-redux';
 import { AppInitializer } from './logic/initializer/AppInitializer';
 
 export const store = configureStore();
-AppInitializer.inti();
+AppInitializer.init();
 
 const root = ReactDOM.createRoot(document.getElementById('root') || document.createElement('div'));
 root.render(
