@@ -46,7 +46,7 @@ const getButtonWithTooltip = (
         title={tooltipMessage}
         TransitionComponent={Fade}
         TransitionProps={{ timeout: 600 }}
-        placement='bottom'
+        placement="bottom"
     >
         <div>
             <ImageButton
@@ -104,7 +104,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
 
     return (
         <div className={getClassName()}>
-            <div className='ButtonWrapper'>
+            <div className="ButtonWrapper">
                 {
                     getButtonWithTooltip(
                         'zoom-in',
@@ -150,7 +150,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     )
                 }
             </div>
-            <div className='ButtonWrapper'>
+            <div className="ButtonWrapper">
                 {
                     getButtonWithTooltip(
                         'image-drag-mode',
@@ -174,7 +174,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     )
                 }
             </div>
-            <div className='ButtonWrapper'>
+            <div className="ButtonWrapper">
                 {
                     getButtonWithTooltip(
                         'image-trash',
@@ -183,12 +183,14 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                         'image-trash',
                         false,
                         undefined,
-                        () => alert("Not implemented yet"),
+                        () => alert('Not implemented yet'),
                     )
                 }
             </div>
-            {((activeLabelType === LabelType.RECT && AISelector.isAIObjectDetectorModelLoaded()) ||
-                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className='ButtonWrapper'>
+            {((activeLabelType === LabelType.RECT && AISelector.isAISSDObjectDetectorModelLoaded()) ||
+                (activeLabelType === LabelType.RECT && AISelector.isAIYOLOObjectDetectorModelLoaded()) ||
+
+                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
                     {
                         getButtonWithTooltip(
                             'accept-all',

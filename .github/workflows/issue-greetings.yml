@@ -35,5 +35,5 @@ jobs:
             # serve with hot reload at localhost:3000
             npm start
             ```
-            To ensure proper functionality of the application locally, an npm `6.x.x` and node.js `v12.x.x` versions are required. More information about this problem is available in the [#16](https://github.com/SkalskiP/make-sense/issues/16) issue.
+            To ensure proper functionality of the application locally, an npm `8.x.x` and node.js `v16.x.x` versions are required. More information about this problem is available in the [#16](https://github.com/SkalskiP/make-sense/issues/16) issue.
 

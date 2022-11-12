@@ -1,8 +1,6 @@
-# INTELIIJ
-
+# ide
 .idea/
-
-# CREATE REACT APP
+.vscode/
 
 # dependencies
 /node_modules/

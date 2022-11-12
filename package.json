@@ -1,6 +1,6 @@
 {
   "name": "make-sense",
-  "version": "1.0.0",
+  "version": "1.10.0-alpha",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -27,13 +27,14 @@
     "react-redux": "^8.0.2",
     "react-spinners": "^0.13.3",
     "redux": "^4.2.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "yolov5js": "^1.0.0"
   },
   "scripts": {
-    "dev": "vite",
-    "start": "vite",
+    "dev": "vite --host --port 3000",
+    "start": "vite --port 3000",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host --port 3000",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "lint": "eslint . --ext .ts --ext .tsx"
