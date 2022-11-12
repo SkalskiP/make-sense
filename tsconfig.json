@@ -1,49 +1,41 @@
 {
   "compilerOptions": {
-    "paths": {
-      "@/*": [
-        "./src"
-      ]
-    },
     "baseUrl": ".",
     "target": "ESNext",
-    "downlevelIteration": true,
+    "useDefineForClassFields": true,
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "DOM",
+      "DOM.Iterable",
+      "ESNext"
     ],
-    "allowJs": true,
+    "allowJs": false,
     "skipLibCheck": true,
-    "esModuleInterop": true,
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "module": "ESNext",
+    "moduleResolution": "Node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "outDir": "dist",
     "noEmit": true,
     "jsx": "react-jsxdev",
-    "strictNullChecks": false,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noImplicitAny": false,
-    "strictPropertyInitialization": false,
-    "noFallthroughCasesInSwitch": true,
-    "types": [
-      "vite/client",
-    ]
+    "paths": {
+      "@/*": [
+        "./src/*",
+      ],
+    }
   },
   "include": [
     "src"
   ],
-  "exclude": [
-    "./node_modules",
-    "./public",
-    "./dist",
-    "./.vscode"
-  ]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+  "types": [
+    "vite/client",
+    "vitest/globals"
+  ],
 }

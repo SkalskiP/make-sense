@@ -59,11 +59,11 @@ const GenericLabelTypePopup: React.FC<IProps> = (
     }
 
     const renderContent = () => {
-        return (<div className='GenericLabelTypePopupContent'>
-            <div className='LeftContainer'>
+        return (<div className="GenericLabelTypePopupContent">
+            <div className="LeftContainer">
                 {getSidebarButtons()}
             </div>
-            <div className='RightContainer'>
+            <div className="RightContainer">
                 {renderInternalContent(labelType)}
             </div>
         </div>);

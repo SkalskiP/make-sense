@@ -1,25 +1,25 @@
-import {LabelType} from "../../data/enums/LabelType";
-import {EditorModel} from "../../staticModels/EditorModel";
-import {RectRenderEngine} from "../render/RectRenderEngine";
-import {PointRenderEngine} from "../render/PointRenderEngine";
-import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
-import {IRect} from "../../interfaces/IRect";
-import {RectUtil} from "../../utils/RectUtil";
-import {EditorData} from "../../data/EditorData";
-import {CanvasUtil} from "../../utils/CanvasUtil";
-import React from "react";
-import {IPoint} from "../../interfaces/IPoint";
-import {DrawUtil} from "../../utils/DrawUtil";
-import {PrimaryEditorRenderEngine} from "../render/PrimaryEditorRenderEngine";
-import {ContextManager} from "../context/ContextManager";
-import {PointUtil} from "../../utils/PointUtil";
-import {ViewPortActions} from "./ViewPortActions";
-import {ISize} from "../../interfaces/ISize";
-import {ImageUtil} from "../../utils/ImageUtil";
-import {GeneralSelector} from "../../store/selectors/GeneralSelector";
-import {ViewPortHelper} from "../helpers/ViewPortHelper";
-import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
-import {LineRenderEngine} from "../render/LineRenderEngine";
+import {LabelType} from '../../data/enums/LabelType';
+import {EditorModel} from '../../staticModels/EditorModel';
+import {RectRenderEngine} from '../render/RectRenderEngine';
+import {PointRenderEngine} from '../render/PointRenderEngine';
+import {PolygonRenderEngine} from '../render/PolygonRenderEngine';
+import {IRect} from '../../interfaces/IRect';
+import {RectUtil} from '../../utils/RectUtil';
+import {EditorData} from '../../data/EditorData';
+import {CanvasUtil} from '../../utils/CanvasUtil';
+import React from 'react';
+import {IPoint} from '../../interfaces/IPoint';
+import {DrawUtil} from '../../utils/DrawUtil';
+import {PrimaryEditorRenderEngine} from '../render/PrimaryEditorRenderEngine';
+import {ContextManager} from '../context/ContextManager';
+import {PointUtil} from '../../utils/PointUtil';
+import {ViewPortActions} from './ViewPortActions';
+import {ISize} from '../../interfaces/ISize';
+import {ImageUtil} from '../../utils/ImageUtil';
+import {GeneralSelector} from '../../store/selectors/GeneralSelector';
+import {ViewPortHelper} from '../helpers/ViewPortHelper';
+import {CustomCursorStyle} from '../../data/enums/CustomCursorStyle';
+import {LineRenderEngine} from '../render/LineRenderEngine';
 
 export class EditorActions {
 
@@ -45,11 +45,11 @@ export class EditorActions {
                 EditorModel.supportRenderingEngine = null;
                 break;
         }
-    };
+    }
 
     public static swapSupportRenderingEngine(activeLabelType: LabelType) {
         EditorActions.mountSupportRenderingEngine(activeLabelType);
-    };
+    }
 
     public static mountRenderEnginesAndHelpers(activeLabelType: LabelType) {
         EditorModel.viewPortHelper = new ViewPortHelper();
@@ -107,8 +107,8 @@ export class EditorActions {
 
     public static updateMousePositionIndicator(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent) {
         if (!EditorModel.image || !EditorModel.canvas) {
-            EditorModel.mousePositionIndicator.style.display = "none";
-            EditorModel.cursor.style.display = "none";
+            EditorModel.mousePositionIndicator.style.display = 'none';
+            EditorModel.cursor.style.display = 'none';
             return;
         }
 
@@ -120,27 +120,27 @@ export class EditorActions {
         const isMouseOverViewPort: boolean = RectUtil.isPointInside({x: 0, y: 0, ...EditorModel.viewPortSize}, mousePositionOverViewPort);
 
         if (isMouseOverViewPort && !GeneralSelector.getPreventCustomCursorStatus()) {
-            EditorModel.cursor.style.left = mousePositionOverViewPort.x + "px";
-            EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
-            EditorModel.cursor.style.display = "block";
+            EditorModel.cursor.style.left = mousePositionOverViewPort.x + 'px';
+            EditorModel.cursor.style.top = mousePositionOverViewPort.y + 'px';
+            EditorModel.cursor.style.display = 'block';
 
             if (isMouseOverImage && ![CustomCursorStyle.GRAB, CustomCursorStyle.GRABBING].includes(GeneralSelector.getCustomCursorStyle())) {
                 const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
                 const scale: number = imageSize.width / viewPortContentImageRect.width;
                 const mousePositionOverImage: IPoint = PointUtil.multiply(
                     PointUtil.subtract(mousePositionOverViewPortContent, viewPortContentImageRect), scale);
-                const text: string = "x: " + Math.round(mousePositionOverImage.x) + ", y: " + Math.round(mousePositionOverImage.y);
+                const text: string = 'x: ' + Math.round(mousePositionOverImage.x) + ', y: ' + Math.round(mousePositionOverImage.y);
 
                 EditorModel.mousePositionIndicator.innerHTML = text;
-                EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + "px";
-                EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + "px";
-                EditorModel.mousePositionIndicator.style.display = "block";
+                EditorModel.mousePositionIndicator.style.left = (mousePositionOverViewPort.x + 15) + 'px';
+                EditorModel.mousePositionIndicator.style.top = (mousePositionOverViewPort.y + 15) + 'px';
+                EditorModel.mousePositionIndicator.style.display = 'block';
             } else {
-                EditorModel.mousePositionIndicator.style.display = "none";
+                EditorModel.mousePositionIndicator.style.display = 'none';
             }
         } else {
-            EditorModel.cursor.style.display = "none";
-            EditorModel.mousePositionIndicator.style.display = "none";
+            EditorModel.cursor.style.display = 'none';
+            EditorModel.mousePositionIndicator.style.display = 'none';
         }
-    };
+    }
 }

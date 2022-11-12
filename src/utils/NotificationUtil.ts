@@ -1,7 +1,7 @@
 import {INotification} from '../store/notifications/types';
 import {v4 as uuidv4} from 'uuid';
 import {NotificationType} from '../data/enums/NotificationType';
-import {NotificationContent} from "../data/info/NotificationsData";
+import {NotificationContent} from '../data/info/NotificationsData';
 
 export class NotificationUtil {
     public static createErrorNotification(content: NotificationContent): INotification {

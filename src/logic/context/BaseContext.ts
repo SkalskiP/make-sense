@@ -1,4 +1,4 @@
-import {HotKeyAction} from "../../data/HotKeyAction";
+import {HotKeyAction} from '../../data/HotKeyAction';
 
 export class BaseContext {
     public static actions: HotKeyAction[] = [];

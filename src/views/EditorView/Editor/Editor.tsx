@@ -227,21 +227,21 @@ class Editor extends React.Component<IProps, IState> {
     public render() {
         return (
             <div
-                className='Editor'
+                className="Editor"
                 ref={ref => EditorModel.editor = ref}
                 draggable={false}
             >
                 <Scrollbars
                     ref={ref => EditorModel.viewPortScrollbars = ref}
-                    renderTrackHorizontal={props => <div {...props} className='track-horizontal'/>}
-                    renderTrackVertical={props => <div {...props} className='track-vertical'/>}
+                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
+                    renderTrackVertical={props => <div {...props} className="track-vertical"/>}
                     onUpdate={this.onScrollbarsUpdate}
                 >
                     <div
-                        className='ViewPortContent'
+                        className="ViewPortContent"
                     >
                         <canvas
-                            className='ImageCanvas'
+                            className="ImageCanvas"
                             ref={ref => EditorModel.canvas = ref}
                             draggable={false}
                             onContextMenu={(event: React.MouseEvent<HTMLCanvasElement>) => event.preventDefault()}
@@ -250,7 +250,7 @@ class Editor extends React.Component<IProps, IState> {
                     </div>
                 </Scrollbars>
                 <div
-                    className='MousePositionIndicator'
+                    className="MousePositionIndicator"
                     ref={ref => EditorModel.mousePositionIndicator = ref}
                     draggable={false}
                 />

@@ -47,7 +47,7 @@ export class PointRenderEngine extends BaseRenderEngine {
 
         if (isMouseOverCanvas) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
-            if (!!labelPoint) {
+            if (labelPoint) {
                 const pointOnCanvas: IPoint = RenderEngineUtil.transferPointFromImageToViewPortContent(labelPoint.point, data);
                 const pointBetweenPixels = RenderEngineUtil.setPointBetweenPixels(pointOnCanvas);
                 const handleRect: IRect = RectUtil.getRectWithCenterAndSize(pointBetweenPixels, RenderEngineSettings.anchorHoverSize);
@@ -92,7 +92,7 @@ export class PointRenderEngine extends BaseRenderEngine {
         const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         if (isOverImage) {
             const labelPoint: LabelPoint = this.getLabelPointUnderMouse(data.mousePositionOnViewPortContent, data);
-            if (!!labelPoint) {
+            if (labelPoint) {
                 if (LabelsSelector.getHighlightedLabelId() !== labelPoint.id) {
                     store.dispatch(updateHighlightedLabelId(labelPoint.id))
                 }

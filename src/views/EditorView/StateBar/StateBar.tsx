@@ -1,9 +1,9 @@
 import React from 'react';
 import './StateBar.scss';
-import {ImageData} from "../../../store/labels/types";
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {LabelType} from "../../../data/enums/LabelType";
+import {ImageData} from '../../../store/labels/types';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
+import {LabelType} from '../../../data/enums/LabelType';
 
 interface IProps {
     imagesData: ImageData[];
@@ -52,7 +52,7 @@ const StateBar: React.FC<IProps> = ({imagesData, activeLabelType}) => {
     return (
         <div className="StateBar">
             <div
-                style={{width: getProgress() + "%"}}
+                style={{width: getProgress() + '%'}}
                 className="done"
             />
         </div>

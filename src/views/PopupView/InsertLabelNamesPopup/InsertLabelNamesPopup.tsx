@@ -140,8 +140,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             onChange(labelName.id, event.target.value);
         const onDeleteCallback = () => deleteLabelNameCallback(labelName.id);
         const onChangeColorCallback = () => changeLabelNameColorCallback(labelName.id);
-        return <div className='LabelEntry' key={labelName.id}>
-            <StyledTextField variant='standard'
+        return <div className="LabelEntry" key={labelName.id}>
+            <StyledTextField variant="standard"
                 id={'key'}
                 autoComplete={'off'}
                 autoFocus={true}
@@ -201,8 +201,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const renderContent = () => {
-        return (<div className='InsertLabelNamesPopup'>
-            <div className='LeftContainer'>
+        return (<div className="InsertLabelNamesPopup">
+            <div className="LeftContainer">
                 <ImageButton
                     image={'ico/plus.png'}
                     imageAlt={'plus'}
@@ -221,8 +221,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     externalClassName={enablePerClassColoration ? '' : 'monochrome'}
                 />}
             </div>
-            <div className='RightContainer'>
-                <div className='Message'>
+            <div className="RightContainer">
+                <div className="Message">
                     {
                         isUpdate ?
                             'You can now edit the label names you use to describe the objects in the photos. Use the ' +
@@ -231,16 +231,16 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                             'project. You can also choose to skip that part for now and define label names as you go.'
                     }
                 </div>
-                <div className='LabelsContainer'>
+                <div className="LabelsContainer">
                     {Object.keys(labelNames).length !== 0 ? <Scrollbars>
                         <div
-                            className='InsertLabelNamesPopupContent'
+                            className="InsertLabelNamesPopupContent"
                         >
                             {labelInputs}
                         </div>
                     </Scrollbars> :
                         <div
-                            className='EmptyList'
+                            className="EmptyList"
                             onClick={addLabelNameCallback}
                         >
                             <img
@@ -248,7 +248,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                                 alt={'upload'}
                                 src={'ico/type-writer.png'}
                             />
-                            <p className='extraBold'>Your label list is empty</p>
+                            <p className="extraBold">Your label list is empty</p>
                         </div>}
                 </div>
             </div>

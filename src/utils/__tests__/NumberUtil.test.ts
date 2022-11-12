@@ -1,4 +1,4 @@
-import {NumberUtil} from "../NumberUtil";
+import {NumberUtil} from '../NumberUtil';
 
 describe('NumberUtil snapValueToRange method', () => {
     it('should return value rounded to the upper bound', () => {

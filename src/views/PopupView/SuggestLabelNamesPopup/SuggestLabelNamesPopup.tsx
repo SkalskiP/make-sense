@@ -127,7 +127,7 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     const getOptions = () => {
         return labelNames.map((entry: SelectableName, index: number) => {
             return <div
-                className='OptionsItem'
+                className="OptionsItem"
                 onClick={() => toggleSelectableNameByIndex(index)}
                 key={index}
             >
@@ -148,14 +148,14 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
     };
 
     const renderContent = () => {
-        return(<div className='SuggestLabelNamesPopupContent'>
-            <div className='Message'>
+        return(<div className="SuggestLabelNamesPopupContent">
+            <div className="Message">
                 We found objects of classes that are not yet included in the list of labels. Select the names you
                 would like to add. This will help to speed up the labeling process.
             </div>
-            <div className='AllToggle'>
+            <div className="AllToggle">
                 <div
-                    className='OptionsItem'
+                    className="OptionsItem"
                     onClick={() => selectAllFlag ? deselectAll() : selectAll()}
                 >
                     {selectAllFlag ?
@@ -172,10 +172,10 @@ const SuggestLabelNamesPopup: React.FC<IProps> = (
                     {selectAllFlag ? 'Deselect all' : 'Select all'}
                 </div>
             </div>
-            <div className='LabelNamesContainer'>
+            <div className="LabelNamesContainer">
                 <Scrollbars autoHeight={true}>
                     <div
-                        className='LabelNamesContent'
+                        className="LabelNamesContent"
                     >
                         {getOptions()}
                     </div>

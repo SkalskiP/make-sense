@@ -106,7 +106,7 @@ const RectLabelsList: React.FC<IProps> = (
 
     return (
         <div
-            className='RectLabelsList'
+            className="RectLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
@@ -117,7 +117,7 @@ const RectLabelsList: React.FC<IProps> = (
                 /> :
                 <Scrollbars>
                     <div
-                        className='RectLabelsListContent'
+                        className="RectLabelsListContent"
                         style={listStyleContent}
                     >
                         {getChildren()}

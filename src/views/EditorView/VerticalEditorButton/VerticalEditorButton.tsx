@@ -1,5 +1,5 @@
-import * as React from "react";
-import classNames from "classnames";
+import * as React from 'react';
+import classNames from 'classnames';
 import './VerticalEditorButton.scss';
 
 interface IProps {
@@ -19,10 +19,10 @@ export const VerticalEditorButton = (props:IProps) => {
 
     const getClassName = () => {
         return classNames(
-            "VerticalEditorButton",
+            'VerticalEditorButton',
             {
-                "active": isActive,
-                "disabled": isDisabled
+                'active': isActive,
+                'disabled': isDisabled
             }
         );
     };
@@ -30,7 +30,7 @@ export const VerticalEditorButton = (props:IProps) => {
     return(
         <div
             className={getClassName()}
-            onClick={!!onClick ? onClick : undefined}
+            onClick={onClick ? onClick : undefined}
             key={key}
             style={style}
         >

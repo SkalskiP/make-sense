@@ -1,7 +1,7 @@
-import React from "react";
-import {IPoint} from "../interfaces/IPoint";
-import {IRect} from "../interfaces/IRect";
-import {ISize} from "../interfaces/ISize";
+import React from 'react';
+import {IPoint} from '../interfaces/IPoint';
+import {IRect} from '../interfaces/IRect';
+import {ISize} from '../interfaces/ISize';
 
 export class CanvasUtil {
     public static getMousePositionOnCanvasFromEvent(event: React.MouseEvent<HTMLCanvasElement, MouseEvent> | MouseEvent, canvas: HTMLCanvasElement): IPoint {

@@ -26,7 +26,7 @@ export const UnderlineTextButton = (props: IProps) => {
   return (
     <div
       className={getClassName()}
-      onClick={!!onClick ? onClick : undefined}
+      onClick={onClick ? onClick : undefined}
       key={key}
       style={style}
     >

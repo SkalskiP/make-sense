@@ -1,24 +1,24 @@
-import React from "react";
+import React from 'react';
 import './LabelsToolkit.scss';
-import {ImageData} from "../../../../store/labels/types";
-import {updateActiveLabelId, updateActiveLabelType, updateImageDataById} from "../../../../store/labels/actionCreators";
-import {AppState} from "../../../../store";
-import {connect} from "react-redux";
-import {LabelType} from "../../../../data/enums/LabelType";
-import {ProjectType} from "../../../../data/enums/ProjectType";
-import {ISize} from "../../../../interfaces/ISize";
-import classNames from "classnames";
-import {find} from "lodash";
-import {ILabelToolkit, LabelToolkitData} from "../../../../data/info/LabelToolkitData";
-import {Settings} from "../../../../settings/Settings";
-import RectLabelsList from "../RectLabelsList/RectLabelsList";
-import PointLabelsList from "../PointLabelsList/PointLabelsList";
-import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
-import {ContextManager} from "../../../../logic/context/ContextManager";
-import {ContextType} from "../../../../data/enums/ContextType";
-import {EventType} from "../../../../data/enums/EventType";
-import LineLabelsList from "../LineLabelsList/LineLabelsList";
-import TagLabelsList from "../TagLabelsList/TagLabelsList";
+import {ImageData} from '../../../../store/labels/types';
+import {updateActiveLabelId, updateActiveLabelType, updateImageDataById} from '../../../../store/labels/actionCreators';
+import {AppState} from '../../../../store';
+import {connect} from 'react-redux';
+import {LabelType} from '../../../../data/enums/LabelType';
+import {ProjectType} from '../../../../data/enums/ProjectType';
+import {ISize} from '../../../../interfaces/ISize';
+import classNames from 'classnames';
+import {find} from 'lodash';
+import {ILabelToolkit, LabelToolkitData} from '../../../../data/info/LabelToolkitData';
+import {Settings} from '../../../../settings/Settings';
+import RectLabelsList from '../RectLabelsList/RectLabelsList';
+import PointLabelsList from '../PointLabelsList/PointLabelsList';
+import PolygonLabelsList from '../PolygonLabelsList/PolygonLabelsList';
+import {ContextManager} from '../../../../logic/context/ContextManager';
+import {ContextType} from '../../../../data/enums/ContextType';
+import {EventType} from '../../../../data/enums/EventType';
+import LineLabelsList from '../LineLabelsList/LineLabelsList';
+import TagLabelsList from '../TagLabelsList/TagLabelsList';
 
 interface IProps {
     activeImageIndex:number,
@@ -97,14 +97,14 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             const getClassName = (baseClass: string) => classNames(
                 baseClass,
                 {
-                    "active": isActive,
+                    'active': isActive,
                 }
             );
 
             const header =
                 <div
-                    key={"Header_" + index}
-                    className={getClassName("Header")}
+                    key={'Header_' + index}
+                    className={getClassName('Header')}
                     onClick={() => this.headerClickHandler(labelType)}
                     style={{height: Settings.TOOLKIT_TAB_HEIGHT_PX}}
                 >
@@ -122,16 +122,16 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         <img
                             draggable={false}
                             className="Arrow"
-                            src={"ico/down.png"}
-                            alt={"down_arrow"}
+                            src={'ico/down.png'}
+                            alt={'down_arrow'}
                         />
                     </div>
                 </div>;
 
             const content =
                 <div
-                    key={"Content_" + index}
-                    className={getClassName("Content")}
+                    key={'Content_' + index}
+                    className={getClassName('Content')}
                     style={{height: isActive ? activeTabContentHeight : 0}}
                 >
                     {labelType === LabelType.RECT && <RectLabelsList

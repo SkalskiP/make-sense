@@ -1,19 +1,19 @@
-import {LabelType} from '../../data/enums/LabelType';
-import {LabelsSelector} from '../../store/selectors/LabelsSelector';
-import {AISSDObjectDetectionActions} from './AISSDObjectDetectionActions';
-import {AIPoseDetectionActions} from './AIPoseDetectionActions';
-import {ImageData} from '../../store/labels/types';
-import {AISelector} from '../../store/selectors/AISelector';
-import {AIYOLOObjectDetectionActions} from './AIYOLOObjectDetectionActions';
+import { LabelType } from '../../data/enums/LabelType';
+import { LabelsSelector } from '../../store/selectors/LabelsSelector';
+import { AISSDObjectDetectionActions } from './AISSDObjectDetectionActions';
+import { AIPoseDetectionActions } from './AIPoseDetectionActions';
+import { ImageData } from '../../store/labels/types';
+import { AISelector } from '../../store/selectors/AISelector';
+import { AIYOLOObjectDetectionActions } from './AIYOLOObjectDetectionActions';
 
 export class AIActions {
     public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
         return suggestedLabels.reduce((acc: string[], label: string) => {
             if (!rejectedLabels.includes(label)) {
-                acc.push(label)
+                acc.push(label);
             }
             return acc;
-        }, [])
+        }, []);
     }
 
     public static detect(imageId: string, image: HTMLImageElement): void {

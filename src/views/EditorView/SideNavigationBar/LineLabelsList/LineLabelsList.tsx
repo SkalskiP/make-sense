@@ -101,7 +101,7 @@ const LineLabelsList: React.FC<IProps> = (
 
     return (
         <div
-            className='LineLabelsList'
+            className="LineLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
@@ -112,7 +112,7 @@ const LineLabelsList: React.FC<IProps> = (
                 /> :
                 <Scrollbars>
                     <div
-                        className='LineLabelsListContent'
+                        className="LineLabelsListContent"
                         style={listStyleContent}
                     >
                         {getChildren()}

@@ -1,10 +1,10 @@
 import React from 'react';
-import {ISize} from "../../../interfaces/ISize";
-import {IRect} from "../../../interfaces/IRect";
+import {ISize} from '../../../interfaces/ISize';
+import {IRect} from '../../../interfaces/IRect';
 import Scrollbars from 'react-custom-scrollbars-2';
-import {VirtualListUtil} from "../../../utils/VirtualListUtil";
-import {IPoint} from "../../../interfaces/IPoint";
-import {RectUtil} from "../../../utils/RectUtil";
+import {VirtualListUtil} from '../../../utils/VirtualListUtil';
+import {IPoint} from '../../../interfaces/IPoint';
+import {RectUtil} from '../../../utils/RectUtil';
 
 interface IProps {
     size: ISize;
@@ -70,7 +70,7 @@ export class VirtualList extends React.Component<IProps, IState> {
 
     private getVirtualListStyle = ():React.CSSProperties => {
         return {
-            position: "relative",
+            position: 'relative',
             width: this.props.size.width,
             height: this.props.size.height,
         }
@@ -105,7 +105,7 @@ export class VirtualList extends React.Component<IProps, IState> {
     private getChildren = () => {
         const {viewportRect, isScrolling} = this.state;
         const {overScanHeight, childSize} = this.props;
-        const overScan: number = !!overScanHeight ? overScanHeight : 0;
+        const overScan: number = overScanHeight ? overScanHeight : 0;
 
         const viewportRectWithOverScan:IRect = {
             x: viewportRect.x,
@@ -120,7 +120,7 @@ export class VirtualList extends React.Component<IProps, IState> {
 
             if (isVisible) {
                 const childStyle: React.CSSProperties = {
-                    position: "absolute",
+                    position: 'absolute',
                     left: anchor.x,
                     top: anchor.y,
                     width: childSize.width,

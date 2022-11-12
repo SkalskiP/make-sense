@@ -59,7 +59,7 @@ const PopupView: React.FC<IProps> = ({ activePopupType }) => {
     };
 
     return (
-        activePopupType && <div className='PopupView'>
+        activePopupType && <div className="PopupView">
             {selectPopup()}
         </div>
     );

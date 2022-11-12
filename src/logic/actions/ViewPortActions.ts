@@ -17,7 +17,7 @@ import {updateZoom} from '../../store/general/actionCreators';
 
 export class ViewPortActions {
     public static updateViewPortSize() {
-        if (!!EditorModel.editor) {
+        if (EditorModel.editor) {
             EditorModel.viewPortSize = {
                 width: EditorModel.editor.offsetWidth,
                 height: EditorModel.editor.offsetHeight
@@ -73,7 +73,7 @@ export class ViewPortActions {
             EditorModel.canvas.width = newCanvasSize.width;
             EditorModel.canvas.height = newCanvasSize.height;
         }
-    };
+    }
 
     public static resizeViewPortContent() {
         const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
@@ -84,7 +84,7 @@ export class ViewPortActions {
 
     public static calculateAbsoluteScrollPosition(relativePosition: IPoint): IPoint {
         const viewPortContentSize = ViewPortActions.calculateViewPortContentSize();
-        const viewPortSize = EditorModel.viewPortSize;
+        const {viewPortSize} = EditorModel;
         return {
             x: relativePosition.x * (viewPortContentSize.width - viewPortSize.width),
             y: relativePosition.y * (viewPortContentSize.height - viewPortSize.height)
@@ -92,7 +92,7 @@ export class ViewPortActions {
     }
 
     public static getRelativeScrollPosition(): IPoint {
-        if (!!EditorModel.viewPortScrollbars) {
+        if (EditorModel.viewPortScrollbars) {
             const values = EditorModel.viewPortScrollbars.getValues();
             return {
                 x: values.left,
@@ -104,7 +104,7 @@ export class ViewPortActions {
     }
 
     public static getAbsoluteScrollPosition(): IPoint {
-        if (!!EditorModel.viewPortScrollbars) {
+        if (EditorModel.viewPortScrollbars) {
             const values = EditorModel.viewPortScrollbars.getValues();
             return {
                 x: values.scrollLeft,

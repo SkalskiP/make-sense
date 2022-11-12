@@ -1,5 +1,5 @@
-import {Direction} from "../data/enums/Direction";
-import {IPoint} from "../interfaces/IPoint";
+import {Direction} from '../data/enums/Direction';
+import {IPoint} from '../interfaces/IPoint';
 
 export class DirectionUtil {
     public static convertDirectionToVector(direction: Direction): IPoint {

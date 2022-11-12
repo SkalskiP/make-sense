@@ -1,4 +1,4 @@
-import { zip } from "lodash";
+import { zip } from 'lodash';
 
 export type ImageMap = { [s: string]: HTMLImageElement; };
 

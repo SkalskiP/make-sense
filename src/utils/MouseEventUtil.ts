@@ -1,4 +1,4 @@
-import {EventType} from "../data/enums/EventType";
+import {EventType} from '../data/enums/EventType';
 
 export class MouseEventUtil {
     public static getEventType(event: Event): EventType | null {

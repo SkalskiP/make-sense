@@ -40,9 +40,9 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({ addImageData }) => {
                     alt={'upload'}
                     src={'ico/box-opened.png'}
                 />
-                <p className='extraBold'>Add new images</p>
+                <p className="extraBold">Add new images</p>
                 <p>or</p>
-                <p className='extraBold'>Click here to select them</p>
+                <p className="extraBold">Click here to select them</p>
             </>;
         else if (acceptedFiles.length === 1)
             return <>
@@ -51,7 +51,7 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({ addImageData }) => {
                     alt={'uploaded'}
                     src={'ico/box-closed.png'}
                 />
-                <p className='extraBold'>1 new image loaded</p>
+                <p className="extraBold">1 new image loaded</p>
             </>;
         else
             return <>
@@ -61,12 +61,12 @@ const LoadMoreImagesPopup: React.FC<IProps> = ({ addImageData }) => {
                     alt={'uploaded'}
                     src={'ico/box-closed.png'}
                 />
-                <p key={2} className='extraBold'>{acceptedFiles.length} new images loaded</p>
+                <p key={2} className="extraBold">{acceptedFiles.length} new images loaded</p>
             </>;
     };
 
     const renderContent = () => {
-        return (<div className='LoadMoreImagesPopupContent'>
+        return (<div className="LoadMoreImagesPopupContent">
             <div {...getRootProps({ className: 'DropZone' })}>
                 {getDropZoneContent()}
             </div>

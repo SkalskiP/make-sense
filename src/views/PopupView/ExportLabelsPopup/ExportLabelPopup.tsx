@@ -54,7 +54,7 @@ const ExportLabelPopup: React.FC<IProps> = ({ activeLabelType }) => {
     const getOptions = (exportFormatData: ILabelFormatData[]) => {
         return exportFormatData.map((entry: ILabelFormatData) => {
             return <div
-                className='OptionsItem'
+                className="OptionsItem"
                 onClick={() => onSelect(entry.type)}
                 key={entry.type}
             >
@@ -76,10 +76,10 @@ const ExportLabelPopup: React.FC<IProps> = ({ activeLabelType }) => {
 
     const renderInternalContent = (type: LabelType) => {
         return <>
-            <div className='Message'>
+            <div className="Message">
                 Select label type and the file format you would like to use to export labels.
             </div>,
-            <div className='Options'>
+            <div className="Options">
                 {getOptions(ExportFormatData[type])}
             </div>
         </>;

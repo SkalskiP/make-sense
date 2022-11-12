@@ -103,7 +103,7 @@ const PointLabelsList: React.FC<IProps> = (
 
     return (
         <div
-            className='PointLabelsList'
+            className="PointLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
@@ -114,7 +114,7 @@ const PointLabelsList: React.FC<IProps> = (
                 /> :
                 <Scrollbars>
                     <div
-                        className='PointLabelsListContent'
+                        className="PointLabelsListContent"
                         style={listStyleContent}
                     >
                         {getChildren()}

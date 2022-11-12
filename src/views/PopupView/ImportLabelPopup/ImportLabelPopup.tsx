@@ -79,9 +79,9 @@ const ImportLabelPopup: React.FC<IProps> = (
 
     const { getRootProps, getInputProps } = useDropzone({
         accept: {
-            "application/json": [".json" ],
-            "text/plain": [".txt"],
-            "application/xml": [".xml"],
+            'application/json': ['.json' ],
+            'text/plain': ['.txt'],
+            'application/xml': ['.xml'],
         },
         multiple: true,
         onDrop: (acceptedFiles) => {
@@ -116,9 +116,9 @@ const ImportLabelPopup: React.FC<IProps> = (
                     alt={'upload'}
                     src={'ico/box-opened.png'}
                 />
-                <p className='extraBold'>Annotation import was unsuccessful</p>
+                <p className="extraBold">Annotation import was unsuccessful</p>
                 {annotationsLoadedError.message}
-                <p className='extraBold'>Try again</p>
+                <p className="extraBold">Try again</p>
             </>;
         } else if (loadedImageData.length !== 0 && loadedLabelNames.length !== 0) {
             return <>
@@ -127,7 +127,7 @@ const ImportLabelPopup: React.FC<IProps> = (
                     alt={'uploaded'}
                     src={'ico/box-closed.png'}
                 />
-                <p className='extraBold'>Annotation ready for import</p>
+                <p className="extraBold">Annotation ready for import</p>
                 After import you will lose
                 all your current annotations
             </>;
@@ -139,9 +139,9 @@ const ImportLabelPopup: React.FC<IProps> = (
                     alt={'upload'}
                     src={'ico/box-opened.png'}
                 />
-                <p className='extraBold'>{`Drop ${formatType} annotations`}</p>
+                <p className="extraBold">{`Drop ${formatType} annotations`}</p>
                 <p>or</p>
-                <p className='extraBold'>Click here to select them</p>
+                <p className="extraBold">Click here to select them</p>
             </>;
         }
     };
@@ -149,7 +149,7 @@ const ImportLabelPopup: React.FC<IProps> = (
     const getOptions = (exportFormatData: ILabelFormatData[]) => {
         return exportFormatData.map((entry: ILabelFormatData) => {
             return <div
-                className='OptionsItem'
+                className="OptionsItem"
                 onClick={() => onAnnotationFormatChange(entry.type)}
                 key={entry.type}
             >
@@ -172,10 +172,10 @@ const ImportLabelPopup: React.FC<IProps> = (
     const renderInternalContent = (type: LabelType) => {
         if (!formatType && ImportFormatData[type].length !== 0) {
             return <>
-                <div className='Message'>
+                <div className="Message">
                     Select file format you would like to use to import labels.
                 </div>,
-                <div className='Options'>
+                <div className="Options">
                     {getOptions(ImportFormatData[type])}
                 </div>
             </>;

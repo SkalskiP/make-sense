@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import './SideNavigationBar.scss';
-import {Direction} from "../../../data/enums/Direction";
+import {Direction} from '../../../data/enums/Direction';
 
 interface IProps {
     direction: Direction
@@ -16,12 +16,12 @@ export const SideNavigationBar: React.FC<IProps> = (props) => {
 
     const getClassName = () => {
         return classNames(
-            "SideNavigationBar",
+            'SideNavigationBar',
             {
-                "left": direction === Direction.LEFT,
-                "right": direction === Direction.RIGHT,
-                "with-context": isWithContext,
-                "closed": !isOpen
+                'left': direction === Direction.LEFT,
+                'right': direction === Direction.RIGHT,
+                'with-context': isWithContext,
+                'closed': !isOpen
             }
         );
     };

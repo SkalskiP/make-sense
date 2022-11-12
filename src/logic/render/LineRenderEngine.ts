@@ -72,7 +72,7 @@ export class LineRenderEngine extends BaseRenderEngine {
         const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         if (isOverImage) {
             const labelLine: LabelLine = this.getLineUnderMouse(data);
-            if (!!labelLine) {
+            if (labelLine) {
                 if (LabelsSelector.getHighlightedLabelId() !== labelLine.id) {
                     store.dispatch(updateHighlightedLabelId(labelLine.id))
                 }

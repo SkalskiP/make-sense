@@ -100,7 +100,7 @@ const PolygonLabelsList: React.FC<IProps> = (
 
     return (
         <div
-            className='PolygonLabelsList'
+            className="PolygonLabelsList"
             style={listStyle}
             onClickCapture={onClickHandler}
         >
@@ -111,7 +111,7 @@ const PolygonLabelsList: React.FC<IProps> = (
                 /> :
                 <Scrollbars>
                     <div
-                        className='PolygonLabelsListContent'
+                        className="PolygonLabelsListContent"
                         style={listStyleContent}
                     >
                         {getChildren()}

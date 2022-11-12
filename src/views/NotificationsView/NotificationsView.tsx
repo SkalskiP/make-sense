@@ -79,13 +79,13 @@ const NotificationsView: React.FC<IProps> = (props) => {
                 onClick={onClose}
             >
                 <div className={getNotificationClassName()}>
-                    <div className='header'>
+                    <div className="header">
                         {notification.header}
                     </div>
-                    <div className='content'>
+                    <div className="content">
                         {notification.description}
                     </div>
-                    <div className='loader'/>
+                    <div className="loader"/>
                 </div>
             </div>
         )

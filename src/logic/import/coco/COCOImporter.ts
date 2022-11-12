@@ -14,7 +14,7 @@ import {
 import {LabelType} from '../../../data/enums/LabelType';
 import {AnnotationImporter, ImportResult} from '../AnnotationImporter';
 import {COCOUtils} from './COCOUtils';
-import {Settings} from "../../../settings/Settings";
+import {Settings} from '../../../settings/Settings';
 
 export type FileNameCOCOIdMap = {[ fileName: string]: number; }
 export type LabelNameMap = { [labelCOCOId: number]: LabelName; }

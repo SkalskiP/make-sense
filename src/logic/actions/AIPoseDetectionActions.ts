@@ -104,7 +104,7 @@ export class AIPoseDetectionActions {
                 return {
                     ...labelPoint,
                     status: LabelStatus.ACCEPTED,
-                    labelId: !!labelName ? labelName.id : labelPoint.labelId
+                    labelId: labelName ? labelName.id : labelPoint.labelId
                 }
             })
         };

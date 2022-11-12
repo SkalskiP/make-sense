@@ -1,7 +1,7 @@
-import classNames from "classnames";
+import classNames from 'classnames';
 import * as React from 'react';
-import { LegacyRef } from "react";
-import { ISize } from "../../../interfaces/ISize";
+import { LegacyRef } from 'react';
+import { ISize } from '../../../interfaces/ISize';
 import './ImageButton.scss';
 
 export interface ImageButtonProps extends React.HTMLProps<HTMLDivElement> {
@@ -39,11 +39,11 @@ export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: Legac
 
     const getClassName = () => {
         return classNames(
-            "ImageButton",
+            'ImageButton',
             externalClassName,
             {
-                "active": isActive,
-                "disabled": isDisabled,
+                'active': isActive,
+                'disabled': isDisabled,
             }
         );
     };
@@ -73,6 +73,6 @@ export const ImageButton = React.forwardRef((props: ImageButtonProps, ref: Legac
     );
 });
 
-ImageButton.displayName = "ImageButton";
+ImageButton.displayName = 'ImageButton';
 
 export default ImageButton;

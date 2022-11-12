@@ -40,14 +40,14 @@ export const GenericYesNoPopup: React.FC<IProps> = (
     }, [status]);
 
     return (
-        <div className='GenericYesNoPopup'>
-            <div className='Header'>
+        <div className="GenericYesNoPopup">
+            <div className="Header">
                 {title}
             </div>
-            <div className='Content'>
+            <div className="Content">
                 {renderContent()}
             </div>
-            <div className='Footer'>
+            <div className="Footer">
                 {!skipRejectButton && <TextButton
                     label={rejectLabel ? rejectLabel : 'NO, THANKS'}
                     onClick={onReject}

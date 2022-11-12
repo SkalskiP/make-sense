@@ -36,12 +36,12 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
     const closePopup = () => props.updateActivePopupTypeAction(PopupWindowType.EXIT_PROJECT)
 
     return (
-        <div className='TopNavigationBar'>
+        <div className="TopNavigationBar">
             <StateBar/>
-            <div className='TopNavigationBarWrapper'>
-                <div className='NavigationBarGroupWrapper'>
+            <div className="TopNavigationBarWrapper">
+                <div className="NavigationBarGroupWrapper">
                     <div
-                        className='Header'
+                        className="Header"
                         onClick={closePopup}
                     >
                         <img
@@ -52,11 +52,11 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         Make Sense
                     </div>
                 </div>
-                <div className='NavigationBarGroupWrapper'>
+                <div className="NavigationBarGroupWrapper">
                     <DropDownMenu/>
                 </div>
-                <div className='NavigationBarGroupWrapper middle'>
-                    <div className='ProjectName'>Project Name:</div>
+                <div className="NavigationBarGroupWrapper middle">
+                    <div className="ProjectName">Project Name:</div>
                     <TextInput
                         isPassword={false}
                         value={props.projectData.name}
@@ -64,7 +64,7 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                         onFocus={onFocus}
                     />
                 </div>
-                <div className='NavigationBarGroupWrapper'>
+                <div className="NavigationBarGroupWrapper">
                     <ImageButton
                         image={'ico/github-logo.png'}
                         imageAlt={'github-logo.png'}

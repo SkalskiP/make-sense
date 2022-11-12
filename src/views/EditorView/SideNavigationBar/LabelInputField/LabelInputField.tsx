@@ -121,7 +121,7 @@ class LabelInputField extends React.Component<IProps, IState> {
 
         return this.props.options.map((option: LabelName) => {
             return <div
-                className='DropdownOption'
+                className="DropdownOption"
                 key={option.id}
                 style={{height: this.dropdownOptionHeight}}
                 onClick={(event) => onClick(option.id, event)}
@@ -173,31 +173,31 @@ class LabelInputField extends React.Component<IProps, IState> {
                 onClick={this.onClickHandler}
             >
                 <div
-                    className='LabelInputFieldWrapper'
+                    className="LabelInputFieldWrapper"
                     style={{
                         width: size.width,
                         height: size.height,
                     }}
                 >
                     <div
-                        className='Marker'
+                        className="Marker"
                         style={value ? {backgroundColor: value.color} : {}}
                     />
-                    <div className='Content'>
-                        <div className='ContentWrapper'>
-                            <div className='DropdownLabel'
+                    <div className="Content">
+                        <div className="ContentWrapper">
+                            <div className="DropdownLabel"
                                  ref={ref => this.dropdownLabel = ref}
                                  onClick={this.openDropdown}
                             >
                                 {value ? value.name : 'Select label'}
                             </div>
                             {this.state.isOpen && <div
-                                className='Dropdown'
+                                className="Dropdown"
                                 style={this.getDropdownStyle()}
                                 ref={ref => this.dropdown = ref}
                             >
                                 <Scrollbars
-                                    renderTrackHorizontal={props => <div {...props} className='track-horizontal'/>}
+                                    renderTrackHorizontal={props => <div {...props} className="track-horizontal"/>}
                                 >
                                     <div>
                                         {this.getDropdownOptions()}
@@ -206,7 +206,7 @@ class LabelInputField extends React.Component<IProps, IState> {
 
                             </div>}
                         </div>
-                        <div className='ContentWrapper'>
+                        <div className="ContentWrapper">
                             {this.getToggleVisibilityButton(id)}
                             <ImageButton
                                 externalClassName={'icon'}

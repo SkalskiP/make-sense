@@ -1,19 +1,19 @@
 import React from 'react';
 import './ExitProjectPopup.scss';
-import { GenericYesNoPopup } from "../GenericYesNoPopup/GenericYesNoPopup";
+import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
 import {
     updateActiveImageIndex as storeUpdateActiveImageIndex,
     updateActiveLabelNameId as storeUpdateActiveLabelNameId,
     updateFirstLabelCreatedFlag as storeUpdateFirstLabelCreatedFlag,
     updateImageData as storeUpdateImageData,
     updateLabelNames as storeUpdateLabelNames
-} from "../../../store/labels/actionCreators";
-import { AppState } from "../../../store";
-import { connect } from "react-redux";
-import { ImageData, LabelName } from "../../../store/labels/types";
-import { PopupActions } from "../../../logic/actions/PopupActions";
-import { ProjectData } from "../../../store/general/types";
-import { updateProjectData as storeUpdateProjectData } from "../../../store/general/actionCreators";
+} from '../../../store/labels/actionCreators';
+import { AppState } from '../../../store';
+import { connect } from 'react-redux';
+import { ImageData, LabelName } from '../../../store/labels/types';
+import { PopupActions } from '../../../logic/actions/PopupActions';
+import { ProjectData } from '../../../store/general/types';
+import { updateProjectData as storeUpdateProjectData } from '../../../store/general/actionCreators';
 
 interface IProps {
     updateActiveImageIndex: (activeImageIndex: number) => any;
@@ -47,7 +47,7 @@ const ExitProjectPopup: React.FC<IProps> = ({
     const onAccept = () => {
         updateActiveLabelNameId(null);
         updateLabelNames([]);
-        updateProjectData({ type: null, name: "my-project-name" });
+        updateProjectData({ type: null, name: 'my-project-name' });
         updateActiveImageIndex(null);
         updateImageData([]);
         updateFirstLabelCreatedFlag(false);
@@ -60,11 +60,11 @@ const ExitProjectPopup: React.FC<IProps> = ({
 
     return (
         <GenericYesNoPopup
-            title={"Exit project"}
+            title={'Exit project'}
             renderContent={renderContent}
-            acceptLabel={"Exit"}
+            acceptLabel={'Exit'}
             onAccept={onAccept}
-            rejectLabel={"Back"}
+            rejectLabel={'Back'}
             onReject={onReject}
         />);
 };

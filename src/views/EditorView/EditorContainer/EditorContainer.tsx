@@ -1,21 +1,21 @@
 import React, {useState} from 'react';
-import {connect} from "react-redux";
-import {Direction} from "../../../data/enums/Direction";
-import {ISize} from "../../../interfaces/ISize";
-import {Settings} from "../../../settings/Settings";
-import {AppState} from "../../../store";
-import {ImageData} from "../../../store/labels/types";
-import ImagesList from "../SideNavigationBar/ImagesList/ImagesList";
-import LabelsToolkit from "../SideNavigationBar/LabelsToolkit/LabelsToolkit";
-import {SideNavigationBar} from "../SideNavigationBar/SideNavigationBar";
-import {VerticalEditorButton} from "../VerticalEditorButton/VerticalEditorButton";
+import {connect} from 'react-redux';
+import {Direction} from '../../../data/enums/Direction';
+import {ISize} from '../../../interfaces/ISize';
+import {Settings} from '../../../settings/Settings';
+import {AppState} from '../../../store';
+import {ImageData} from '../../../store/labels/types';
+import ImagesList from '../SideNavigationBar/ImagesList/ImagesList';
+import LabelsToolkit from '../SideNavigationBar/LabelsToolkit/LabelsToolkit';
+import {SideNavigationBar} from '../SideNavigationBar/SideNavigationBar';
+import {VerticalEditorButton} from '../VerticalEditorButton/VerticalEditorButton';
 import './EditorContainer.scss';
-import Editor from "../Editor/Editor";
-import {ContextManager} from "../../../logic/context/ContextManager";
-import {ContextType} from "../../../data/enums/ContextType";
-import EditorBottomNavigationBar from "../EditorBottomNavigationBar/EditorBottomNavigationBar";
-import EditorTopNavigationBar from "../EditorTopNavigationBar/EditorTopNavigationBar";
-import {ProjectType} from "../../../data/enums/ProjectType";
+import Editor from '../Editor/Editor';
+import {ContextManager} from '../../../logic/context/ContextManager';
+import {ContextType} from '../../../data/enums/ContextType';
+import EditorBottomNavigationBar from '../EditorBottomNavigationBar/EditorBottomNavigationBar';
+import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigationBar';
+import {ProjectType} from '../../../data/enums/ProjectType';
 
 interface IProps {
     windowSize: ISize;
@@ -63,8 +63,8 @@ const EditorContainer: React.FC<IProps> = (
         return <>
             <VerticalEditorButton
                 label="Images"
-                image={"/ico/camera.png"}
-                imageAlt={"images"}
+                image={'/ico/camera.png'}
+                imageAlt={'images'}
                 onClick={leftSideBarButtonOnClick}
                 isActive={leftTabStatus}
             />
@@ -88,8 +88,8 @@ const EditorContainer: React.FC<IProps> = (
         return <>
             <VerticalEditorButton
                 label="Labels"
-                image={"/ico/tags.png"}
-                imageAlt={"labels"}
+                image={'/ico/tags.png'}
+                imageAlt={'labels'}
                 onClick={rightSideBarButtonOnClick}
                 isActive={rightTabStatus}
             />

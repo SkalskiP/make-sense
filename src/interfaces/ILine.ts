@@ -1,4 +1,4 @@
-import {IPoint} from "./IPoint";
+import {IPoint} from './IPoint';
 
 export interface ILine {
     start: IPoint,

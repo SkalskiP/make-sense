@@ -49,7 +49,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public update(data: EditorData): void {
-        if (!!data.event) {
+        if (data.event) {
             switch (MouseEventUtil.getEventType(data.event)) {
                 case EventType.MOUSE_MOVE:
                     this.mouseMoveHandler(data);
@@ -79,7 +79,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                 }
             } else {
                 const polygonUnderMouse: LabelPolygon = this.getPolygonUnderMouse(data);
-                if (!!polygonUnderMouse) {
+                if (polygonUnderMouse) {
                     const anchorIndex: number = polygonUnderMouse.vertices.reduce(
                         (indexUnderMouse: number, anchor: IPoint, index: number) => {
                         if (indexUnderMouse === null) {
@@ -174,11 +174,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                 } else {
                     const anchorUnderMouse: IPoint = this.getAnchorUnderMouse(data);
                     const isMouseOverNewAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnViewPortContent, this.suggestedAnchorPositionOnCanvas);
-                    if (!!isMouseOverNewAnchor) {
+                    if (isMouseOverNewAnchor) {
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.ADD));
                     } else if (this.isResizeInProgress()) {
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
-                    } else if (!!anchorUnderMouse) {
+                    } else if (anchorUnderMouse) {
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MOVE));
                     } else {
                         RenderEngineUtil.wrapDefaultCursorStyleInCancel(data);
@@ -305,7 +305,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         store.dispatch(updateImageDataById(imageData.id, imageData));
         store.dispatch(updateFirstLabelCreatedFlag(true));
         store.dispatch(updateActiveLabelId(labelPolygon.id));
-    };
+    }
 
     // =================================================================================================================
     // TRANSFER

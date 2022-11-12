@@ -1,8 +1,8 @@
-import {AnnotationFormatType} from "../../data/enums/AnnotationFormatType";
-import {LabelsSelector} from "../../store/selectors/LabelsSelector";
-import {ImageData, LabelName} from "../../store/labels/types";
-import {ExporterUtil} from "../../utils/ExporterUtil";
-import {findLast} from "lodash";
+import {AnnotationFormatType} from '../../data/enums/AnnotationFormatType';
+import {LabelsSelector} from '../../store/selectors/LabelsSelector';
+import {ImageData, LabelName} from '../../store/labels/types';
+import {ExporterUtil} from '../../utils/ExporterUtil';
+import {findLast} from 'lodash';
 
 export class TagLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -25,7 +25,7 @@ export class TagLabelsExporter {
             })
             .map((imageData: ImageData) => {
                 return TagLabelsExporter.wrapLabelNamesIntoCSV(imageData)})
-            .join("\n");
+            .join('\n');
         const fileName: string = `${ExporterUtil.getExportFileName()}.csv`;
         ExporterUtil.saveAs(content, fileName);
     }
@@ -37,8 +37,8 @@ export class TagLabelsExporter {
             })
             .map((imageData: ImageData) => {
                 return {
-                    "image": imageData.fileData.name,
-                    "annotations": TagLabelsExporter.wrapLabelNamesIntoJSON(imageData)
+                    'image': imageData.fileData.name,
+                    'annotations': TagLabelsExporter.wrapLabelNamesIntoJSON(imageData)
                 }})
         const content: string = JSON.stringify(contentObjects);
         const fileName: string = `${ExporterUtil.getExportFileName()}.json`;
@@ -57,7 +57,7 @@ export class TagLabelsExporter {
             imageData.fileData.name,
             `"[${annotations.toString()}]"`
         ] : [];
-        return labelFields.join(",")
+        return labelFields.join(',')
     }
 
     private static wrapLabelNamesIntoJSON(imageData: ImageData): string[] {

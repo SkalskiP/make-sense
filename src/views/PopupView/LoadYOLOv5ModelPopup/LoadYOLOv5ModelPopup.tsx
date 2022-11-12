@@ -133,7 +133,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     // RENDER
 
     const renderMenu = () => {
-        return(<div className='left-container'>
+        return(<div className="left-container">
             <ImageButton
                 image={'ico/upload.png'}
                 imageAlt={'upload model weights'}
@@ -158,7 +158,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     const getOptionsContent = () => {
         return Object.entries(PretrainedModelDataMap).map(([key, value]) => {
             return <div
-                className='options-item'
+                className="options-item"
                 onClick={() => setSelectedPretrainedModel(key as PretrainedModel)}
                 key={key}
             >
@@ -179,7 +179,7 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     }
 
     const renderOptions = () => {
-        return(<div className='options'>
+        return(<div className="options">
             {getOptionsContent()}
         </div>)
     }
@@ -189,13 +189,13 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
             'speed up annotation process. Make sure to upload all required files: model.json, model shards as well ' +
             'as .txt containing list of detected classes names.'
         const downloadMessage: string = 'Use one of ours pretrained YOLOv5 models to speed up annotation process.'
-        return(<div className='message'>
+        return(<div className="message">
             {modelSource === ModelSource.DOWNLOAD ? downloadMessage : uploadMessage}
         </div>)
     }
 
     const renderLoader = () => {
-        return(<div className='loader'>
+        return(<div className="loader">
             <ClipLoader
                 size={40}
                 color={CSSHelper.getLeadingColor()}
@@ -213,9 +213,9 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                     alt={'upload'}
                     src={'ico/box-opened.png'}
                 />
-                <p className='extraBold'>Drop model files</p>
+                <p className="extraBold">Drop model files</p>
                 <p>or</p>
-                <p className='extraBold'>Click here to select them</p>
+                <p className="extraBold">Click here to select them</p>
             </>;
         } else {
             return <>
@@ -225,8 +225,8 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
                     alt={'uploaded'}
                     src={'ico/box-closed.png'}
                 />
-                <p className='extraBold'>{modelFiles.length} model files</p>
-                <p className='extraBold'>{classNames.length} class names</p>
+                <p className="extraBold">{modelFiles.length} model files</p>
+                <p className="extraBold">{classNames.length} class names</p>
             </>;
         }
 
@@ -241,9 +241,9 @@ const LoadYOLOv5ModelPopup: React.FC<IProps> = ({ updateActivePopupTypeAction, s
     const renderContent = () => {
         const shouldRenderDropZone = !isLoading && modelSource === ModelSource.UPLOAD
         const shouldRenderOptions = !isLoading && modelSource === ModelSource.DOWNLOAD
-        return (<div className='load-yolo-v5-model-popup'>
+        return (<div className="load-yolo-v5-model-popup">
             {renderMenu()}
-            <div className='right-container'>
+            <div className="right-container">
                 {isLoading && renderLoader()}
                 {!isLoading && renderMessage()}
                 {shouldRenderOptions && renderOptions()}

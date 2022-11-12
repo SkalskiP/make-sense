@@ -89,7 +89,7 @@ export class AISSDObjectDetectionActions {
                 return {
                     ...labelRect,
                     status: LabelStatus.ACCEPTED,
-                    labelId: !!labelName ? labelName.id : labelRect.labelId
+                    labelId: labelName ? labelName.id : labelRect.labelId
                 }
             })
         };

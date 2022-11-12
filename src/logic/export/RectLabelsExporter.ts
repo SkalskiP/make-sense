@@ -89,7 +89,7 @@ export class RectLabelsExporter {
     ): string {
         const labelName: LabelName = findLast(labelNames, {id: labelRect.labelId});
         const labelFields = [
-            !!labelName ? labelName.name: '',
+            labelName ? labelName.name: '',
             Math.round(labelRect.rect.x).toString(),
             Math.round(labelRect.rect.y).toString(),
             Math.round(labelRect.rect.width).toString(),
@@ -149,19 +149,19 @@ export class RectLabelsExporter {
         const labelNamesList: LabelName[] = LabelsSelector.getLabelNames();
         const labelRectsString: string[] = imageData.labelRects.map((labelRect: LabelRect) => {
             const labelName: LabelName = findLast(labelNamesList, {id: labelRect.labelId});
-            const labelFields = !!labelName ? [
-                `\t<object>`,
+            const labelFields = labelName ? [
+                '\t<object>',
                 `\t\t<name>${labelName.name}</name>`,
-                `\t\t<pose>Unspecified</pose>`,
-                `\t\t<truncated>0</truncated>`,
-                `\t\t<difficult>0</difficult>`,
-                `\t\t<bndbox>`,
+                '\t\t<pose>Unspecified</pose>',
+                '\t\t<truncated>0</truncated>',
+                '\t\t<difficult>0</difficult>',
+                '\t\t<bndbox>',
                 `\t\t\t<xmin>${Math.round(labelRect.rect.x)}</xmin>`,
                 `\t\t\t<ymin>${Math.round(labelRect.rect.y)}</ymin>`,
                 `\t\t\t<xmax>${Math.round(labelRect.rect.x + labelRect.rect.width)}</xmax>`,
                 `\t\t\t<ymax>${Math.round(labelRect.rect.y + labelRect.rect.height)}</ymax>`,
-                `\t\t</bndbox>`,
-                `\t</object>`
+                '\t\t</bndbox>',
+                '\t</object>'
             ] : [];
             return labelFields.join('\n')
         });
@@ -175,20 +175,20 @@ export class RectLabelsExporter {
         if (labels) {
             const image: HTMLImageElement = ImageRepository.getById(imageData.id);
             return [
-                `<annotation>`,
+                '<annotation>',
                 `\t<folder>${projectName}</folder>`,
                 `\t<filename>${imageData.fileData.name}</filename>`,
                 `\t<path>/${projectName}/${imageData.fileData.name}</path>`,
-                `\t<source>`,
-                `\t\t<database>Unspecified</database>`,
-                `\t</source>`,
-                `\t<size>`,
+                '\t<source>',
+                '\t\t<database>Unspecified</database>',
+                '\t</source>',
+                '\t<size>',
                 `\t\t<width>${image.width}</width>`,
                 `\t\t<height>${image.height}</height>`,
-                `\t\t<depth>3</depth>`,
-                `\t</size>`,
+                '\t\t<depth>3</depth>',
+                '\t</size>',
                 labels,
-                `</annotation>`
+                '</annotation>'
             ].join('\n');
         }
         return null;

@@ -1,4 +1,4 @@
-import {MobileDeviceData} from "../data/MobileDeviceData";
+import {MobileDeviceData} from '../data/MobileDeviceData';
 import MobileDetect from 'mobile-detect'
 
 export class PlatformUtil {
@@ -12,14 +12,14 @@ export class PlatformUtil {
     }
 
     public static isMac(userAgent: string): boolean {
-        return !!userAgent.toLowerCase().match("mac");
+        return !!userAgent.toLowerCase().match('mac');
     }
 
     public static isSafari(userAgent: string): boolean {
-        return !!userAgent.toLowerCase().match("safari");
+        return !!userAgent.toLowerCase().match('safari');
     }
 
     public static isFirefox(userAgent: string): boolean {
-        return !!userAgent.toLowerCase().match("firefox");
+        return !!userAgent.toLowerCase().match('firefox');
     }
 }

@@ -1,5 +1,5 @@
 import {ImageData, LabelName, LabelRect} from '../../../store/labels/types';
-import {LabelUtil} from "../../../utils/LabelUtil";
+import {LabelUtil} from '../../../utils/LabelUtil';
 import {AnnotationImporter} from '../AnnotationImporter';
 import {LabelsSelector} from '../../../store/selectors/LabelsSelector';
 
@@ -16,14 +16,14 @@ type VOCImportResult = {
 export class DocumentParsingError extends Error {
     constructor(message?: string) {
         super(message);
-        this.name = "DocumentParsingError";
+        this.name = 'DocumentParsingError';
     }
 }
 
 export class AnnotationAssertionError extends Error {
     constructor(message?: string) {
         super(message);
-        this.name = "AnnotationAssertionError";
+        this.name = 'AnnotationAssertionError';
     }
 }
 

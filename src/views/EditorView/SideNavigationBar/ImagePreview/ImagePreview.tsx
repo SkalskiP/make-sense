@@ -1,18 +1,19 @@
-import classNames from "classnames";
+import { IRect } from '@/interfaces/IRect';
+import { ISize } from '@/interfaces/ISize';
+import { CSSHelper } from '@/logic/helpers/CSSHelper';
+import { ImageLoadManager } from '@/logic/imageRepository/ImageLoadManager';
+import { ImageRepository } from '@/logic/imageRepository/ImageRepository';
+import { AppState } from '@/store';
+import { updateImageDataById } from '@/store/labels/actionCreators';
+import { ImageData } from '@/store/labels/types';
+import { FileUtil } from '@/utils/FileUtil';
+import { RectUtil } from '@/utils/RectUtil';
+import { ImageButton } from '@/views/Common/ImageButton/ImageButton';
+
+import classNames from 'classnames';
 import React from 'react';
-import { connect } from "react-redux";
-import { ClipLoader } from "react-spinners";
-import { ImageButton } from "../../../..//views/Common/ImageButton/ImageButton";
-import { IRect } from "../../../../interfaces/IRect";
-import { ISize } from "../../../../interfaces/ISize";
-import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
-import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
-import { ImageRepository } from "../../../../logic/imageRepository/ImageRepository";
-import { AppState } from "../../../../store";
-import { updateImageDataById } from "../../../../store/labels/actionCreators";
-import { ImageData } from "../../../../store/labels/types";
-import { FileUtil } from "../../../../utils/FileUtil";
-import { RectUtil } from "../../../../utils/RectUtil";
+import { connect } from 'react-redux';
+import { ClipLoader } from 'react-spinners';
 import './ImagePreview.scss';
 
 interface IProps {
@@ -27,13 +28,13 @@ interface IProps {
 }
 
 interface IState {
-    image: HTMLImageElement;
+    image: HTMLImageElement | null;
 }
 
 class ImagePreview extends React.Component<IProps, IState> {
     private isLoading: boolean = false;
 
-    constructor(props) {
+    constructor(props: IProps | Readonly<IProps>) {
         super(props);
 
         this.state = {
@@ -42,13 +43,13 @@ class ImagePreview extends React.Component<IProps, IState> {
     }
 
     public componentDidMount(): void {
-        ImageLoadManager.addAndRun(this.loadImage(this.props.imageData, this.props.isScrolling));
+        ImageLoadManager.addAndRun(this.loadImage(this.props.imageData, !!this.props.isScrolling));
     }
 
     public componentDidUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
         if (this.props.imageData.id !== nextProps.imageData.id) {
             if (nextProps.imageData.loadStatus) {
-                ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, nextProps.isScrolling));
+                ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, !!nextProps.isScrolling));
             }
             else {
                 this.setState({ image: null });
@@ -99,7 +100,7 @@ class ImagePreview extends React.Component<IProps, IState> {
         if (this.props.isChecked) {
             alert("Hey, you can't delete an image that is currently selected!");
         } else {
-            alert("Not Implement!");
+            alert('Not Implement!');
 
         }
     };
@@ -117,8 +118,8 @@ class ImagePreview extends React.Component<IProps, IState> {
         const imageRect: IRect = {
             x: 0,
             y: 0,
-            width: this.state.image.width,
-            height: this.state.image.height
+            width: this.state.image?.width || 0,
+            height: this.state.image?.height || 0
         };
 
         const imageRatio = RectUtil.getRatio(imageRect);
@@ -136,9 +137,9 @@ class ImagePreview extends React.Component<IProps, IState> {
 
     private getClassName = () => {
         return classNames(
-            "ImagePreview",
+            'ImagePreview',
             {
-                "selected": this.props.isSelected,
+                'selected': this.props.isSelected,
             }
         );
     };
@@ -150,6 +151,7 @@ class ImagePreview extends React.Component<IProps, IState> {
             style,
             onClick
         } = this.props;
+
 
         return (
             <div
@@ -163,8 +165,8 @@ class ImagePreview extends React.Component<IProps, IState> {
                             {isSelected &&
                                 <ImageButton
                                     className="Trash"
-                                    image={"ico/delete.png"}
-                                    imageAlt={"trash"} buttonSize={{ width: 32, height: 32 }}
+                                    image={'ico/delete.png'}
+                                    imageAlt={'trash'} buttonSize={{ width: 32, height: 32 }}
                                     onClick={this.removeImage}
                                 />
                             }
@@ -172,7 +174,7 @@ class ImagePreview extends React.Component<IProps, IState> {
 
                             <div
                                 className="Foreground"
-                                key={"Foreground"}
+                                key={'Foreground'}
                                 style={this.getStyle()}
                             >
                                 <img
@@ -185,14 +187,14 @@ class ImagePreview extends React.Component<IProps, IState> {
                                 {isChecked && <img
                                     className="CheckBox"
                                     draggable={false}
-                                    src={"ico/ok.png"}
-                                    alt={"checkbox"}
+                                    src={'ico/ok.png'}
+                                    alt={'checkbox'}
                                 />}
 
                             </div>,
                             <div
                                 className="Background"
-                                key={"Background"}
+                                key={'Background'}
                                 style={this.getStyle()}
                             />
                         </>)

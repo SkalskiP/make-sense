@@ -1,4 +1,4 @@
 export enum LineAnchorType {
-    START = "START",
-    END = "END"
+    START = 'START',
+    END = 'END'
 }

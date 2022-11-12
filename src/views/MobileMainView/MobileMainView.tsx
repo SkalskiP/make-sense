@@ -1,13 +1,13 @@
 import React, {useState} from 'react';
 import './MobileMainView.scss';
 import Scrollbars from 'react-custom-scrollbars-2';
-import {ISize} from "../../interfaces/ISize";
-import {AppState} from "../../store";
-import {connect} from "react-redux";
+import {ISize} from '../../interfaces/ISize';
+import {AppState} from '../../store';
+import {connect} from 'react-redux';
 import classNames from 'classnames'
-import {EditorFeatureData, IEditorFeature} from "../../data/info/EditorFeatureData";
-import {ISocialMedia, SocialMediaData} from "../../data/info/SocialMediaData";
-import {ImageButton} from "../Common/ImageButton/ImageButton";
+import {EditorFeatureData, IEditorFeature} from '../../data/info/EditorFeatureData';
+import {ISocialMedia, SocialMediaData} from '../../data/info/SocialMediaData';
+import {ImageButton} from '../Common/ImageButton/ImageButton';
 
 interface IProps {
     size: ISize;
@@ -67,8 +67,8 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
             <div className="Header">
                 <img
                     draggable={false}
-                    alt={"make-sense"}
-                    src={"/make-sense-ico-transparent.png"}
+                    alt={'make-sense'}
+                    src={'/make-sense-ico-transparent.png'}
                 />
                 Make Sense
             </div>
@@ -81,8 +81,8 @@ const MobileMainView: React.FC<IProps> = ({size}) => {
     const firstStage = <div className="FirstStage">
         <img
             draggable={false}
-            alt={"main-logo"}
-            src={"ico/main-image-color.png"}
+            alt={'main-logo'}
+            src={'ico/main-image-color.png'}
         />
         <div className="TriangleHorizontal Bottom">
             <div className="TriangleHorizontalContent"/>
