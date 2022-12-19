@@ -1,8 +1,7 @@
 import {Action} from '../Actions';
 
 export type RoboflowAPIDetails = {
-    modelID: string,
-    modelVersion: number,
+    model: string,
     key: string
 }
 
@@ -17,7 +16,7 @@ export type AIState = {
     isPoseDetectorLoaded: boolean;
 
     // ROBOFLOW API
-    roboflowAPIDetails: RoboflowAPIDetails | null;
+    roboflowAPIDetails: RoboflowAPIDetails;
 
     // GENERAL
     suggestedLabelList: string[];

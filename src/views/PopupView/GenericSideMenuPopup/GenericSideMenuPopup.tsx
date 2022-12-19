@@ -1,13 +1,12 @@
 import React from 'react';
 import './GenericSideMenuPopup.scss'
 import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
-import { jsx } from '@emotion/react';
-import JSX = jsx.JSX;
 
 interface IProps {
     title: string;
     acceptLabel: string;
     onAccept: () => void;
+    disableAcceptButton?: boolean;
     rejectLabel: string;
     onReject: () => void;
     renderContent: () => JSX.Element;
@@ -19,6 +18,7 @@ export const GenericSideMenuPopup: React.FC<IProps> = (
         title,
         acceptLabel,
         onAccept,
+        disableAcceptButton,
         rejectLabel,
         onReject,
         renderContent,
@@ -42,6 +42,7 @@ export const GenericSideMenuPopup: React.FC<IProps> = (
             title={title}
             renderContent={renderPopupContent}
             acceptLabel={acceptLabel}
+            disableAcceptButton={disableAcceptButton}
             onAccept={onAccept}
             rejectLabel={rejectLabel}
             onReject={onReject}

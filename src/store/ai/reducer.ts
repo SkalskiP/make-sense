@@ -7,7 +7,10 @@ const initialState: AIState = {
     isSSDObjectDetectorLoaded: false,
     isYOLOV5ObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
-    roboflowAPIDetails: null,
+    roboflowAPIDetails: {
+        model: '',
+        key: ''
+    },
     isAIDisabled: false
 };
 
