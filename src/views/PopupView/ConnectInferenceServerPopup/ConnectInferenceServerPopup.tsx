@@ -1,25 +1,33 @@
-import { PopupWindowType } from '../../../data/enums/PopupWindowType';
-import { GeneralActionTypes } from '../../../store/general/types';
 import React, { useState } from 'react';
 import { PopupActions } from '../../../logic/actions/PopupActions';
-import { updateActivePopupType as storeUpdateActivePopupType } from '../../../store/general/actionCreators';
 import { AppState } from '../../../store';
 import { connect } from 'react-redux';
 import { GenericSideMenuPopup } from '../GenericSideMenuPopup/GenericSideMenuPopup';
 import { ImageButton } from '../../Common/ImageButton/ImageButton';
 import { InferenceServerDataMap } from '../../../data/info/InferenceServerData';
 import { InferenceServerType } from '../../../data/enums/InferenceServerType';
+import { INotification, NotificationsActionType } from '../../../store/notifications/types';
+import { submitNewNotification } from '../../../store/notifications/actionCreators';
+import { NotificationUtil } from '../../../utils/NotificationUtil';
+import { NotificationsDataMap } from '../../../data/info/NotificationsData';
+import { Notification } from '../../../data/enums/Notification';
 
 interface IProps {
-    updateActivePopupType: (activePopupType: PopupWindowType) => GeneralActionTypes;
+    submitNewNotificationAction: (notification: INotification) => NotificationsActionType;
 }
 
-const ConnectInferenceServerPopup: React.FC<IProps> = ({ updateActivePopupType }) => {
+const ConnectInferenceServerPopup: React.FC<IProps> = ({ submitNewNotificationAction}) => {
     const [currentServerType, setCurrentServerType] = useState(InferenceServerType.ROBOFLOW);
 
     const wrapServerOnClick = (newServerType: InferenceServerType) => {
         return () => {
-            setCurrentServerType(newServerType)
+            if (!InferenceServerDataMap[newServerType].isDisabled) {
+                setCurrentServerType(newServerType)
+            } else {
+                submitNewNotificationAction(NotificationUtil.createMessageNotification(
+                    NotificationsDataMap[Notification.UNSUPPORTED_INFERENCE_SERVER_MESSAGE]));
+                return;
+            }
         }
     }
 
@@ -47,6 +55,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = ({ updateActivePopupType }
                 padding={20}
                 onClick={wrapServerOnClick(serverType as InferenceServerType)}
                 isActive={currentServerType === serverType}
+                isDisabled={serverData.isDisabled}
             />
         })
     }
@@ -64,7 +73,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = ({ updateActivePopupType }
 }
 
 const mapDispatchToProps = {
-  updateActivePopupType: storeUpdateActivePopupType
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({});

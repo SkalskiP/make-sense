@@ -1,5 +1,5 @@
-import {AIActionTypes, AIState} from './types';
-import {Action} from '../Actions';
+import { AIActionTypes, AIState } from './types';
+import { Action } from '../Actions';
 
 const initialState: AIState = {
     suggestedLabelList: [],
@@ -7,6 +7,7 @@ const initialState: AIState = {
     isSSDObjectDetectorLoaded: false,
     isYOLOV5ObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
+    roboflowAPIDetails: null,
     isAIDisabled: false
 };
 
@@ -49,6 +50,12 @@ export function aiReducer(
             return {
                 ...state,
                 isAIDisabled: action.payload.isAIDisabled
+            }
+        }
+        case Action.UPDATE_ROBOFLOW_API_DETAILS: {
+            return {
+                ...state,
+                roboflowAPIDetails: action.payload.roboflowAPIDetails
             }
         }
         default:

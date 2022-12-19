@@ -1,14 +1,23 @@
 import {Action} from '../Actions';
 
+export type RoboflowAPIDetails = {
+    modelID: string,
+    modelVersion: number,
+    key: string
+}
+
 export type AIState = {
-    // SSD
+    // SSD LOCAL
     isSSDObjectDetectorLoaded: boolean;
 
-    // YOLO V5
+    // YOLO V5 LOCAL
     isYOLOV5ObjectDetectorLoaded: boolean;
 
-    // POSE NET
+    // POSE NET LOCAL
     isPoseDetectorLoaded: boolean;
+
+    // ROBOFLOW API
+    roboflowAPIDetails: RoboflowAPIDetails | null;
 
     // GENERAL
     suggestedLabelList: string[];
@@ -58,9 +67,17 @@ interface UpdateDisabledAIFlag {
     }
 }
 
+interface UpdateRoboflowAPIDetails {
+    type: typeof Action.UPDATE_ROBOFLOW_API_DETAILS;
+    payload: {
+        roboflowAPIDetails: RoboflowAPIDetails
+    }
+}
+
 export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
     | UpdateSSDObjectDetectorStatus
     | UpdateYOLOV5ObjectDetectorStatus
     | UpdatePoseDetectorStatus
     | UpdateDisabledAIFlag
+    | UpdateRoboflowAPIDetails
