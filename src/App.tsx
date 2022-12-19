@@ -62,6 +62,7 @@ const App: React.FC<IProps> = (
     );
 };
 
+
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
