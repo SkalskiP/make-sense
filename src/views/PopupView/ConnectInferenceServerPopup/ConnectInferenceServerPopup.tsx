@@ -13,20 +13,18 @@ import { NotificationsDataMap } from '../../../data/info/NotificationsData';
 import { Notification } from '../../../data/enums/Notification';
 import './ConnectInferenceServerPopup.scss'
 import { StyledTextField } from '../../Common/StyledTextField/StyledTextField';
-import { updateRoboflowAPIDetails } from '../../../store/ai/actionCreators';
-import { AIActionTypes, RoboflowAPIDetails } from '../../../store/ai/types';
+import { RoboflowAPIDetails } from '../../../store/ai/types';
+import { RoboflowAPIObjectDetector } from '../../../ai/RoboflowAPIObjectDetector';
 
 interface IProps {
     roboflowAPIDetails: RoboflowAPIDetails;
     submitNewNotificationAction: (notification: INotification) => NotificationsActionType;
-    updateRoboflowAPIDetailsAction: (roboflowAPIDetails: RoboflowAPIDetails) => AIActionTypes;
 }
 
 const ConnectInferenceServerPopup: React.FC<IProps> = (
     {
         roboflowAPIDetails,
-        submitNewNotificationAction,
-        updateRoboflowAPIDetailsAction
+        submitNewNotificationAction
     }
 ) => {
     // general
@@ -61,7 +59,8 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
         if (disableAcceptButton()) {
             return;
         }
-        updateRoboflowAPIDetailsAction({
+
+        RoboflowAPIObjectDetector.loadModel({
             model: roboflowModel,
             key: roboflowKey
         })
@@ -152,8 +151,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
 }
 
 const mapDispatchToProps = {
-    submitNewNotificationAction: submitNewNotification,
-    updateRoboflowAPIDetailsAction: updateRoboflowAPIDetails
+    submitNewNotificationAction: submitNewNotification
 };
 
 const mapStateToProps = (state: AppState) => ({

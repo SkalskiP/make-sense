@@ -1,4 +1,5 @@
 import {store} from '../..';
+import { RoboflowAPIDetails } from '../ai/types';
 
 export class AISelector {
     public static getSuggestedLabelList(): string[] {
@@ -21,7 +22,18 @@ export class AISelector {
         return store.getState().ai.isPoseDetectorLoaded;
     }
 
+    public static isRoboflowAPIModelLoaded(): boolean {
+        const roboflowAPIDetails = store.getState().ai.roboflowAPIDetails;
+        return (
+            roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== ''
+        );
+    }
+
     public static isAIDisabled(): boolean {
         return store.getState().ai.isAIDisabled;
+    }
+
+    public static getRoboflowAPIDetails(): RoboflowAPIDetails {
+        return store.getState().ai.roboflowAPIDetails
     }
 }
