@@ -1,15 +1,15 @@
-import {LabelName, LabelRect} from "../../../store/labels/types";
-import {LabelUtil} from "../../../utils/LabelUtil";
-import {AnnotationsParsingError, LabelNamesNotUniqueError} from "./YOLOErrors";
-import {ISize} from "../../../interfaces/ISize";
-import {uniq} from "lodash";
+import {LabelName, LabelRect} from '../../../store/labels/types';
+import {LabelUtil} from '../../../utils/LabelUtil';
+import {AnnotationsParsingError, LabelNamesNotUniqueError} from './YOLOErrors';
+import {ISize} from '../../../interfaces/ISize';
+import {uniq} from 'lodash';
 
 export class YOLOUtils {
     public static parseLabelsNamesFromString(content: string): LabelName[] {
         const labelNames: string[] = content
             .split(/[\r\n]/)
             .filter(Boolean)
-            .map((name: string) => name.replace(/\s/g, ""))
+            .map((name: string) => name.replace(/\s/g, ''))
 
         if (uniq(labelNames).length !== labelNames.length) {
             throw new LabelNamesNotUniqueError()
@@ -19,14 +19,21 @@ export class YOLOUtils {
             .map((name: string) => LabelUtil.createLabelName(name))
     }
 
-    public static loadLabelsList(fileData: File, onSuccess: (labels: LabelName[]) => any, onFailure: () => any) {
+    public static loadLabelsList(
+        fileData: File,
+        onSuccess: (labels: LabelName[]) => void,
+        onFailure: (error: Error) => void
+    ) {
         const reader = new FileReader();
-        reader.onloadend = function (evt: any) {
-            const content: string = evt.target.result;
-            const labelNames = YOLOUtils.parseLabelsNamesFromString(content);
-            onSuccess(labelNames);
+        reader.onloadend = (evt: ProgressEvent<FileReader>) => {
+            try {
+                const content: string = evt.target.result as string;
+                const labelNames = YOLOUtils.parseLabelsNamesFromString(content);
+                onSuccess(labelNames);
+            } catch (error) {
+                onFailure(error as Error)
+            }
         };
-        reader.onerror = () => onFailure();
         reader.readAsText(fileData);
     }
 
@@ -50,7 +57,7 @@ export class YOLOUtils {
         imageSize: ISize,
         imageName: string
     ): LabelRect {
-        const components = rawAnnotation.split(" ");
+        const components = rawAnnotation.split(' ');
         if (!YOLOUtils.validateYOLOAnnotationComponents(components, labelNames.length)) {
             throw new AnnotationsParsingError(imageName);
         }

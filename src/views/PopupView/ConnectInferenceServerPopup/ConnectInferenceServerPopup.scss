@@ -1,0 +1,42 @@
+@import '../../../settings/Settings';
+
+.right-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: flex-start;
+
+  align-self: stretch;
+  flex: 1;
+
+  .loader {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    align-self: stretch;
+    flex: 1;
+  }
+
+  .message {
+    align-self: stretch;
+    color: white;
+    font-size: 15px;
+    padding: 30px 40px;
+    border-bottom: solid 1px $darkThemeFirstColor;
+  }
+
+  .details {
+    align-self: stretch;
+    padding: 30px 40px;
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+  }
+}
