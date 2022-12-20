@@ -40,12 +40,22 @@ export const NotificationsDataMap: ExportFormatDataMap = {
     },
     [Notification.ANNOTATION_FILE_PARSE_ERROR]: {
         header: 'Annotation files could not be parsed',
-        description: 'The contents of an annotation file is not valid JSON, CSV, or XML. Please fix the files selected' +
-            'to import and try again.',
+        description: 'The contents of an annotation file is not valid JSON, CSV, or XML. Please fix the files ' +
+            'selected to import and try again.',
     },
     [Notification.ANNOTATION_IMPORT_ASSERTION_ERROR]: {
         header: 'Annotation files did not contain valid data',
-        description: 'Missing or invalid annotations provied during import. Please fix the files selected ' +
+        description: 'Missing or invalid annotations provided during import. Please fix the files selected ' +
             'to import and try again.',
+    },
+    [Notification.UNSUPPORTED_INFERENCE_SERVER_MESSAGE]: {
+        header: 'Selected inference server is not yet supported',
+        description: 'Integration with selected inference server is still under construction. Stay tuned for more ' +
+            'updates on our GitHub.'
+    },
+    [Notification.ROBOFLOW_INFERENCE_SERVER_ERROR]: {
+        header: 'Roboflow connection failed',
+        description: 'Looks like we ware unable to connect to your Roboflow model. Please, make sure that the model ' +
+            'specification and Roboflow API key, are correct.'
     }
 }

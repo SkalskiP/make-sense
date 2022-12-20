@@ -1,5 +1,5 @@
-import {Action} from '../Actions';
-import {AIActionTypes} from './types';
+import { Action } from '../Actions';
+import { AIActionTypes, RoboflowAPIDetails } from './types';
 
 export function updateSuggestedLabelList(labelList: string[]): AIActionTypes {
     return {
@@ -51,6 +51,15 @@ export function updateDisabledAIFlag(isAIDisabled: boolean): AIActionTypes {
         type: Action.UPDATE_DISABLED_AI_FLAG,
         payload: {
             isAIDisabled,
+        }
+    }
+}
+
+export function updateRoboflowAPIDetails(roboflowAPIDetails: RoboflowAPIDetails): AIActionTypes {
+    return {
+        type: Action.UPDATE_ROBOFLOW_API_DETAILS,
+        payload: {
+            roboflowAPIDetails
         }
     }
 }

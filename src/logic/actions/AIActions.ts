@@ -5,6 +5,7 @@ import {AIPoseDetectionActions} from './AIPoseDetectionActions';
 import {ImageData} from '../../store/labels/types';
 import {AISelector} from '../../store/selectors/AISelector';
 import {AIYOLOObjectDetectionActions} from './AIYOLOObjectDetectionActions';
+import { AIRoboflowAPIObjectDetectionActions } from './AIRoboflowAPIObjectDetectionActions';
 
 export class AIActions {
     public static excludeRejectedLabelNames(suggestedLabels: string[], rejectedLabels: string[]): string[] {
@@ -17,9 +18,11 @@ export class AIActions {
     }
 
     public static detect(imageId: string, image: HTMLImageElement): void {
+        const imageData =  LabelsSelector.getImageDataById(imageId)
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
         const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
         const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
+        const isRoboflowAPIModelLoaded = AISelector.isRoboflowAPIModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
                 if (isAISSDObjectDetectorModelLoaded) {
@@ -27,6 +30,9 @@ export class AIActions {
                 }
                 if (isAIYOLOObjectDetectorModelLoaded) {
                     AIYOLOObjectDetectionActions.detectRects(imageId, image);
+                }
+                if (isRoboflowAPIModelLoaded) {
+                    AIRoboflowAPIObjectDetectionActions.detectRects(imageData)
                 }
                 break;
             case LabelType.POINT:
@@ -39,6 +45,7 @@ export class AIActions {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
         const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
         const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
+        const isRoboflowAPIModelLoaded = AISelector.isRoboflowAPIModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
                 if (isAISSDObjectDetectorModelLoaded) {
@@ -46,6 +53,9 @@ export class AIActions {
                 }
                 if (isAIYOLOObjectDetectorModelLoaded) {
                     AIYOLOObjectDetectionActions.rejectAllSuggestedRectLabels(imageData);
+                }
+                if (isRoboflowAPIModelLoaded) {
+                    AIRoboflowAPIObjectDetectionActions.rejectAllSuggestedRectLabels(imageData)
                 }
                 break;
             case LabelType.POINT:
@@ -58,6 +68,7 @@ export class AIActions {
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
         const isAIYOLOObjectDetectorModelLoaded = AISelector.isAIYOLOObjectDetectorModelLoaded();
         const isAISSDObjectDetectorModelLoaded = AISelector.isAISSDObjectDetectorModelLoaded();
+        const isRoboflowAPIModelLoaded = AISelector.isRoboflowAPIModelLoaded();
         switch (activeLabelType) {
             case LabelType.RECT:
                 if (isAISSDObjectDetectorModelLoaded) {
@@ -65,6 +76,9 @@ export class AIActions {
                 }
                 if (isAIYOLOObjectDetectorModelLoaded) {
                     AIYOLOObjectDetectionActions.acceptAllSuggestedRectLabels(imageData);
+                }
+                if (isRoboflowAPIModelLoaded) {
+                    AIRoboflowAPIObjectDetectionActions.acceptAllSuggestedRectLabels(imageData)
                 }
                 break;
             case LabelType.POINT:

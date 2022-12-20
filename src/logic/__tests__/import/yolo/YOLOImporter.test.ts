@@ -17,7 +17,8 @@ const getDummyImageData = (fileName: string): ImageData => {
         labelNameIds: [],
         isVisitedByYOLOObjectDetector: false,
         isVisitedBySSDObjectDetector: false,
-        isVisitedByPoseDetector: false
+        isVisitedByPoseDetector: false,
+        isVisitedByRoboflowAPI: false
     };
 };
 
