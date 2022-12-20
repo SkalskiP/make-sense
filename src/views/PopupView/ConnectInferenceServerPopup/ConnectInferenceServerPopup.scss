@@ -1,6 +1,25 @@
 @import '../../../settings/Settings';
 
 .right-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: center;
+  align-content: flex-start;
+
+  align-self: stretch;
+  flex: 1;
+
+  .loader {
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+
+    align-self: stretch;
+    flex: 1;
+  }
+
   .message {
     align-self: stretch;
     color: white;

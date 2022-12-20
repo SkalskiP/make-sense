@@ -50,7 +50,12 @@ export const NotificationsDataMap: ExportFormatDataMap = {
     },
     [Notification.UNSUPPORTED_INFERENCE_SERVER_MESSAGE]: {
         header: 'Selected inference server is not yet supported',
-        description: 'Integration with selected inference server is still under construction 🚧. Stay tuned for more ' +
+        description: 'Integration with selected inference server is still under construction. Stay tuned for more ' +
             'updates on our GitHub.'
+    },
+    [Notification.ROBOFLOW_INFERENCE_SERVER_ERROR]: {
+        header: 'Roboflow connection failed',
+        description: 'Looks like we ware unable to connect to your Roboflow model. Please, make sure that the model ' +
+            'specification and Roboflow API key, are correct.'
     }
 }

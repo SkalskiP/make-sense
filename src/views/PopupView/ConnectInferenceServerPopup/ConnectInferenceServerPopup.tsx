@@ -15,6 +15,8 @@ import './ConnectInferenceServerPopup.scss'
 import { StyledTextField } from '../../Common/StyledTextField/StyledTextField';
 import { RoboflowAPIDetails } from '../../../store/ai/types';
 import { RoboflowAPIObjectDetector } from '../../../ai/RoboflowAPIObjectDetector';
+import { ClipLoader } from 'react-spinners';
+import { CSSHelper } from '../../../logic/helpers/CSSHelper';
 
 interface IProps {
     roboflowAPIDetails: RoboflowAPIDetails;
@@ -29,6 +31,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
 ) => {
     // general
     const [currentServerType, setCurrentServerType] = useState(InferenceServerType.ROBOFLOW);
+    const [modelIsLoadingStatus, setModelIsLoadingStatus] = useState(false);
 
     // roboflow
     const [roboflowModel, setRoboflowModel] = useState(roboflowAPIDetails.model);
@@ -47,6 +50,8 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
     }
 
     const disableAcceptButton = () => {
+        if (modelIsLoadingStatus) return true;
+
         switch(currentServerType) {
             case InferenceServerType.ROBOFLOW:
                 return roboflowModel === '' || roboflowKey === ''
@@ -56,15 +61,23 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
     }
 
     const onAccept = () => {
-        if (disableAcceptButton()) {
-            return;
+        if (disableAcceptButton()) return;
+
+        const onSuccess = () => {
+            PopupActions.close();
         }
 
+        const onFailure = () => {
+            submitNewNotificationAction(NotificationUtil.createErrorNotification(
+                NotificationsDataMap[Notification.ROBOFLOW_INFERENCE_SERVER_ERROR]));
+            setModelIsLoadingStatus(false);
+        }
+
+        setModelIsLoadingStatus(true);
         RoboflowAPIObjectDetector.loadModel({
             model: roboflowModel,
             key: roboflowKey
-        })
-        PopupActions.close();
+        }, onSuccess, onFailure)
     };
 
     const onReject = () => {
@@ -79,45 +92,58 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
         setRoboflowKey(event.target.value)
     }
 
+    const renderLoader = () => {
+        return(<div className='loader'>
+            <ClipLoader
+                size={40}
+                color={CSSHelper.getLeadingColor()}
+                loading={true}
+            />
+        </div>)
+    }
+
+    const renderRoboflow = () => {
+        return <>
+            <div className='message'>
+                Provide details of the Roboflow model you want to run over tha API, as well as your API key.
+            </div>
+            <div className='details'>
+                <StyledTextField
+                    variant='standard'
+                    id={'roboflow-model'}
+                    autoComplete={'off'}
+                    autoFocus={true}
+                    type={'text'}
+                    margin={'dense'}
+                    label={'roboflow model'}
+                    value={roboflowModel}
+                    onChange={roboflowModelOnChangeCallback}
+                    style={{ width: 280 }}
+                    InputLabelProps={{ shrink: true }}
+                />
+                <StyledTextField
+                    variant='standard'
+                    id={'roboflow-api- key'}
+                    autoComplete={'off'}
+                    autoFocus={true}
+                    type={'password'}
+                    margin={'dense'}
+                    label={'roboflow api key'}
+                    value={roboflowKey}
+                    onChange={roboflowKeyOnChangeCallback}
+                    style={{ width: 280 }}
+                    InputLabelProps={{ shrink: true }}
+                />
+            </div>
+        </>;
+    }
+
     const renderContent = (): JSX.Element => {
+        if (modelIsLoadingStatus) {
+            return renderLoader()
+        }
         if (currentServerType === InferenceServerType.ROBOFLOW) {
-            return <>
-                <div className='message'>
-                    Provide details of the Roboflow model you want to run over tha API, as well as your API key.
-                </div>
-                <div className='details'>
-                    <StyledTextField
-                        variant='standard'
-                        id={'key'}
-                        autoComplete={'off'}
-                        autoFocus={true}
-                        type={'text'}
-                        margin={'dense'}
-                        label={'roboflow model'}
-                        value={roboflowModel}
-                        onChange={roboflowModelOnChangeCallback}
-                        style={{ width: 280 }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                    <StyledTextField
-                        variant='standard'
-                        id={'key'}
-                        autoComplete={'off'}
-                        autoFocus={true}
-                        type={'password'}
-                        margin={'dense'}
-                        label={'roboflow api key'}
-                        value={roboflowKey}
-                        onChange={roboflowKeyOnChangeCallback}
-                        style={{ width: 280 }}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
-                    />
-                </div>
-            </>;
+            return renderRoboflow();
         }
         return <div className='load-model-popup-content'/>
     };
@@ -136,6 +162,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
             />
         })
     }
+
     return (
         <GenericSideMenuPopup
             title={InferenceServerDataMap[currentServerType].name}

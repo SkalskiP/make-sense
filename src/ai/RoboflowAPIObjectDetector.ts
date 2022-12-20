@@ -30,16 +30,31 @@ export interface DetectedObject {
 
 export class RoboflowAPIObjectDetector {
 
-    public static loadModel(roboflowAPIDetails: RoboflowAPIDetails) {
+    public static loadModel(
+        roboflowAPIDetails: RoboflowAPIDetails,
+        onSuccess?: () => any,
+        onFailure?: () => any
+    ) {
         store.dispatch(updateRoboflowAPIDetails(roboflowAPIDetails));
         store.dispatch(updateActiveLabelType(LabelType.RECT));
         const activeLabelType: LabelType = LabelsSelector.getActiveLabelType();
         if (activeLabelType === LabelType.RECT) {
-            AIRoboflowAPIObjectDetectionActions.detectRectsForActiveImage();
+            const activeImageData: ImageData = LabelsSelector.getActiveImageData();
+
+            const wrappedOnFailure = () => {
+                store.dispatch(updateRoboflowAPIDetails({model: '', key: ''}));
+                onFailure()
+            }
+
+            RoboflowAPIObjectDetector.predict(activeImageData, onSuccess, wrappedOnFailure)
         }
     }
 
-    public static predict(imageData: ImageData, callback?: (predictions: DetectedObject[]) => any) {
+    public static predict(
+        imageData: ImageData,
+        onSuccess?: (predictions: DetectedObject[]) => any,
+        onFailure?: () => any
+    ) {
         const roboflowAPIDetails: RoboflowAPIDetails = AISelector.getRoboflowAPIDetails();
         FileUtil.loadImageBase64(imageData.fileData).then((data) => {
             axios({
@@ -65,8 +80,9 @@ export class RoboflowAPIObjectDetector {
                                 class: prediction.class
                             }
                         });
-                    callback(predictions)
+                    onSuccess(predictions)
                 })
+                .catch(onFailure)
         })
     }
 }
