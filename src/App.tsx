@@ -50,7 +50,7 @@ const App: React.FC<IProps> = (
     const isAILoaded = isObjectDetectorLoaded
         || isPoseDetectionLoaded
         || isYOLOV5ObjectDetectorLoaded
-        || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '')
+        || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status)
 
     return (
         <div className={classNames('App', {'AI': isAILoaded})} draggable={false}

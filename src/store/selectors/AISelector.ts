@@ -25,7 +25,7 @@ export class AISelector {
     public static isRoboflowAPIModelLoaded(): boolean {
         const roboflowAPIDetails = store.getState().ai.roboflowAPIDetails;
         return (
-            roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== ''
+            roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status
         );
     }
 

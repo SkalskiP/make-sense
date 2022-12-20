@@ -8,6 +8,7 @@ const initialState: AIState = {
     isYOLOV5ObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
     roboflowAPIDetails: {
+        status: false,
         model: '',
         key: ''
     },

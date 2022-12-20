@@ -13,20 +13,27 @@ import { NotificationsDataMap } from '../../../data/info/NotificationsData';
 import { Notification } from '../../../data/enums/Notification';
 import './ConnectInferenceServerPopup.scss'
 import { StyledTextField } from '../../Common/StyledTextField/StyledTextField';
-import { RoboflowAPIDetails } from '../../../store/ai/types';
+import { AIActionTypes, RoboflowAPIDetails } from '../../../store/ai/types';
 import { RoboflowAPIObjectDetector } from '../../../ai/RoboflowAPIObjectDetector';
 import { ClipLoader } from 'react-spinners';
 import { CSSHelper } from '../../../logic/helpers/CSSHelper';
+import { updateRoboflowAPIDetails } from '../../../store/ai/actionCreators';
+import { AIActions } from '../../../logic/actions/AIActions';
+import { ImageRepository } from '../../../logic/imageRepository/ImageRepository';
+import { ImageData } from '../../../store/labels/types';
+import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
 
 interface IProps {
     roboflowAPIDetails: RoboflowAPIDetails;
     submitNewNotificationAction: (notification: INotification) => NotificationsActionType;
+    updateRoboflowAPIDetailsAction: (roboflowAPIDetails: RoboflowAPIDetails) => AIActionTypes;
 }
 
 const ConnectInferenceServerPopup: React.FC<IProps> = (
     {
         roboflowAPIDetails,
-        submitNewNotificationAction
+        submitNewNotificationAction,
+        updateRoboflowAPIDetailsAction
     }
 ) => {
     // general
@@ -64,7 +71,15 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
         if (disableAcceptButton()) return;
 
         const onSuccess = () => {
+            updateRoboflowAPIDetailsAction({
+                status: true,
+                model: roboflowModel,
+                key: roboflowKey
+            })
             PopupActions.close();
+
+            const activeImageData: ImageData = LabelsSelector.getActiveImageData();
+            AIActions.detect(activeImageData.id, ImageRepository.getById(activeImageData.id));
         }
 
         const onFailure = () => {
@@ -75,6 +90,7 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
 
         setModelIsLoadingStatus(true);
         RoboflowAPIObjectDetector.loadModel({
+            status: false,
             model: roboflowModel,
             key: roboflowKey
         }, onSuccess, onFailure)
@@ -178,7 +194,8 @@ const ConnectInferenceServerPopup: React.FC<IProps> = (
 }
 
 const mapDispatchToProps = {
-    submitNewNotificationAction: submitNewNotification
+    submitNewNotificationAction: submitNewNotification,
+    updateRoboflowAPIDetailsAction: updateRoboflowAPIDetails
 };
 
 const mapStateToProps = (state: AppState) => ({

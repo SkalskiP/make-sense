@@ -13,11 +13,6 @@ import { AIActions } from './AIActions';
 import { updateSuggestedLabelList } from '../../store/ai/actionCreators';
 
 export class AIRoboflowAPIObjectDetectionActions {
-    public static detectRectsForActiveImage(): void {
-        const activeImageData: ImageData = LabelsSelector.getActiveImageData();
-        AIRoboflowAPIObjectDetectionActions.detectRects(activeImageData)
-    }
-
     public static detectRects(imageData: ImageData): void {
         if (imageData.isVisitedByRoboflowAPI || !AISelector.isRoboflowAPIModelLoaded())
             return;

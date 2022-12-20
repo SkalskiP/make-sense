@@ -42,7 +42,7 @@ export class RoboflowAPIObjectDetector {
             const activeImageData: ImageData = LabelsSelector.getActiveImageData();
 
             const wrappedOnFailure = () => {
-                store.dispatch(updateRoboflowAPIDetails({model: '', key: ''}));
+                store.dispatch(updateRoboflowAPIDetails({status: false, model: '', key: ''}));
                 onFailure()
             }
 

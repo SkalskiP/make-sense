@@ -1,6 +1,7 @@
 import {Action} from '../Actions';
 
 export type RoboflowAPIDetails = {
+    status: boolean,
     model: string,
     key: string
 }
