@@ -1,5 +1,14 @@
 
 export class FileUtil {
+    public static loadImageBase64(fileData: File): Promise<string | ArrayBuffer> {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(fileData);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    }
+
     public static loadImage(fileData: File): Promise<HTMLImageElement> {
         return new Promise((resolve, reject) => {
             const url = URL.createObjectURL(fileData);

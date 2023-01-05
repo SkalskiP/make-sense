@@ -11,20 +11,27 @@ import EditorView from './views/EditorView/EditorView';
 import MainView from './views/MainView/MainView';
 import MobileMainView from './views/MobileMainView/MobileMainView';
 import NotificationsView from './views/NotificationsView/NotificationsView';
-import PopupView from './views/PopupView/PopupView';
-import { SizeItUpView } from './views/SizeItUpView/SizeItUpView';
+import { RoboflowAPIDetails } from './store/ai/types';
 
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    isObjectDetectorLoaded?: boolean;
-    isPoseDetectionLoaded?: boolean;
-    isYOLOV5ObjectDetectorLoaded?: boolean;
+    isObjectDetectorLoaded: boolean;
+    isPoseDetectionLoaded: boolean;
+    isYOLOV5ObjectDetectorLoaded: boolean;
+    roboflowAPIDetails: RoboflowAPIDetails;
 }
 
-const App: React.FC<IProps> = ({
-    projectType, windowSize, isObjectDetectorLoaded, isPoseDetectionLoaded, isYOLOV5ObjectDetectorLoaded
-}) => {
+const App: React.FC<IProps> = (
+    {
+        projectType,
+        windowSize,
+        isObjectDetectorLoaded,
+        isPoseDetectionLoaded,
+        isYOLOV5ObjectDetectorLoaded,
+        roboflowAPIDetails
+    }
+) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView />;
@@ -38,7 +45,11 @@ const App: React.FC<IProps> = ({
             }
         }
     };
-    const isAILoaded = isObjectDetectorLoaded || isPoseDetectionLoaded || isYOLOV5ObjectDetectorLoaded;
+    const isAILoaded = isObjectDetectorLoaded
+        || isPoseDetectionLoaded
+        || isYOLOV5ObjectDetectorLoaded
+        || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status)
+
     return (
         <div className={classNames('App', { 'AI': isAILoaded })} draggable={false}
         >
@@ -49,12 +60,14 @@ const App: React.FC<IProps> = ({
     );
 };
 
+
 const mapStateToProps = (state: AppState) => ({
     projectType: state.general.projectData.type,
     windowSize: state.general.windowSize,
     isSSDObjectDetectorLoaded: state.ai.isSSDObjectDetectorLoaded,
     isPoseDetectorLoaded: state.ai.isPoseDetectorLoaded,
-    isYOLOV5ObjectDetectorLoaded: state.ai.isYOLOV5ObjectDetectorLoaded
+    isYOLOV5ObjectDetectorLoaded: state.ai.isYOLOV5ObjectDetectorLoaded,
+    roboflowAPIDetails: state.ai.roboflowAPIDetails
 });
 
 export default connect(

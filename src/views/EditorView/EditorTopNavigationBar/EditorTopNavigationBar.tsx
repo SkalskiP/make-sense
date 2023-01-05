@@ -102,6 +102,13 @@ const EditorTopNavigationBar: React.FC<IProps> = (
         updateCrossHairVisibleStatusAction(!crossHairVisible);
     };
 
+    const withAI = (
+        (activeLabelType === LabelType.RECT && AISelector.isAISSDObjectDetectorModelLoaded()) ||
+        (activeLabelType === LabelType.RECT && AISelector.isAIYOLOObjectDetectorModelLoaded()) ||
+        (activeLabelType === LabelType.RECT && AISelector.isRoboflowAPIModelLoaded()) ||
+        (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())
+    )
+
     return (
         <div className={getClassName()}>
             <div className="ButtonWrapper">
@@ -174,23 +181,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                     )
                 }
             </div>
-            <div className="ButtonWrapper">
-                {
-                    getButtonWithTooltip(
-                        'image-trash',
-                        'drop selected image from collection',
-                        'ico/trash.png',
-                        'image-trash',
-                        false,
-                        undefined,
-                        () => alert('Not implemented yet'),
-                    )
-                }
-            </div>
-            {((activeLabelType === LabelType.RECT && AISelector.isAISSDObjectDetectorModelLoaded()) ||
-                (activeLabelType === LabelType.RECT && AISelector.isAIYOLOObjectDetectorModelLoaded()) ||
-
-                (activeLabelType === LabelType.POINT && AISelector.isAIPoseDetectorModelLoaded())) && <div className="ButtonWrapper">
+            {withAI && <div className="ButtonWrapper">
                     {
                         getButtonWithTooltip(
                             'accept-all',

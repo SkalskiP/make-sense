@@ -38,8 +38,9 @@ describe('VGGExporter mapImageDataToVGG method', () => {
             labelNameIds: [],
             fileData: {} as File,
             isVisitedByYOLOObjectDetector: false,
-            isVisitedBySSDObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
         expect(VGGExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
     });
@@ -59,7 +60,8 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 },
                 {
                     id: '2',
@@ -70,15 +72,17 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                         {x: 6, y: 10},
                         {x: 10, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 }
             ],
             labelLines: [],
             labelNameIds: [],
             fileData: {} as File,
             isVisitedByYOLOObjectDetector: false,
-            isVisitedBySSDObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
 
         const givenLabelNames: LabelName[] = [
@@ -134,7 +138,8 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 },
                 {
                     id: '2',
@@ -145,15 +150,17 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                         {x: 6, y: 10},
                         {x: 10, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 }
             ],
             labelLines: [],
             labelNameIds: [],
             fileData: {} as File,
             isVisitedByYOLOObjectDetector: false,
-            isVisitedBySSDObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
 
         const givenLabelNames: LabelName[] = [

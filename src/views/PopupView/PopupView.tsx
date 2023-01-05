@@ -14,6 +14,7 @@ import ImportLabelPopup from './ImportLabelPopup/ImportLabelPopup';
 import ExportLabelPopup from './ExportLabelsPopup/ExportLabelPopup';
 import LoadModelPopup from './LoadModelPopup/LoadModelPopup';
 import LoadYOLOv5ModelPopup from './LoadYOLOv5ModelPopup/LoadYOLOv5ModelPopup';
+import ConnectInferenceServerPopup from './ConnectInferenceServerPopup/ConnectInferenceServerPopup';
 
 interface IProps {
     activePopupType: PopupWindowType;
@@ -45,6 +46,8 @@ const PopupView: React.FC<IProps> = ({ activePopupType }) => {
                 return <LoadModelPopup />;
             case PopupWindowType.LOAD_YOLO_V5_MODEL:
                 return <LoadYOLOv5ModelPopup />;
+            case PopupWindowType.CONNECT_AI_MODEL_VIA_API:
+                return <ConnectInferenceServerPopup />;
             case PopupWindowType.SUGGEST_LABEL_NAMES:
                 return <SuggestLabelNamesPopup />;
             case PopupWindowType.LOADER:

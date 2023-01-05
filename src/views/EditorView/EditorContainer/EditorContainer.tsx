@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import { ContextType } from '@/data/enums/ContextType';
-import { Direction } from '@/data/enums/Direction';
-import { ProjectType } from '@/data/enums/ProjectType';
-import { ISize } from '@/interfaces/ISize';
-import { ContextManager } from '@/logic/context/ContextManager';
-import { Settings } from '@/settings/Settings';
-import { AppState } from '@/store';
-import { ImageData } from '@/store/labels/types';
-import Editor from '../Editor/Editor';
-import EditorBottomNavigationBar from '../EditorBottomNavigationBar/EditorBottomNavigationBar';
-import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigationBar';
+import React, {useState} from 'react';
+import {connect} from 'react-redux';
+import {Direction} from '../../../data/enums/Direction';
+import {ISize} from '../../../interfaces/ISize';
+import {Settings} from '../../../settings/Settings';
+import {AppState} from '../../../store';
+import {ImageData} from '../../../store/labels/types';
 import ImagesList from '../SideNavigationBar/ImagesList/ImagesList';
 import LabelsToolkit from '../SideNavigationBar/LabelsToolkit/LabelsToolkit';
-import { SideNavigationBar } from '../SideNavigationBar/SideNavigationBar';
-import { VerticalEditorButton } from '../VerticalEditorButton/VerticalEditorButton';
+import {SideNavigationBar} from '../SideNavigationBar/SideNavigationBar';
+import {VerticalEditorButton} from '../VerticalEditorButton/VerticalEditorButton';
 import './EditorContainer.scss';
+import Editor from '../Editor/Editor';
+import {ContextManager} from '../../../logic/context/ContextManager';
+import {ContextType} from '../../../data/enums/ContextType';
+import EditorBottomNavigationBar from '../EditorBottomNavigationBar/EditorBottomNavigationBar';
+import EditorTopNavigationBar from '../EditorTopNavigationBar/EditorTopNavigationBar';
+import {ProjectType} from '../../../data/enums/ProjectType';
 
 interface IProps {
     windowSize: ISize;
@@ -62,7 +62,7 @@ const EditorContainer: React.FC<IProps> = (
     const leftSideBarCompanionRender = () => {
         return <>
             <VerticalEditorButton
-                label="Images"
+                label='Images'
                 image={'/ico/camera.png'}
                 imageAlt={'images'}
                 onClick={leftSideBarButtonOnClick}
@@ -87,7 +87,7 @@ const EditorContainer: React.FC<IProps> = (
     const rightSideBarCompanionRender = () => {
         return <>
             <VerticalEditorButton
-                label="Labels"
+                label='Labels'
                 image={'/ico/tags.png'}
                 imageAlt={'labels'}
                 onClick={rightSideBarButtonOnClick}
@@ -101,32 +101,32 @@ const EditorContainer: React.FC<IProps> = (
     };
 
     return (
-        <div className="EditorContainer">
+        <div className='EditorContainer'>
             <SideNavigationBar
                 direction={Direction.LEFT}
                 isOpen={leftTabStatus}
                 isWithContext={activeContext === ContextType.LEFT_NAVBAR}
                 renderCompanion={leftSideBarCompanionRender}
                 renderContent={leftSideBarRender}
-                key="left-side-navigation-bar"
+                key='left-side-navigation-bar'
             />
-            <div className="EditorWrapper"
+            <div className='EditorWrapper'
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
-                key="editor-wrapper"
+                 key='editor-wrapper'
             >
                 {projectType === ProjectType.OBJECT_DETECTION && <EditorTopNavigationBar
-                    key="editor-top-navigation-bar"
+                    key='editor-top-navigation-bar'
                 />}
                 <Editor
                     size={calculateEditorSize()}
                     imageData={imagesData[activeImageIndex]}
-                    key="editor"
+                    key='editor'
                 />
                 <EditorBottomNavigationBar
                     imageData={imagesData[activeImageIndex]}
                     size={calculateEditorSize()}
                     totalImageCount={imagesData.length}
-                    key="editor-bottom-navigation-bar"
+                    key='editor-bottom-navigation-bar'
                 />
             </div>
             <SideNavigationBar
@@ -135,7 +135,7 @@ const EditorContainer: React.FC<IProps> = (
                 isWithContext={activeContext === ContextType.RIGHT_NAVBAR}
                 renderCompanion={rightSideBarCompanionRender}
                 renderContent={rightSideBarRender}
-                key="right-side-navigation-bar"
+                key='right-side-navigation-bar'
             />
         </div>
     );

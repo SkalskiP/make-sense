@@ -21,30 +21,7 @@ import { INotification } from '../../../store/notifications/types';
 import { NotificationUtil } from '../../../utils/NotificationUtil';
 import { NotificationsDataMap } from '../../../data/info/NotificationsData';
 import { Notification } from '../../../data/enums/Notification';
-
-import { TextField } from '@mui/material';
-import { styled } from '@mui/system';
-
-const StyledTextField = styled(TextField)({
-    '& .MuiInputBase-root': {
-        color: 'white',
-    },
-    '& label': {
-        color: 'white',
-    },
-    '& .MuiInput-underline:before': {
-        borderBottomColor: 'white',
-    },
-    '& .MuiInput-underline:hover:before': {
-        borderBottomColor: 'white',
-    },
-    '& label.Mui-focused': {
-        color: Settings.SECONDARY_COLOR,
-    },
-    '& .MuiInput-underline:after': {
-        borderBottomColor: Settings.SECONDARY_COLOR,
-    }
-});
+import { StyledTextField } from '../../Common/StyledTextField/StyledTextField';
 
 interface IProps {
     updateActivePopupTypeAction: (activePopupType: PopupWindowType) => any;

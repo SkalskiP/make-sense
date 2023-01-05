@@ -72,6 +72,5 @@ export default ({ mode }: UserConfig): UserConfigExport => {
         ],
       },
     },
-
   });
 };

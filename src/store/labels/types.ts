@@ -57,6 +57,9 @@ export type ImageData = {
 
     // POSE NET
     isVisitedByPoseDetector: boolean;
+
+    // ROBOFLOW API
+    isVisitedByRoboflowAPI: boolean;
 }
 
 export type LabelsState = {
