@@ -15,8 +15,10 @@ const getDummyImageData = (id: string): ImageData => {
         labelLines: [],
         labelPolygons: [],
         labelNameIds: [],
-        isVisitedByObjectDetector: false,
-        isVisitedByPoseDetector: false
+        isVisitedByYOLOObjectDetector: false,
+        isVisitedBySSDObjectDetector: false,
+        isVisitedByPoseDetector: false,
+        isVisitedByRoboflowAPI: false
     };
 };
 

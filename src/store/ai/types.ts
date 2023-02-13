@@ -1,11 +1,23 @@
 import {Action} from '../Actions';
 
-export type AIState = {
-    // SSD
-    isObjectDetectorLoaded: boolean;
+export type RoboflowAPIDetails = {
+    status: boolean,
+    model: string,
+    key: string
+}
 
-    // POSE NET
+export type AIState = {
+    // SSD LOCAL
+    isSSDObjectDetectorLoaded: boolean;
+
+    // YOLO V5 LOCAL
+    isYOLOV5ObjectDetectorLoaded: boolean;
+
+    // POSE NET LOCAL
     isPoseDetectorLoaded: boolean;
+
+    // ROBOFLOW API
+    roboflowAPIDetails: RoboflowAPIDetails;
 
     // GENERAL
     suggestedLabelList: string[];
@@ -27,10 +39,17 @@ interface UpdateRejectedSuggestedLabelList {
     }
 }
 
-interface UpdateObjectDetectorStatus {
-    type: typeof Action.UPDATE_OBJECT_DETECTOR_STATUS;
+interface UpdateSSDObjectDetectorStatus {
+    type: typeof Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS;
     payload: {
-        isObjectDetectorLoaded: boolean;
+        isSSDObjectDetectorLoaded: boolean;
+    }
+}
+
+interface UpdateYOLOV5ObjectDetectorStatus {
+    type: typeof Action.UPDATE_YOLO_V5_OBJECT_DETECTOR_STATUS;
+    payload: {
+        isYOLOV5ObjectDetectorLoaded: boolean;
     }
 }
 
@@ -48,8 +67,17 @@ interface UpdateDisabledAIFlag {
     }
 }
 
+interface UpdateRoboflowAPIDetails {
+    type: typeof Action.UPDATE_ROBOFLOW_API_DETAILS;
+    payload: {
+        roboflowAPIDetails: RoboflowAPIDetails
+    }
+}
+
 export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
-    | UpdateObjectDetectorStatus
+    | UpdateSSDObjectDetectorStatus
+    | UpdateYOLOV5ObjectDetectorStatus
     | UpdatePoseDetectorStatus
     | UpdateDisabledAIFlag
+    | UpdateRoboflowAPIDetails

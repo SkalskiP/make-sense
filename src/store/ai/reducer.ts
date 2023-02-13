@@ -1,11 +1,17 @@
-import {AIActionTypes, AIState} from './types';
-import {Action} from '../Actions';
+import { AIActionTypes, AIState } from './types';
+import { Action } from '../Actions';
 
 const initialState: AIState = {
     suggestedLabelList: [],
     rejectedSuggestedLabelList: [],
-    isObjectDetectorLoaded: false,
+    isSSDObjectDetectorLoaded: false,
+    isYOLOV5ObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
+    roboflowAPIDetails: {
+        status: false,
+        model: '',
+        key: ''
+    },
     isAIDisabled: false
 };
 
@@ -26,10 +32,16 @@ export function aiReducer(
                 rejectedSuggestedLabelList: action.payload.labelList
             }
         }
-        case Action.UPDATE_OBJECT_DETECTOR_STATUS: {
+        case Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS: {
             return {
                 ...state,
-                isObjectDetectorLoaded: action.payload.isObjectDetectorLoaded
+                isSSDObjectDetectorLoaded: action.payload.isSSDObjectDetectorLoaded
+            }
+        }
+        case Action.UPDATE_YOLO_V5_OBJECT_DETECTOR_STATUS: {
+            return {
+                ...state,
+                isYOLOV5ObjectDetectorLoaded: action.payload.isYOLOV5ObjectDetectorLoaded
             }
         }
         case Action.UPDATE_POSE_DETECTOR_STATUS: {
@@ -42,6 +54,12 @@ export function aiReducer(
             return {
                 ...state,
                 isAIDisabled: action.payload.isAIDisabled
+            }
+        }
+        case Action.UPDATE_ROBOFLOW_API_DETAILS: {
+            return {
+                ...state,
+                roboflowAPIDetails: action.payload.roboflowAPIDetails
             }
         }
         default:

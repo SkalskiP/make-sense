@@ -1,4 +1,3 @@
-import '@tensorflow/tfjs-backend-webgl';
 import * as posenet from '@tensorflow-models/posenet';
 import {PoseNet} from '@tensorflow-models/posenet';
 import {Pose} from '@tensorflow-models/posenet';
@@ -8,6 +7,10 @@ import {AIPoseDetectionActions} from '../logic/actions/AIPoseDetectionActions';
 import {LabelType} from '../data/enums/LabelType';
 import {LabelsSelector} from '../store/selectors/LabelsSelector';
 import {updateActiveLabelType} from '../store/labels/actionCreators';
+import {submitNewNotification} from '../store/notifications/actionCreators';
+import {NotificationUtil} from '../utils/NotificationUtil';
+import {NotificationsDataMap} from '../data/info/NotificationsData';
+import {Notification} from '../data/enums/Notification';
 
 export class PoseDetector {
     private static model: PoseNet;
@@ -33,8 +36,14 @@ export class PoseDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_DOWNLOAD_ERROR]
+                        )
+                    )
+                )
             })
     }
 
@@ -49,8 +58,14 @@ export class PoseDetector {
                 }
             })
             .catch((error) => {
-                // TODO
-                throw new Error(error as string);
+                // TODO: Introduce central logging system like Sentry
+                store.dispatch(
+                    submitNewNotification(
+                        NotificationUtil.createErrorNotification(
+                            NotificationsDataMap[Notification.MODEL_INFERENCE_ERROR]
+                        )
+                    )
+                )
             })
     }
 }

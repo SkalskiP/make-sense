@@ -72,7 +72,7 @@ const NotificationsView: React.FC<IProps> = (props) => {
 
     const renderNotification = () => {
         return(
-            <div
+            notification && <div
                 className={getNotificationWrapperClassName()}
                 key={notification.id}
                 onAnimationEnd={onAnimationEnd}

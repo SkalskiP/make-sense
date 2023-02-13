@@ -1,0 +1,144 @@
+@import '../../../settings/Settings';
+
+.load-yolo-v5-model-popup {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-height: 400px;
+
+  align-self: stretch;
+
+  .left-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: flex-start;
+
+    align-self: stretch;
+    width: 50px;
+
+    border-right: solid 1px $darkThemeFirstColor;
+    padding: 3px 0;
+
+    .ImageButton {
+      transition: transform 0.3s;
+
+      &:hover {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+
+      &.active {
+        border-radius: 3px;
+        background-color: rgba(0, 0, 0, 0.4);
+      }
+
+      &.monochrome {
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }
+  }
+
+  .right-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    align-content: flex-start;
+
+    align-self: stretch;
+    flex: 1;
+
+    .loader {
+      display: flex;
+      align-items: center;
+      align-content: center;
+      justify-content: center;
+
+      align-self: stretch;
+      flex: 1;
+    }
+
+    .message {
+      align-self: stretch;
+      color: white;
+      font-size: 15px;
+      padding: 40px 40px 0 40px;
+    }
+
+    .options {
+      align-self: stretch;
+      flex: 1;
+      padding: 40px;
+
+      .options-item {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        align-content: flex-start;
+        color: white;
+
+        cursor: pointer;
+        user-select: none;
+        font-size: 15px;
+        padding: 5px 0;
+
+        > img {
+          max-width: 20px;
+          max-height: 20px;
+          margin-right: 10px;
+          filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
+          filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+          user-select: none;
+        }
+      }
+    }
+
+    .drop-zone {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-content: center;
+      justify-items: center;
+      justify-content: center;
+
+      align-self: stretch;
+      flex: 1;
+
+      color: white;
+      cursor: pointer;
+      outline: none;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+      }
+
+      > img {
+        max-width: 60px;
+        max-height: 60px;
+        margin-bottom: 30px;
+        filter: brightness(0) invert(1);
+        user-select: none;
+      }
+
+      > input {
+        outline: none;
+      }
+
+      > p {
+        margin-top: 2px;
+        margin-bottom: 0;
+
+        &.extraBold {
+          font-size: 18px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-import {Action} from '../Actions';
-import {AIActionTypes} from './types';
+import { Action } from '../Actions';
+import { AIActionTypes, RoboflowAPIDetails } from './types';
 
 export function updateSuggestedLabelList(labelList: string[]): AIActionTypes {
     return {
@@ -19,11 +19,20 @@ export function updateRejectedSuggestedLabelList(labelList: string[]): AIActionT
     }
 }
 
-export function updateObjectDetectorStatus(isObjectDetectorLoaded: boolean): AIActionTypes {
+export function updateSSDObjectDetectorStatus(isSSDObjectDetectorLoaded: boolean): AIActionTypes {
     return {
-        type: Action.UPDATE_OBJECT_DETECTOR_STATUS,
+        type: Action.UPDATE_SSD_OBJECT_DETECTOR_STATUS,
         payload: {
-            isObjectDetectorLoaded,
+            isSSDObjectDetectorLoaded,
+        }
+    }
+}
+
+export function updateYOLOV5ObjectDetectorStatus(isYOLOV5ObjectDetectorLoaded: boolean): AIActionTypes {
+    return {
+        type: Action.UPDATE_YOLO_V5_OBJECT_DETECTOR_STATUS,
+        payload: {
+            isYOLOV5ObjectDetectorLoaded,
         }
     }
 }
@@ -42,6 +51,15 @@ export function updateDisabledAIFlag(isAIDisabled: boolean): AIActionTypes {
         type: Action.UPDATE_DISABLED_AI_FLAG,
         payload: {
             isAIDisabled,
+        }
+    }
+}
+
+export function updateRoboflowAPIDetails(roboflowAPIDetails: RoboflowAPIDetails): AIActionTypes {
+    return {
+        type: Action.UPDATE_ROBOFLOW_API_DETAILS,
+        payload: {
+            roboflowAPIDetails
         }
     }
 }

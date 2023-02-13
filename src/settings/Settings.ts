@@ -4,6 +4,7 @@ export class Settings {
     public static readonly GITHUB_URL: string = 'https://github.com/SkalskiP';
     public static readonly MEDIUM_URL: string = 'https://medium.com/@piotr.skalski92';
     public static readonly TWITCH_URL: string = 'https://www.twitch.tv/skalskip';
+    public static readonly YOUTUBE_URL: string = 'https://www.youtube.com/watch?v=AWjKfjDGiYE';
 
     public static readonly TOP_NAVIGATION_BAR_HEIGHT_PX: number = 35;
     public static readonly EDITOR_BOTTOM_NAVIGATION_BAR_HEIGHT_PX: number = 40 + 1;
@@ -12,6 +13,7 @@ export class Settings {
     public static readonly SIDE_NAVIGATION_BAR_WIDTH_OPEN_PX: number = Settings.SIDE_NAVIGATION_BAR_WIDTH_CLOSED_PX + 300 + 1;
     public static readonly TOOLKIT_TAB_HEIGHT_PX: number = 40;
     public static readonly TOOLBOX_PANEL_WIDTH_PX: number = 50 + 1;
+    public static readonly MAX_DROPDOWN_OPTION_LENGTH: number = 20;
 
     public static readonly EDITOR_MIN_WIDTH: number = 900;
     public static readonly EDITOR_MIN_HEIGHT: number = 500;
@@ -35,7 +37,9 @@ export class Settings {
         PopupWindowType.EXPORT_ANNOTATIONS,
         PopupWindowType.IMPORT_ANNOTATIONS,
         PopupWindowType.EXIT_PROJECT,
-        PopupWindowType.UPDATE_LABEL
+        PopupWindowType.UPDATE_LABEL,
+        PopupWindowType.LOAD_AI_MODEL,
+        PopupWindowType.LOAD_YOLO_V5_MODEL
     ];
 
     public static readonly LABEL_COLORS_PALETTE = [

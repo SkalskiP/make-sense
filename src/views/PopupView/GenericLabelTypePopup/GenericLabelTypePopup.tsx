@@ -1,12 +1,12 @@
 import React, {useState} from 'react'
 import './GenericLabelTypePopup.scss'
-import {LabelType} from "../../../data/enums/LabelType";
-import {AppState} from "../../../store";
-import {connect} from "react-redux";
-import {ImageButton} from "../../Common/ImageButton/ImageButton";
-import {GenericYesNoPopup} from "../GenericYesNoPopup/GenericYesNoPopup";
-import {ILabelToolkit, LabelToolkitData} from "../../../data/info/LabelToolkitData";
-import {ProjectType} from "../../../data/enums/ProjectType";
+import {LabelType} from '../../../data/enums/LabelType';
+import {AppState} from '../../../store';
+import {connect} from 'react-redux';
+import {ImageButton} from '../../Common/ImageButton/ImageButton';
+import {GenericYesNoPopup} from '../GenericYesNoPopup/GenericYesNoPopup';
+import {ILabelToolkit, LabelToolkitData} from '../../../data/info/LabelToolkitData';
+import {ProjectType} from '../../../data/enums/ProjectType';
 
 interface IProps {
     title: string,
@@ -59,11 +59,11 @@ const GenericLabelTypePopup: React.FC<IProps> = (
     }
 
     const renderContent = () => {
-        return (<div className="GenericLabelTypePopupContent">
-            <div className="LeftContainer">
+        return (<div className='GenericLabelTypePopupContent'>
+            <div className='LeftContainer'>
                 {getSidebarButtons()}
             </div>
-            <div className="RightContainer">
+            <div className='RightContainer'>
                 {renderInternalContent(labelType)}
             </div>
         </div>);

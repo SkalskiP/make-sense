@@ -15,6 +15,8 @@ import {LabelName} from '../../../../store/labels/types';
 import {LabelsSelector} from '../../../../store/selectors/LabelsSelector';
 import {PopupWindowType} from '../../../../data/enums/PopupWindowType';
 import {updateActivePopupType} from '../../../../store/general/actionCreators';
+import {truncate} from 'lodash';
+import { Settings } from '../../../../settings/Settings';
 
 interface IProps {
     size: ISize;
@@ -110,23 +112,25 @@ class LabelInputField extends React.Component<IProps, IState> {
     };
 
     private getDropdownOptions = () => {
-        const onClick = (id: string, event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-            this.setState({isOpen: false});
-            window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
-            this.props.onSelectLabel(this.props.id, id);
-            this.props.updateHighlightedLabelId(null);
-            this.props.updateActiveLabelId(this.props.id);
-            event.stopPropagation();
-        };
+        const wrapOnClick = (id: string): (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void => {
+            return (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+                this.setState({isOpen: false});
+                window.removeEventListener(EventType.MOUSE_DOWN, this.closeDropdown);
+                this.props.onSelectLabel(this.props.id, id);
+                this.props.updateHighlightedLabelId(null);
+                this.props.updateActiveLabelId(this.props.id);
+                event.stopPropagation();
+            };
+        }
 
         return this.props.options.map((option: LabelName) => {
             return <div
                 className='DropdownOption'
                 key={option.id}
                 style={{height: this.dropdownOptionHeight}}
-                onClick={(event) => onClick(option.id, event)}
+                onClick={wrapOnClick(option.id)}
             >
-                {option.name}
+                {truncate(option.name, {length: Settings.MAX_DROPDOWN_OPTION_LENGTH})}
             </div>
         })
     };
@@ -189,7 +193,7 @@ class LabelInputField extends React.Component<IProps, IState> {
                                  ref={ref => this.dropdownLabel = ref}
                                  onClick={this.openDropdown}
                             >
-                                {value ? value.name : 'Select label'}
+                                {value ? truncate(value.name, {length: Settings.MAX_DROPDOWN_OPTION_LENGTH}) : 'Select label'}
                             </div>
                             {this.state.isOpen && <div
                                 className='Dropdown'

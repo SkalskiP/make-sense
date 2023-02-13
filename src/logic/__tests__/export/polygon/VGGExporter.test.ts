@@ -1,9 +1,7 @@
-
 import {IPoint} from '../../../../interfaces/IPoint';
 import {VGGPolygon, VGGRegionsData} from '../../../../data/labels/VGG';
 import {ImageData, LabelName} from '../../../../store/labels/types';
 import {VGGExporter} from '../../../export/polygon/VGGExporter';
-
 
 describe('VGGExporter mapPolygonToVGG method', () => {
     it('should return correct VGGPolygon object', () => {
@@ -39,8 +37,10 @@ describe('VGGExporter mapImageDataToVGG method', () => {
             labelLines: [],
             labelNameIds: [],
             fileData: {} as File,
-            isVisitedByObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedByYOLOObjectDetector: false,
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
         expect(VGGExporter.mapImageDataToVGG(givenImageData, [])).toBeNull();
     });
@@ -55,42 +55,46 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                 {
                     id: '1',
                     labelId: 'label_1',
-                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 },
                 {
                     id: '2',
                     labelId: 'label_2',
-                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 10, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 }
             ],
             labelLines: [],
             labelNameIds: [],
             fileData: {} as File,
-            isVisitedByObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedByYOLOObjectDetector: false,
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
 
         const givenLabelNames: LabelName[] = [
             {
                 id: 'label_1',
-                name: 'banana'
+                name: 'banana',
+                color: '#ffffff'
             },
             {
                 id: 'label_2',
-                name: 'kiwi'
+                name: 'kiwi',
+                color: '#ffffff'
             }
         ];
 
@@ -129,42 +133,46 @@ describe('VGGExporter mapImageDataToVGG method', () => {
                 {
                     id: '1',
                     labelId: 'label_1',
-                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 },
                 {
                     id: '2',
                     labelId: null,
-                    isVisible: true,
                     vertices: [
                         {x: 1, y: 1},
                         {x: 5, y: 1},
                         {x: 6, y: 10},
                         {x: 10, y: 10},
                         {x: 0, y: 10}
-                    ]
+                    ],
+                    isVisible: true
                 }
             ],
             labelLines: [],
             labelNameIds: [],
             fileData: {} as File,
-            isVisitedByObjectDetector: true,
-            isVisitedByPoseDetector: true
+            isVisitedByYOLOObjectDetector: false,
+            isVisitedBySSDObjectDetector: false,
+            isVisitedByPoseDetector: true,
+            isVisitedByRoboflowAPI: false
         };
 
         const givenLabelNames: LabelName[] = [
             {
                 id: 'label_1',
-                name: 'banana'
+                name: 'banana',
+                color: '#ffffff'
             },
             {
                 id: 'label_2',
-                name: 'kiwi'
+                name: 'kiwi',
+                color: '#ffffff'
             }
         ];
 
