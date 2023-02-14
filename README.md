@@ -12,7 +12,7 @@
     </br>
 </p>
 
-[makesense.ai][1] is a free-to-use online tool for labeling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deep learning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded  in one of the multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
+[makesense.ai][1] is a free-to-use online tool for labeling photos. Thanks to the use of a browser it does not require any complicated installation - just visit the website and you are ready to go. It also doesn't matter which operating system you're running on - we do our best to be truly cross-platform. It is perfect for small computer vision deep learning projects, making the process of preparing a dataset much easier and faster. Prepared labels can be downloaded in one of the multiple supported formats. The application was written in TypeScript and is based on React/Redux duo.
 
 ## 📄 Documentation
 
@@ -20,13 +20,13 @@ You can find out more about our tool from the newly released [documentation][14]
 
 ## 🤖 Advanced AI integrations
 
-[makesense.ai][1] strives to significantly reduce the time you have to spend on photo labeling. We are doing our best to integrate lates and gratest AI models, that are able to give you recommendations as well as automate repetitive and tedious activities.
+[makesense.ai][1] strives to significantly reduce the time you have to spend on photo labeling. We are doing our best to integrate the latest and greatest AI models, that can give you recommendations as well as automate repetitive and tedious activities.
 
-* [YOLOv5][16] is our most powerful integration yet. Thanks to the use of [yolov5js][17] you can load not only pretreated models from [yolov5js-zoo](18), but above all your own models trained thanks to YOLOv5 and [exported](19) to tfjs format.
-* [SSD][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bboxes on photos and  also (in some cases) suggest a label. 
+* [YOLOv5][16] is our most powerful integration yet. Thanks to the use of [yolov5js][17] you can load not only pretrained models from [yolov5js-zoo](18), but above all your own models trained thanks to YOLOv5 and [exported](19) to tfjs format.
+* [SSD][8] pretrained on the [COCO dataset][9], which will do some of the work for you in drawing bounding boxes on photos and also (in some cases) suggest a label. 
 * [PoseNet][11] is a vision model that can be used to estimate the pose of a person in an image or video by estimating where key body joints are.
 
-The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
+The engine that drives our AI functionalities is [TensorFlow.js][10] - JS version of the most popular framework for training neural networks. This choice allows us not only to speed up your work but also to care about the privacy of your data, because unlike with other commercial and open-source tools, your photos do not have to be transferred to the server. This time AI comes to your device!
 
 https://user-images.githubusercontent.com/26109316/193255987-2d01c549-48c3-41ae-87e9-e1b378968966.mov
 
