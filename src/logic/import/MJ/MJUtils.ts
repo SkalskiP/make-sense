@@ -73,6 +73,9 @@ export class MJUtils {
                     width: rectWidth,
                     height: rectHeight,
                 };
+                if(!human?.style) {
+                    human['style'] = ['UNKNOWN'];
+                }
                 const aLabel = LabelUtil.createLabelRect(human.style[0], rect);
                 aLabel.mode = LabelModeType.HUMAN;
                 aLabel.qc_status = qc_status
@@ -96,7 +99,9 @@ export class MJUtils {
                     width: rectWidth,
                     height: rectHeight
                 };
-
+                if(!item?.style) {
+                    item['style'] = ['UNKNOWN']
+                }
                 const aLabel = LabelUtil.createLabelRect(item.style[0], rect);
                 const [, , , , uuid, ,] = item.item_id.split(':');
                 aLabel.mode = LabelModeType.ITEM;
