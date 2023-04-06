@@ -6,9 +6,10 @@ import {
 } from 'vite';
 
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
-export default ({ mode }: UserConfig): UserConfigExport => {
-  process.env = { ...process.env, ...loadEnv(mode || 'development', process.cwd()) };
+export default ({mode}: UserConfig): UserConfigExport => {
+  process.env = {...process.env, ...loadEnv(mode || 'development', process.cwd())};
   return defineConfig({
     plugins: [react()],
     build: {
@@ -42,7 +43,7 @@ export default ({ mode }: UserConfig): UserConfigExport => {
       },
     },
     esbuild: {
-      logOverride: { 'this-is-undefined-in-esm': 'silent' }
+      logOverride: {'this-is-undefined-in-esm': 'silent'}
     },
     css: {
       modules: {
@@ -65,5 +66,10 @@ export default ({ mode }: UserConfig): UserConfigExport => {
         ],
       },
     },
+    resolve: {
+      alias: {
+        '~': path.resolve(__dirname, 'src'),
+      },
+    }
   });
 };
