@@ -1,5 +1,5 @@
 import {ImageData} from '../store/labels/types';
-import { v4 as uuidv4 } from 'uuid';
+import {v4 as uuidv4} from 'uuid';
 import {FileUtil} from './FileUtil';
 import {ImageRepository} from '../logic/imageRepository/ImageRepository';
 
@@ -18,7 +18,7 @@ export class ImageDataUtil {
             isVisitedBySSDObjectDetector: false,
             isVisitedByPoseDetector: false,
             isVisitedByRoboflowAPI: false
-        }
+        };
     }
 
     public static cleanAnnotations(item: ImageData): ImageData {
@@ -29,13 +29,13 @@ export class ImageDataUtil {
             labelLines: [],
             labelPolygons: [],
             labelNameIds: []
-        }
+        };
     }
 
     public static arrange(items: ImageData[], idArrangement: string[]): ImageData[] {
         return items.sort((a: ImageData, b: ImageData) => {
-            return idArrangement.indexOf(a.id) - idArrangement.indexOf(b.id)
-        })
+            return idArrangement.indexOf(a.id) - idArrangement.indexOf(b.id);
+        });
     }
 
     public static loadMissingImages(images: ImageData[]): Promise<void> {
@@ -43,9 +43,9 @@ export class ImageDataUtil {
             const missingImages = images.filter((i: ImageData) => !i.loadStatus);
             const missingImagesFiles = missingImages.map((i: ImageData) => i.fileData);
             FileUtil.loadImages(missingImagesFiles)
-                .then((htmlImageElements:HTMLImageElement[]) => {
+                .then((htmlImageElements: HTMLImageElement[]) => {
                     ImageRepository.storeImages(missingImages.map((i: ImageData) => i.id), htmlImageElements);
-                    resolve()
+                    resolve();
                 })
                 .catch((error: Error) => reject(error));
         });
