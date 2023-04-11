@@ -96,6 +96,8 @@ const LabelInfoPopup: React.FC<IProps> = ({
             setSelectedItems({
                 [ATTRIBUTE_TYPE.SOURCE]: found.type,
                 [ATTRIBUTE_TYPE.GENDER]: foundGender,
+                [ATTRIBUTE_TYPE.GENDER_SCORE]: found.genderScore,
+                [ATTRIBUTE_TYPE.STYLE_SCORE]: found.styleScore.length > 0 ? found.styleScore[0].score : null,
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
                         ? genderStyles.filter((style) =>
@@ -141,7 +143,10 @@ const LabelInfoPopup: React.FC<IProps> = ({
                               imageData.guideStyles
                                   .map((gs) => parseInt(gs.seq))
                                   .includes(style.seq)
-                          )
+                          ),
+                [ATTRIBUTE_TYPE.ITEM_SCORE]: found.itemScore,
+                [ATTRIBUTE_TYPE.COLOR_SCORE]: found.colorScore,
+                [ATTRIBUTE_TYPE.PATTERN_SCORE]: found.patternScore
             });
         }
 
@@ -314,7 +319,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
             <div className="LabelInfoPopupContent">
                 {renderComment()}
                 <div className="AttributeContainer mt-2">
-                    <div className="AttributeName">Gender</div>
+                    <div className="AttributeName">
+                        <div >
+                            <div>Gender</div>
+                            <div className="AttributeScore">{selectedItems[ATTRIBUTE_TYPE.GENDER_SCORE]}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.GENDER}
@@ -336,7 +346,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Styles</div>
+                    <div className="AttributeName">
+                        <div>
+                            <div>Styles</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.STYLE_SCORE]}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.FASHION_STYLE}
@@ -390,7 +405,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Main Category</div>
+                    <div className="AttributeName">
+                        <div>
+                            <div>Main Category</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.ITEM_SCORE]}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.MAIN_CATEGORY}
@@ -402,7 +422,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Sub Category</div>
+                    <div className="AttributeName">
+                        <div>
+                            <div>Sub Category</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.ITEM_SCORE]}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             mainCategory={
@@ -416,7 +441,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Color</div>
+                    <div className="AttributeName">
+                        <div>
+                            <div>Color</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE].length > 0 ? selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE][0].score : null}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_COLOR}
@@ -427,7 +457,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">Pattern</div>
+                    <div className="AttributeName">
+                        <div>
+                            <div>Pattern</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE].length > 0 ? selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE][0].score : null}</div>
+                        </div>
+                    </div>
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_PATTERN}

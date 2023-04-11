@@ -23,6 +23,8 @@ import {APIService} from '../../../services/API';
 import {ClipLoader} from 'react-spinners';
 import {CSSHelper} from '../../../logic/helpers/CSSHelper';
 import {Package, ChevronRightBlack, ChevronRightWhite} from "../../../assets/icons"
+import peudoData from './psedu_data.json'
+
 interface IProps {
     updateActiveImageIndexAction: (activeImageIndex: number) => any;
     addImageDataAction: (imageData: ImageData[]) => any;
@@ -63,7 +65,8 @@ const ImagesFetcher: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
             setIsLoading(true);
             const statusValueParams  = statusValue !== 'all' ? statusValue: null
             const {data} = await APIService.fetchImages({offset, limit, image_status: statusValueParams});
-            setAcceptedImages(data.data.image_list);
+            //@ts-ignore
+            setAcceptedImages(peudoData.data.image_list);
         } catch (error) {
             console.error('Failed to loadImages: ', error);
         } finally {

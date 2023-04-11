@@ -60,6 +60,8 @@ export type HumanInfo = {
     gender: number;
     type: number;
     styles: string[];
+    styleScore?: { style: string, score: number }[];
+    genderScore?: number;
     qc_status?: string;
     qc_comment?: string
 };
@@ -74,6 +76,9 @@ export type ItemInfo = {
     color: number;
     pattern: number;
     styles: string[];
+    patternScore?: { pattern: number, score: number }[];
+    colorScore?: {color: number, score: number}[];
+    itemScore?: number;
     qc_status?: string;
     qc_comment?: string;
 };
@@ -115,6 +120,9 @@ export type RectJSON = {
             rb_y: number;
         };
         style: string[];
+        gender_score?: number;
+        style_candidates?: string;
+        style_score?: string;
         qc_status?: string;
         qc_comment?: string;
     }[];
@@ -127,6 +135,11 @@ export type RectJSON = {
             rb_y: number;
         };
         style: string[];
+        colors?: string;
+        color_score?: string;
+        item_score?: number;
+        patterns?: string;
+        pattern_score?: string;
         qc_status?: string;
         qc_comment?: string;
     }[];
