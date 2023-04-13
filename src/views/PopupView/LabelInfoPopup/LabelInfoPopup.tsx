@@ -41,6 +41,7 @@ import {vi as lang} from '../../../lang';
 import {GenericYesNoPopupDraggable} from '../GenericYesNoPopupDraggable/GenericYesNoPopupDraggable';
 import {JSONUploadStatus} from '../../../data/enums/JSONUploadStatus';
 import {Settings} from '../../../settings/Settings';
+import { FlagIcon } from 'assets/icons';
 
 interface IProps {
     labelRectId: string;
@@ -97,7 +98,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                 [ATTRIBUTE_TYPE.SOURCE]: found.type,
                 [ATTRIBUTE_TYPE.GENDER]: foundGender,
                 [ATTRIBUTE_TYPE.GENDER_SCORE]: found.genderScore,
-                [ATTRIBUTE_TYPE.STYLE_SCORE]: found.styleScore.length > 0 ? found.styleScore[0].score : null,
+                [ATTRIBUTE_TYPE.STYLE_SCORE]: found.styleScore?.length > 0 ? found.styleScore[0].score : null,
                 [ATTRIBUTE_TYPE.FASHION_STYLE]:
                     found.styles.length > 0
                         ? genderStyles.filter((style) =>
@@ -294,6 +295,26 @@ const LabelInfoPopup: React.FC<IProps> = ({
         updateActivePopupTypeAction(null);
     };
 
+    const AttributeNameWithScore = ({title, score, criteria}:{title: string, score: number | null, criteria: number}) => 
+        <div className="AttributeName">
+            <div>
+                <div>{title}</div>
+                {
+                    score && criteria
+                    ?
+                        score > criteria
+                        ? <div className={'AttributeScore'}>
+                            {score}
+                        </div>
+                        : <div className={'AttributeScoreFlag'}>
+                            <FlagIcon fill='red' fontSize={"10px"} width={20} height={20} />
+                            {score}
+                        </div>
+                    : null
+                }
+            </div>
+        </div> 
+
     const renderComment = () =>{
       const {qc_comment, qc_status} = itemInfo || humanInfo
       
@@ -441,12 +462,12 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     </div>
                 </div>
                 <div className="AttributeContainer">
-                    <div className="AttributeName">
-                        <div>
-                            <div>Color</div>
-                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE].length > 0 ? selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE][0].score : null}</div>
-                        </div>
-                    </div>
+                    <AttributeNameWithScore
+                        title='Color' 
+                        score={selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE]?.length > 0 
+                            ? parseFloat(selectedItems[ATTRIBUTE_TYPE.COLOR_SCORE][0].score) 
+                            : null} 
+                        criteria={0.99} />
                     <div className="AttributeSelector">
                         <AttributeSelect
                             type={ATTRIBUTE_TYPE.ITEM_COLOR}
@@ -460,7 +481,7 @@ const LabelInfoPopup: React.FC<IProps> = ({
                     <div className="AttributeName">
                         <div>
                             <div>Pattern</div>
-                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE].length > 0 ? selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE][0].score : null}</div>
+                            <div className='AttributeScore'>{selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE]?.length > 0 ? selectedItems[ATTRIBUTE_TYPE.PATTERN_SCORE][0].score : null}</div>
                         </div>
                     </div>
                     <div className="AttributeSelector">

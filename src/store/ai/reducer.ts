@@ -6,7 +6,14 @@ const initialState: AIState = {
     rejectedSuggestedLabelList: [],
     isObjectDetectorLoaded: false,
     isPoseDetectorLoaded: false,
-    isAIDisabled: false
+    isAIDisabled: false,
+    scoreCriteria: {
+        gender: 0.8,
+        style: 0.8,
+        color: 0.8,
+        pattern: 0.8,
+        item: 0.8
+    }
 };
 
 export function aiReducer(
@@ -14,6 +21,12 @@ export function aiReducer(
     action: AIActionTypes
 ): AIState {
     switch (action.type) {
+        case Action.UPDATE_SCORE_CRITERIA: {
+            return {
+                ...state,
+                scoreCriteria: action.payload.scoreCriteria
+            }
+        }
         case Action.UPDATE_SUGGESTED_LABEL_LIST: {
             return {
                 ...state,

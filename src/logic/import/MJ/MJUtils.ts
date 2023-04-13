@@ -121,7 +121,7 @@ export class MJUtils {
                 gender: parseInt(gender),
                 type: parseInt(type),
                 styles: human.style,
-                styleScore: human.style_score.split(":").map((score, i) => ({style: human.style_candidates.split(":")[i], score: parseFloat(score)})),
+                styleScore: human.style_score?.split(":").map((score, i) => ({style: human.style_candidates.split(":")[i], score: parseFloat(score)})),
                 genderScore: human.gender_score,
                 qc_comment: human.qc_comment,
                 qc_status: human.qc_status
@@ -149,8 +149,8 @@ export class MJUtils {
                 color: parseInt(color),
                 pattern: parseInt(pattern),
                 styles: item.style,
-                colorScore: item.color_score.split(":").map((score, i) => ({color: parseInt(item.colors.split(":")[i]), score: parseFloat(score)})),
-                patternScore: item.pattern_score.split(":").map((score, i) => ({pattern: parseInt(item.patterns.split(":")[i]), score: parseFloat(score)})),
+                colorScore: item.color_score?.split(":").map((score, i) => ({color: parseInt(item.colors.split(":")[i]), score: parseFloat(score)})),
+                patternScore: item.pattern_score?.split(":").map((score, i) => ({pattern: parseInt(item.patterns.split(":")[i]), score: parseFloat(score)})),
                 itemScore: item.item_score,
                 qc_comment: item.qc_comment,
                 qc_status: item.qc_status

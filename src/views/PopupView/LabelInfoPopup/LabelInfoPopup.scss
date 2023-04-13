@@ -31,11 +31,20 @@
     border-bottom: solid 1px $darkThemeFirstColor;
 }
 
-.AttributeScore {
-    color: red;
+@mixin score($isFlag) {
     font-size: 15px;
+    @if ($isFlag) {
+        color: red;
+    } @else {
+        color: green;
+    }
 }
-
+.AttributeScore {
+    @include score($isFlag: false);
+}
+.AttributeScoreFlag{
+    @include score($isFlag: true);
+}
 
 .AttributeSelector {
     display: flex;

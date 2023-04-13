@@ -36,6 +36,7 @@ import {
 import {Settings} from '../../../../settings/Settings';
 import {Fade, Tooltip, withStyles} from '@material-ui/core';
 import {ImageButton} from '../../../Common/ImageButton/ImageButton';
+import { AISelector } from 'store/selectors/AISelector';
 
 const BUTTON_SIZE: ISize = {width: 30, height: 30};
 const BUTTON_PADDING: number = 10;
@@ -97,6 +98,7 @@ const RectLabelsList: React.FC<IProps> = ({
         width: size.width,
         height: size.height
     };
+
     const listStyleContent: React.CSSProperties = {
         width: size.width,
         height: imageData.labelRects.length * labelInputFieldHeight
@@ -133,6 +135,29 @@ const RectLabelsList: React.FC<IProps> = ({
     const onClickHandler = () => {
         updateActiveLabelId(null);
     };
+
+    const checkScore = (labelRect: LabelRect): boolean => {
+        const criteria = AISelector.getScoreCriteria();
+
+        if (labelRect.mode === LabelModeType.HUMAN) {
+            const found = _.find(imageData.humans, {uuid: labelRect.id});
+            if(found?.genderScore < criteria.gender) {
+                return true;
+            }
+        } else {
+            const found = _.find(imageData.items, {uuid: labelRect.id});
+            if(found?.colorScore?.length > 0 && found?.colorScore[0].score < criteria.color) {
+                return true;
+            }
+            if(found?.itemScore < criteria.item) {
+                return true;
+            }
+            if(found?.patternScore?.length > 0 && found?.patternScore[0].score < criteria.pattern) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     const getDescription = (labelRect: LabelRect) => {
         if (labelRect.mode === LabelModeType.HUMAN) {
@@ -324,7 +349,7 @@ const RectLabelsList: React.FC<IProps> = ({
                     labelRect.status === LabelStatus.ACCEPTED
             )
             .map((labelRect: LabelRect) => {
-              
+                const isFlagged = checkScore(labelRect)
                 return (
                     <LabelInputField
                         size={{
@@ -349,6 +374,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         imageStatus={imageData.image_status}
                         qcStatus={labelRect.qc_status}
                         qcComment={labelRect.qc_comment}
+                        scoreFlag={isFlagged}
                     />
                 );
             });

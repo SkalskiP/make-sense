@@ -11,6 +11,15 @@ export type AIState = {
     suggestedLabelList: string[];
     rejectedSuggestedLabelList: string[];
     isAIDisabled: boolean;
+
+    // SHOWNIQ Vision AI Criteria
+    scoreCriteria: {
+        gender: number,
+        style: number,
+        color: number,
+        pattern: number,
+        item: number
+    }
 }
 
 interface UpdateSuggestedLabelList {
@@ -48,8 +57,22 @@ interface UpdateDisabledAIFlag {
     }
 }
 
+interface UpdateScoreCriteria {
+    type: typeof Action.UPDATE_SCORE_CRITERIA;
+    payload: {
+        scoreCriteria: {
+            gender: number,
+            style: number,
+            color: number,
+            pattern: number,
+            item: number    
+        }
+    }
+}
+
 export type AIActionTypes = UpdateSuggestedLabelList
     | UpdateRejectedSuggestedLabelList
     | UpdateObjectDetectorStatus
     | UpdatePoseDetectorStatus
     | UpdateDisabledAIFlag
+    | UpdateScoreCriteria

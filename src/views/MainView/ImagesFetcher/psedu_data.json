@@ -119,9 +119,7 @@
                             "qc_status": "W",
                             "qc_comment": "",
                             "box_position_rejected": "F",
-                            "gender_score": 1,
-                            "style_candidates": "GIRLY:ELEGANCE:BASIC",
-                            "style_score": "0.94:0.01:0.01"
+                            "style_candidates": "GIRLY:ELEGANCE:BASIC"
                         }
                     ],
                     "item_info": [
@@ -139,10 +137,7 @@
                             "qc_status": "W",
                             "qc_comment": "",
                             "box_position_rejected": "F",
-                            "color_score": "0.99:0.0:0.0:0.0:0.0",
                             "colors": "5:17:7:6:4",
-                            "item_score": 0.76,
-                            "pattern_score": "0.94:0.02:0.02:0.01:0.01",
                             "patterns": "1:18:14:2:10"
                         }
                     ]
