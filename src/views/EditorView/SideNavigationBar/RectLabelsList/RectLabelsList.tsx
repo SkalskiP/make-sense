@@ -144,6 +144,9 @@ const RectLabelsList: React.FC<IProps> = ({
             if(found?.genderScore < criteria.gender) {
                 return true;
             }
+            if(found?.styleScore?.length > 0 && found?.styleScore[0].score < criteria.style) {
+                return true;
+            }
         } else {
             const found = _.find(imageData.items, {uuid: labelRect.id});
             if(found?.colorScore?.length > 0 && found?.colorScore[0].score < criteria.color) {

@@ -141,7 +141,7 @@ export class MJImporter extends AnnotationImporter {
         imageData.humans = humans;
         imageData.items = items;
 
-        console.log('imageData = ', imageData);
+        // console.log('imageData = ', imageData);
         return imageData;
     }
     public static applyAnnotationsFromFile(

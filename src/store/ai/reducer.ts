@@ -22,6 +22,7 @@ export function aiReducer(
 ): AIState {
     switch (action.type) {
         case Action.UPDATE_SCORE_CRITERIA: {
+            console.log('Action.UPDATE_SCORE_CRITERIA ', action.payload)
             return {
                 ...state,
                 scoreCriteria: action.payload.scoreCriteria

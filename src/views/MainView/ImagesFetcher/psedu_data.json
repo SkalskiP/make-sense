@@ -15090,6 +15090,13 @@
                     }
                 ]
             }
-        ]
+        ],
+        "score_criteria": {
+            "gender": 0.95,
+            "style": 0.9,
+            "color": 0.85,
+            "pattern": 0.75,
+            "item": 0.65
+        }
     }
 }

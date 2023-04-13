@@ -30,6 +30,8 @@ import {ImageButton} from '../../../Common/ImageButton/ImageButton';
 import {Fade, Tooltip} from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {LabelActions} from '../../../../logic/actions/LabelActions';
+import { FlagIcon } from 'assets/icons';
+import { AISelector } from 'store/selectors/AISelector';
 
 const BUTTON_SIZE: ISize = {width: 30, height: 30};
 const BUTTON_PADDING: number = 10;
@@ -163,6 +165,29 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         active: isActive
                     });
 
+                const flagCount = ():number => {
+                    const criteria = AISelector.getScoreCriteria()
+                    const humanFlagCount = imagesData[activeImageIndex].humans.filter(
+                        human => 
+                            human.genderScore < criteria.gender 
+                            || (
+                                human.styleScore?.length > 0 
+                                && human.styleScore[0].score < criteria.style
+                            )).length
+                    const itemFlagCount = imagesData[activeImageIndex].items.filter(
+                        item => 
+                            item.itemScore < criteria.item
+                            || (
+                                item.colorScore?.length > 0
+                                && item.colorScore[0].score < criteria.color
+                            )
+                            || (
+                                item.patternScore?.length > 0
+                                && item.patternScore[0].score < criteria.pattern
+                            )
+                    ).length
+                    return humanFlagCount + itemFlagCount;
+                }
                 const header = (
                     <div
                         key={'Header_' + index}
@@ -178,6 +203,10 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                                 alt={tabData.imageAlt}
                             />
                             {tabData.headerText}
+                            {flagCount() > 0 && <div className="Flag">
+                                <FlagIcon fill='red' fontSize={"10px"} width={20} height={20} />
+                                <span style={{color: 'red', fontWeight: 'bold'}}>({flagCount()})</span>
+                            </div>}
                         </div>
                         <div className="HeaderGroupWrapper">
                             <img
