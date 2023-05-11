@@ -376,6 +376,7 @@ const RectLabelsList: React.FC<IProps> = ({
                         description={getDescriptionIcon(labelRect)}
                         imageStatus={imageData.image_status}
                         qcStatus={labelRect.qc_status}
+                        boxPositionRejected={labelRect.box_position_rejected}
                         qcComment={labelRect.qc_comment}
                         scoreFlag={isFlagged}
                     />

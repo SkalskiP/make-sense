@@ -153,7 +153,7 @@ class Editor extends React.Component<IProps, IState> {
     private saveLoadedImage = (
         image: HTMLImageElement,
         imageData: ImageData
-    ) => {
+    ) => { 
         imageData.loadStatus = true;
         this.props.updateImageDataById(imageData.id, imageData);
         ImageRepository.storeImage(imageData.id, image);

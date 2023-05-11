@@ -68,10 +68,13 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
             if(itemTmp){
                 newImageData.humans[index].qc_comment = itemTmp.qc_comment
                 newImageData.humans[index].qc_status = itemTmp.qc_status
+                newImageData.humans[index].box_position_rejected = itemTmp.box_position_rejected
+                
                 const indexRects = newImageData.labelRects.findIndex(el=> el.id === newImageData.humans[index].uuid)
                 if(indexRects !== -1) {
                     newImageData.labelRects[indexRects].qc_comment = itemTmp.qc_comment
                     newImageData.labelRects[indexRects].qc_status = itemTmp.qc_status
+                    newImageData.labelRects[indexRects].box_position_rejected = itemTmp.box_position_rejected
                 }
             }
          });
@@ -80,10 +83,12 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
             if(itemTmp){
                 newImageData.items[index].qc_comment = itemTmp.qc_comment
                 newImageData.items[index].qc_status = itemTmp.qc_status
+                newImageData.items[index].box_position_rejected = itemTmp.box_position_rejected
                 const indexRects = newImageData.labelRects.findIndex(el=> el.id === newImageData.items[index].uuid)
                 if(indexRects !== -1) {
                     newImageData.labelRects[indexRects].qc_comment = itemTmp.qc_comment
                     newImageData.labelRects[indexRects].qc_status = itemTmp.qc_status
+                    newImageData.labelRects[indexRects].box_position_rejected = itemTmp.box_position_rejected
                 }
             }
          });
@@ -110,7 +115,8 @@ const TopNavigationBar: React.FC<IProps> = (props) => {
                     const content =
                         RectLabelsExporter.wrapRectLabelsIntoJSON(imageData);
                     const json = content ? JSON.stringify(content) : null;
-                    const newImageData = await updateImageFormApi(imageData, json)              
+                    const newImageData = await updateImageFormApi(imageData, json)    
+                      
                     updateImageDataByIdAction(newImageData.id, {                     
                         ...newImageData,
                         uploadStatus: JSONUploadStatus.UPLOADED

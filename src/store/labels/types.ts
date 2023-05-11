@@ -21,7 +21,8 @@ export type LabelRect = {
     status: LabelStatus;
     suggestedLabel: string;
     qc_status?: string;
-    qc_comment?: string
+    qc_comment?: string;
+    box_position_rejected?: string;
 };
 
 export type LabelPoint = {
@@ -63,7 +64,8 @@ export type HumanInfo = {
     styleScore?: { style: string, score: number }[];
     genderScore?: number;
     qc_status?: string;
-    qc_comment?: string
+    qc_comment?: string;
+    box_position_rejected?: string;
 };
 
 export type ItemInfo = {
@@ -81,11 +83,13 @@ export type ItemInfo = {
     itemScore?: number;
     qc_status?: string;
     qc_comment?: string;
+    box_position_rejected?: string;
 };
 
 export type ImageData = {
     image_status?: any;
     qc_status? : string;
+    box_position_rejected?: string;
     qc_comment?: string;
     id: string;
     fileData: File;
@@ -124,6 +128,7 @@ export type RectJSON = {
         style_candidates?: string;
         style_score?: string;
         qc_status?: string;
+        box_position_rejected?: string;
         qc_comment?: string;
     }[];
     item_info: {
@@ -142,6 +147,7 @@ export type RectJSON = {
         pattern_score?: string;
         qc_status?: string;
         qc_comment?: string;
+        box_position_rejected?:string
     }[];
 };
 

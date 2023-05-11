@@ -40,6 +40,7 @@ interface IProps {
     qcStatus?: string;
     qcComment?: string;
     scoreFlag?: boolean;
+    boxPositionRejected?: string;
 }
 
 interface IState {

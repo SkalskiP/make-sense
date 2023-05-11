@@ -65,6 +65,7 @@ export class MJUtils {
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
                 const qc_status: string = human.qc_status
+                const box_position_rejected: string = human.box_position_rejected
                 const qc_comment: string = human.qc_comment
                 // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
@@ -79,6 +80,7 @@ export class MJUtils {
                 const aLabel = LabelUtil.createLabelRect(human.style[0], rect);
                 aLabel.mode = LabelModeType.HUMAN;
                 aLabel.qc_status = qc_status
+                aLabel.box_position_rejected = box_position_rejected
                 aLabel.qc_comment = qc_comment
                 return aLabel;
             }
@@ -91,6 +93,7 @@ export class MJUtils {
                 const rectWidth: number = Math.abs(rb_x - lt_x);
                 const rectHeight: number = Math.abs(rb_y - lt_y);
                 const qc_status: string = item.qc_status
+                const box_position_rejected: string = item.box_position_rejected
                 const qc_comment: string = item.qc_comment
                 // console.log('rect = ', rectX, rectY, rectWidth, rectHeight);
                 const rect = {
@@ -107,6 +110,7 @@ export class MJUtils {
                 aLabel.mode = LabelModeType.ITEM;
                 aLabel.id = uuid;
                 aLabel.qc_status = qc_status
+                aLabel.box_position_rejected = box_position_rejected
                 aLabel.qc_comment = qc_comment
                 return aLabel;
             }
@@ -124,7 +128,8 @@ export class MJUtils {
                 styleScore: human.style_score?.split(":").map((score, i) => ({style: human.style_candidates.split(":")[i], score: parseFloat(score)})),
                 genderScore: human.gender_score,
                 qc_comment: human.qc_comment,
-                qc_status: human.qc_status
+                qc_status: human.qc_status,
+                box_position_rejected: human.box_position_rejected
             };
         });
         const items = annotation.item_info.map((item, itemIdx) => {
@@ -153,7 +158,8 @@ export class MJUtils {
                 patternScore: item.pattern_score?.split(":").map((score, i) => ({pattern: parseInt(item.patterns.split(":")[i]), score: parseFloat(score)})),
                 itemScore: item.item_score,
                 qc_comment: item.qc_comment,
-                qc_status: item.qc_status
+                qc_status: item.qc_status,
+                box_position_rejected: item.box_position_rejected
             };
         });
 
