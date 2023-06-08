@@ -10,8 +10,8 @@ import {AppState} from '../../../../store';
 import {connect} from 'react-redux';
 import {
     updateActiveLabelId, 
-    updateHighlightedLabelId,
-    updateActiveLabelNameId} from '../../../../store/labels/actionCreators';
+    updateHighlightedLabelId
+} from '../../../../store/labels/actionCreators';
 import Scrollbars from 'react-custom-scrollbars-2';
 import {EventType} from '../../../../data/enums/EventType';
 import {LabelName} from '../../../../store/labels/types';
@@ -33,7 +33,6 @@ interface IProps {
     onSelectLabel: (labelRectId: string, labelNameId: string) => any;
     updateHighlightedLabelId: (highlightedLabelId: string) => any;
     updateActiveLabelId: (highlightedLabelId: string) => any;
-    updateActiveLabelNameId: (activeLabelNameId: string) => any;
     updateActivePopupType: (activePopupType: PopupWindowType) => any;
     toggleLabelVisibility?: (labelNameId: string) => any;
 }
@@ -240,7 +239,6 @@ class LabelInputField extends React.Component<IProps, IState> {
 const mapDispatchToProps = {
     updateHighlightedLabelId,
     updateActiveLabelId,
-    updateActiveLabelNameId,
     updateActivePopupType
 };
 
