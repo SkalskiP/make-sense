@@ -11,7 +11,7 @@ import Fade from '@mui/material/Fade';
 import ImagesDropZone from './ImagesDropZone/ImagesDropZone';
 
 const MainView: React.FC = () => {
-    const [projectInProgress, setProjectInProgress] = useState(false);
+    const [projectInProgress, setProjectInProgress] = useState(true);
     const [projectCanceled, setProjectCanceled] = useState(false);
 
     const startProject = () => {
