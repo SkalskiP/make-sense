@@ -23,11 +23,24 @@
     background-color: $darkThemeFirstColor;
 
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     align-items: center;
     align-content: center;
+
+    .div {
+      width: 33%;
+    }
+      
+    .ImageButton {
+
+      &.monochrome {
+        img {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }  
   }
 
   .Content {

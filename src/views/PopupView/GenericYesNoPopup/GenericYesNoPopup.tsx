@@ -3,6 +3,7 @@ import './GenericYesNoPopup.scss'
 import {TextButton} from '../../Common/TextButton/TextButton';
 import {ContextManager} from '../../../logic/context/ContextManager';
 import {ContextType} from '../../../data/enums/ContextType';
+import { ImageButton } from '../../Common/ImageButton/ImageButton';
 
 interface IProps {
     title: string;
@@ -15,6 +16,7 @@ interface IProps {
     onReject?: () => any;
     skipRejectButton?: boolean;
     disableRejectButton?: boolean;
+    onClose?: () => any;
 }
 
 export const GenericYesNoPopup: React.FC<IProps> = (
@@ -28,7 +30,8 @@ export const GenericYesNoPopup: React.FC<IProps> = (
         rejectLabel,
         onReject,
         skipRejectButton,
-        disableRejectButton
+        disableRejectButton,
+        onClose
     }) => {
 
     const [status, setMountStatus] = useState(false);
@@ -42,7 +45,19 @@ export const GenericYesNoPopup: React.FC<IProps> = (
     return (
         <div className='GenericYesNoPopup'>
             <div className='Header'>
-                {title}
+                <div className="EmptyDiv"></div>
+                <div className="HeaderTitle">
+                    {title}
+                </div>
+                {onClose ? <ImageButton
+                    externalClassName={'monochrome'}
+                    image={'ico/delete.png'}
+                    imageAlt={'close_popup'}
+                    buttonSize={{ width: 30, height: 30 }}
+                    onClick={onClose}
+                /> : <div className="EmptyDiv"></div>
+                }
+                
             </div>
             <div className='Content'>
                 {renderContent()}

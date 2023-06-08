@@ -3,12 +3,13 @@ import './InsertLabelNamesPopup.scss';
 import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
 import { PopupWindowType } from '../../../data/enums/PopupWindowType';
 import { updateLabelNames } from '../../../store/labels/actionCreators';
-import { updateActivePopupType, updatePerClassColorationStatus } from '../../../store/general/actionCreators';
+import { updateActivePopupType, updatePerClassColorationStatus, updateProjectData } from '../../../store/general/actionCreators';
 import { AppState } from '../../../store';
 import { connect } from 'react-redux';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { ImageButton } from '../../Common/ImageButton/ImageButton';
 import { LabelName } from '../../../store/labels/types';
+import {ProjectData} from '../../../store/general/types';
 import { LabelUtil } from '../../../utils/LabelUtil';
 import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
 import { LabelActions } from '../../../logic/actions/LabelActions';
@@ -31,6 +32,7 @@ interface IProps {
     isUpdate: boolean;
     projectType: ProjectType;
     enablePerClassColoration: boolean;
+    updateProjectDataAction: (projectData: ProjectData) => any;
 }
 
 const InsertLabelNamesPopup: React.FC<IProps> = (
@@ -41,7 +43,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         submitNewNotificationAction,
         isUpdate,
         projectType,
-        enablePerClassColoration
+        enablePerClassColoration,
+        updateProjectDataAction
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
@@ -177,6 +180,11 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction(null);
     };
 
+    const onCloseCallback = () => {
+        isUpdate ? null : updateProjectDataAction({ type: null, name: null });
+        updateActivePopupTypeAction(null);
+    };
+
     const renderContent = () => {
         return (<div className='InsertLabelNamesPopup'>
             <div className='LeftContainer'>
@@ -218,7 +226,8 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     </Scrollbars> :
                         <div
                             className='EmptyList'
-                            onClick={addLabelNameCallback}
+                            // onClick={addLabelNameCallback}
+                            onLoad={addLabelNameCallback}
                         >
                             <img
                                 draggable={false}
@@ -238,8 +247,10 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             renderContent={renderContent}
             acceptLabel={isUpdate ? 'Accept' : 'Start project'}
             onAccept={isUpdate ? safeOnUpdateAcceptCallback : safeOnCreateAcceptCallback}
-            rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
-            onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
+            skipRejectButton={true}
+            // rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
+            // onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
+            onClose={onCloseCallback}
         />);
 };
 
@@ -247,7 +258,8 @@ const mapDispatchToProps = {
     updateActivePopupTypeAction: updateActivePopupType,
     updateLabelNamesAction: updateLabelNames,
     updatePerClassColorationStatusAction: updatePerClassColorationStatus,
-    submitNewNotificationAction: submitNewNotification
+    submitNewNotificationAction: submitNewNotification,
+    updateProjectDataAction: updateProjectData
 };
 
 const mapStateToProps = (state: AppState) => ({
