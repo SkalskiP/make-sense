@@ -177,8 +177,17 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         updateActivePopupTypeAction(null);
     };
 
+    const go_back_function = () => {
+        console.log("clicked");
+        updateActivePopupTypeAction(PopupWindowType.EXIT_PROJECT)
+    }
+
     const renderContent = () => {
-        return (<div className='InsertLabelNamesPopup'>
+        return (
+            <div>
+             <button onClick={go_back_function}>Go Back</button>
+        <div className='InsertLabelNamesPopup'>
+
             <div className='LeftContainer'>
                 <ImageButton
                     image={'ico/plus.png'}
@@ -229,6 +238,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                         </div>}
                 </div>
             </div>
+        </div>
         </div>);
     };
 

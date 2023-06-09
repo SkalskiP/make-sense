@@ -28,6 +28,7 @@ const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
         }
     } as DropzoneOptions);
 
+    //end point
     const startEditor = (projectType: ProjectType) => {
         if (acceptedFiles.length > 0) {
             const files = sortBy(acceptedFiles, (item: File) => item.name)
@@ -41,7 +42,7 @@ const ImagesDropZone: React.FC<IProps> = (props: PropsWithChildren<IProps>) => {
             props.updateActivePopupTypeAction(PopupWindowType.INSERT_LABEL_NAMES);
         }
     };
-
+//taking the file as input
     const getDropZoneContent = () => {
         if (acceptedFiles.length === 0)
             return <>

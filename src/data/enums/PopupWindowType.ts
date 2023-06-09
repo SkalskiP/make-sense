@@ -1,4 +1,4 @@
-export enum PopupWindowType {
+    export enum PopupWindowType {
     LOAD_LABEL_NAMES = 'LOAD_LABEL_NAMES',
     UPDATE_LABEL = 'UPDATE_LABEL',
     SUGGEST_LABEL_NAMES = 'SUGGEST_LABEL_NAMES',
