@@ -96,7 +96,7 @@ const RectLabelsList: React.FC<IProps> = (
                     id={labelRect.id}
                     key={labelRect.id}
                     onDelete={deleteRectLabelById}
-                    value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
+                    value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : labelNames[0]}
                     options={labelNames}
                     onSelectLabel={updateRectLabel}
                     toggleLabelVisibility={toggleRectLabelVisibilityById}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './InsertLabelNamesPopup.scss';
 import { GenericYesNoPopup } from '../GenericYesNoPopup/GenericYesNoPopup';
 import { PopupWindowType } from '../../../data/enums/PopupWindowType';
@@ -43,6 +43,14 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
         projectType,
         enablePerClassColoration
     }) => {
+    
+    const buttonRef = useRef(null);
+
+    useEffect(() => {
+        // Simulate click event on component load
+        buttonRef.current.click();
+    }, []);
+    
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
     const validateEmptyLabelNames = (): boolean => {
@@ -178,7 +186,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     };
 
     const go_back_function = () => {
-        console.log("clicked");
+        // console.log("clicked");
         updateActivePopupTypeAction(PopupWindowType.EXIT_PROJECT)
     }
 
@@ -227,7 +235,9 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     </Scrollbars> :
                         <div
                             className='EmptyList'
+                            ref={buttonRef}
                             onClick={addLabelNameCallback}
+                            
                         >
                             <img
                                 draggable={false}
@@ -235,6 +245,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                                 src={'ico/type-writer.png'}
                             />
                             <p className='extraBold'>Your label list is empty</p>
+                            <script>addLabelNameCallback()</script>
                         </div>}
                 </div>
             </div>
@@ -250,6 +261,7 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
             onAccept={isUpdate ? safeOnUpdateAcceptCallback : safeOnCreateAcceptCallback}
             rejectLabel={isUpdate ? 'Cancel' : 'Load labels from file'}
             onReject={isUpdate ? onUpdateRejectCallback : onCreateRejectCallback}
+            skipRejectButton = {true}
         />);
 };
 
