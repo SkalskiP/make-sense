@@ -61,6 +61,7 @@ export class RectUtil {
             }
         }
     }
+    
 
     public static resizeRect(inputRect: IRect, rectAnchor: Direction, delta): IRect {
         const rect: IRect = {...inputRect};
