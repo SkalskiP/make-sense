@@ -5,7 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
-    "@mui/material": "^5.9.1",
+    "@mui/material": "^5.13.4",
     "@mui/system": "^5.9.1",
     "@tabler/icons-react": "^2.14.0",
     "@tensorflow-models/coco-ssd": "^2.2.2",
