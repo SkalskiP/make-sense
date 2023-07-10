@@ -167,6 +167,13 @@ export class EditorContext extends BaseContext {
                 ImageActions.setActiveLabelOnActiveImage(9);
                 EditorActions.fullRender();
             }
-        }
+        },
+        {
+            keyCombo: ["h"],
+            action: (event: KeyboardEvent) => {
+                ImageActions.toggleAllLabelsVisibility();
+                EditorActions.fullRender();
+            }
+        },
     ];
 }

@@ -17,6 +17,7 @@ import {
   LabelRect,
 } from "../../store/labels/types";
 import { LabelStatus } from "../../data/enums/LabelStatus";
+import { LabelActions } from "./LabelActions";
 import { remove } from "lodash";
 
 export class ImageActions {
@@ -148,5 +149,10 @@ export class ImageActions {
     }
 
     return newImageData;
+  }
+
+  public static toggleAllLabelsVisibility(): void {
+    const imageData: ImageData = LabelsSelector.getActiveImageData();
+    LabelActions.toggleAllLabelsVisibility(imageData.id);
   }
 }
