@@ -56,6 +56,13 @@ export class LabelUtil {
         }
     }
 
+    public static setAnnotationVisibility<AnnotationType extends Annotation>(annotation: AnnotationType, isVisible: boolean): AnnotationType {
+        return {
+            ...annotation,
+            isVisible
+        }
+    }
+
     public static labelNamesIdsDiff(oldLabelNames: LabelName[], newLabelNames: LabelName[]): string[] {
         return oldLabelNames.reduce((missingIds: string[], labelName: LabelName) => {
             if (!find(newLabelNames, { 'id': labelName.id })) {

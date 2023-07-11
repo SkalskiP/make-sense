@@ -73,21 +73,24 @@ export class LabelActions {
 
     public static toggleAllLabelsVisibility(imageId: string) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+        const newToggleValue = imageData.allLabelsVisibilityToggle ? !imageData.allLabelsVisibilityToggle : true;
         const newImageData = {
             ...imageData,
+            allLabelsVisibilityToggle: newToggleValue,
             labelPoints: imageData.labelPoints.map((labelPoint: LabelPoint) => {
-                return LabelUtil.toggleAnnotationVisibility(labelPoint)
+                return LabelUtil.setAnnotationVisibility(labelPoint, newToggleValue)
             }),
             labelRects: imageData.labelRects.map((labelRect: LabelRect) => {
-                return LabelUtil.toggleAnnotationVisibility(labelRect)
+                return LabelUtil.setAnnotationVisibility(labelRect, newToggleValue)
             }),
             labelPolygons: imageData.labelPolygons.map((labelPolygon: LabelPolygon) => {
-                return LabelUtil.toggleAnnotationVisibility(labelPolygon)
+                return LabelUtil.setAnnotationVisibility(labelPolygon, newToggleValue)
             }),
             labelLines: imageData.labelLines.map((labelLine: LabelLine) => {
-                return LabelUtil.toggleAnnotationVisibility(labelLine)
+                return LabelUtil.setAnnotationVisibility(labelLine, newToggleValue)
             }),
         };
+        
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 
