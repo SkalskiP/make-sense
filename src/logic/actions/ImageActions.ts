@@ -61,6 +61,13 @@ export class ImageActions {
     store.dispatch(updateActiveLabelNameId(labelNames[1].id));
   }
 
+  public static toggleAllLabelsVisibility(): void {
+    const imageData: ImageData = LabelsSelector.getActiveImageData();
+    const newToggleValue = imageData.allLabelsVisibilityToggle ? !imageData.allLabelsVisibilityToggle : false;
+    
+    LabelActions.setAllLabelsVisibility(imageData.id, newToggleValue);
+  }
+
   private static mapNewImageData(
     imageData: ImageData,
     labelIndex: number
@@ -149,12 +156,5 @@ export class ImageActions {
     }
 
     return newImageData;
-  }
-
-  public static toggleAllLabelsVisibility(): void {
-    const imageData: ImageData = LabelsSelector.getActiveImageData();
-    const newToggleValue = imageData.allLabelsVisibilityToggle ? !imageData.allLabelsVisibilityToggle : true;
-    
-    LabelActions.setAllLabelsVisibility(imageData.id, newToggleValue);
   }
 }
