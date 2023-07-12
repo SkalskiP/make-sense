@@ -63,7 +63,7 @@ export class ImageActions {
 
   public static toggleAllLabelsVisibility(): void {
     const imageData: ImageData = LabelsSelector.getActiveImageData();
-    const newToggleValue = imageData.allLabelsVisibilityToggle ? !imageData.allLabelsVisibilityToggle : false;
+    const newToggleValue = imageData.allLabelsVisibilityToggle !== null ? !imageData.allLabelsVisibilityToggle : false;
     
     LabelActions.setAllLabelsVisibility(imageData.id, newToggleValue);
   }
