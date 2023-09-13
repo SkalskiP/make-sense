@@ -1,0 +1,61 @@
+/* login.scss */
+/* เพิ่มสไตล์ CSS เพื่อปรับแต่งหน้า Login */
+div {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px;
+    color: #dad7d7;
+  
+  }
+  
+  h2 {
+    font-size: 24px;
+    color: #dad7d7;
+  }
+  
+  input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+  }
+  
+  input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #d6d6d6;
+    border-radius: 5px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* เพิ่มสไตล์ CSS เพื่อปรับแต่งสีพื้นหลังหน้า Login */
+  body {
+    background-color: #f0f0f0;
+  }
+  
+  /* เพิ่มสไตล์ CSS เพื่อปรับแต่งความกว้างของหน้า Login */
+  .container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  

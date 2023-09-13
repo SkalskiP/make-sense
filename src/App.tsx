@@ -14,6 +14,7 @@ import {PlatformModel} from './staticModels/PlatformModel';
 import classNames from 'classnames';
 import NotificationsView from './views/NotificationsView/NotificationsView';
 import { RoboflowAPIDetails } from './store/ai/types';
+import Login from './views/Login/Login';
 
 interface IProps {
     projectType: ProjectType;
@@ -53,9 +54,15 @@ const App: React.FC<IProps> = (
         || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status)
 
     return (
-        <div className={classNames('App', {'AI': isAILoaded})} draggable={false}
-        >
-            {selectRoute()}
+        // <div className={classNames('App', {'AI': isAILoaded})} draggable={false}
+        // >
+        //     {selectRoute()}
+        <div className={classNames('App', { 'AI': isAILoaded })} draggable={false}>
+        {isAILoaded ? (
+          selectRoute()
+        ) : (
+          <Login />
+        )}
             <PopupView/>
             <NotificationsView/>
         </div>
