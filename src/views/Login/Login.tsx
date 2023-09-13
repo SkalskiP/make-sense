@@ -1,16 +1,15 @@
 import './Login.scss';
 import React, { useState } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import MainView from '../MainView/MainView';
 
 const Login: React.FC = () => {
-  // const history = useHistory();
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    window.location.replace('../MainView/MainView');
-    // history.push(MainView);
+  const handleLogin = () => { // window.location.replace('../MainView/MainView');
+    navigate('/');
     // อ่านข้อมูลผู้ใช้จากไฟล์ JSON (ในสรา้งแอพของคุณ คุณต้องใช้วิธีการแบบนี้เพื่ออ่านข้อมูลจากไฟล์ JSON)
     // window.location.replace('../MainView/MainView');
     // fetch('/users.json')

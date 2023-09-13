@@ -58,11 +58,7 @@ const App: React.FC<IProps> = (
         // >
         //     {selectRoute()}
         <div className={classNames('App', { 'AI': isAILoaded })} draggable={false}>
-        {isAILoaded ? (
-          selectRoute()
-        ) : (
-          <Login />
-        )}
+          {selectRoute()}
             <PopupView/>
             <NotificationsView/>
         </div>
