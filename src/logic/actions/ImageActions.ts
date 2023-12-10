@@ -17,6 +17,7 @@ import {
   LabelRect,
 } from "../../store/labels/types";
 import { LabelStatus } from "../../data/enums/LabelStatus";
+import { LabelActions } from "./LabelActions";
 import { remove } from "lodash";
 
 export class ImageActions {
@@ -58,6 +59,13 @@ export class ImageActions {
       )
     );
     store.dispatch(updateActiveLabelNameId(labelNames[1].id));
+  }
+
+  public static toggleAllLabelsVisibility(): void {
+    const imageData: ImageData = LabelsSelector.getActiveImageData();
+    const newToggleValue = imageData.allLabelsVisibilityToggle !== null ? !imageData.allLabelsVisibilityToggle : false;
+    
+    LabelActions.setAllLabelsVisibility(imageData.id, newToggleValue);
   }
 
   private static mapNewImageData(

@@ -49,6 +49,8 @@ export type ImageData = {
     labelPolygons: LabelPolygon[];
     labelNameIds: string[];
 
+    allLabelsVisibilityToggle: boolean;
+
     // YOLO
     isVisitedByYOLOObjectDetector: boolean;
 
