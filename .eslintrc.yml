@@ -5,6 +5,7 @@ extends:
 parser: "@typescript-eslint/parser"
 plugins:
   - "@typescript-eslint"
+  - import
 rules:
   "@typescript-eslint/no-inferrable-types": off
   no-shadow: off
@@ -24,6 +25,8 @@ rules:
   no-eval: error
   no-implied-eval: error
   prefer-promise-reject-errors: warn
+  semi: warn
+
 env:
   browser: true
 settings:

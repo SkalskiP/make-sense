@@ -1,28 +1,34 @@
+import { ThemeProvider, createTheme } from '@mui/material';
+import classNames from 'classnames';
 import React from 'react';
+import { connect } from 'react-redux';
 import './App.scss';
+import { ProjectType } from './data/enums/ProjectType';
+import { ISize } from './interfaces/ISize';
+import { Settings } from './settings/Settings';
+import { PlatformModel } from './staticModels/PlatformModel';
+import { AppState } from './store';
+import { RoboflowAPIDetails } from './store/ai/types';
 import EditorView from './views/EditorView/EditorView';
 import MainView from './views/MainView/MainView';
-import {ProjectType} from './data/enums/ProjectType';
-import {AppState} from './store';
-import {connect} from 'react-redux';
-import PopupView from './views/PopupView/PopupView';
 import MobileMainView from './views/MobileMainView/MobileMainView';
-import {ISize} from './interfaces/ISize';
-import {Settings} from './settings/Settings';
-import {SizeItUpView} from './views/SizeItUpView/SizeItUpView';
-import {PlatformModel} from './staticModels/PlatformModel';
-import classNames from 'classnames';
 import NotificationsView from './views/NotificationsView/NotificationsView';
-import { RoboflowAPIDetails } from './store/ai/types';
+import PopupView from './views/PopupView/PopupView';
+import { SizeItUpView } from './views/SizeItUpView/SizeItUpView';
 
 interface IProps {
     projectType: ProjectType;
     windowSize: ISize;
-    isObjectDetectorLoaded: boolean;
-    isPoseDetectionLoaded: boolean;
+    isObjectDetectorLoaded?: boolean;
+    isPoseDetectionLoaded?: boolean;
     isYOLOV5ObjectDetectorLoaded: boolean;
     roboflowAPIDetails: RoboflowAPIDetails;
 }
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+    },
+});
 
 const App: React.FC<IProps> = (
     {
@@ -36,29 +42,32 @@ const App: React.FC<IProps> = (
 ) => {
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
-            return <MobileMainView/>;
+            return <MobileMainView />;
         if (!projectType)
-            return <MainView/>;
+            return <MainView />;
         else {
             if (windowSize.height < Settings.EDITOR_MIN_HEIGHT || windowSize.width < Settings.EDITOR_MIN_WIDTH) {
-                return <SizeItUpView/>;
+                return <SizeItUpView />;
             } else {
-                return <EditorView/>;
+                return <EditorView />;
             }
         }
     };
     const isAILoaded = isObjectDetectorLoaded
         || isPoseDetectionLoaded
         || isYOLOV5ObjectDetectorLoaded
-        || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status)
+        || (roboflowAPIDetails.model !== '' && roboflowAPIDetails.key !== '' && roboflowAPIDetails.status);
 
     return (
-        <div className={classNames('App', {'AI': isAILoaded})} draggable={false}
-        >
-            {selectRoute()}
-            <PopupView/>
-            <NotificationsView/>
-        </div>
+
+        <ThemeProvider theme={darkTheme}>
+            <div className={classNames('App', { 'AI': isAILoaded })} draggable={false}
+            >
+                {selectRoute()}
+                <PopupView />
+                <NotificationsView />
+            </div>
+        </ThemeProvider>
     );
 };
 

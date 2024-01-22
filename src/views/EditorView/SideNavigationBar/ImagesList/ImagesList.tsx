@@ -1,17 +1,17 @@
 import React from 'react';
-import {connect} from "react-redux";
-import {LabelType} from "../../../../data/enums/LabelType";
-import {ISize} from "../../../../interfaces/ISize";
-import {AppState} from "../../../../store";
-import {ImageData, LabelPoint, LabelRect} from "../../../../store/labels/types";
-import {VirtualList} from "../../../Common/VirtualList/VirtualList";
+import { connect } from "react-redux";
+import { ContextType } from "../../../../data/enums/ContextType";
+import { EventType } from "../../../../data/enums/EventType";
+import { LabelStatus } from "../../../../data/enums/LabelStatus";
+import { LabelType } from "../../../../data/enums/LabelType";
+import { ISize } from "../../../../interfaces/ISize";
+import { ImageActions } from "../../../../logic/actions/ImageActions";
+import { ContextManager } from "../../../../logic/context/ContextManager";
+import { AppState } from "../../../../store";
+import { ImageData, LabelPoint, LabelRect } from "../../../../store/labels/types";
+import { VirtualList } from "../../../Common/VirtualList/VirtualList";
 import ImagePreview from "../ImagePreview/ImagePreview";
 import './ImagesList.scss';
-import {ContextManager} from "../../../../logic/context/ContextManager";
-import {ContextType} from "../../../../data/enums/ContextType";
-import {ImageActions} from "../../../../logic/actions/ImageActions";
-import {EventType} from "../../../../data/enums/EventType";
-import {LabelStatus} from "../../../../data/enums/LabelStatus";
 
 interface IProps {
     activeImageIndex: number;
@@ -31,7 +31,7 @@ class ImagesList extends React.Component<IProps, IState> {
 
         this.state = {
             size: null,
-        }
+        };
     }
 
     public componentDidMount(): void {
@@ -53,31 +53,31 @@ class ImagesList extends React.Component<IProps, IState> {
                 width: listBoundingBox.width,
                 height: listBoundingBox.height
             }
-        })
+        });
     };
 
     private isImageChecked = (index:number): boolean => {
-        const imageData = this.props.imagesData[index]
+        const imageData = this.props.imagesData[index];
         switch (this.props.activeLabelType) {
             case LabelType.LINE:
-                return imageData.labelLines.length > 0
+                return imageData.labelLines.length > 0;
             case LabelType.IMAGE_RECOGNITION:
-                return imageData.labelNameIds.length > 0
+                return imageData.labelNameIds.length > 0;
             case LabelType.POINT:
                 return imageData.labelPoints
                     .filter((labelPoint: LabelPoint) => labelPoint.status === LabelStatus.ACCEPTED)
-                    .length > 0
+                    .length > 0;
             case LabelType.POLYGON:
-                return imageData.labelPolygons.length > 0
+                return imageData.labelPolygons.length > 0;
             case LabelType.RECT:
                 return imageData.labelRects
                     .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
-                    .length > 0
+                    .length > 0;
         }
     };
 
     private onClickHandler = (index: number) => {
-        ImageActions.getImageByIndex(index)
+        ImageActions.getImageByIndex(index);
     };
 
     private renderImagePreview = (index: number, isScrolling: boolean, isVisible: boolean, style: React.CSSProperties) => {
@@ -90,11 +90,11 @@ class ImagesList extends React.Component<IProps, IState> {
             imageData={this.props.imagesData[index]}
             onClick={() => this.onClickHandler(index)}
             isSelected={this.props.activeImageIndex === index}
-        />
+        />;
     };
 
     public render() {
-        const { size } = this.state;
+        const {size} = this.state;
         return(
             <div
                 className="ImagesList"
@@ -109,7 +109,7 @@ class ImagesList extends React.Component<IProps, IState> {
                     overScanHeight={200}
                 />}
             </div>
-        )
+        );
     }
 }
 

@@ -1,18 +1,19 @@
+import { IconButton } from "@mui/material";
+import { IconTrashX } from "@tabler/icons-react";
 import classNames from "classnames";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { ImageLoadManager } from "../../../../logic/imageRepository/ImageLoadManager";
-import { IRect } from "../../../../interfaces/IRect";
-import { ISize } from "../../../../interfaces/ISize";
-import { ImageRepository } from "../../../../logic/imageRepository/ImageRepository";
-import { AppState } from "../../../../store";
-import { updateImageDataById } from "../../../../store/labels/actionCreators";
-import { ImageData } from "../../../../store/labels/types";
-import { FileUtil } from "../../../../utils/FileUtil";
-import { RectUtil } from "../../../../utils/RectUtil";
+import { IRect } from "~/interfaces/IRect";
+import { ISize } from "~/interfaces/ISize";
+import { CSSHelper } from "~/logic/helpers/CSSHelper";
+import { ImageLoadManager } from "~/logic/imageRepository/ImageLoadManager";
+import { ImageRepository } from "~/logic/imageRepository/ImageRepository";
+import { updateImageDataById } from "~/store/labels/actionCreators";
+import { ImageData } from "~/store/labels/types";
+import { FileUtil } from "~/utils/FileUtil";
+import { RectUtil } from "~/utils/RectUtil";
 import './ImagePreview.scss';
-import { CSSHelper } from "../../../../logic/helpers/CSSHelper";
 
 interface IProps {
     imageData: ImageData;
@@ -20,95 +21,41 @@ interface IProps {
     size: ISize;
     isScrolling?: boolean;
     isChecked?: boolean;
-    onClick?: () => any;
+    onClick?: () => unknown;
     isSelected?: boolean;
     updateImageDataById: (id: string, newImageData: ImageData) => any;
 }
 
-interface IState {
-    image: HTMLImageElement;
-}
+const ImagePreview: React.FC<IProps> = (props) => {
+    const [image, setImage] = useState<HTMLImageElement | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
-class ImagePreview extends React.Component<IProps, IState> {
-    private isLoading: boolean = false;
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            image: null,
-        }
-    }
-
-    public componentDidMount(): void {
-        ImageLoadManager.addAndRun(this.loadImage(this.props.imageData, this.props.isScrolling));
-    }
-
-    public componentWillUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): void {
-        if (this.props.imageData.id !== nextProps.imageData.id) {
-            if (nextProps.imageData.loadStatus) {
-                ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, nextProps.isScrolling));
-            }
-            else {
-                this.setState({ image: null });
-            }
-        }
-
-        if (this.props.isScrolling && !nextProps.isScrolling) {
-            ImageLoadManager.addAndRun(this.loadImage(nextProps.imageData, false));
-        }
-    }
-
-    shouldComponentUpdate(nextProps: Readonly<IProps>, nextState: Readonly<IState>, nextContext: any): boolean {
-        return (
-            this.props.imageData.id !== nextProps.imageData.id ||
-            this.state.image !== nextState.image ||
-            this.props.isSelected !== nextProps.isSelected ||
-            this.props.isChecked !== nextProps.isChecked
-        )
-    }
-
-    private loadImage = async (imageData: ImageData, isScrolling: boolean) => {
-        if (imageData.loadStatus) {
-            const image = ImageRepository.getById(imageData.id);
-            if (this.state.image !== image) {
-                this.setState({ image });
-            }
-        }
-        else if (!isScrolling || !this.isLoading) {
-            this.isLoading = true;
-            const saveLoadedImagePartial = (image: HTMLImageElement) => this.saveLoadedImage(image, imageData);
-            FileUtil.loadImage(imageData.fileData)
-                .then((image: HTMLImageElement) => saveLoadedImagePartial(image))
-                .catch((error) => this.handleLoadImageError())
-        }
-    };
-
-    private saveLoadedImage = (image: HTMLImageElement, imageData: ImageData) => {
+    const saveLoadedImage = (img: HTMLImageElement, imageData: any) => {
         imageData.loadStatus = true;
-        this.props.updateImageDataById(imageData.id, imageData);
-        ImageRepository.storeImage(imageData.id, image);
-        if (imageData.id === this.props.imageData.id) {
-            this.setState({ image });
-            this.isLoading = false;
+        props.updateImageDataById(imageData.id, imageData);
+        ImageRepository.storeImage(imageData.id, img);
+        if (imageData.id === props.imageData.id) {
+            setImage(img);
+            setIsLoading(false);
         }
     };
 
-    private getStyle = () => {
-        const { size } = this.props;
+    const getStyle = () => {
+        const {size} = props;
 
         const containerRect: IRect = {
             x: 0.15 * size.width,
             y: 0.15 * size.height,
             width: 0.7 * size.width,
-            height: 0.7 * size.height
+            height: 0.7 * size.height,
         };
 
         const imageRect: IRect = {
             x: 0,
             y: 0,
-            width: this.state.image.width,
-            height: this.state.image.height
+            width: image?.width ?? 0,
+            height: image?.height ?? 0,
         };
 
         const imageRatio = RectUtil.getRatio(imageRect);
@@ -118,75 +65,126 @@ class ImagePreview extends React.Component<IProps, IState> {
             width: imagePosition.width,
             height: imagePosition.height,
             left: imagePosition.x,
-            top: imagePosition.y
+            top: imagePosition.y,
+        };
+    };
+
+    const handleLoadImageError = (error: unknown) => {
+        if (error instanceof Error) {
+            console.error(error);
         }
     };
 
-    private handleLoadImageError = () => { };
-
-    private getClassName = () => {
-        return classNames(
-            "ImagePreview",
-            {
-                "selected": this.props.isSelected,
-            }
-        );
+    const getClassName = () => {
+        return classNames('ImagePreview', {
+            selected: props.isSelected,
+        });
     };
 
-    public render() {
-        const {
-            isChecked,
-            style,
-            onClick
-        } = this.props;
+    const handleMouseEnter = () => {
+        setIsHovered(true);
+    };
 
-        return (
-            <div
-                className={this.getClassName()}
-                style={style}
-                onClick={onClick ? onClick : undefined}
-            >
-                {(!!this.state.image) ?
+    const handleMouseLeave = () => {
+        setIsHovered(false);
+    };
+
+    const handleDeleteButtonClick = () => {
+        ImageRepository.removeImage(props.imageData.id);
+    };
+
+    const loadImage = async (imageData: ImageData, isScrolling: boolean) => {
+        if (imageData.loadStatus) {
+            const i = ImageRepository.getById(imageData.id);
+            if (image !== i) {
+                setImage(i);
+            }
+        } else if (!isScrolling || !isLoading) {
+            setIsLoading(true);
+            const saveLoadedImagePartial = (i: HTMLImageElement) => saveLoadedImage(i, imageData);
+            FileUtil.loadImage(imageData.fileData)
+                .then((i: HTMLImageElement) => saveLoadedImagePartial(i))
+                .catch((error) => handleLoadImageError(error));
+        }
+    };
+
+    useEffect(() => {
+        ImageLoadManager.addAndRun(loadImage(props.imageData, props.isScrolling == true));
+    }, []);
+
+    useEffect(() => {
+        if (props.imageData.loadStatus) {
+            ImageLoadManager.addAndRun(loadImage(props.imageData, props.isScrolling == true));
+        } else {
+            setImage(null);
+        }
+
+        if (props.isScrolling) {
+            ImageLoadManager.addAndRun(loadImage(props.imageData, false));
+        }
+    }, [props.imageData, props.isScrolling]);
+
+
+    const {
+        isChecked,
+        style,
+        onClick,
+    } = props;
+
+    return (
+        <div
+            className={getClassName()}
+            style={style}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
+            <div onClick={onClick} style={{width: "100%"}}>
+                {image ? (
                     [
-                        <div
-                            className="Foreground"
-                            key={"Foreground"}
-                            style={this.getStyle()}
-                        >
+                        <div className="Foreground" key={"Foreground"} style={getStyle()}>
                             <img
                                 className="Image"
                                 draggable={false}
-                                src={this.state.image.src}
-                                alt={this.state.image.alt}
-                                style={{ ...this.getStyle(), left: 0, top: 0 }}
+                                src={image.src}
+                                alt={image.alt}
+                                style={{...getStyle(), left: 0, top: 0}}
                             />
-                            {isChecked && <img
-                                className="CheckBox"
-                                draggable={false}
-                                src={"ico/ok.png"}
-                                alt={"checkbox"}
-                            />}
+                            {isChecked && (
+                                <img
+                                    className="CheckBox"
+                                    draggable={false}
+                                    src={"ico/ok.png"}
+                                    alt={"checkbox"}
+                                />
+                            )}
                         </div>,
-                        <div
-                            className="Background"
-                            key={"Background"}
-                            style={this.getStyle()}
-                        />
-                    ] :
-                    <ClipLoader
-                        size={30}
-                        color={CSSHelper.getLeadingColor()}
-                        loading={true}
-                    />}
-            </div>)
-    }
-}
+                        <div className="Background" key={"Background"} style={getStyle()} />,
+                    ]
+                ) : (
+                    <ClipLoader size={30} color={CSSHelper.getLeadingColor()} loading={true} />
+                )}
+            </div>
+            {isHovered && (
+                <div className={classNames('icon', "DeleteButton")}>
+                    <IconButton
+                        aria-label={'remove Image'}
+                        size="small"
+                        onClick={handleDeleteButtonClick}
+                    >
+                        <IconTrashX size={18} />
+                    </IconButton>
+                </div>
+            )}
+        </div>
+    );
+};
+
 
 const mapDispatchToProps = {
     updateImageDataById
 };
 
-const mapStateToProps = (state: AppState) => ({});
+const mapStateToProps = (state: any) => ({});
 
 export default connect(
     mapStateToProps,
