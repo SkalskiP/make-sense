@@ -12,6 +12,17 @@ import {ISize} from '../../interfaces/ISize';
 import {NumberUtil} from '../../utils/NumberUtil';
 import {RectUtil} from '../../utils/RectUtil';
 import {Settings} from '../../settings/Settings';
+import {flatten} from "lodash";
+import {IRect} from '../../interfaces/IRect';
+import {COCOExporter} from './polygon/COCOExporter';
+import {
+    COCOAnnotation, COCOBBox,
+    COCOCategory,
+    COCOImage,
+    COCOInfo,
+    COCOObject,
+    COCOSegmentation
+} from '../../data/labels/COCO';
 
 export class RectLabelsExporter {
     public static export(exportFormatType: AnnotationFormatType): void {
@@ -24,6 +35,9 @@ export class RectLabelsExporter {
                 break;
             case AnnotationFormatType.CSV:
                 RectLabelsExporter.exportAsCSV();
+                break;
+            case AnnotationFormatType.COCO:
+                RectLabelsExporter.exportAsCOCO();
                 break;
             default:
                 return;
@@ -225,5 +239,82 @@ export class RectLabelsExporter {
             .map((labelRect: LabelRect) => RectLabelsExporter.wrapRectLabelIntoCSV(
                 labelRect, labelNames, imageSize, imageData.fileData.name));
         return labelRectsString.join('\n');
+    }
+
+    private static exportAsCOCO(): void {
+        try {
+            const imagesData: ImageData[] = LabelsSelector.getImagesData();
+            const labelNames: LabelName[] = LabelsSelector.getLabelNames();
+            const projectName: string = GeneralSelector.getProjectName();
+            const COCOObject: COCOObject = RectLabelsExporter.mapImagesDataToCOCOObject(imagesData, labelNames, projectName);
+            const content: string = JSON.stringify(COCOObject);
+            const fileName: string = `${ExporterUtil.getExportFileName()}.json`;
+            ExporterUtil.saveAs(content, fileName);
+        } catch (error) {
+            // TODO
+            throw new Error(error as string);
+        }
+    }
+
+    private static mapImagesDataToCOCOObject(
+        imagesData: ImageData[],
+        labelNames: LabelName[],
+        projectName: string
+    ): COCOObject {
+        return {
+            "info": COCOExporter.getInfoComponent(projectName),
+            "images": RectLabelsExporter.getImagesComponent(imagesData),
+            "annotations": RectLabelsExporter.getAnnotationsComponent(imagesData, labelNames),
+            "categories":COCOExporter.getCategoriesComponent(labelNames)
+        }
+    }
+
+    public static getImagesComponent(imagesData: ImageData[]): COCOImage[] {
+        return imagesData
+            .filter((imagesData: ImageData) => imagesData.loadStatus)
+            .filter((imagesData: ImageData) => imagesData.labelRects.length !== 0)
+            .map((imageData: ImageData, index: number) => {
+                const image: HTMLImageElement = ImageRepository.getById(imageData.id);
+                return {
+                    "id": index + 1,
+                    "width": image.width,
+                    "height": image.height,
+                    "file_name": imageData.fileData.name
+                }
+            })
+    }
+
+    public static getAnnotationsComponent(imagesData: ImageData[], labelNames: LabelName[]): COCOAnnotation[] {
+        const labelsMap: LabelDataMap = COCOExporter.mapLabelsData(labelNames);
+        let id = 0;
+        const annotations: COCOAnnotation[][] = imagesData
+            .filter((imagesData: ImageData) => imagesData.loadStatus)
+            .filter((imagesData: ImageData) => imagesData.labelRects.length !== 0)
+            .map((imageData: ImageData, index: number) => {
+                return imageData.labelRects.map((labelRects: LabelRect) => {
+                    return {
+                        "id": id++,
+                        "iscrowd": 0,
+                        "image_id": index + 1,
+                        "category_id": labelsMap[labelRects.labelId],
+                        "segmentation": RectLabelsExporter.getCOCOSegmentation(labelRects.rect),
+                        "bbox": RectLabelsExporter.getCOCOBbox(labelRects.rect),
+                        "area": RectLabelsExporter.getCOCOArea(labelRects.rect)
+                    }
+                })
+            })
+        return flatten(annotations);
+    }
+
+    public static getCOCOSegmentation(rect: IRect): COCOSegmentation {
+        return [];
+    }
+
+    public static getCOCOBbox(rect: IRect): COCOBBox {
+        return [rect.x, rect.y, rect.width, rect.height];
+    }
+
+    public static getCOCOArea(rect: IRect): number {
+        return rect.height*rect.width;
     }
 }

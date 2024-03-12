@@ -181,3 +181,23 @@ describe('RectLabelsExporter wrapRectLabelIntoCSV method', () => {
         expect(parseFloat(resultImageHeight)).toBe(1080)
     })
 })
+
+describe('RectLabelsExporter getCOCOArea method', () => {
+    it('should produce correct area', () => {
+        const labelRect: LabelRect = {
+            id: 'label-rect-000',
+            labelId: 'label-002',
+            rect: {
+                x: 444,
+                y: 998,
+                width: 90,
+                height: 82
+            },
+            isVisible: true,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: 'label-000'
+        }
+        expect(RectLabelsExporter.getCOCOArea(labelRect.rect)).toBe(7380);
+    });
+});
