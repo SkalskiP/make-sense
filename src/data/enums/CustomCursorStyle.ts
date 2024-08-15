@@ -6,5 +6,8 @@ export enum CustomCursorStyle {
     CANCEL = "CANCEL",
     CLOSE = "CLOSE",
     GRAB = "GRAB",
-    GRABBING = "GRABBING"
+    GRABBING = "GRABBING",
+    MAGIC_WAND  = "MAGIC_WAND",
+    MAGIC_WAND_ADD  = "MAGIC_WAND_ADD",
+    MAGIC_WAND_REMOVE = "MAGIC_WAND_REMOVE", 
 }

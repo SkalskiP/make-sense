@@ -1,12 +1,13 @@
 import {ContextType} from "../../data/enums/ContextType";
 import {HotKeyAction} from "../../data/HotKeyAction";
 import {store} from "../../index";
-import {updateActiveContext} from "../../store/general/actionCreators";
+import {updateActiveContext, updateCustomCursorStyle} from "../../store/general/actionCreators";
 import {xor, isEmpty} from "lodash";
 import {EditorContext} from "./EditorContext";
 import {PopupContext} from "./PopupContext";
 import {GeneralSelector} from "../../store/selectors/GeneralSelector";
 import {EventType} from "../../data/enums/EventType";
+import {CustomCursorStyle} from "../../data/enums/CustomCursorStyle";
 
 export class ContextManager {
     private static activeCombo: string[] = [];
@@ -56,11 +57,13 @@ export class ContextManager {
             ContextManager.addToCombo(keyCode);
         }
         ContextManager.execute(event);
+        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MAGIC_WAND_ADD));
     }
 
     private static onUp(event: KeyboardEvent): void {
         const keyCode: string = ContextManager.getKeyCodeFromEvent(event);
         ContextManager.removeFromCombo(keyCode);
+        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MAGIC_WAND));
     }
 
     public static onFocus() {

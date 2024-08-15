@@ -1,0 +1,31 @@
+@import '../../../settings/Settings';
+
+* {
+  box-sizing: border-box;
+}
+
+.SliderWrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: flex-start;
+
+  padding-right: 5px;
+  margin-right: 5px;
+  background-color: none;
+
+  .Slider {
+    width: 100px;
+    margin: 0 5px;
+    color: $darkThemeThirdColor !important;
+    background-color: $darkThemeSecondColor !important;
+
+    .MuiSlider-thumb {
+      width: 8px;
+      height: 8px;
+      background-color: $darkThemeThirdColor;
+    }
+  }
+}

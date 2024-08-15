@@ -27,6 +27,11 @@ import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {Settings} from '../../settings/Settings';
 import {LabelUtil} from '../../utils/LabelUtil';
 import {PolygonUtil} from '../../utils/PolygonUtil';
+import {MagicWandUtil} from '../../utils/MagicWandUtil';
+import {EditorModel} from '../../staticModels/EditorModel';
+import {PlatformUtil} from '../../utils/PlatformUtil';
+import {MagicWandSelector} from '../../store/selectors/MagicWandSelector';
+import {updateMagicWandMask,updateMagicWandRect} from '../../store/magic-wand/actionCreators';
 
 export class PolygonRenderEngine extends BaseRenderEngine {
 
@@ -69,7 +74,9 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     public mouseDownHandler(data: EditorData): void {
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
-            if (this.isCreationInProgress()) {
+            if (MagicWandSelector.getMagicWandActiveStatus()) {
+                this.magicWandSelection(data);
+            } else if (this.isCreationInProgress()) {
                 const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(
                     data.mousePositionOnViewPortContent, this.activePath[0]);
                 if (isMouseOverStartAnchor) {
@@ -165,7 +172,16 @@ export class PolygonRenderEngine extends BaseRenderEngine {
         if (!!this.canvas && !!data.mousePositionOnViewPortContent && !GeneralSelector.getImageDragModeStatus()) {
             const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
             if (isMouseOverCanvas) {
-                if (this.isCreationInProgress()) {
+                if (MagicWandSelector.getMagicWandActiveStatus()) {
+                    if (data.activeKeyCombo.includes("Shift")) {
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MAGIC_WAND_ADD));
+                    } else if (data.activeKeyCombo.includes(PlatformUtil.isMac(window.navigator.userAgent) ? "Alt" : "Control")) {
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MAGIC_WAND_REMOVE));
+
+                    } else {
+                        store.dispatch(updateCustomCursorStyle(CustomCursorStyle.MAGIC_WAND));
+                    }
+                } else if (this.isCreationInProgress()) {
                     const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(data.mousePositionOnViewPortContent, this.activePath[0]);
                     if (isMouseOverStartAnchor && this.activePath.length > 2)
                         store.dispatch(updateCustomCursorStyle(CustomCursorStyle.CLOSE));
@@ -296,6 +312,12 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             this.finishLabelCreation();
         }
     }
+
+    private removePolygonLabel(labelId: string) {
+        const imageData: ImageData = LabelsSelector.getActiveImageData();
+        imageData.labelPolygons = imageData.labelPolygons.filter((polygon: LabelPolygon) => polygon.id !== labelId);
+        store.dispatch(updateImageDataById(imageData.id, imageData));
+    };
 
     private addPolygonLabel(polygon: IPoint[]) {
         const activeLabelId = LabelsSelector.getActiveLabelNameId();
@@ -446,5 +468,34 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             }
         }
         return null;
+    }
+
+    private magicWandSelection(data: EditorData): void {
+        const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
+        const actualPosition = RenderEngineUtil.transferPointFromViewPortContentToImage(mousePositionSnapped, data);
+        this.activePath.push(mousePositionSnapped);
+        const shiftKey = data.activeKeyCombo.includes("Shift");
+        const altKey = data.activeKeyCombo.includes(PlatformUtil.isMac(window.navigator.userAgent) ? "Alt" : "Control");
+        const modifier = shiftKey ? "add" : altKey ? "remove" : undefined;
+        if (modifier && MagicWandSelector.getMagicWandMask()) {
+            const { mask: updatedMask, rect: updatedRect, path }  = MagicWandUtil.editSelection(EditorModel.image, actualPosition, MagicWandSelector.getMagicWandMask(), MagicWandSelector.getMagicWandRect(), MagicWandSelector.getMagicWandTolerance(), modifier);
+            if (path.length === 0) return;
+            store.dispatch(updateMagicWandMask(updatedMask));
+            store.dispatch(updateMagicWandRect(updatedRect));
+            this.activePath = path.map((point: IPoint) => RenderEngineUtil.transferPointFromImageToViewPortContent(point, data));
+            const polygonOnImage: IPoint[] = RenderEngineUtil.transferPolygonFromViewPortContentToImage(this.activePath, data);
+            this.removePolygonLabel(LabelsSelector.getActiveLabelId());
+            this.addPolygonLabel(polygonOnImage);
+            this.finishLabelCreation();
+        } else {
+            const { mask: updatedMask, rect: updatedRect, path } = MagicWandUtil.getSelection(EditorModel.image, actualPosition, MagicWandUtil.initMatrix(), MagicWandUtil.initRectangle(), MagicWandSelector.getMagicWandTolerance());
+            if (path.length === 0) return;
+            store.dispatch(updateMagicWandMask(updatedMask));
+            store.dispatch(updateMagicWandRect(updatedRect));
+            this.activePath = path.map((point: IPoint) => RenderEngineUtil.transferPointFromImageToViewPortContent(point, data));
+            const polygonOnImage: IPoint[] = RenderEngineUtil.transferPolygonFromViewPortContentToImage(this.activePath, data);
+            this.addPolygonLabel(polygonOnImage);
+            this.finishLabelCreation();
+        }
     }
 }

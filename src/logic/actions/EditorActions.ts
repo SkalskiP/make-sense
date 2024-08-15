@@ -124,7 +124,7 @@ export class EditorActions {
             EditorModel.cursor.style.top = mousePositionOverViewPort.y + "px";
             EditorModel.cursor.style.display = "block";
 
-            if (isMouseOverImage && ![CustomCursorStyle.GRAB, CustomCursorStyle.GRABBING].includes(GeneralSelector.getCustomCursorStyle())) {
+            if (isMouseOverImage && ![CustomCursorStyle.GRAB, CustomCursorStyle.GRABBING, CustomCursorStyle.MAGIC_WAND].includes(GeneralSelector.getCustomCursorStyle())) {
                 const imageSize: ISize = ImageUtil.getSize(EditorModel.image);
                 const scale: number = imageSize.width / viewPortContentImageRect.width;
                 const mousePositionOverImage: IPoint = PointUtil.multiply(
