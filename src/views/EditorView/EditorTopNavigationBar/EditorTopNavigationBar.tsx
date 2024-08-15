@@ -5,9 +5,11 @@ import classNames from 'classnames';
 import { AppState } from '../../../store';
 import { connect } from 'react-redux';
 import { updateCrossHairVisibleStatus, updateImageDragModeStatus } from '../../../store/general/actionCreators';
+import { updateMagicWandActiveStatus, updateMagicWandTolerance } from '../../../store/magic-wand/actionCreators';
 import { GeneralSelector } from '../../../store/selectors/GeneralSelector';
 import { ViewPointSettings } from '../../../settings/ViewPointSettings';
 import { ImageButton } from '../../Common/ImageButton/ImageButton';
+import { Slider } from '../../Common/Slider/Slider';
 import { ViewPortActions } from '../../../logic/actions/ViewPortActions';
 import { LabelsSelector } from '../../../store/selectors/LabelsSelector';
 import { LabelType } from '../../../data/enums/LabelType';
@@ -15,6 +17,7 @@ import { AISelector } from '../../../store/selectors/AISelector';
 import { ISize } from '../../../interfaces/ISize';
 import { AIActions } from '../../../logic/actions/AIActions';
 import { Fade, styled, Tooltip, tooltipClasses, TooltipProps } from '@mui/material';
+
 const BUTTON_SIZE: ISize = { width: 30, height: 30 };
 const BUTTON_PADDING: number = 10;
 
@@ -66,8 +69,11 @@ interface IProps {
     activeContext: ContextType;
     updateImageDragModeStatusAction: (imageDragMode: boolean) => any;
     updateCrossHairVisibleStatusAction: (crossHairVisible: boolean) => any;
+    updateMagicWandActiveStatusAction: (magicWandActive: boolean) => any;
+    updateMagicWandToleranceAction: (magicWandTolerance: number) => any;
     imageDragMode: boolean;
     crossHairVisible: boolean;
+    magicWandActive: boolean;
     activeLabelType: LabelType;
 }
 
@@ -76,8 +82,11 @@ const EditorTopNavigationBar: React.FC<IProps> = (
         activeContext,
         updateImageDragModeStatusAction,
         updateCrossHairVisibleStatusAction,
+        updateMagicWandActiveStatusAction,
+        updateMagicWandToleranceAction,
         imageDragMode,
         crossHairVisible,
+        magicWandActive,
         activeLabelType
     }) => {
     const getClassName = () => {
@@ -100,6 +109,17 @@ const EditorTopNavigationBar: React.FC<IProps> = (
 
     const crossHairOnClick = () => {
         updateCrossHairVisibleStatusAction(!crossHairVisible);
+    };
+
+    const magicWandOnClick = () => {
+        if (magicWandActive) {
+            updateMagicWandToleranceAction(30);
+        }
+        updateMagicWandActiveStatusAction(!magicWandActive);
+    };
+
+    const magicWandToleranceChange = (sliderValue: number) => {
+        updateMagicWandToleranceAction(sliderValue);
     };
 
     const withAI = (
@@ -169,6 +189,10 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                         imageDragOnClick
                     )
                 }
+
+
+        </div>
+        <div className='ButtonWrapper'>
                 {
                     getButtonWithTooltip(
                         'cursor-cross-hair',
@@ -179,6 +203,28 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                         undefined,
                         crossHairOnClick
                     )
+                }
+                {
+                    activeLabelType === LabelType.POLYGON && getButtonWithTooltip(
+                        'magic-wand',
+                        magicWandActive ? 'turn-off cursor magic-wand' : 'turn-on cursor magic-wand',
+                        'ico/magic-wand.png',
+                        'magic-wand',
+                        magicWandActive,
+                        undefined,
+                        magicWandOnClick
+                    )
+                }
+                {
+                    activeLabelType === LabelType.POLYGON && magicWandActive && 
+                        <Slider
+                            label="Tolerance"
+                            value={30}
+                            minValue={0}
+                            maxValue={255}
+                            step={5}
+                            onChange={magicWandToleranceChange}
+                        />
                 }
             </div>
             {withAI && <div className='ButtonWrapper'>
@@ -211,13 +257,17 @@ const EditorTopNavigationBar: React.FC<IProps> = (
 
 const mapDispatchToProps = {
     updateImageDragModeStatusAction: updateImageDragModeStatus,
-    updateCrossHairVisibleStatusAction: updateCrossHairVisibleStatus
+    updateCrossHairVisibleStatusAction: updateCrossHairVisibleStatus,
+    updateMagicWandActiveStatusAction: updateMagicWandActiveStatus,
+    updateMagicWandToleranceAction: updateMagicWandTolerance,
 };
 
 const mapStateToProps = (state: AppState) => ({
     activeContext: state.general.activeContext,
     imageDragMode: state.general.imageDragMode,
     crossHairVisible: state.general.crossHairVisible,
+    magicWandActive: state.magicWand.magicWandActive,
+    magicWandTolerance: state.magicWand.magicWandTolerance,
     activeLabelType: state.labels.activeLabelType
 });
 

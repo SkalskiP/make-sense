@@ -18,6 +18,12 @@ export class EditorUtil {
                 return "ico/hand-fill.png";
             case CustomCursorStyle.GRABBING:
                 return "ico/hand-fill-grab.png";
+            case CustomCursorStyle.MAGIC_WAND:
+                return "ico/magic-wand.png";
+            case CustomCursorStyle.MAGIC_WAND_ADD:
+                return "ico/magic-wand-add.png";
+            case CustomCursorStyle.MAGIC_WAND_REMOVE:
+                return "ico/magic-wand-remove.png";
             default:
                 return null;
         }
@@ -32,7 +38,10 @@ export class EditorUtil {
                 "close": cursorStyle === CustomCursorStyle.CLOSE,
                 "cancel": cursorStyle === CustomCursorStyle.CANCEL,
                 "grab": cursorStyle === CustomCursorStyle.GRAB,
-                "grabbing": cursorStyle === CustomCursorStyle.GRABBING
+                "grabbing": cursorStyle === CustomCursorStyle.GRABBING,
+                "magic-wand": cursorStyle === CustomCursorStyle.MAGIC_WAND,
+                "magic-wand-add": cursorStyle === CustomCursorStyle.MAGIC_WAND_ADD,
+                "magic-wand-remove": cursorStyle === CustomCursorStyle.MAGIC_WAND_REMOVE,
             }
         );
     };
