@@ -45,6 +45,21 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
     }) => {
     const [labelNames, setLabelNames] = useState(LabelsSelector.getLabelNames());
 
+    const handleDownloadLabels = () => {
+        if (labelNames.length === 0) {
+            alert('No labels to download');
+            return;
+        }
+
+        const fileContent = labelNames.map((label) => label.name).join('\n');
+        const blob = new Blob([fileContent], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'labels.txt';
+        link.click();
+        URL.revokeObjectURL(link.href);
+    };
+    
     const validateEmptyLabelNames = (): boolean => {
         const emptyLabelNames = filter(labelNames, (labelName: LabelName) => labelName.name === '');
         return emptyLabelNames.length === 0;
@@ -197,6 +212,14 @@ const InsertLabelNamesPopup: React.FC<IProps> = (
                     isActive={enablePerClassColoration}
                     externalClassName={enablePerClassColoration ? '' : 'monochrome'}
                 />}
+                <ImageButton
+                    image={'ico/download.png'}
+                    imageAlt={'download'}
+                    buttonSize={{ width: 40, height: 40 }}
+                    padding={25}
+                    onClick={handleDownloadLabels}
+                    externalClassName={'monochrome'}
+                />
             </div>
             <div className='RightContainer'>
                 <div className='Message'>
