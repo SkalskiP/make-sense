@@ -120,11 +120,22 @@ export class ViewPortActions {
         EditorModel.viewPortScrollbars.scrollTop(position.y);
     }
 
-    public static translateViewPortPosition(direction: Direction) {
-        if (EditorModel.viewPortActionsDisabled || GeneralSelector.getZoom() === ViewPointSettings.MIN_ZOOM) return;
+    // public static translateViewPortPosition(direction: Direction) {
+    //     if (EditorModel.viewPortActionsDisabled || GeneralSelector.getZoom() === ViewPointSettings.MIN_ZOOM) return;
 
-        const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
-        const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
+    //     const directionVector: IPoint = DirectionUtil.convertDirectionToVector(direction);
+    //     const translationVector: IPoint = PointUtil.multiply(directionVector, ViewPointSettings.TRANSLATION_STEP_PX);
+    //     console.log(directionVector)
+    //     const currentScrollPosition = ViewPortActions.getAbsoluteScrollPosition();
+    //     const nextScrollPosition = PointUtil.add(currentScrollPosition, translationVector);
+    //     ViewPortActions.setScrollPosition(nextScrollPosition);
+    //     EditorModel.mousePositionOnViewPortContent = PointUtil
+    //         .add(EditorModel.mousePositionOnViewPortContent, translationVector);
+    //     EditorActions.fullRender();
+    // }
+
+    public static translateViewPortPosition(translationVector: IPoint) {
+        if (EditorModel.viewPortActionsDisabled || GeneralSelector.getZoom() === ViewPointSettings.MIN_ZOOM) return;
         const currentScrollPosition = ViewPortActions.getAbsoluteScrollPosition();
         const nextScrollPosition = PointUtil.add(currentScrollPosition, translationVector);
         ViewPortActions.setScrollPosition(nextScrollPosition);

@@ -24,15 +24,14 @@ import {EditorActions} from '../actions/EditorActions';
 import {GeneralSelector} from '../../store/selectors/GeneralSelector';
 import {LabelStatus} from '../../data/enums/LabelStatus';
 import {LabelUtil} from '../../utils/LabelUtil';
+import {ViewPortActions} from "../actions/ViewPortActions";
 
 export class RectRenderEngine extends BaseRenderEngine {
-
-    // =================================================================================================================
-    // STATE
-    // =================================================================================================================
-
     private startCreateRectPoint: IPoint;
     private startResizeRectAnchor: RectAnchor;
+    private startMousePosition: IPoint;  // New variable to track mouse position for right-click movement
+    private movementVector: IPoint = { x: 0, y: 0 };  // New vector to store movement direction
+    private isRightButtonPressed = false;
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
@@ -44,9 +43,10 @@ export class RectRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public mouseDownHandler = (data: EditorData) => {
-        const isMouseOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
-        if (isMouseOverCanvas) {
+        const isMouseOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
+        if (isMouseOverCanvas && data.event.button === 0) {  // Left button (0)
+            // Handle original behavior (left-click for rectangle creation or resizing)
             const rectUnderMouse: LabelRect = this.getRectUnderMouse(data);
             if (!!rectUnderMouse) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(rectUnderMouse.rect, data);
@@ -55,25 +55,34 @@ export class RectRenderEngine extends BaseRenderEngine {
                     store.dispatch(updateActiveLabelId(rectUnderMouse.id));
                     this.startRectResize(anchorUnderMouse);
                 } else {
-                    if (!!LabelsSelector.getHighlightedLabelId())
-                        store.dispatch(updateActiveLabelId(LabelsSelector.getHighlightedLabelId()));
-                    else
-                        this.startRectCreation(data.mousePositionOnViewPortContent);
+                    this.startRectCreation(data.mousePositionOnViewPortContent);
                 }
             } else if (isMouseOverImage) {
-
                 this.startRectCreation(data.mousePositionOnViewPortContent);
             }
+        } else if (data.event.button === 2) {  // Right button (2)
+            // Start movement vector calculation
+            this.startMousePosition = data.mousePositionOnViewPortContent;
+            this.movementVector = { x: 0, y: 0 };  // Reset vector at the beginning
+            this.isRightButtonPressed = true;
+            console.log('Right mouse button down, start moving image');
         }
     };
 
     public mouseUpHandler = (data: EditorData) => {
+        if (data.event.button === 2) {  // Right button release
+            // Stop moving the picture after mouse is released
+            console.log('Right mouse button up, stop moving image');
+            this.startMousePosition = null;
+            this.movementVector = { x: 0, y: 0 };
+        }
+
+        // Call the original functionality for rectangle creation and resizing
         if (!!data.viewPortContentImageRect) {
             const mousePositionSnapped: IPoint = RectUtil.snapPointToRect(data.mousePositionOnViewPortContent, data.viewPortContentImageRect);
             const activeLabelRect: LabelRect = LabelsSelector.getActiveRectLabel();
 
             if (!!this.startCreateRectPoint && !PointUtil.equals(this.startCreateRectPoint, mousePositionSnapped)) {
-
                 const minX: number = Math.min(this.startCreateRectPoint.x, mousePositionSnapped.x);
                 const minY: number = Math.min(this.startCreateRectPoint.y, mousePositionSnapped.y);
                 const maxX: number = Math.max(this.startCreateRectPoint.x, mousePositionSnapped.x);
@@ -85,8 +94,7 @@ export class RectRenderEngine extends BaseRenderEngine {
 
             if (!!this.startResizeRectAnchor && !!activeLabelRect) {
                 const rect: IRect = this.calculateRectRelativeToActiveImage(activeLabelRect.rect, data);
-                const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position,
-                    data.viewPortContentImageRect);
+                const startAnchorPosition: IPoint = PointUtil.add(this.startResizeRectAnchor.position, data.viewPortContentImageRect);
                 const delta: IPoint = PointUtil.subtract(mousePositionSnapped, startAnchorPosition);
                 const resizeRect: IRect = RectUtil.resizeRect(rect, this.startResizeRectAnchor.type, delta);
                 const scale: number = RenderEngineUtil.calculateImageScale(data);
@@ -95,31 +103,46 @@ export class RectRenderEngine extends BaseRenderEngine {
                 const imageData = LabelsSelector.getActiveImageData();
                 imageData.labelRects = imageData.labelRects.map((labelRect: LabelRect) => {
                     if (labelRect.id === activeLabelRect.id) {
-                        return {
-                            ...labelRect,
-                            rect: scaledRect
-                        };
+                        return { ...labelRect, rect: scaledRect };
                     }
                     return labelRect;
                 });
                 store.dispatch(updateImageDataById(imageData.id, imageData));
             }
         }
-        this.endRectTransformation()
+        this.endRectTransformation();
+        this.isRightButtonPressed = false;
     };
 
     public mouseMoveHandler = (data: EditorData) => {
+        if (this.isRightButtonPressed && this.startMousePosition) {  // Right button is pressed and mouse moved
+            const deltaX = data.mousePositionOnViewPortContent.x - this.startMousePosition.x;
+            const deltaY = data.mousePositionOnViewPortContent.y - this.startMousePosition.y;
+        
+            // Update the movement vector
+            this.movementVector = { x: -deltaX, y: -deltaY };
+        
+            // Move the image based on the vector (adjusting position accordingly)
+            // this.moveImageByVector(this.movementVector);
+            ViewPortActions.translateViewPortPosition(this.movementVector);
+            console.log("hey");
+        
+            console.log(`Moving image: ${this.movementVector.x}, ${this.movementVector.y}`);
+        }
+        
+
+        // Original behavior for mouse move
         if (!!data.viewPortContentImageRect && !!data.mousePositionOnViewPortContent) {
             const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
             if (isOverImage && !this.startResizeRectAnchor) {
                 const labelRect: LabelRect = this.getRectUnderMouse(data);
                 if (!!labelRect && !this.isInProgress()) {
                     if (LabelsSelector.getHighlightedLabelId() !== labelRect.id) {
-                        store.dispatch(updateHighlightedLabelId(labelRect.id))
+                        store.dispatch(updateHighlightedLabelId(labelRect.id));
                     }
                 } else {
                     if (LabelsSelector.getHighlightedLabelId() !== null) {
-                        store.dispatch(updateHighlightedLabelId(null))
+                        store.dispatch(updateHighlightedLabelId(null));
                     }
                 }
             }

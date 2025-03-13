@@ -65,34 +65,6 @@ export class EditorContext extends BaseContext {
             }
         },
         {
-            keyCombo: ["ArrowRight"],
-            action: (event: KeyboardEvent) => {
-                event.preventDefault();
-                ViewPortActions.translateViewPortPosition(Direction.RIGHT);
-            }
-        },
-        {
-            keyCombo: ["ArrowLeft"],
-            action: (event: KeyboardEvent) => {
-                event.preventDefault();
-                ViewPortActions.translateViewPortPosition(Direction.LEFT);
-            }
-        },
-        {
-            keyCombo: ["ArrowUp"],
-            action: (event: KeyboardEvent) => {
-                event.preventDefault();
-                ViewPortActions.translateViewPortPosition(Direction.BOTTOM);
-            }
-        },
-        {
-            keyCombo: ["ArrowDown"],
-            action: (event: KeyboardEvent) => {
-                event.preventDefault();
-                ViewPortActions.translateViewPortPosition(Direction.TOP);
-            }
-        },
-        {
             keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Backspace"] : ["Delete"],
             action: (event: KeyboardEvent) => {
                 LabelActions.deleteActiveLabel();
