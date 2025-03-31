@@ -1,6 +1,6 @@
 import { ContextType } from '../../../data/enums/ContextType';
 import './EditorTopNavigationBar.scss';
-import React from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { AppState } from '../../../store';
 import { connect } from 'react-redux';
@@ -89,11 +89,12 @@ const EditorTopNavigationBar: React.FC<IProps> = (
         );
     };
 
+    const isZoomed = () => {
+        return GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM;
+    };
+
     const imageDragOnClick = () => {
-        if (imageDragMode) {
-            updateImageDragModeStatusAction(!imageDragMode);
-        }
-        else if (GeneralSelector.getZoom() !== ViewPointSettings.MIN_ZOOM) {
+        if (isZoomed() || imageDragMode) {
             updateImageDragModeStatusAction(!imageDragMode);
         }
     };
@@ -101,6 +102,31 @@ const EditorTopNavigationBar: React.FC<IProps> = (
     const crossHairOnClick = () => {
         updateCrossHairVisibleStatusAction(!crossHairVisible);
     };
+
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.key.toLowerCase() === 'x') {
+                ViewPortActions.zoomIn();
+            }
+
+            if (event.key.toLowerCase() === 'z') {
+                ViewPortActions.zoomOut();
+            }
+
+            if (event.key.toLowerCase() === 'c') {
+                if (isZoomed() || !imageDragMode) {
+                    imageDragMode = !imageDragMode;
+                }
+                imageDragOnClick();
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
 
     const withAI = (
         (activeLabelType === LabelType.RECT && AISelector.isAISSDObjectDetectorModelLoaded()) ||
@@ -115,7 +141,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                 {
                     getButtonWithTooltip(
                         'zoom-in',
-                        'zoom in',
+                        'zoom in (x)',
                         'ico/zoom-in.png',
                         'zoom-in',
                         false,
@@ -126,7 +152,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                 {
                     getButtonWithTooltip(
                         'zoom-out',
-                        'zoom out',
+                        'zoom out (z)',
                         'ico/zoom-out.png',
                         'zoom-out',
                         false,
@@ -161,7 +187,7 @@ const EditorTopNavigationBar: React.FC<IProps> = (
                 {
                     getButtonWithTooltip(
                         'image-drag-mode',
-                        imageDragMode ? 'turn-off image drag mode' : 'turn-on image drag mode - works only when image is zoomed',
+                        imageDragMode ? 'turn-off image drag mode (c)' : 'turn-on image drag mode (c) - works only when image is zoomed',
                         'ico/hand.png',
                         'image-drag-mode',
                         imageDragMode,

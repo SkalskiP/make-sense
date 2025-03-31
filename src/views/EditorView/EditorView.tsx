@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './EditorView.scss';
 import EditorContainer from './EditorContainer/EditorContainer';
 import {PopupWindowType} from '../../data/enums/PopupWindowType';
@@ -21,6 +21,19 @@ const EditorView: React.FC<IProps> = ({activePopupType}) => {
             }
         );
     };
+
+    useEffect(() => {
+        const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+            event.preventDefault();
+            event.returnValue = '';
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
 
     return (
         <div
