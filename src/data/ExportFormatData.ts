@@ -34,11 +34,17 @@ export const ExportFormatData: ExportFormatDataMap = {
     [LabelType.POLYGON]: [
         {
             type: AnnotationFormatType.VGG,
-            label: 'Single file in VGG JSON format.'
+            label: 'A .zip package containing files in VGG JSON format.'
         },
         {
             type: AnnotationFormatType.COCO,
             label: 'Single file in COCO JSON format.'
+        }
+    ],
+    [LabelType.OBB]: [
+        {
+            type: AnnotationFormatType.YOLO,
+            label: 'A .zip package containing files in YOLO OBB format.'
         }
     ],
     [LabelType.IMAGE_RECOGNITION]: [

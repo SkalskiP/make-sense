@@ -33,6 +33,13 @@ export type LabelLine = Annotation & {
     line: ILine;
 }
 
+export type LabelOBB = Annotation & {
+    vertices: IPoint[];
+    isCreatedByAI: boolean;
+    status: LabelStatus;
+    suggestedLabel: string;
+}
+
 export type LabelName = {
     name: string;
     id: string;
@@ -47,6 +54,7 @@ export type ImageData = {
     labelPoints: LabelPoint[];
     labelLines: LabelLine[];
     labelPolygons: LabelPolygon[];
+    labelOBBs: LabelOBB[];
     labelNameIds: string[];
 
     // YOLO

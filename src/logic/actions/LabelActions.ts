@@ -1,5 +1,5 @@
 import {LabelsSelector} from '../../store/selectors/LabelsSelector';
-import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../../store/labels/types';
+import {ImageData, LabelLine, LabelName, LabelPoint, LabelPolygon, LabelRect, LabelOBB} from '../../store/labels/types';
 import {filter} from 'lodash';
 import {store} from '../../index';
 import {updateImageData, updateImageDataById} from '../../store/labels/actionCreators';
@@ -23,6 +23,9 @@ export class LabelActions {
                 break;
             case LabelType.POLYGON:
                 LabelActions.deletePolygonLabelById(imageId, labelId);
+                break;
+            case LabelType.OBB:
+                LabelActions.deleteOBBLabelById(imageId, labelId);
                 break;
         }
     }
@@ -71,6 +74,17 @@ export class LabelActions {
         store.dispatch(updateImageDataById(imageData.id, newImageData));
     }
 
+    public static deleteOBBLabelById(imageId: string, labelOBBId: string) {
+        const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
+        const newImageData = {
+            ...imageData,
+            labelOBBs: filter(imageData.labelOBBs || [], (currentLabel: LabelOBB) => {
+                return currentLabel.id !== labelOBBId;
+            })
+        };
+        store.dispatch(updateImageDataById(imageData.id, newImageData));
+    }
+
     public static toggleLabelVisibilityById(imageId: string, labelId: string) {
         const imageData: ImageData = LabelsSelector.getImageDataById(imageId);
         const newImageData = {
@@ -86,6 +100,9 @@ export class LabelActions {
             }),
             labelLines: imageData.labelLines.map((labelLine: LabelLine) => {
                 return labelLine.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelLine) : labelLine
+            }),
+            labelOBBs: (imageData.labelOBBs || []).map((labelOBB: LabelOBB) => {
+                return labelOBB.id === labelId ? LabelUtil.toggleAnnotationVisibility(labelOBB) : labelOBB
             }),
         };
         store.dispatch(updateImageDataById(imageData.id, newImageData));

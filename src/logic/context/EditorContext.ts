@@ -11,6 +11,7 @@ import {Direction} from "../../data/enums/Direction";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {LabelActions} from "../actions/LabelActions";
 import {LineRenderEngine} from "../render/LineRenderEngine";
+import {OBBRenderEngine} from "../render/OBBRenderEngine";
 
 export class EditorContext extends BaseContext {
     public static actions: HotKeyAction[] = [
@@ -34,6 +35,9 @@ export class EditorContext extends BaseContext {
                             break;
                         case LabelType.LINE:
                             (EditorModel.supportRenderingEngine as LineRenderEngine).cancelLabelCreation();
+                            break;
+                        case LabelType.OBB:
+                            (EditorModel.supportRenderingEngine as OBBRenderEngine).cancelLabelCreation();
                             break;
                     }
                 }

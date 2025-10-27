@@ -3,5 +3,6 @@ export enum LabelType {
     POINT = 'POINT',
     RECT = 'RECT',
     POLYGON = 'POLYGON',
-    LINE = 'LINE'
+    LINE = 'LINE',
+    OBB = 'OBB'
 }

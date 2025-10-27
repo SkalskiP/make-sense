@@ -14,6 +14,7 @@ import {Settings} from "../../../../settings/Settings";
 import RectLabelsList from "../RectLabelsList/RectLabelsList";
 import PointLabelsList from "../PointLabelsList/PointLabelsList";
 import PolygonLabelsList from "../PolygonLabelsList/PolygonLabelsList";
+import OBBLabelsList from "../OBBLabelsList/OBBLabelsList";
 import {ContextManager} from "../../../../logic/context/ContextManager";
 import {ContextType} from "../../../../data/enums/ContextType";
 import {EventType} from "../../../../data/enums/EventType";
@@ -53,7 +54,8 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                 LabelType.RECT,
                 LabelType.POINT,
                 LabelType.LINE,
-                LabelType.POLYGON
+                LabelType.POLYGON,
+                LabelType.OBB
             ];
 
         const activeTab: LabelType = props.activeLabelType ? props.activeLabelType : this.tabs[0];
@@ -156,6 +158,13 @@ class LabelsToolkit extends React.Component<IProps, IState> {
                         imageData={imagesData[activeImageIndex]}
                     />}
                     {labelType === LabelType.POLYGON && <PolygonLabelsList
+                        size={{
+                            width: size.width - 20,
+                            height: activeTabContentHeight - 20
+                        }}
+                        imageData={imagesData[activeImageIndex]}
+                    />}
+                    {labelType === LabelType.OBB && <OBBLabelsList
                         size={{
                             width: size.width - 20,
                             height: activeTabContentHeight - 20

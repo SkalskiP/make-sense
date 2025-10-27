@@ -1,12 +1,27 @@
 FROM node:16.16.0
 
-RUN apt-get update && apt-get -y install git && rm -rf /var/lib/apt/lists/*
+# Accept build arguments for user creation
+ARG USRNM=developer
+ARG USRUID=1000
+ARG USRGID=1000
 
-COPY ./ /make-sense
+# Create group and user with specified UID/GID
+RUN groupadd --gid ${USRGID} ${USRNM} || true && \
+    useradd --uid ${USRUID} --gid ${USRGID} -m -s /bin/bash ${USRNM} || true
 
-RUN cd /make-sense && \
-  npm install
+# Create app directory
+RUN mkdir -p /app && chown ${USRUID}:${USRGID} /app
 
-WORKDIR /make-sense
+# Copy package files and install dependencies as root
+COPY package.json package-lock.json* /app/
+RUN cd /app && npm install && chown -R ${USRUID}:${USRGID} /app/node_modules
 
-ENTRYPOINT ["npm", "run", "dev"]
+# Switch to non-root user
+USER ${USRNM}
+
+WORKDIR /app
+
+# Expose development server port
+EXPOSE 3000
+
+CMD ["/bin/bash"]

@@ -9,6 +9,7 @@ import { PolygonLabelsExporter } from '../../../logic/export/polygon/PolygonLabe
 import { PopupActions } from '../../../logic/actions/PopupActions';
 import { LineLabelsExporter } from '../../../logic/export/LineLabelExport';
 import { TagLabelsExporter } from '../../../logic/export/TagLabelsExport';
+import { OBBLabelsExporter } from '../../../logic/export/OBBLabelsExporter';
 import GenericLabelTypePopup from '../GenericLabelTypePopup/GenericLabelTypePopup';
 import { ExportFormatData } from '../../../data/ExportFormatData';
 import { AppState } from '../../../store';
@@ -35,6 +36,9 @@ const ExportLabelPopup: React.FC<IProps> = ({ activeLabelType }) => {
                 break;
             case LabelType.POLYGON:
                 PolygonLabelsExporter.export(exportFormatType);
+                break;
+            case LabelType.OBB:
+                OBBLabelsExporter.export(exportFormatType);
                 break;
             case LabelType.IMAGE_RECOGNITION:
                 TagLabelsExporter.export(exportFormatType);

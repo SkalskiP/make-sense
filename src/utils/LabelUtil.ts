@@ -1,4 +1,4 @@
-import {Annotation, LabelName, LabelPoint, LabelPolygon, LabelRect} from '../store/labels/types';
+import {Annotation, LabelName, LabelPoint, LabelPolygon, LabelRect, LabelOBB} from '../store/labels/types';
 import { v4 as uuidv4 } from 'uuid';
 import {find} from 'lodash';
 import {IRect} from '../interfaces/IRect';
@@ -34,6 +34,18 @@ export class LabelUtil {
             labelId,
             vertices,
             isVisible: true
+        }
+    }
+
+    public static createLabelOBB(labelId: string, vertices: IPoint[]): LabelOBB {
+        return {
+            id: uuidv4(),
+            labelId,
+            vertices,
+            isVisible: true,
+            isCreatedByAI: false,
+            status: LabelStatus.ACCEPTED,
+            suggestedLabel: null
         }
     }
 

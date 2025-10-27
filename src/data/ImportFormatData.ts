@@ -27,5 +27,11 @@ export const ImportFormatData: ImportFormatDataMap = {
             label: 'Single file in COCO JSON format.'
         }
     ],
+    [LabelType.OBB]: [
+        {
+            type: AnnotationFormatType.YOLO,
+            label: 'Multiple files in YOLO OBB format along with labels names definition - labels.txt file.'
+        }
+    ],
     [LabelType.IMAGE_RECOGNITION]: []
 }

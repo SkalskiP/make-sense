@@ -3,6 +3,7 @@ import {EditorModel} from "../../staticModels/EditorModel";
 import {RectRenderEngine} from "../render/RectRenderEngine";
 import {PointRenderEngine} from "../render/PointRenderEngine";
 import {PolygonRenderEngine} from "../render/PolygonRenderEngine";
+import {OBBRenderEngine} from "../render/OBBRenderEngine";
 import {IRect} from "../../interfaces/IRect";
 import {RectUtil} from "../../utils/RectUtil";
 import {EditorData} from "../../data/EditorData";
@@ -40,6 +41,9 @@ export class EditorActions {
                 break;
             case LabelType.POLYGON:
                 EditorModel.supportRenderingEngine = new PolygonRenderEngine(EditorModel.canvas);
+                break;
+            case LabelType.OBB:
+                EditorModel.supportRenderingEngine = new OBBRenderEngine(EditorModel.canvas);
                 break;
             default:
                 EditorModel.supportRenderingEngine = null;

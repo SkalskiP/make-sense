@@ -13,6 +13,7 @@ export class ImageDataUtil {
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],
+            labelOBBs: [],
             labelNameIds: [],
             isVisitedByYOLOObjectDetector: false,
             isVisitedBySSDObjectDetector: false,
@@ -28,6 +29,7 @@ export class ImageDataUtil {
             labelPoints: [],
             labelLines: [],
             labelPolygons: [],
+            labelOBBs: [],
             labelNameIds: []
         }
     }

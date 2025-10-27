@@ -78,12 +78,30 @@ export class YOLOImporter extends AnnotationImporter {
 
     public static applyAnnotations(imageData: ImageData, rawAnnotations: string, labelNames: LabelName[]): ImageData {
         const image: HTMLImageElement = ImageRepository.getById(imageData.id);
-        imageData.labelRects = YOLOUtils.parseYOLOAnnotationsFromString(
-            rawAnnotations,
-            labelNames,
-            {width: image.width, height: image.height},
-            imageData.fileData.name
-        );
+        
+        // Check if this is OBB format by looking at the first line
+        const firstLine = rawAnnotations.split(/[\r\n]/)[0];
+        if (firstLine) {
+            const components = firstLine.trim().split(' ');
+            const isOBB = components.length === 9;
+            
+            if (isOBB) {
+                imageData.labelOBBs = YOLOUtils.parseYOLOOBBAnnotationsFromString(
+                    rawAnnotations,
+                    labelNames,
+                    {width: image.width, height: image.height},
+                    imageData.fileData.name
+                );
+            } else {
+                imageData.labelRects = YOLOUtils.parseYOLOAnnotationsFromString(
+                    rawAnnotations,
+                    labelNames,
+                    {width: image.width, height: image.height},
+                    imageData.fileData.name
+                );
+            }
+        }
+        
         return imageData;
     }
 

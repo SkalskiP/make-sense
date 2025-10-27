@@ -1,4 +1,4 @@
-import {LabelName, LabelRect} from '../../../store/labels/types';
+import {LabelName, LabelRect, LabelOBB} from '../../../store/labels/types';
 import {LabelUtil} from '../../../utils/LabelUtil';
 import {AnnotationsParsingError, LabelNamesNotUniqueError} from './YOLOErrors';
 import {ISize} from '../../../interfaces/ISize';
@@ -51,6 +51,20 @@ export class YOLOUtils {
             ));
     }
 
+    public static parseYOLOOBBAnnotationsFromString(
+        rawAnnotations: string,
+        labelNames: LabelName[],
+        imageSize: ISize,
+        imageName: string
+    ): LabelOBB[] {
+        return rawAnnotations
+            .split(/[\r\n]/)
+            .filter(Boolean)
+            .map((rawAnnotation: string) => YOLOUtils.parseYOLOOBBAnnotationFromString(
+                rawAnnotation, labelNames, imageSize, imageName
+            ));
+    }
+
     public static parseYOLOAnnotationFromString(
         rawAnnotation: string,
         labelNames: LabelName[],
@@ -76,6 +90,31 @@ export class YOLOUtils {
         return LabelUtil.createLabelRect(labelId, rect);
     }
 
+    public static parseYOLOOBBAnnotationFromString(
+        rawAnnotation: string,
+        labelNames: LabelName[],
+        imageSize: ISize,
+        imageName: string
+    ): LabelOBB {
+        const components = rawAnnotation.split(' ');
+        if (!YOLOUtils.validateYOLOOBBAnnotationComponents(components, labelNames.length)) {
+            throw new AnnotationsParsingError(imageName);
+        }
+        const labelIndex: number = parseInt(components[0]);
+        const labelId: string = labelNames[labelIndex].id;
+        
+        // Parse 4 corner coordinates (8 values)
+        const vertices = [];
+        for (let i = 0; i < 4; i++) {
+            vertices.push({
+                x: parseFloat(components[1 + i * 2]) * imageSize.width,
+                y: parseFloat(components[2 + i * 2]) * imageSize.height
+            });
+        }
+        
+        return LabelUtil.createLabelOBB(labelId, vertices);
+    }
+
     public static validateYOLOAnnotationComponents(components: string[], labelNamesCount: number): boolean {
         const validateCoordinateValue = (rawValue: string): boolean => {
             const floatValue: number = Number(rawValue);
@@ -93,6 +132,30 @@ export class YOLOUtils {
             validateCoordinateValue(components[2]),
             validateCoordinateValue(components[3]),
             validateCoordinateValue(components[4])
+        ].every(Boolean)
+    }
+
+    public static validateYOLOOBBAnnotationComponents(components: string[], labelNamesCount: number): boolean {
+        const validateCoordinateValue = (rawValue: string): boolean => {
+            const floatValue: number = Number(rawValue);
+            return !isNaN(floatValue) && 0.0 <= floatValue && floatValue <= 1.0;
+        }
+        const validateLabelIdx = (rawValue: string): boolean => {
+            const intValue: number = parseInt(rawValue);
+            return !isNaN(intValue) && 0 <= intValue && intValue < labelNamesCount;
+        }
+
+        return [
+            components.length === 9,
+            validateLabelIdx(components[0]),
+            validateCoordinateValue(components[1]),
+            validateCoordinateValue(components[2]),
+            validateCoordinateValue(components[3]),
+            validateCoordinateValue(components[4]),
+            validateCoordinateValue(components[5]),
+            validateCoordinateValue(components[6]),
+            validateCoordinateValue(components[7]),
+            validateCoordinateValue(components[8])
         ].every(Boolean)
     }
 }

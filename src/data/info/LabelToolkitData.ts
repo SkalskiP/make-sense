@@ -45,4 +45,11 @@ export const LabelToolkitData: ILabelToolkit[] = [
         imageAlt: 'polygon',
         projectType: ProjectType.OBJECT_DETECTION,
     },
+    {
+        labelType: LabelType.OBB,
+        headerText: 'OBB',
+        imageSrc: 'ico/polygon.png',
+        imageAlt: 'obb',
+        projectType: ProjectType.OBJECT_DETECTION,
+    },
 ];
