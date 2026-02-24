@@ -38,6 +38,9 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private resizeAnchorIndex: number = null;
     private suggestedAnchorPositionOnCanvas: IPoint = null;
     private suggestedAnchorIndexInPolygon: number = null;
+    // circle creation state
+    private circleCenterOnCanvas: IPoint = null;
+    private circleRadiusOnCanvas: number = null;
 
     public constructor(canvas: HTMLCanvasElement) {
         super(canvas);
@@ -69,6 +72,19 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     public mouseDownHandler(data: EditorData): void {
         const isMouseOverCanvas: boolean = RenderEngineUtil.isMouseOverCanvas(data);
         if (isMouseOverCanvas) {
+            const isCircleMode: boolean = !!data.event && (data.event as MouseEvent).altKey === true;
+            if (isCircleMode) {
+                const mousePos = data.mousePositionOnViewPortContent;
+                const isMouseOverImage: boolean = RectUtil.isPointInside(data.viewPortContentImageRect, mousePos);
+                if (isMouseOverImage) {
+                    EditorActions.setViewPortActionsDisabledStatus(true);
+                    this.circleCenterOnCanvas = {...mousePos};
+                    this.circleRadiusOnCanvas = 0;
+                    store.dispatch(updateActiveLabelId(null));
+                }
+                return;
+            }
+
             if (this.isCreationInProgress()) {
                 const isMouseOverStartAnchor: boolean = this.isMouseOverAnchor(
                     data.mousePositionOnViewPortContent, this.activePath[0]);
@@ -110,12 +126,16 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     public mouseUpHandler(data: EditorData): void {
         if (this.isResizeInProgress())
             this.endExistingLabelResize(data);
+
+        if (this.isCircleCreationInProgress()) {
+            this.finishCircleCreation(data);
+        }
     }
 
     public mouseMoveHandler(data: EditorData): void {
         if (!!data.viewPortContentImageRect && !!data.mousePositionOnViewPortContent) {
             const isOverImage: boolean = RenderEngineUtil.isMouseOverImage(data);
-            if (isOverImage && !this.isCreationInProgress()) {
+            if (isOverImage && !this.isCreationInProgress() && !this.isCircleCreationInProgress()) {
                 const labelPolygon: LabelPolygon = this.getPolygonUnderMouse(data);
                 if (!!labelPolygon && !this.isResizeInProgress()) {
                     if (LabelsSelector.getHighlightedLabelId() !== labelPolygon.id) {
@@ -142,6 +162,11 @@ export class PolygonRenderEngine extends BaseRenderEngine {
                         this.discardSuggestedPoint();
                     }
                 }
+            }
+
+            // update circle preview radius while creating
+            if (this.isCircleCreationInProgress() && !!this.circleCenterOnCanvas && !!data.mousePositionOnViewPortContent) {
+                this.circleRadiusOnCanvas = LineUtil.getLength({start: this.circleCenterOnCanvas, end: data.mousePositionOnViewPortContent});
             }
         }
     }
@@ -192,18 +217,31 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     }
 
     private drawActivelyCreatedLabel(data: EditorData) {
-        const standardizedPoints: IPoint[] = this.activePath.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
-        const path = standardizedPoints.concat(data.mousePositionOnViewPortContent);
-        const lines: ILine[] = PolygonUtil.getEdges(path, false);
-        const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
-        const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
-        DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(lineColor, 0.2));
-        lines.forEach((line: ILine) => {
-            DrawUtil.drawLine(this.canvas, line.start, line.end, lineColor, RenderEngineSettings.LINE_THICKNESS);
-        });
-        standardizedPoints.forEach((point: IPoint) => {
-            DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor);
-        })
+        // polygon freeform creation
+        if (this.isCreationInProgress()) {
+            const standardizedPoints: IPoint[] = this.activePath.map((point: IPoint) => RenderEngineUtil.setPointBetweenPixels(point));
+            const path = standardizedPoints.concat(data.mousePositionOnViewPortContent);
+            const lines: ILine[] = PolygonUtil.getEdges(path, false);
+            const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
+            const anchorColor: string = BaseRenderEngine.resolveLabelAnchorColor(true)
+            DrawUtil.drawPolygonWithFill(this.canvas, path, DrawUtil.hexToRGB(lineColor, 0.2));
+            lines.forEach((line: ILine) => {
+                DrawUtil.drawLine(this.canvas, line.start, line.end, lineColor, RenderEngineSettings.LINE_THICKNESS);
+            });
+            standardizedPoints.forEach((point: IPoint) => {
+                DrawUtil.drawCircleWithFill(this.canvas, point, Settings.RESIZE_HANDLE_DIMENSION_PX/2, anchorColor);
+            })
+            return;
+        }
+
+        // circle preview creation
+        if (this.isCircleCreationInProgress() && !!this.circleCenterOnCanvas && typeof this.circleRadiusOnCanvas === 'number') {
+            const lineColor: string = BaseRenderEngine.resolveLabelLineColor(null, true)
+            const fillColor = DrawUtil.hexToRGB(lineColor, 0.15);
+            DrawUtil.drawCircleWithFill(this.canvas, this.circleCenterOnCanvas, this.circleRadiusOnCanvas, fillColor);
+            DrawUtil.drawCircle(this.canvas, this.circleCenterOnCanvas, this.circleRadiusOnCanvas, 0, 360, RenderEngineSettings.LINE_THICKNESS, lineColor);
+            return;
+        }
     }
 
     private drawActivelyResizeLabel(data: EditorData) {
@@ -281,6 +319,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
 
     public cancelLabelCreation() {
         this.activePath = [];
+        this.cancelCircleCreation();
         EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
@@ -295,6 +334,33 @@ export class PolygonRenderEngine extends BaseRenderEngine {
             this.addPolygonLabel(polygonOnImage);
             this.finishLabelCreation();
         }
+    }
+
+    private finishCircleCreation(data: EditorData) {
+        if (!this.circleCenterOnCanvas || this.circleRadiusOnCanvas <= 1) {
+            this.cancelCircleCreation();
+            return;
+        }
+        const segments = 32;
+        const verticesOnCanvas: IPoint[] = [];
+        for (let i = 0; i < segments; i++) {
+            const angle = (2 * Math.PI * i) / segments;
+            verticesOnCanvas.push({
+                x: this.circleCenterOnCanvas.x + this.circleRadiusOnCanvas * Math.cos(angle),
+                y: this.circleCenterOnCanvas.y + this.circleRadiusOnCanvas * Math.sin(angle)
+            });
+        }
+        const polygonOnImage: IPoint[] = verticesOnCanvas.map((pt: IPoint) => RenderEngineUtil.transferPointFromViewPortContentToImage(pt, data));
+        this.addPolygonLabel(polygonOnImage);
+        this.circleCenterOnCanvas = null;
+        this.circleRadiusOnCanvas = null;
+        EditorActions.setViewPortActionsDisabledStatus(false);
+    }
+
+    private cancelCircleCreation() {
+        this.circleCenterOnCanvas = null;
+        this.circleRadiusOnCanvas = null;
+        EditorActions.setViewPortActionsDisabledStatus(false);
     }
 
     private addPolygonLabel(polygon: IPoint[]) {
@@ -388,7 +454,7 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     // =================================================================================================================
 
     public isInProgress(): boolean {
-        return this.isCreationInProgress() || this.isResizeInProgress();
+        return this.isCreationInProgress() || this.isResizeInProgress() || this.isCircleCreationInProgress();
     }
 
     private isCreationInProgress(): boolean {
@@ -402,6 +468,10 @@ export class PolygonRenderEngine extends BaseRenderEngine {
     private isMouseOverAnchor(mouse: IPoint, anchor: IPoint): boolean {
         if (!mouse || !anchor) return null;
         return RectUtil.isPointInside(RectUtil.getRectWithCenterAndSize(anchor, RenderEngineSettings.anchorSize), mouse);
+    }
+
+    private isCircleCreationInProgress(): boolean {
+        return this.circleCenterOnCanvas !== null && this.circleRadiusOnCanvas !== null;
     }
 
     // =================================================================================================================

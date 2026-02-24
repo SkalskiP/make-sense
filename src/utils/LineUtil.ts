@@ -21,4 +21,10 @@ export class LineUtil {
     public static getPoints(l: ILine): IPoint[] {
         return [l.start, l.end]
     }
+
+    public static getLength(l: ILine): number {
+        const dx = l.end.x - l.start.x;
+        const dy = l.end.y - l.start.y;
+        return Math.sqrt(dx * dx + dy * dy);
+    }
 }
