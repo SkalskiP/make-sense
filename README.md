@@ -69,8 +69,8 @@ docker logs make-sense
 | Polygon autocomplete               | Editor   | <kbd>Enter</kbd> | <kbd>Enter</kbd> |
 | Cancel polygon drawing             | Editor   | <kbd>Escape</kbd> | <kbd>Escape</kbd> |
 | Delete currently selected label    | Editor   | <kbd>Backspace</kbd> | <kbd>Delete</kbd> |
-| Load previous image                | Editor   | <kbd>⌥</kbd> + <kbd>Left</kbd> | <kbd>Ctrl</kbd> + <kbd>Left</kbd> |
-| Load next image                    | Editor   | <kbd>⌥</kbd> + <kbd>Right</kbd> | <kbd>Ctrl</kbd> + <kbd>Right</kbd> |
+| Load previous image                | Editor   | <kbd>⌥</kbd> + <kbd>Left</kbd> / <kbd>a / A</kbd> | <kbd>Ctrl</kbd> + <kbd>Left</kbd> / <kbd>a / A</kbd> |
+| Load next image                    | Editor   | <kbd>⌥</kbd> + <kbd>Right</kbd> / <kbd>d / D</kbd> | <kbd>Ctrl</kbd> + <kbd>Right</kbd> / <kbd>d / D</kbd> |
 | Zoom in                            | Editor   | <kbd>⌥</kbd> + <kbd>+</kbd> | <kbd>Ctrl</kbd> + <kbd>+</kbd> |
 | Zoom out                           | Editor   | <kbd>⌥</kbd> + <kbd>-</kbd> | <kbd>Ctrl</kbd> + <kbd>-</kbd> |
 | Move image                         | Editor   | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> | <kbd>Up</kbd> / <kbd>Down</kbd> / <kbd>Left</kbd> / <kbd>Right</kbd> |
