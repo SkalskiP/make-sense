@@ -7,12 +7,12 @@
   align-content: center;
   text-align: center;
   width: 150px;
-  color: white;
+  color: #212529;
   font-size: 16px;
   user-select: none;
 
   > img {
-    filter: brightness(0) invert(1);
+    filter: brightness(0) opacity(.72);
     max-width: 100px;
     max-height: 100px;
     user-select: none;

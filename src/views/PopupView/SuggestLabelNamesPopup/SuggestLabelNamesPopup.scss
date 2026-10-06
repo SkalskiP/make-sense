@@ -13,7 +13,7 @@
 
   .Message {
     align-self: stretch;
-    color: white;
+    color: #212529;
     font-size: 15px;
     padding: 0 40px 0 40px;
   }
@@ -25,7 +25,7 @@
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
-    color: white;
+    color: #212529;
 
     cursor: pointer;
     user-select: none;
@@ -44,7 +44,7 @@
 
   .AllToggle {
     align-self: stretch;
-    color: white;
+    color: #212529;
     font-size: 15px;
     padding: 10px 40px 20px 40px;
     border-bottom: solid 1px $darkThemeFirstColor;
@@ -61,7 +61,7 @@
     align-items: center;
     align-content: flex-start;
 
-    color: white;
+    color: #212529;
 
     .LabelNamesContent {
       margin-left: 40px;

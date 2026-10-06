@@ -28,7 +28,7 @@
       transition: transform 0.3s;
 
       img {
-        filter: brightness(0) invert(1);
+        filter: brightness(0) opacity(.72);
       }
 
       &:hover {

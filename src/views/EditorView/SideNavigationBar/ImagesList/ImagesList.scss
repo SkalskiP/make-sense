@@ -2,4 +2,49 @@
   align-self: stretch;
   flex: 1;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  .ImageListBody {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ImageFilterBar {
+    padding: 6px;
+    border-bottom: 1px solid var(--border-subtle);
+    .ImageFilterButtons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+      button {
+        flex: 1 1 auto;
+        padding: 3px 6px;
+        font-size: 12px;
+        white-space: nowrap;
+        color: var(--text-secondary);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        &:hover { color: var(--text-primary); }
+        &.active { color: var(--text-primary); background: var(--bg-elevated); border-color: var(--accent); }
+        &:focus-visible { outline: 2px solid var(--accent); }
+      }
+    }
+    input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 4px 8px;
+      font-size: 12px;
+      color: var(--text-primary);
+      background: var(--bg-app);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      &:focus-visible { outline: 2px solid var(--accent); }
+    }
+  }
 }

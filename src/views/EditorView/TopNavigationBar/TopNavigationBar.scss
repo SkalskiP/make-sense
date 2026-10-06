@@ -16,7 +16,7 @@
 
   .TopNavigationBarWrapper {
     padding: 0 $sideNavigationBarCompanionWidth;
-    color: white;
+    color: #212529;
     align-self: stretch;
     flex: 1;
     height: calc(#{$topNavigationBarHeight} - #{$stateBarHeight});
@@ -40,6 +40,20 @@
         flex: auto;
       }
 
+      &.status-cluster {
+        gap: 12px;
+        font-size: 12px;
+        white-space: nowrap;
+        .TopBarCounter { color: var(--text-primary); font-weight: 600; }
+        .TopBarSave { color: var(--text-secondary); }
+        .TopBarSave.saved { color: var(--success); }
+        .TopBarSave.saving { color: var(--warning); }
+        .TopBarSave.failed { color: var(--danger); }
+        .TopBarSave.unsaved { color: var(--warning); }
+        .TopBarAI { color: var(--text-muted); }
+        .TopBarAI.on { color: var(--accent); }
+      }
+
       &:not(:last-child) {
         padding-right: 10px;
         margin-right: 10px;
@@ -57,7 +71,7 @@
       transition: transform 0.3s;
 
       img {
-        filter: brightness(0) invert(1);
+        filter: brightness(0) opacity(.72);
         user-select: none;
       }
 

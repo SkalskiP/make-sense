@@ -23,11 +23,12 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawRect(canvas:HTMLCanvasElement, rect:IRect, color = '#fff', thickness = 1): void {
+    public static drawRect(canvas:HTMLCanvasElement, rect:IRect, color = '#fff', thickness = 1, dash: number[] = []): void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
         ctx.strokeStyle = color;
         ctx.lineWidth = thickness;
+        ctx.setLineDash(dash);
         ctx.beginPath();
         ctx.rect(rect.x, rect.y, rect.width, rect.height);
         ctx.stroke();
@@ -108,13 +109,20 @@ export class DrawUtil {
         ctx.restore();
     }
 
-    public static drawText(canvas:HTMLCanvasElement, text:string, textSize:number, anchorPoint:IPoint, color = '#ffffff', bold = false, align = 'center'):void {
+    public static drawText(canvas:HTMLCanvasElement, text:string, textSize:number, anchorPoint:IPoint, color = '#ffffff', bold = false, align = 'center', background: string | null = null):void {
         const ctx:CanvasRenderingContext2D = canvas.getContext('2d');
         ctx.save();
-        ctx.fillStyle = color;
         ctx.textAlign = align as CanvasTextAlign;
         ctx.textBaseline='middle';
         ctx.font = (bold ? 'bold ' : '') + textSize + 'px Arial';
+        if (background !== null) {
+            const width = ctx.measureText(text).width;
+            const height = textSize + 6;
+            const left = align === 'center' ? anchorPoint.x - width / 2 - 4 : anchorPoint.x - 4;
+            ctx.fillStyle = background;
+            ctx.fillRect(left, anchorPoint.y - height / 2, width + 8, height);
+        }
+        ctx.fillStyle = color;
         ctx.fillText(text, anchorPoint.x, anchorPoint.y);
         ctx.restore();
     }

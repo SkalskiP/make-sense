@@ -49,7 +49,7 @@
         max-width: 18px;
         max-height: 18px;
         margin: 0 20px;
-        filter: brightness(0) invert(1);
+        filter: brightness(0) opacity(.72);
       }
 
       &:hover {
@@ -90,7 +90,7 @@
       height: 15px;
       margin-right: 10px;
       user-select: none;
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
     }
 
     &:hover {

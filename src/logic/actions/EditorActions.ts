@@ -61,10 +61,26 @@ export class EditorActions {
     // RENDER
     // =================================================================================================================
 
+    // No active image is loaded yet (e.g. right after resuming a saved project
+    // while its blobs still load). Rendering rects then would divide by a null
+    // image size and crash the whole editor, so skip until the image arrives.
+    public static canRender(): boolean {
+        return !!EditorModel.image;
+    }
+
     public static fullRender() {
         DrawUtil.clearCanvas(EditorModel.canvas);
+        if (!EditorActions.canRender()) return;
         EditorModel.primaryRenderingEngine.render(EditorActions.getEditorData());
-        EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
+        if (!EditorModel.areAnnotationsHidden) {
+            EditorModel.supportRenderingEngine && EditorModel.supportRenderingEngine.render(EditorActions.getEditorData());
+        }
+    }
+
+    public static toggleAnnotationsHidden(): boolean {
+        EditorModel.areAnnotationsHidden = !EditorModel.areAnnotationsHidden;
+        EditorActions.fullRender();
+        return EditorModel.areAnnotationsHidden;
     }
 
     // =================================================================================================================

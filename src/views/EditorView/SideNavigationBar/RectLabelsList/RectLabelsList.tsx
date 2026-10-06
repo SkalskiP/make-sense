@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ISize} from '../../../../interfaces/ISize';
 import Scrollbars from 'react-custom-scrollbars-2';
 import {ImageData, LabelName, LabelRect} from '../../../../store/labels/types';
@@ -15,6 +15,14 @@ import EmptyLabelList from '../EmptyLabelList/EmptyLabelList';
 import {LabelActions} from '../../../../logic/actions/LabelActions';
 import {LabelStatus} from '../../../../data/enums/LabelStatus';
 import {findLast} from 'lodash';
+import {ImageRepository} from '../../../../logic/imageRepository/ImageRepository';
+import {EditorModel} from '../../../../staticModels/EditorModel';
+import {ViewPortActions} from '../../../../logic/actions/ViewPortActions';
+import {
+    ACCEPT_CONFIDENCE_THRESHOLD,
+    centerScrollForRect,
+    isLowConfidence,
+} from '../../../../logic/review/reviewWorkflow';
 
 interface IProps {
     size: ISize;
@@ -26,6 +34,22 @@ interface IProps {
     labelNames: LabelName[];
     updateActiveLabelIdAction: (activeLabelId: string) => any;
 }
+
+const labelNameOf = (labelNames: LabelName[], labelId: string | null): string => {
+    if (labelId === null) return 'Unlabeled';
+    return findLast(labelNames, {id: labelId})?.name ?? 'Unlabeled';
+};
+
+const centerOnBox = (imageData: ImageData, box: LabelRect) => {
+    const image = ImageRepository.getById(imageData.id);
+    const viewport = EditorModel.viewPortSize;
+    if (!image || !viewport) return;
+    ViewPortActions.setScrollPosition(centerScrollForRect(
+        box.rect,
+        ViewPortActions.calculateViewPortContentImageRect(),
+        {width: image.width, height: image.height},
+        viewport));
+};
 
 const RectLabelsList: React.FC<IProps> = (
     {
@@ -39,15 +63,13 @@ const RectLabelsList: React.FC<IProps> = (
         updateActiveLabelIdAction
     }
 ) => {
-    const labelInputFieldHeight = 40;
-    const listStyle: React.CSSProperties = {
-        width: size.width,
-        height: size.height
-    };
-    const listStyleContent: React.CSSProperties = {
-        width: size.width,
-        height: imageData.labelRects.length * labelInputFieldHeight
-    };
+    const [collapsed, setCollapsed] = useState<string[]>([]);
+    const accepted = imageData.labelRects
+        .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED);
+    const activeBox = accepted.find(box => box.id === activeLabelId) ?? null;
+    const aiBoxes = accepted.filter(box => box.isCreatedByAI);
+    const acceptable = aiBoxes.filter(box =>
+        box.confidence != null && box.confidence >= ACCEPT_CONFIDENCE_THRESHOLD);
 
     const deleteRectLabelById = (labelRectId: string) => {
         LabelActions.deleteRectLabelById(imageData.id, labelRectId);
@@ -55,6 +77,24 @@ const RectLabelsList: React.FC<IProps> = (
 
     const toggleRectLabelVisibilityById = (labelRectId: string) => {
         LabelActions.toggleLabelVisibilityById(imageData.id, labelRectId);
+    };
+
+    const acceptBox = (labelRectId: string) => {
+        updateImageDataByIdAction(imageData.id, {
+            ...imageData,
+            labelRects: imageData.labelRects.map(box =>
+                box.id === labelRectId ? {...box, isCreatedByAI: false} : box)
+        });
+    };
+
+    const acceptAllHighConfidence = () => {
+        updateImageDataByIdAction(imageData.id, {
+            ...imageData,
+            labelRects: imageData.labelRects.map(box =>
+                (box.isCreatedByAI && box.confidence != null &&
+                    box.confidence >= ACCEPT_CONFIDENCE_THRESHOLD) ?
+                    {...box, isCreatedByAI: false} : box)
+        });
     };
 
     const updateRectLabel = (labelRectId: string, labelNameId: string) => {
@@ -77,51 +117,115 @@ const RectLabelsList: React.FC<IProps> = (
         updateActiveLabelNameIdAction(labelNameId);
     };
 
-    const onClickHandler = () => {
-        updateActiveLabelIdAction(null);
+    const selectAndCenter = (box: LabelRect) => {
+        updateActiveLabelIdAction(box.id);
+        centerOnBox(imageData, box);
     };
 
-    const getChildren = () => {
-        return imageData.labelRects
-            .filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED)
-            .map((labelRect: LabelRect) => {
-                return <LabelInputField
-                    size={{
-                        width: size.width,
-                        height: labelInputFieldHeight
-                    }}
-                    isActive={labelRect.id === activeLabelId}
-                    isHighlighted={labelRect.id === highlightedLabelId}
-                    isVisible={labelRect.isVisible}
-                    id={labelRect.id}
-                    key={labelRect.id}
-                    onDelete={deleteRectLabelById}
-                    value={labelRect.labelId !== null ? findLast(labelNames, {id: labelRect.labelId}) : null}
-                    options={labelNames}
-                    onSelectLabel={updateRectLabel}
-                    toggleLabelVisibility={toggleRectLabelVisibilityById}
-                />
-            });
+    const toggleGroup = (labelId: string) => {
+        setCollapsed(previous => previous.includes(labelId) ?
+            previous.filter(id => id !== labelId) : [...previous, labelId]);
+    };
+
+    const groups = new Map<string, LabelRect[]>();
+    for (const box of accepted) {
+        const key = box.labelId ?? '';
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(box);
+    }
+
+    const statusBadge = (box: LabelRect) => {
+        if (!box.isCreatedByAI) return <span className="status manual" title="Verified manual annotation">✓</span>;
+        if (box.confidence == null) return <span className="status ai" title="AI suggestion">AI</span>;
+        const percent = Math.round(box.confidence * 100);
+        const low = isLowConfidence(box);
+        return <span className={low ? 'status ai low' : 'status ai'}
+            title={`AI suggestion, confidence ${percent}%`}>
+            AI {percent}%{low ? ' ⚠' : ''}
+        </span>;
+    };
+
+    const renderInspector = () => {
+        if (!activeBox) return null;
+        const name = labelNameOf(labelNames, activeBox.labelId);
+        return (
+            <div className="ObjectInspector">
+                <div className="inspector-title">Selected object</div>
+                <div className="inspector-name">{name}</div>
+                <div className="inspector-row">
+                    <span>Source</span>
+                    <span>{activeBox.isCreatedByAI ? 'AI prediction' : 'Manual'}</span>
+                </div>
+                {activeBox.isCreatedByAI && activeBox.confidence != null && <div className="inspector-row">
+                    <span>Confidence</span>
+                    <span>{Math.round(activeBox.confidence * 100)}%</span>
+                </div>}
+                <div className="inspector-row">
+                    <span>Position</span>
+                    <span>{`X ${Math.round(activeBox.rect.x)} · Y ${Math.round(activeBox.rect.y)} · ${Math.round(activeBox.rect.width)}×${Math.round(activeBox.rect.height)}`}</span>
+                </div>
+                <div className="inspector-actions">
+                    {activeBox.isCreatedByAI && <button onClick={() => acceptBox(activeBox.id)}>Accept prediction</button>}
+                    <button onClick={() => deleteRectLabelById(activeBox.id)}>Delete</button>
+                </div>
+            </div>
+        );
     };
 
     return (
         <div
-            className='RectLabelsList'
-            style={listStyle}
-            onClickCapture={onClickHandler}
+            className='RectLabelsList objects'
+            style={{width: size.width, height: size.height}}
+            onClickCapture={() => updateActiveLabelIdAction(null)}
         >
-            {imageData.labelRects.filter((labelRect: LabelRect) => labelRect.status === LabelStatus.ACCEPTED).length === 0 ?
+            <div className="ObjectsHeader" onClick={e => e.stopPropagation()}>
+                <span>Objects · {accepted.length}</span>
+                {acceptable.length > 0 &&
+                    <button onClick={acceptAllHighConfidence}
+                        title={`Accept ${acceptable.length} AI predictions at or above ${Math.round(ACCEPT_CONFIDENCE_THRESHOLD * 100)}% confidence`}>
+                        Accept ≥{Math.round(ACCEPT_CONFIDENCE_THRESHOLD * 100)}% ({acceptable.length})
+                    </button>}
+            </div>
+            {renderInspector()}
+            {accepted.length === 0 ?
                 <EmptyLabelList
                     labelBefore={'draw your first bounding box'}
                     labelAfter={'no labels created for this image yet'}
                 /> :
                 <Scrollbars>
-                    <div
-                        className='RectLabelsListContent'
-                        style={listStyleContent}
-                    >
-                        {getChildren()}
-                    </div>
+                    {Array.from(groups.entries()).map(([labelId, boxes]) => (
+                        <div key={labelId || 'unlabeled'}>
+                            <button className="ObjectGroupHeader"
+                                onClick={() => toggleGroup(labelId)}
+                                aria-expanded={!collapsed.includes(labelId)}>
+                                {labelNameOf(labelNames, labelId || null)} · {boxes.length}
+                                <span>{collapsed.includes(labelId) ? '▸' : '▾'}</span>
+                            </button>
+                            {!collapsed.includes(labelId) && boxes.map(box => (
+                                <div key={box.id} className="ObjectRow">
+                                    <LabelInputField
+                                        size={{width: size.width, height: 40}}
+                                        isActive={box.id === activeLabelId}
+                                        isHighlighted={box.id === highlightedLabelId}
+                                        isVisible={box.isVisible}
+                                        id={box.id}
+                                        value={box.labelId !== null ? findLast(labelNames, {id: box.labelId}) : null}
+                                        options={labelNames}
+                                        onSelectLabel={updateRectLabel}
+                                        onDelete={deleteRectLabelById}
+                                        toggleLabelVisibility={toggleRectLabelVisibilityById}
+                                    />
+                                    <div className="ObjectMeta">
+                                        {statusBadge(box)}
+                                        <button className="center" title="Select and center viewport on this object"
+                                            onClick={() => selectAndCenter(box)}>⌖</button>
+                                        {box.isCreatedByAI && <button className="accept" title="Accept this prediction"
+                                            onClick={() => acceptBox(box.id)}>Accept</button>}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
                 </Scrollbars>
             }
         </div>

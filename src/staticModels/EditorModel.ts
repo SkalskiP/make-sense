@@ -21,6 +21,7 @@ export class EditorModel {
 
     public static isLoading: boolean = false;
     public static viewPortActionsDisabled: boolean = false;
+    public static areAnnotationsHidden: boolean = false;
     public static mousePositionOnViewPortContent: IPoint;
     public static viewPortSize: ISize;
 

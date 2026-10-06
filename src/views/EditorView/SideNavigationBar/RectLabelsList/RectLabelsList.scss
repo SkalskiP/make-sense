@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
+  justify-content: flex-start;
+  align-items: stretch;
+  align-content: flex-start;
 
   .RectLabelsListContent {
     display: flex;
@@ -13,5 +13,95 @@
     justify-content: flex-start;
     align-items: center;
     align-content: flex-start;
+  }
+
+  .ObjectsHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-subtle);
+    button {
+      font-size: 12px;
+      color: var(--text-primary);
+      background: var(--bg-elevated);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 3px 8px;
+      cursor: pointer;
+      &:hover { background: var(--bg-panel-hover); }
+      &:focus-visible { outline: 2px solid var(--accent); }
+    }
+  }
+
+  .ObjectInspector {
+    padding: 8px;
+    font-size: 12px;
+    color: var(--text-secondary);
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border-subtle);
+    .inspector-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+    .inspector-name { font-size: 14px; font-weight: 600; color: var(--text-primary); margin: 2px 0 6px; }
+    .inspector-row { display: flex; justify-content: space-between; gap: 8px; line-height: 1.6; }
+    .inspector-actions { display: flex; gap: 6px; margin-top: 6px;
+      button {
+        flex: 1;
+        padding: 4px 8px;
+        font-size: 12px;
+        color: var(--text-primary);
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        &:hover { background: var(--bg-panel-hover); }
+        &:focus-visible { outline: 2px solid var(--accent); }
+      }
+    }
+  }
+
+  .ObjectGroupHeader {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-primary);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-subtle);
+    cursor: pointer;
+    &:hover { background: var(--bg-panel-hover); }
+    &:focus-visible { outline: 2px solid var(--accent); }
+  }
+
+  .ObjectRow {
+    border-bottom: 1px solid var(--border-subtle);
+    .ObjectMeta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 2px 8px 5px 26px;
+      font-size: 11px;
+      .status { color: var(--text-muted); }
+      .status.manual { color: var(--success); }
+      .status.ai { color: var(--accent); }
+      .status.ai.low { color: var(--warning); font-weight: 600; }
+      button {
+        font-size: 11px;
+        color: var(--text-secondary);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        padding: 1px 7px;
+        cursor: pointer;
+        &:hover { color: var(--text-primary); background: var(--bg-panel-hover); }
+        &:focus-visible { outline: 2px solid var(--accent); }
+      }
+    }
   }
 }

@@ -11,9 +11,65 @@ import {Direction} from "../../data/enums/Direction";
 import {PlatformUtil} from "../../utils/PlatformUtil";
 import {LabelActions} from "../actions/LabelActions";
 import {LineRenderEngine} from "../render/LineRenderEngine";
+import {requestApproval} from "../review/reviewWorkflow";
+import {requestSidebarToggle} from "../uiEvents";
+import {store} from "../../index";
+import {updateActiveLabelType} from "../../store/labels/actionCreators";
+import {updateImageDragModeStatus} from "../../store/general/actionCreators";
 
 export class EditorContext extends BaseContext {
+    private static isTyping(event: KeyboardEvent): boolean {
+        const target = event.target as HTMLElement | null;
+        return !!target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" ||
+            target.tagName === "SELECT" || target.isContentEditable);
+    }
+
     public static actions: HotKeyAction[] = [
+        {
+            // Approve the active image as ground truth and advance to the next
+            // unreviewed image. Ignored while typing in a text field.
+            keyCombo: ["a"],
+            action: (event: KeyboardEvent) => {
+                if (EditorContext.isTyping(event)) return;
+                requestApproval();
+            }
+        },
+        {
+            // Temporarily hide all annotation boxes without changing their state.
+            keyCombo: ["q"],
+            action: (event: KeyboardEvent) => {
+                if (EditorContext.isTyping(event)) return;
+                EditorActions.toggleAnnotationsHidden();
+            }
+        },
+        {
+            // Collapse both sidebars so the canvas owns the screen; pressing
+            // again restores them. Guarded while typing to preserve Tab's
+            // field-navigation role in inputs.
+            keyCombo: ["Tab"],
+            action: (event: KeyboardEvent) => {
+                if (EditorContext.isTyping(event)) return;
+                event.preventDefault();
+                requestSidebarToggle();
+            }
+        },
+        {
+            // Select tool: direct manipulation without drawing.
+            keyCombo: ["v"],
+            action: (event: KeyboardEvent) => {
+                if (EditorContext.isTyping(event)) return;
+                store.dispatch(updateImageDragModeStatus(false));
+            }
+        },
+        {
+            // Bounding-box drawing tool.
+            keyCombo: ["b"],
+            action: (event: KeyboardEvent) => {
+                if (EditorContext.isTyping(event)) return;
+                store.dispatch(updateImageDragModeStatus(false));
+                store.dispatch(updateActiveLabelType(LabelType.RECT));
+            }
+        },
         {
             keyCombo: ["Enter"],
             action: (event: KeyboardEvent) => {
@@ -94,6 +150,14 @@ export class EditorContext extends BaseContext {
         },
         {
             keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Backspace"] : ["Delete"],
+            action: (event: KeyboardEvent) => {
+                LabelActions.deleteActiveLabel();
+            }
+        },
+        {
+            // The complementary delete key on each platform, so both Delete and
+            // Backspace remove the selected annotation everywhere.
+            keyCombo: PlatformUtil.isMac(window.navigator.userAgent) ? ["Delete"] : ["Backspace"],
             action: (event: KeyboardEvent) => {
                 LabelActions.deleteActiveLabel();
             }

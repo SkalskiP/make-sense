@@ -74,6 +74,11 @@ class LabelsToolkit extends React.Component<IProps, IState> {
             return;
 
         const listBoundingBox = this.labelsToolkitRef.getBoundingClientRect();
+        // The toolkit stays mounted while hidden behind another sidebar tab, where
+        // it measures 0x0. Keep the last good size instead of collapsing every
+        // section to zero height.
+        if (listBoundingBox.width === 0 && listBoundingBox.height === 0)
+            return;
         this.setState({
             size: {
                 width: listBoundingBox.width,

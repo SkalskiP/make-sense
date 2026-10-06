@@ -1,5 +1,24 @@
 @import './settings/_Settings';
 
+:root {
+	--bg-app: #edf0f3;
+	--bg-panel: #ffffff;
+	--bg-panel-hover: #f1f3f5;
+	--bg-elevated: #ffffff;
+	--border: #d9dee4;
+	--border-subtle: #e7ebef;
+	--text-primary: #212529;
+	--text-secondary: #495057;
+	--text-muted: #868e96;
+	--accent: #2f6fed;
+	--success: #2b9e5f;
+	--warning: #b97a0c;
+	--danger: #d6455b;
+	--radius-sm: 5px;
+	--radius-md: 8px;
+	--radius-lg: 10px;
+}
+
 .App {
 	--leading-color: #{$secondaryColor};
 	--button-text-color: #{white};

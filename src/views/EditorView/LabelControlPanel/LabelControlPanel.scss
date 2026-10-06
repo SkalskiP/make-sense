@@ -15,7 +15,7 @@
     transition: transform 0.3s;
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
       user-select: none;
     }
 
@@ -38,7 +38,7 @@
 
     &.disabled {
       img {
-        filter: invert(1) opacity(25%);
+        filter: opacity(.3);
         user-select: none;
       }
     }
@@ -52,7 +52,7 @@
     align-content: center;
 
     padding: 0 10px 0 15px;
-    color: white;
+    color: #212529;
   }
 
   $randomNumber: random(5);

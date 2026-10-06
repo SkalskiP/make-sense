@@ -16,7 +16,7 @@ export class LabelUtil {
         }
     }
 
-    public static createLabelRect(labelId: string, rect: IRect): LabelRect {
+    public static createLabelRect(labelId: string, rect: IRect, confidence: number | null = null): LabelRect {
         return {
             id: uuidv4(),
             labelId,
@@ -24,7 +24,8 @@ export class LabelUtil {
             isVisible: true,
             isCreatedByAI: false,
             status: LabelStatus.ACCEPTED,
-            suggestedLabel: null
+            suggestedLabel: null,
+            confidence
         }
     }
 

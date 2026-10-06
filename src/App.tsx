@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import Projects from './views/Projects/Projects';
 import './App.scss';
 import EditorView from './views/EditorView/EditorView';
 import MainView from './views/MainView/MainView';
@@ -34,6 +35,8 @@ const App: React.FC<IProps> = (
         roboflowAPIDetails
     }
 ) => {
+    const [session,setSession]=useState(0);
+    useEffect(()=>{const reset=()=>setSession(n=>n+1);window.addEventListener('make-sense-project-load',reset);return ()=>window.removeEventListener('make-sense-project-load',reset);},[]);
     const selectRoute = () => {
         if (!!PlatformModel.mobileDeviceData.manufacturer && !!PlatformModel.mobileDeviceData.os)
             return <MobileMainView/>;
@@ -43,7 +46,7 @@ const App: React.FC<IProps> = (
             if (windowSize.height < Settings.EDITOR_MIN_HEIGHT || windowSize.width < Settings.EDITOR_MIN_WIDTH) {
                 return <SizeItUpView/>;
             } else {
-                return <EditorView/>;
+                return <EditorView key={session}/>;
             }
         }
     };
@@ -56,6 +59,7 @@ const App: React.FC<IProps> = (
         <div className={classNames('App', {'AI': isAILoaded})} draggable={false}
         >
             {selectRoute()}
+            <Projects/>
             <PopupView/>
             <NotificationsView/>
         </div>

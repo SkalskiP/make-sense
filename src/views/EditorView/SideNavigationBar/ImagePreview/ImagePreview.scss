@@ -38,13 +38,18 @@
       left: -10px;
       filter: invert(1) brightness(35%) sepia(100%) hue-rotate(172deg) saturate(2000%); // fallback if new css variables are not supported by browser
       filter: invert(1) brightness(35%) sepia(100%) hue-rotate(var(--hue-value)) saturate(2000%);
+
+      &.reviewed {
+        filter: invert(1) brightness(35%) sepia(100%) hue-rotate(100deg) saturate(2000%);
+      }
     }
   }
 
   .Background {
     position: absolute;
     z-index: 0;
-    background-color: $darkThemeThirdColor;
+    // Neutral matte so bright yellow scans read on both light and dark themes.
+    background-color: #7d858e;
     transition: background-color 0.3s ease-in-out, transform 0.3s;
   }
 

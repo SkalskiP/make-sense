@@ -55,7 +55,7 @@
         width: 150px;
         height: 30px;
         padding: 0 5px;
-        color: white;
+        color: #212529;
 
         display: flex;
         flex-direction: row;
@@ -67,7 +67,7 @@
 
         &:hover {
           &::after {
-            background-color: white;
+            background-color: #e9ecef;
           }
         }
 
@@ -110,7 +110,7 @@
           cursor: pointer;
           user-select: none;
           padding: 0 10px;
-          color: white;
+          color: #212529;
 
           &:hover {
             background-color: $darkThemeThirdColor;
@@ -122,7 +122,7 @@
         transition: transform 0.3s;
 
         img {
-          filter: brightness(0) invert(1);
+          filter: brightness(0) opacity(.72);
         }
 
         &:hover {

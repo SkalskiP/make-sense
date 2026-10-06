@@ -1,0 +1,7 @@
+.project-library {position:fixed;top:2px;right:230px;z-index:190;font:13px system-ui;color:#212529;
+ button {background:#ffffff;color:#212529;border:1px solid #d9dee4;border-radius:5px;cursor:pointer;padding:3px 9px;margin:2px;}
+ button:hover:not(:disabled) {background:#f1f3f5;}
+ button:disabled {opacity:.4;cursor:default;} section {background:#ffffff;padding:16px;width:430px;max-height:80vh;overflow:auto;box-shadow:0 4px 16px #0008;}
+ p {line-height:1.5;} input {padding:6px;width:95%;color:#212529;border:1px solid #d9dee4;border-radius:5px;} article {padding:10px 0;border-top:1px solid #e7ebef;}
+ .project-save-status {margin-left:8px;font-size:11px;}
+}

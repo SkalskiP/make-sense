@@ -1,0 +1,12 @@
+.continuous-training {position:fixed;top:28px;right:220px;z-index:150;color:var(--text-primary);font:13px system-ui;
+ button,select {padding:6px;margin:3px;background:var(--bg-elevated);color:var(--text-primary);border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;} button:disabled {opacity:.45;cursor:default;}
+ button:focus-visible,select:focus-visible {outline:2px solid var(--accent);}
+ section {padding:16px;background:var(--bg-panel);width:440px;max-height:75vh;overflow:auto;box-shadow:0 4px 16px #0008;} p {overflow-wrap:anywhere;line-height:1.5;}
+ &.embedded {position:static;z-index:auto;}
+ &.embedded section {width:auto;max-height:none;box-shadow:none;padding:12px;overflow:visible;}
+ .comparison {position:fixed;inset:5vh 2vw;background:#202830;padding:16px;overflow:auto;z-index:200;}
+ .pair {display:grid;grid-template-columns:1fr 1fr;gap:15px;} .overlay {position:relative;} img {width:100%;display:block;}
+ .box {position:absolute;border:2px solid #ff5050;box-sizing:border-box;pointer-events:none;} .box span {background:#111b;color:#fff;font-size:10px;white-space:nowrap;}
+ .inference-progress .track {height:8px;background:#10161c;border:1px solid #78838d;margin:6px 3px 0;}
+ .inference-progress .bar {height:100%;background:#4caf50;transition:width .3s;}
+}

@@ -21,7 +21,7 @@
   align-items: center;
   align-content: center;
 
-  color: white;
+  color: #212529;
   font-size: 13px;
   border-color: $darkThemeSecondColor;
   border-left: 1px;
@@ -29,7 +29,7 @@
   img {
     width: 15px;
     height: 15px;
-    filter: brightness(0) invert(1);
+    filter: brightness(0) opacity(.72);
     margin-right: 5px;
     user-select: none;
   }

@@ -164,3 +164,17 @@ This project is licensed under the GPL-3.0 License - see the [LICENSE][2] file f
 [17]: https://github.com/SkalskiP/yolov5js 
 [18]: https://github.com/SkalskiP/yolov5js-zoo
 [19]: https://github.com/ultralytics/yolov5/blob/master/export.py
+
+## Local box-movement controls
+
+Hover inside a rectangle to highlight it, then left-drag its interior or an edge
+between resize handles to move it without changing its dimensions. Handles still
+resize. Smaller overlapping boxes take priority; selected-box handles stay accessible.
+Movement stops at the image boundaries. Shift-drag draws a new rectangle even inside
+an existing one. Export your annotations before refreshing the browser.
+
+## Continuous YOLO26 learning
+
+Use the **YOLO26 learning** panel to save reviewed images, trigger local fine-tuning
+after ten new reviews, refresh untouched draft boxes, and compare historical runs.
+See [local service setup and review workflow](continuous/README.md).

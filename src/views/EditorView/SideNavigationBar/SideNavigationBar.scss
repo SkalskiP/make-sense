@@ -31,9 +31,9 @@
     flex-direction: column;
     display: flex;
     flex-wrap: nowrap;
-    justify-content: flex-end;
-    align-items: center;
-    align-content: flex-end;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: flex-start;
   }
 
   &.left {

@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
+import {TOGGLE_SIDEBARS_EVENT} from '../../../logic/uiEvents';
+import ContinuousTraining from '../../ContinuousTraining/ContinuousTraining';
+import ToolPalette from '../ToolPalette/ToolPalette';
 import {Direction} from '../../../data/enums/Direction';
 import {ISize} from '../../../interfaces/ISize';
 import {Settings} from '../../../settings/Settings';
@@ -35,6 +38,25 @@ const EditorContainer: React.FC<IProps> = (
     }) => {
     const [leftTabStatus, setLeftTabStatus] = useState(true);
     const [rightTabStatus, setRightTabStatus] = useState(true);
+    const [rightTab, setRightTab] = useState<'labels' | 'ai'>('labels');
+
+    // Let the newly visible tab re-measure itself after the switch renders.
+    const switchRightTab = (tab: 'labels' | 'ai') => {
+        setRightTab(tab);
+        requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
+    };
+
+    // Tab key: collapse both sidebars so the canvas owns the screen, or
+    // restore them when anything is collapsed.
+    useEffect(() => {
+        const toggle = () => {
+            const open = !(leftTabStatus || rightTabStatus);
+            setLeftTabStatus(open);
+            setRightTabStatus(open);
+        };
+        window.addEventListener(TOGGLE_SIDEBARS_EVENT, toggle);
+        return () => window.removeEventListener(TOGGLE_SIDEBARS_EVENT, toggle);
+    }, [leftTabStatus, rightTabStatus]);
 
     const calculateEditorSize = (): ISize => {
         if (windowSize) {
@@ -97,7 +119,24 @@ const EditorContainer: React.FC<IProps> = (
     };
 
     const rightSideBarRender = () => {
-        return <LabelsToolkit/>
+        // Both tabs stay mounted so the AI service polling and the label
+        // toolkit keep their state while hidden.
+        return <>
+            <div className="RightSidebarTabs" role="tablist" aria-label="Right sidebar">
+                <button role="tab" aria-selected={rightTab === 'labels'}
+                    className={rightTab === 'labels' ? 'active' : ''}
+                    onClick={() => switchRightTab('labels')}>Objects</button>
+                <button role="tab" aria-selected={rightTab === 'ai'}
+                    className={rightTab === 'ai' ? 'active' : ''}
+                    onClick={() => switchRightTab('ai')}>AI Assist</button>
+            </div>
+            <div className="RightSidebarTabContent" style={{display: rightTab === 'labels' ? undefined : 'none'}}>
+                <LabelsToolkit/>
+            </div>
+            <div className="RightSidebarTabContent scroll" style={{display: rightTab === 'ai' ? undefined : 'none'}}>
+                <ContinuousTraining embedded/>
+            </div>
+        </>
     };
 
     return (
@@ -114,6 +153,7 @@ const EditorContainer: React.FC<IProps> = (
                 onMouseDown={() => ContextManager.switchCtx(ContextType.EDITOR)}
                  key='editor-wrapper'
             >
+                <ToolPalette/>
                 {projectType === ProjectType.OBJECT_DETECTION && <EditorTopNavigationBar
                     key='editor-top-navigation-bar'
                 />}

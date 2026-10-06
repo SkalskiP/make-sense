@@ -40,7 +40,7 @@
 
       &.monochrome {
         img {
-          filter: brightness(0) invert(1);
+          filter: brightness(0) opacity(.72);
         }
       }
     }
@@ -59,7 +59,7 @@
 
     .Message {
       align-self: stretch;
-      color: white;
+      color: #212529;
       font-size: 15px;
       padding: 30px 40px;
       border-bottom: solid 1px $darkThemeFirstColor;
@@ -76,13 +76,13 @@
       align-items: center;
       align-content: center;
 
-      color: white;
+      color: #212529;
 
       .ImageButton {
         transition: transform 0.3s;
 
         img {
-          filter: brightness(0) invert(1);
+          filter: brightness(0) opacity(.72);
           user-select: none;
         }
 
@@ -116,7 +116,7 @@
           max-width: 60px;
           max-height: 60px;
           margin-bottom: 10px;
-          filter: brightness(0) invert(1);
+          filter: brightness(0) opacity(.72);
           user-select: none;
         }
 
@@ -154,7 +154,7 @@
           margin-left: 15px;
 
           img {
-            filter: brightness(0) invert(1);
+            filter: brightness(0) opacity(.72);
           }
 
           &:hover {

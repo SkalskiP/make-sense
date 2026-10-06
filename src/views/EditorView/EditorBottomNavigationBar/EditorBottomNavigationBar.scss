@@ -22,7 +22,7 @@
     transition: transform 0.3s;
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
       user-select: none;
     }
 
@@ -43,7 +43,7 @@
 
     &.disabled {
       img {
-        filter: invert(1) opacity(25%);
+        filter: opacity(.3);
         user-select: none;
       }
     }
@@ -52,7 +52,7 @@
   .CurrentImageName {
     min-width: 200px;
     padding: 0 20px;
-    color: white;
+    color: #212529;
     font-size: 14px;
 
     display: flex;
@@ -66,7 +66,7 @@
   .CurrentImageCount {
     min-width: 80px;
     padding: 0 20px;
-    color: white;
+    color: #212529;
 
     display: flex;
     flex-direction: row;
@@ -75,4 +75,19 @@
     align-items: center;
     align-content: center;
   }
+}
+.EditorBottomNavigationBar {
+  min-width: 0;
+  .ImageNavigation { flex-shrink: 0; margin: 0 8px; padding: 2px 12px; color: var(--text-primary); font-size: 13px;
+    background: var(--bg-elevated); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer;
+    &:hover:not(:disabled) { background: var(--bg-panel-hover); }
+    &:focus-visible { outline: 2px solid var(--accent); }
+    &:disabled { opacity: .35; cursor: default; }
+  }
+  .ImagePosition { color: var(--text-primary); white-space: nowrap; font-size: 12px; }
+  .ObjectCounts { color: var(--text-secondary); white-space: nowrap; font-size: 12px; display: flex; gap: 8px; margin: 0 4px; }
+  .ImageNavigation.approve { background: #2e7d4f; border-color: var(--success); font-weight: 600; color: white;
+    &:hover:not(:disabled) { background: #35965e; } }
+  .CurrentImageName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+  .CurrentImageCount { display: none; }
 }

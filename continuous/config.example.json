@@ -1,0 +1,14 @@
+{
+  "name": "Cargo X-ray parts",
+  "images": "/absolute/path/to/original_dataset",
+  "storage": "/absolute/path/to/continuous-training-history",
+  "seed_dataset": "/absolute/path/to/verified_pilot",
+  "checkpoint": "/absolute/path/to/yolo26s_20ep/weights/best.pt",
+  "classes": ["tyre", "cabin", "chassis", "spare_tyre"],
+  "threshold": 10,
+  "epochs": 10,
+  "imgsz": 1024,
+  "batch": 4,
+  "device": 0,
+  "confidence": 0.25
+}

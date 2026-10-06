@@ -36,7 +36,7 @@
 
       &.monochrome {
         img {
-          filter: brightness(0) invert(1);
+          filter: brightness(0) opacity(.72);
         }
       }
     }
@@ -64,7 +64,7 @@
 
     .message {
       align-self: stretch;
-      color: white;
+      color: #212529;
       font-size: 15px;
       padding: 40px 40px 0 40px;
     }
@@ -81,7 +81,7 @@
         justify-content: flex-start;
         align-items: center;
         align-content: flex-start;
-        color: white;
+        color: #212529;
 
         cursor: pointer;
         user-select: none;
@@ -110,7 +110,7 @@
       align-self: stretch;
       flex: 1;
 
-      color: white;
+      color: #212529;
       cursor: pointer;
       outline: none;
 
@@ -122,7 +122,7 @@
         max-width: 60px;
         max-height: 60px;
         margin-bottom: 30px;
-        filter: brightness(0) invert(1);
+        filter: brightness(0) opacity(.72);
         user-select: none;
       }
 

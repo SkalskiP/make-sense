@@ -16,6 +16,9 @@ export type LabelRect = Annotation & {
     isCreatedByAI: boolean;
     status: LabelStatus;
     suggestedLabel: string;
+    // Model confidence for AI-suggested boxes (0-1). Absent for manual boxes
+    // and for boxes imported without scores.
+    confidence?: number | null;
 }
 
 export type LabelPoint = Annotation & {

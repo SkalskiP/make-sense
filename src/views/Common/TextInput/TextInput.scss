@@ -1,6 +1,6 @@
 @import '../../../settings/Settings';
 
-$secondary-color: white;
+$secondary-color: #212529;
 $main-color: transparent;
 $width: 300px;
 
@@ -17,7 +17,7 @@ $width: 300px;
 label {
   position: absolute;
   top: calc($width/15);
-  color: white;
+  color: #212529;
   font: 400 calc($width/15);
   cursor: text;
   transition: .25s ease;
@@ -29,7 +29,7 @@ input {
   padding-top: calc($width/15);
   border: none;
   border-radius: 0; // For iOS
-  color: white;
+  color: #212529;
   background: $main-color;
   font-size: calc($width/20);
   transition: .3s ease;
@@ -37,7 +37,7 @@ input {
     ~label {
       top: 0;
       font: 700 calc($width/25);
-      color: white;
+      color: #212529;
     }
   }
   &:focus {
@@ -58,7 +58,7 @@ input {
 
   &:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px $main-color inset;
-    -webkit-text-fill-color: white !important;
+    -webkit-text-fill-color: #212529 !important;
   }
 }
 

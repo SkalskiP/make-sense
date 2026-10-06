@@ -17,7 +17,7 @@
     align-self: stretch;
     box-sizing: border-box;
     padding: 0 25px;
-    color: white;
+    color: #212529;
     font-size: 14px;
     user-select: none;
     cursor: pointer;
@@ -54,13 +54,13 @@
       max-width: 20px;
       max-height: 20px;
       margin-right: 20px;
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
     }
 
     .Arrow {
       max-width: 12px;
       max-height: 12px;
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
     }
 
     &:hover {

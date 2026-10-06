@@ -17,12 +17,12 @@
     align-content: center;
     text-align: center;
     width: 150px;
-    color: white;
+    color: #212529;
     font-size: 16px;
     user-select: none;
 
     > img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
       max-width: 80px;
       max-height: 80px;
       margin-bottom: 20px;
@@ -58,7 +58,7 @@
     cursor: pointer;
     user-select: none;
     text-decoration: none;
-    color: white;
+    color: #212529;
 
     &:hover {
       background-color: rgba(0, 0, 0, 0.4);
@@ -76,7 +76,7 @@
     background-color: rgba(0, 0, 0, 0.2);
 
     img {
-      filter: brightness(0) invert(1);
+      filter: brightness(0) opacity(.72);
       user-select: none;
       width: 16px;
       height: 16px;

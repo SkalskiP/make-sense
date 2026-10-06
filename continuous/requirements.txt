@@ -1,0 +1,3 @@
+Flask>=3.0,<4
+ultralytics==8.4.38
+Pillow>=10
